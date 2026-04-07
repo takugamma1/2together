@@ -1,0 +1,499 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-product.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-product-active');</script>
+
+<div class="tg-product-page" data-product-id="{{ product.id }}">
+  <!-- ═══ LEFT COLUMN: Editorial Content ═══ -->
+  <div class="tg-product-left">
+
+    <!-- Hero Image -->
+    <div class="tg-product-hero">
+      {% if product.featured_image %}
+        {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(max-width: 1024px) 100vw, 60vw' }}
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {% endif %}
+      <div class="tg-product-hero-overlay"></div>
+      <div class="tg-product-hero-text">
+        <div class="tg-product-hero-label">{{ section.settings.hero_label | default: 'Engineering Velocity' }}</div>
+        <h2 class="tg-product-hero-title">{{ section.settings.hero_title | default: product.title }}</h2>
+      </div>
+    </div>
+
+    <!-- Feature Highlights -->
+    <div class="tg-product-features">
+      <div class="tg-product-features-label">{{ section.settings.features_label | default: 'Key Performance' }}</div>
+      <div class="tg-product-features-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'feature_card' %}
+            <div class="tg-feature-card" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+              {% else %}
+                <div style="width:100%;height:100%;background:var(--tg-surface-raised);"></div>
+              {% endif %}
+              <div class="tg-feature-card-overlay"></div>
+              <div class="tg-feature-card-info">
+                <div class="tg-feature-card-title">{{ block.settings.title }}</div>
+                {% if block.settings.description != blank %}
+                  <div class="tg-feature-card-desc">{{ block.settings.description }}</div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {%- comment -%} Fallback: Show product images as feature cards if no blocks configured {%- endcomment -%}
+        {% assign feature_block_count = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'feature_card' %}
+            {% assign feature_block_count = feature_block_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+
+        {% if feature_block_count == 0 %}
+          {% for media in product.media limit: 4 offset: 1 %}
+            <div class="tg-feature-card">
+              {{ media | image_url: width: 400 | image_tag: loading: 'lazy' }}
+              <div class="tg-feature-card-overlay"></div>
+              <div class="tg-feature-card-info">
+                <div class="tg-feature-card-title">{{ media.alt | default: product.title }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Spec Statement -->
+    <div class="tg-product-spec">
+      <div class="tg-product-spec-text">
+        <div class="tg-product-hero-label">{{ section.settings.spec_label | default: 'Specification' }}</div>
+        <h3 class="tg-product-spec-title">
+          {{ section.settings.spec_title | default: 'AERO' }} <span>{{ section.settings.spec_title_accent | default: 'SPEC' }}</span>
+        </h3>
+        <p class="tg-product-spec-desc">{{ section.settings.spec_description | default: product.description | strip_html | truncate: 200 }}</p>
+      </div>
+      <div class="tg-product-spec-image">
+        {% if section.settings.spec_image != blank %}
+          {{ section.settings.spec_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
+        {% elsif product.media.size > 1 %}
+          {{ product.media[1] | image_url: width: 600 | image_tag: loading: 'lazy' }}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if recommendations.products.size > 0 or product.collections.first.products.size > 1 %}
+      <div class="tg-product-related">
+        <div class="tg-product-related-header">
+          <div class="tg-product-related-title">Related Products</div>
+          {% if product.collections.first %}
+            <a href="{{ product.collections.first.url }}" class="tg-product-related-link">View All &rarr;</a>
+          {% endif %}
+        </div>
+        <div class="tg-product-related-grid">
+          {% assign related_products = recommendations.products | default: product.collections.first.products %}
+          {% for item in related_products limit: 4 %}
+            {% if item.id != product.id %}
+              <a href="{{ item.url }}" class="tg-related-card">
+                <div class="tg-related-card-image">
+                  {% if item.featured_image %}
+                    {{ item.featured_image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {% endif %}
+                </div>
+                <div class="tg-related-card-info">
+                  <div class="tg-related-card-name">{{ item.title }}</div>
+                  <div class="tg-related-card-price">{{ item.price | money }}</div>
+                </div>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Bestsellers -->
+    {% if product.collections.first.products.size > 1 %}
+      <div class="tg-product-bestsellers">
+        <div class="tg-product-bestsellers-header">
+          <div class="tg-product-bestsellers-title">Bestsellers</div>
+        </div>
+        <div class="tg-product-bestsellers-grid">
+          {% for item in product.collections.first.products limit: 4 %}
+            {% if item.id != product.id %}
+              <a href="{{ item.url }}" class="tg-related-card">
+                <div class="tg-related-card-image">
+                  {% if item.featured_image %}
+                    {{ item.featured_image | image_url: width: 400 | image_tag: loading: 'lazy' }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {% endif %}
+                </div>
+                <div class="tg-related-card-info">
+                  <div class="tg-related-card-name">{{ item.title }}</div>
+                  <div class="tg-related-card-price">{{ item.price | money }}</div>
+                </div>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Brand Statement -->
+    <div class="tg-product-brand">
+      <div class="tg-product-brand-bg">
+        {% if section.settings.brand_image != blank %}
+          {{ section.settings.brand_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+        {% endif %}
+      </div>
+      <div class="tg-product-brand-content">
+        <div class="tg-product-brand-label">{{ section.settings.brand_label | default: 'Our Process' }}</div>
+        <h3 class="tg-product-brand-title">{{ section.settings.brand_title | default: 'PURE FIBER' }}</h3>
+        <p class="tg-product-brand-desc">{{ section.settings.brand_description | default: 'Every frame is handcrafted with aerospace-grade carbon fiber, engineered for the perfect balance of stiffness and compliance.' }}</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="tg-product-footer">
+      <div class="tg-product-footer-brand">2GETHER</div>
+      <div class="tg-product-footer-links">
+        <a href="/pages/about">About</a>
+        <a href="/collections">Shop</a>
+        <a href="/pages/contact">Contact</a>
+      </div>
+      <div class="tg-product-footer-copy">&copy; {{ 'now' | date: '%Y' }} 2Gether Bikes</div>
+    </div>
+  </div>
+
+  <!-- ═══ RIGHT COLUMN: Purchase Panel ═══ -->
+  <div class="tg-product-right">
+    <div class="tg-product-panel">
+
+      <!-- Back link -->
+      <a href="{{ product.collections.first.url | default: '/collections/all' }}" class="tg-product-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to collection
+      </a>
+
+      <!-- Product Header -->
+      <div class="tg-product-header">
+        {% if product.type != blank %}
+          <div class="tg-product-type-label">{{ product.type }}</div>
+        {% endif %}
+        <h1 class="tg-product-title">{{ product.title }}</h1>
+        <div class="tg-product-price" data-product-price>
+          {{ product.selected_or_first_available_variant.price | money }}
+          {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+            <span class="tg-product-price-compare">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Description -->
+      {% if product.description != blank %}
+        <div class="tg-product-description">
+          {{ product.description }}
+        </div>
+      {% endif %}
+
+      <hr class="tg-product-divider">
+
+      <!-- Variant Pickers -->
+      {%- liquid
+        assign current_variant = product.selected_or_first_available_variant
+      -%}
+
+      {% for option in product.options_with_values %}
+        <div class="tg-product-option" data-option-index="{{ forloop.index0 }}">
+          <div class="tg-product-option-label">
+            {{ option.name }}
+            <span>— {{ option.selected_value }}</span>
+          </div>
+
+          {% assign option_name_lower = option.name | downcase %}
+          {% if option_name_lower == 'color' or option_name_lower == 'colour' %}
+            <div class="tg-color-swatches">
+              {% for value in option.values %}
+                {% assign color_handle = value | handleize %}
+                <button
+                  type="button"
+                  class="tg-color-swatch {% if option.selected_value == value %}active{% endif %}"
+                  data-option-value="{{ value }}"
+                  aria-label="{{ value }}"
+                  title="{{ value }}"
+                >
+                  <span class="tg-color-swatch-inner" style="background-color: {{ color_handle }};"></span>
+                </button>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="tg-size-swatches">
+              {% for value in option.values %}
+                <button
+                  type="button"
+                  class="tg-size-swatch {% if option.selected_value == value %}active{% endif %}"
+                  data-option-value="{{ value }}"
+                >
+                  {{ value }}
+                </button>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <!-- Add to Cart Form -->
+      {%- form 'product', product, id: 'tg-product-form', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" id="tg-variant-id">
+
+        <div class="tg-product-actions">
+          <button
+            type="submit"
+            name="add"
+            class="tg-btn-add-cart"
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            {% if current_variant.available %}
+              Add to Cart
+            {% else %}
+              Sold Out
+            {% endif %}
+          </button>
+
+          {% if section.settings.show_dynamic_checkout %}
+            {{ form | payment_button }}
+          {% else %}
+            <button type="button" class="tg-btn-buy-now" onclick="window.location='/checkout'">
+              Buy Now
+            </button>
+          {% endif %}
+        </div>
+      {%- endform -%}
+
+      <!-- Trust / Value Points -->
+      <div class="tg-product-trust">
+        <div class="tg-trust-item">
+          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <div class="tg-trust-text"><strong>Lifetime Frame Warranty</strong> — Full carbon frame coverage</div>
+        </div>
+        <div class="tg-trust-item">
+          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          <div class="tg-trust-text"><strong>Free Shipping</strong> — On all orders over €500</div>
+        </div>
+        <div class="tg-trust-item">
+          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <div class="tg-trust-text"><strong>30-Day Returns</strong> — No questions asked</div>
+        </div>
+        <div class="tg-trust-item">
+          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div class="tg-trust-text"><strong>Expert Assembly</strong> — Professional bike fitting included</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('tg-product-form');
+  const variantInput = document.getElementById('tg-variant-id');
+  const productData = {{ product.variants | json }};
+
+  // Handle swatch clicks
+  document.querySelectorAll('.tg-color-swatch, .tg-size-swatch').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const parent = this.closest('.tg-product-option');
+      parent.querySelectorAll('.tg-color-swatch, .tg-size-swatch').forEach(function(s) {
+        s.classList.remove('active');
+      });
+      this.classList.add('active');
+
+      // Update label
+      const label = parent.querySelector('.tg-product-option-label span');
+      if (label) label.textContent = '— ' + this.dataset.optionValue;
+
+      // Find matching variant
+      var selectedOptions = [];
+      document.querySelectorAll('.tg-product-option').forEach(function(opt) {
+        var active = opt.querySelector('.active');
+        if (active) selectedOptions.push(active.dataset.optionValue);
+      });
+
+      for (var i = 0; i < productData.length; i++) {
+        var variant = productData[i];
+        var match = true;
+        for (var j = 0; j < selectedOptions.length; j++) {
+          if (variant['option' + (j + 1)] !== selectedOptions[j]) {
+            match = false;
+            break;
+          }
+        }
+        if (match) {
+          variantInput.value = variant.id;
+          // Update price
+          var priceEl = document.querySelector('[data-product-price]');
+          if (priceEl) {
+            var formatted = (variant.price / 100).toLocaleString(undefined, { style: 'currency', currency: '{{ shop.currency }}' });
+            priceEl.innerHTML = formatted;
+            if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+              var compareFormatted = (variant.compare_at_price / 100).toLocaleString(undefined, { style: 'currency', currency: '{{ shop.currency }}' });
+              priceEl.innerHTML += ' <span class="tg-product-price-compare">' + compareFormatted + '</span>';
+            }
+          }
+          // Update button
+          var addBtn = form.querySelector('.tg-btn-add-cart');
+          if (addBtn) {
+            addBtn.disabled = !variant.available;
+            addBtn.innerHTML = variant.available
+              ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Add to Cart'
+              : 'Sold Out';
+          }
+          // Update URL
+          var url = new URL(window.location);
+          url.searchParams.set('variant', variant.id);
+          window.history.replaceState({}, '', url);
+          break;
+        }
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "2Gether Product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Area"
+    },
+    {
+      "type": "text",
+      "id": "hero_label",
+      "label": "Hero label",
+      "default": "Engineering Velocity"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero title",
+      "info": "Leave blank to use product title"
+    },
+    {
+      "type": "header",
+      "content": "Features"
+    },
+    {
+      "type": "text",
+      "id": "features_label",
+      "label": "Features label",
+      "default": "Key Performance"
+    },
+    {
+      "type": "header",
+      "content": "Spec Section"
+    },
+    {
+      "type": "text",
+      "id": "spec_label",
+      "label": "Spec label",
+      "default": "Specification"
+    },
+    {
+      "type": "text",
+      "id": "spec_title",
+      "label": "Spec title",
+      "default": "AERO"
+    },
+    {
+      "type": "text",
+      "id": "spec_title_accent",
+      "label": "Spec title accent",
+      "default": "SPEC"
+    },
+    {
+      "type": "textarea",
+      "id": "spec_description",
+      "label": "Spec description"
+    },
+    {
+      "type": "image_picker",
+      "id": "spec_image",
+      "label": "Spec image"
+    },
+    {
+      "type": "header",
+      "content": "Brand Section"
+    },
+    {
+      "type": "text",
+      "id": "brand_label",
+      "label": "Brand label",
+      "default": "Our Process"
+    },
+    {
+      "type": "text",
+      "id": "brand_title",
+      "label": "Brand title",
+      "default": "PURE FIBER"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand description",
+      "default": "Every frame is handcrafted with aerospace-grade carbon fiber, engineered for the perfect balance of stiffness and compliance."
+    },
+    {
+      "type": "image_picker",
+      "id": "brand_image",
+      "label": "Brand background image"
+    },
+    {
+      "type": "header",
+      "content": "Purchase Panel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show dynamic checkout button",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_card",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "templates": ["product"]
+}
+{% endschema %}
