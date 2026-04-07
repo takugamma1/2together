@@ -1,0 +1,681 @@
+/* === 2GETHER BIKES — ABOUT PAGE === */
+
+/* ── Page Shell ── */
+.tg-about-page {
+  background: var(--tg-ink);
+  color: var(--tg-text-primary);
+  font-family: 'General Sans', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Hide default Shopify chrome ── */
+body.tg-about-active #header-group,
+body.tg-about-active footer {
+  display: none;
+}
+
+body.tg-about-active .content-for-layout {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   TOP NAVIGATION
+   ══════════════════════════════════════ */
+.tg-about-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  padding: var(--tg-s5) var(--tg-s7);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(11, 18, 32, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--tg-divider);
+}
+
+.tg-about-nav-brand {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--tg-text-primary);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.tg-about-nav-links {
+  display: flex;
+  gap: var(--tg-s7);
+  list-style: none;
+}
+
+.tg-about-nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tg-text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+  position: relative;
+}
+
+.tg-about-nav-links a:hover {
+  color: var(--tg-text-primary);
+}
+
+.tg-about-nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--tg-flame);
+  transition: width var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-about-nav-links a:hover::after {
+  width: 100%;
+}
+
+.tg-about-nav-icons {
+  display: flex;
+  gap: var(--tg-s5);
+  align-items: center;
+}
+
+.tg-about-nav-icons a {
+  color: var(--tg-text-secondary);
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-about-nav-icons a:hover {
+  color: var(--tg-text-primary);
+}
+
+/* ══════════════════════════════════════
+   HERO — Full-width cinematic
+   ══════════════════════════════════════ */
+.tg-about-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: var(--tg-s9) var(--tg-s7) var(--tg-s8);
+}
+
+.tg-about-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.tg-about-hero-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-about-hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(11, 18, 32, 0.95) 0%, rgba(11, 18, 32, 0.5) 40%, rgba(11, 18, 32, 0.2) 70%, rgba(11, 18, 32, 0.4) 100%),
+    linear-gradient(160deg, rgba(11, 18, 32, 0.7) 0%, transparent 50%);
+}
+
+/* Grain */
+.tg-about-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-about-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.tg-about-hero-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--tg-text-primary);
+}
+
+.tg-about-hero-title span {
+  color: var(--tg-flame);
+}
+
+.tg-about-hero-sub {
+  font-size: 15px;
+  color: var(--tg-text-secondary);
+  line-height: 1.65;
+  max-width: 440px;
+  margin-top: var(--tg-s5);
+}
+
+/* ══════════════════════════════════════
+   THE VISION — Asymmetric two-column
+   ══════════════════════════════════════ */
+.tg-about-vision {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 0;
+  min-height: 80vh;
+}
+
+/* Grain */
+.tg-about-vision::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-about-vision > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tg-about-vision-left {
+  position: relative;
+  overflow: hidden;
+}
+
+.tg-about-vision-left img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-about-vision-label {
+  position: absolute;
+  top: var(--tg-s7);
+  left: var(--tg-s7);
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  z-index: 2;
+}
+
+.tg-about-vision-right {
+  background: var(--tg-ink);
+  padding: var(--tg-s9) var(--tg-s7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--tg-s6);
+}
+
+.tg-about-vision-quote {
+  font-family: 'Boska', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  color: var(--tg-text-primary);
+  line-height: 1.25;
+}
+
+.tg-about-vision-quote em {
+  color: var(--tg-flame);
+  font-style: italic;
+}
+
+.tg-about-vision-body {
+  font-size: 14px;
+  color: var(--tg-text-secondary);
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+.tg-about-vision-sig {
+  display: flex;
+  align-items: center;
+  gap: var(--tg-s3);
+  margin-top: var(--tg-s3);
+}
+
+.tg-about-vision-sig-line {
+  width: 32px;
+  height: 1px;
+  background: var(--tg-flame);
+}
+
+.tg-about-vision-sig-name {
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--tg-text-muted);
+}
+
+/* ══════════════════════════════════════
+   THE PROCESS — Numbered steps
+   ══════════════════════════════════════ */
+.tg-about-process {
+  position: relative;
+  padding: var(--tg-s9) var(--tg-s7);
+  background: var(--tg-surface);
+}
+
+/* Grain */
+.tg-about-process::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-about-process > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tg-about-process-label {
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  margin-bottom: var(--tg-s7);
+}
+
+.tg-about-process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--tg-s4);
+}
+
+.tg-process-card {
+  background: var(--tg-surface-raised);
+  padding: var(--tg-s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s4);
+  border-left: 2px solid var(--tg-divider);
+  transition: border-color var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-process-card:hover {
+  border-color: var(--tg-flame);
+}
+
+.tg-process-num {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--tg-flame);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.tg-process-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--tg-text-primary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.tg-process-desc {
+  font-size: 13px;
+  color: var(--tg-text-secondary);
+  line-height: 1.65;
+}
+
+/* ══════════════════════════════════════
+   IMAGE MOSAIC — Asymmetric grid
+   ══════════════════════════════════════ */
+.tg-about-mosaic {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 300px 300px;
+  gap: 3px;
+  background: var(--tg-ink);
+}
+
+.tg-mosaic-cell {
+  position: relative;
+  overflow: hidden;
+  background: var(--tg-surface-raised);
+}
+
+.tg-mosaic-cell img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--tg-ease-out);
+}
+
+.tg-mosaic-cell:hover img {
+  transform: scale(1.04);
+}
+
+.tg-mosaic-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(11, 18, 32, 0.15) 0%, rgba(11, 18, 32, 0.5) 100%);
+  pointer-events: none;
+  transition: opacity var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-mosaic-cell:hover::after {
+  opacity: 0.6;
+}
+
+/* Tall cell spanning two rows */
+.tg-mosaic-cell--tall {
+  grid-row: 1 / 3;
+}
+
+/* ══════════════════════════════════════
+   COMMUNITY / SUNDAY CLUB
+   ══════════════════════════════════════ */
+.tg-about-community {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 500px;
+  background: var(--tg-ink);
+}
+
+/* Grain */
+.tg-about-community::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-about-community > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tg-about-community-image {
+  position: relative;
+  overflow: hidden;
+  background: var(--tg-surface-raised);
+}
+
+.tg-about-community-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-about-community-content {
+  padding: var(--tg-s9) var(--tg-s7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--tg-s5);
+}
+
+.tg-about-community-label {
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tg-flame);
+}
+
+.tg-about-community-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  color: var(--tg-text-primary);
+}
+
+.tg-about-community-desc {
+  font-size: 14px;
+  color: var(--tg-text-secondary);
+  line-height: 1.7;
+  max-width: 420px;
+}
+
+.tg-about-community-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s2);
+  padding: var(--tg-s3) var(--tg-s7) var(--tg-s3) var(--tg-s6);
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  transition: all var(--tg-dur-med) var(--tg-ease-out);
+  width: fit-content;
+}
+
+.tg-about-community-cta:hover {
+  background: var(--tg-flame-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232, 96, 28, 0.35);
+}
+
+/* ══════════════════════════════════════
+   CTA BANNER — "Ready for the dark?"
+   ══════════════════════════════════════ */
+.tg-about-cta {
+  position: relative;
+  padding: var(--tg-s8) var(--tg-s7);
+  background: var(--tg-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--tg-s5);
+  text-align: center;
+  overflow: hidden;
+}
+
+.tg-about-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-about-cta > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tg-about-cta-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--tg-text-primary);
+}
+
+.tg-about-cta-title span {
+  color: var(--tg-flame);
+}
+
+.tg-about-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--tg-s4) var(--tg-s8);
+  background: transparent;
+  color: var(--tg-flame);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--tg-flame);
+  cursor: pointer;
+  transition: all var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-about-cta-btn:hover {
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════ */
+.tg-about-footer {
+  padding: var(--tg-s7) var(--tg-s7);
+  background: var(--tg-ink);
+  border-top: 1px solid var(--tg-divider);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--tg-s5);
+}
+
+.tg-about-footer-brand {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--tg-text-primary);
+  letter-spacing: 0.06em;
+}
+
+.tg-about-footer-links {
+  display: flex;
+  gap: var(--tg-s7);
+}
+
+.tg-about-footer-links a {
+  font-size: 12px;
+  color: var(--tg-text-muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-about-footer-links a:hover {
+  color: var(--tg-text-primary);
+}
+
+.tg-about-footer-copy {
+  font-size: 11px;
+  color: var(--tg-text-muted);
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .tg-about-vision {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .tg-about-vision-left {
+    aspect-ratio: 16 / 9;
+  }
+
+  .tg-about-process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tg-about-mosaic {
+    grid-template-rows: 250px 250px;
+  }
+
+  .tg-about-community {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .tg-about-community-image {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 768px) {
+  .tg-about-hero {
+    min-height: 80vh;
+    padding: var(--tg-s7) var(--tg-s5) var(--tg-s6);
+  }
+
+  .tg-about-vision-right {
+    padding: var(--tg-s7) var(--tg-s5);
+  }
+
+  .tg-about-process {
+    padding: var(--tg-s7) var(--tg-s5);
+  }
+
+  .tg-about-mosaic {
+    grid-template-columns: 1fr;
+    grid-template-rows: 250px 250px 250px 250px;
+  }
+
+  .tg-mosaic-cell--tall {
+    grid-row: auto;
+  }
+
+  .tg-about-community-content {
+    padding: var(--tg-s7) var(--tg-s5);
+  }
+
+  .tg-about-nav-links {
+    display: none;
+  }
+
+  .tg-about-footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--tg-s4);
+  }
+}
