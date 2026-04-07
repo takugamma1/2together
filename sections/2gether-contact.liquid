@@ -1,0 +1,333 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-contact.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-contact-active');</script>
+
+<div class="tg-contact-page">
+
+  <!-- ═══ Top Navigation ═══ -->
+  <nav class="tg-contact-nav">
+    <a href="/" class="tg-contact-nav-brand">2GETHER</a>
+    <ul class="tg-contact-nav-links">
+      <li><a href="/collections/all">Shop</a></li>
+      <li><a href="/collections">Collections</a></li>
+      <li><a href="/pages/about">About</a></li>
+      <li><a href="/pages/contact">Contact</a></li>
+    </ul>
+    <div class="tg-contact-nav-icons">
+      <a href="/search" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </a>
+      <a href="/account" aria-label="Account">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a href="/cart" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="tg-contact-hero">
+    <div class="tg-contact-hero-bg">
+      {% if section.settings.hero_image != blank %}
+        {{ section.settings.hero_image | image_url: width: 1920 | image_tag: loading: 'eager', sizes: '100vw' }}
+      {% endif %}
+    </div>
+    <div class="tg-contact-hero-content">
+      <h1 class="tg-contact-hero-title">
+        {{ section.settings.hero_line1 | default: 'CONTACT' }}<br>
+        <span>{{ section.settings.hero_line2 | default: '/ SIGNAL' }}</span>
+      </h1>
+      {% if section.settings.hero_subtitle != blank %}
+        <p class="tg-contact-hero-sub">{{ section.settings.hero_subtitle }}</p>
+      {% else %}
+        <p class="tg-contact-hero-sub">Open a direct line to our engineering team. Whether it's a custom build inquiry, technical question, or partnership — every signal gets a response.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ═══ FORM + INFO ═══ -->
+  <div class="tg-contact-body">
+
+    <!-- Left: Contact Form -->
+    <div class="tg-contact-form-section">
+      <div class="tg-contact-form-label">Send Message</div>
+
+      {%- form 'contact', id: 'tg-contact-form' -%}
+        {% if form.posted_successfully? %}
+          <div style="padding:var(--tg-s5);background:var(--tg-flame-glow);border-left:2px solid var(--tg-flame);margin-bottom:var(--tg-s4);">
+            <p style="color:var(--tg-flame);font-weight:600;font-size:14px;">Message transmitted successfully.</p>
+            <p style="color:var(--tg-text-secondary);font-size:13px;margin-top:4px;">We'll respond within 24 hours.</p>
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div style="padding:var(--tg-s5);background:rgba(159,64,61,0.1);border-left:2px solid #9f403d;margin-bottom:var(--tg-s4);">
+            <p style="color:#9f403d;font-weight:600;font-size:14px;">{{ form.errors | default_errors }}</p>
+          </div>
+        {% endif %}
+
+        <div class="tg-contact-form">
+          <div class="tg-contact-form-row">
+            <div class="tg-contact-field">
+              <label for="tg-first-name">First Name</label>
+              <input type="text" id="tg-first-name" name="contact[first_name]" placeholder="First name" required autocomplete="given-name">
+            </div>
+            <div class="tg-contact-field">
+              <label for="tg-last-name">Last Name</label>
+              <input type="text" id="tg-last-name" name="contact[last_name]" placeholder="Last name" required autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="tg-contact-form-row">
+            <div class="tg-contact-field">
+              <label for="tg-email">Email</label>
+              <input type="email" id="tg-email" name="contact[email]" placeholder="your@email.com" required autocomplete="email">
+            </div>
+            <div class="tg-contact-field">
+              <label for="tg-subject">Subject</label>
+              <select id="tg-subject" name="contact[subject]">
+                <option value="General Inquiry">General Inquiry</option>
+                <option value="Custom Build">Custom Build</option>
+                <option value="Technical Support">Technical Support</option>
+                <option value="Partnership">Partnership</option>
+                <option value="Press / Media">Press / Media</option>
+                <option value="Warranty">Warranty</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="tg-contact-field">
+            <label for="tg-message">Message</label>
+            <textarea id="tg-message" name="contact[body]" placeholder="Describe your inquiry in detail..." required></textarea>
+          </div>
+
+          <button type="submit" class="tg-contact-submit">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Transmit Message
+          </button>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <!-- Right: Contact Info -->
+    <div class="tg-contact-info">
+
+      <!-- The Studio -->
+      <div class="tg-contact-info-block">
+        <div class="tg-contact-info-title">The Studio</div>
+
+        <div class="tg-contact-info-item">
+          <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="tg-contact-info-text">
+            <strong>Address</strong>
+            {{ section.settings.address | default: '42 Trakiya Centre St.<br>Sofia 1172, Bulgaria' }}
+          </div>
+        </div>
+
+        <div class="tg-contact-info-item">
+          <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          <div class="tg-contact-info-text">
+            <strong>Phone</strong>
+            <a href="tel:{{ section.settings.phone | default: '+359 2 000 0000' | remove: ' ' }}">{{ section.settings.phone | default: '+359 2 000 0000' }}</a>
+          </div>
+        </div>
+
+        <div class="tg-contact-info-item">
+          <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div class="tg-contact-info-text">
+            <strong>Email</strong>
+            <a href="mailto:{{ section.settings.email | default: 'signal@2gether.cc' }}">{{ section.settings.email | default: 'signal@2gether.cc' }}</a>
+          </div>
+        </div>
+
+        <div class="tg-contact-info-item">
+          <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="tg-contact-info-text">
+            <strong>Hours</strong>
+            {{ section.settings.hours | default: 'Mon – Fri: 09:00 – 18:00<br>Sat: 10:00 – 15:00' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Support -->
+      <div class="tg-contact-support">
+        <div class="tg-contact-support-title">Technical Support</div>
+        <p class="tg-contact-support-desc">
+          {{ section.settings.support_text | default: 'For warranty claims, component issues, or mechanical questions — our dedicated engineering support team responds within 12 hours.' }}
+        </p>
+        {% if section.settings.support_email != blank %}
+          <a href="mailto:{{ section.settings.support_email }}" class="tg-contact-support-link">
+            {{ section.settings.support_email }} &rarr;
+          </a>
+        {% else %}
+          <a href="mailto:support@2gether.cc" class="tg-contact-support-link">
+            support@2gether.cc &rarr;
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ EDITORIAL QUOTE ═══ -->
+  <section class="tg-contact-quote">
+    <svg class="tg-contact-quote-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"/></svg>
+    <blockquote class="tg-contact-quote-text">
+      {% if section.settings.quote != blank %}
+        {{ section.settings.quote }}
+      {% else %}
+        &ldquo;The journey is the message, the machine is the <em>medium</em>.&rdquo;
+      {% endif %}
+    </blockquote>
+  </section>
+
+  <!-- ═══ IMAGE STRIP ═══ -->
+  <div class="tg-contact-images">
+    {% for block in section.blocks %}
+      {% if block.type == 'gallery_image' %}
+        <div class="tg-contact-image-cell" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy' }}
+          {% else %}
+            <div style="width:100%;height:100%;background:linear-gradient(160deg, var(--tg-ink-70), var(--tg-ink-90));"></div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% assign gallery_count = 0 %}
+    {% for block in section.blocks %}
+      {% if block.type == 'gallery_image' %}
+        {% assign gallery_count = gallery_count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+
+    {% if gallery_count == 0 %}
+      <div class="tg-contact-image-cell">
+        <div style="width:100%;height:100%;background:linear-gradient(160deg, var(--tg-ink-70), var(--tg-surface-raised));"></div>
+      </div>
+      <div class="tg-contact-image-cell">
+        <div style="width:100%;height:100%;background:linear-gradient(200deg, var(--tg-surface-raised), var(--tg-ink-80));"></div>
+      </div>
+      <div class="tg-contact-image-cell">
+        <div style="width:100%;height:100%;background:linear-gradient(140deg, var(--tg-ink-80), var(--tg-ink-70));"></div>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="tg-contact-footer">
+    <div class="tg-contact-footer-brand">2GETHER</div>
+    <div class="tg-contact-footer-links">
+      <a href="/policies/privacy-policy">Privacy Policy</a>
+      <a href="/policies/shipping-policy">Shipping</a>
+      <a href="/policies/refund-policy">Returns</a>
+      <a href="/pages/about">About</a>
+    </div>
+    <div class="tg-contact-footer-copy">&copy; {{ 'now' | date: '%Y' }} 2Gether Bikes. All rights reserved.</div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "2Gether Contact",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image"
+    },
+    {
+      "type": "text",
+      "id": "hero_line1",
+      "label": "Hero line 1",
+      "default": "CONTACT"
+    },
+    {
+      "type": "text",
+      "id": "hero_line2",
+      "label": "Hero line 2 (accent color)",
+      "default": "/ SIGNAL"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Contact Info"
+    },
+    {
+      "type": "html",
+      "id": "address",
+      "label": "Address (HTML allowed)"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone number",
+      "default": "+359 2 000 0000"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "General email",
+      "default": "signal@2gether.cc"
+    },
+    {
+      "type": "html",
+      "id": "hours",
+      "label": "Business hours (HTML allowed)"
+    },
+    {
+      "type": "header",
+      "content": "Technical Support"
+    },
+    {
+      "type": "textarea",
+      "id": "support_text",
+      "label": "Support description"
+    },
+    {
+      "type": "text",
+      "id": "support_email",
+      "label": "Support email",
+      "default": "support@2gether.cc"
+    },
+    {
+      "type": "header",
+      "content": "Editorial Quote"
+    },
+    {
+      "type": "html",
+      "id": "quote",
+      "label": "Quote text (use <em> for accent)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_image",
+      "name": "Gallery Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "templates": ["page"]
+}
+{% endschema %}

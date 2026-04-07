@@ -1,0 +1,585 @@
+/* === 2GETHER BIKES — CONTACT PAGE === */
+
+/* ── Page Shell ── */
+.tg-contact-page {
+  background: var(--tg-ink);
+  color: var(--tg-text-primary);
+  font-family: 'General Sans', sans-serif;
+  min-height: 100vh;
+}
+
+body.tg-contact-active #header-group,
+body.tg-contact-active footer {
+  display: none;
+}
+
+body.tg-contact-active .content-for-layout {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════
+   TOP NAVIGATION
+   ══════════════════════════════════════ */
+.tg-contact-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  padding: var(--tg-s5) var(--tg-s7);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(11, 18, 32, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--tg-divider);
+}
+
+.tg-contact-nav-brand {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--tg-text-primary);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.tg-contact-nav-links {
+  display: flex;
+  gap: var(--tg-s7);
+  list-style: none;
+}
+
+.tg-contact-nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tg-text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+  position: relative;
+}
+
+.tg-contact-nav-links a:hover { color: var(--tg-text-primary); }
+
+.tg-contact-nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--tg-flame);
+  transition: width var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-contact-nav-links a:hover::after { width: 100%; }
+
+.tg-contact-nav-icons {
+  display: flex;
+  gap: var(--tg-s5);
+  align-items: center;
+}
+
+.tg-contact-nav-icons a {
+  color: var(--tg-text-secondary);
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-contact-nav-icons a:hover { color: var(--tg-text-primary); }
+
+/* ══════════════════════════════════════
+   HERO — Cinematic header
+   ══════════════════════════════════════ */
+.tg-contact-hero {
+  position: relative;
+  min-height: 65vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  padding: var(--tg-s9) var(--tg-s7) var(--tg-s8);
+}
+
+.tg-contact-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.tg-contact-hero-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-contact-hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(11, 18, 32, 0.98) 0%, rgba(11, 18, 32, 0.65) 40%, rgba(11, 18, 32, 0.3) 70%, rgba(11, 18, 32, 0.5) 100%),
+    linear-gradient(160deg, rgba(11, 18, 32, 0.8) 0%, transparent 50%);
+}
+
+/* Grain */
+.tg-contact-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-contact-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+}
+
+.tg-contact-hero-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--tg-text-primary);
+}
+
+.tg-contact-hero-title span {
+  color: var(--tg-flame);
+}
+
+.tg-contact-hero-sub {
+  font-size: 15px;
+  color: var(--tg-text-secondary);
+  line-height: 1.65;
+  max-width: 480px;
+  margin-top: var(--tg-s5);
+}
+
+/* ══════════════════════════════════════
+   MAIN BODY — Form + Info two-column
+   ══════════════════════════════════════ */
+.tg-contact-body {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--tg-s8);
+  padding: var(--tg-s8) var(--tg-s7);
+  background: var(--tg-surface);
+}
+
+/* Grain */
+.tg-contact-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-contact-body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Form Section ── */
+.tg-contact-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s6);
+}
+
+.tg-contact-form-label {
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+}
+
+.tg-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s5);
+}
+
+.tg-contact-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--tg-s4);
+}
+
+.tg-contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s1);
+}
+
+.tg-contact-field label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+}
+
+.tg-contact-field input,
+.tg-contact-field textarea,
+.tg-contact-field select {
+  padding: var(--tg-s3) var(--tg-s4);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  color: var(--tg-text-primary);
+  font-family: 'General Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: border-color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-contact-field input::placeholder,
+.tg-contact-field textarea::placeholder {
+  color: var(--tg-text-muted);
+}
+
+.tg-contact-field input:focus,
+.tg-contact-field textarea:focus,
+.tg-contact-field select:focus {
+  outline: none;
+  border-color: var(--tg-flame);
+}
+
+.tg-contact-field textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.tg-contact-field select {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238A9BB5' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--tg-s4) center;
+  padding-right: var(--tg-s7);
+}
+
+.tg-contact-field select option {
+  background: var(--tg-ink);
+  color: var(--tg-text-primary);
+}
+
+/* Submit button */
+.tg-contact-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tg-s2);
+  padding: var(--tg-s4) var(--tg-s7);
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  transition: all var(--tg-dur-med) var(--tg-ease-out);
+  width: fit-content;
+  margin-top: var(--tg-s2);
+}
+
+.tg-contact-submit:hover {
+  background: var(--tg-flame-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232, 96, 28, 0.35);
+}
+
+/* ── Info Section (right) ── */
+.tg-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s7);
+}
+
+.tg-contact-info-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s3);
+}
+
+.tg-contact-info-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  padding-bottom: var(--tg-s2);
+}
+
+.tg-contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--tg-s3);
+  padding: var(--tg-s2) 0;
+}
+
+.tg-contact-info-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--tg-flame);
+  flex-shrink: 0;
+  margin-top: 1px;
+  opacity: 0.8;
+}
+
+.tg-contact-info-text {
+  font-size: 14px;
+  color: var(--tg-text-secondary);
+  line-height: 1.5;
+}
+
+.tg-contact-info-text strong {
+  color: var(--tg-text-primary);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tg-contact-info-text a {
+  color: var(--tg-flame);
+  text-decoration: none;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-contact-info-text a:hover {
+  color: var(--tg-flame-light);
+}
+
+/* Support block */
+.tg-contact-support {
+  padding: var(--tg-s5);
+  background: var(--tg-ink);
+  border-left: 2px solid var(--tg-flame);
+}
+
+.tg-contact-support-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  margin-bottom: var(--tg-s3);
+}
+
+.tg-contact-support-desc {
+  font-size: 13px;
+  color: var(--tg-text-secondary);
+  line-height: 1.65;
+}
+
+.tg-contact-support-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s2);
+  margin-top: var(--tg-s3);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tg-flame);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-contact-support-link:hover {
+  color: var(--tg-flame-light);
+}
+
+/* ══════════════════════════════════════
+   EDITORIAL QUOTE BAND
+   ══════════════════════════════════════ */
+.tg-contact-quote {
+  position: relative;
+  padding: var(--tg-s9) var(--tg-s7);
+  background: var(--tg-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--tg-s5);
+  overflow: hidden;
+}
+
+/* Grain */
+.tg-contact-quote::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.tg-contact-quote > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tg-contact-quote-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--tg-flame);
+  opacity: 0.6;
+}
+
+.tg-contact-quote-text {
+  font-family: 'Boska', serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  color: var(--tg-text-primary);
+  line-height: 1.25;
+  max-width: 700px;
+}
+
+.tg-contact-quote-text em {
+  color: var(--tg-flame);
+  font-style: italic;
+}
+
+/* Image strip below quote */
+.tg-contact-images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  background: var(--tg-ink);
+}
+
+.tg-contact-image-cell {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  position: relative;
+  background: var(--tg-surface-raised);
+}
+
+.tg-contact-image-cell img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--tg-ease-out);
+}
+
+.tg-contact-image-cell:hover img {
+  transform: scale(1.04);
+}
+
+.tg-contact-image-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(11, 18, 32, 0.1) 0%, rgba(11, 18, 32, 0.4) 100%);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════ */
+.tg-contact-footer {
+  padding: var(--tg-s7) var(--tg-s7);
+  background: var(--tg-ink);
+  border-top: 1px solid var(--tg-divider);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--tg-s5);
+}
+
+.tg-contact-footer-brand {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--tg-text-primary);
+  letter-spacing: 0.06em;
+}
+
+.tg-contact-footer-links {
+  display: flex;
+  gap: var(--tg-s7);
+}
+
+.tg-contact-footer-links a {
+  font-size: 12px;
+  color: var(--tg-text-muted);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-contact-footer-links a:hover { color: var(--tg-text-primary); }
+
+.tg-contact-footer-copy {
+  font-size: 11px;
+  color: var(--tg-text-muted);
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .tg-contact-body {
+    grid-template-columns: 1fr;
+    gap: var(--tg-s7);
+  }
+}
+
+@media (max-width: 768px) {
+  .tg-contact-hero {
+    min-height: 55vh;
+    padding: var(--tg-s7) var(--tg-s5) var(--tg-s6);
+  }
+
+  .tg-contact-body {
+    padding: var(--tg-s6) var(--tg-s5);
+  }
+
+  .tg-contact-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tg-contact-images {
+    grid-template-columns: 1fr;
+  }
+
+  .tg-contact-nav-links {
+    display: none;
+  }
+
+  .tg-contact-quote {
+    padding: var(--tg-s7) var(--tg-s5);
+  }
+
+  .tg-contact-footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--tg-s4);
+  }
+}
