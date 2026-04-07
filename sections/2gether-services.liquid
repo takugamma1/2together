@@ -1,0 +1,88 @@
+<section class="tg-services tg-section" id="services">
+  <div class="tg-services-left">
+    <span class="tg-label">{{ section.settings.label_text }}</span>
+    <h2 class="tg-f-display tg-services-title tg-reveal">{{ section.settings.heading }}</h2>
+    <p class="tg-services-desc tg-reveal">{{ section.settings.description }}</p>
+  </div>
+  <div class="tg-service-grid tg-stagger">
+    {% for block in section.blocks %}
+      {% if block.type == 'service_card' %}
+        <a href="{{ block.settings.link }}" class="tg-service-card tg-reveal" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 800, height: 240 | image_tag: loading: 'lazy' }}
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          {% endif %}
+          <div class="tg-service-card-overlay">
+            <span class="tg-service-card-name">{{ block.settings.title }}</span>
+          </div>
+          <span class="tg-service-card-arrow">&rarr;</span>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "2Gether Services",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label",
+      "default": "Услуги"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Lorem ipsum<br><strong>dolor sit</strong></p>"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service_card",
+      "name": "Service Card",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Service title",
+          "default": "Lorem Ipsum Dolor"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Services",
+      "blocks": [
+        { "type": "service_card", "settings": { "title": "Lorem Ipsum Dolor" } },
+        { "type": "service_card", "settings": { "title": "Consectetur Adipiscing" } },
+        { "type": "service_card", "settings": { "title": "Sed Eiusmod Tempor" } },
+        { "type": "service_card", "settings": { "title": "Ut Labore Et Dolore" } },
+        { "type": "service_card", "settings": { "title": "Magna Aliqua Veniam" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

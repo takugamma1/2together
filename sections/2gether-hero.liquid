@@ -1,0 +1,163 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<section class="tg-hero tg-section" id="hero">
+  <div class="tg-hero-image">
+    {% if section.settings.hero_image != blank %}
+      {{ section.settings.hero_image | image_url: width: 1920 | image_tag: loading: 'eager', sizes: '100vw' }}
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+  <div class="tg-hero-overlay"></div>
+  <div class="tg-hero-diagonal"></div>
+  <div class="tg-hero-content">
+    <div class="tg-hero-top-info">
+      <span class="tg-label">{{ section.settings.top_label }}</span>
+      <p class="tg-hero-top-sub">{{ section.settings.subtitle }}</p>
+      <div class="tg-hero-top-cta">
+        {% if section.settings.cta_text != blank %}
+          <a href="{{ section.settings.cta_link }}" class="tg-btn-primary">{{ section.settings.cta_text }} &rarr;</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="tg-hero-bottom-title">
+      <h1 class="tg-hero-title-main">{{ section.settings.title_line1 }} <span>{{ section.settings.title_line2 }}</span></h1>
+    </div>
+  </div>
+
+  <div class="tg-hero-bento">
+    {% for block in section.blocks %}
+      {% if block.type == 'bento_cell' %}
+        <a class="tg-bento-cell" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            {% case block.settings.icon %}
+              {% when 'clock' %}
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+              {% when 'layers' %}
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+              {% when 'star' %}
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              {% when 'tool' %}
+                <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+              {% when 'users' %}
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+            {% endcase %}
+          </svg>
+          <span class="tg-bento-num">{{ block.settings.number }}</span>
+          <span class="tg-bento-title">{{ block.settings.title }}</span>
+          {% if block.settings.description != blank %}
+            <span class="tg-bento-desc">{{ block.settings.description }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "2Gether Hero",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image"
+    },
+    {
+      "type": "text",
+      "id": "top_label",
+      "label": "Top label",
+      "default": "2GETHER BIKES / VARNA"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle text",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA button text",
+      "default": "Lorem ipsum"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA button link"
+    },
+    {
+      "type": "text",
+      "id": "title_line1",
+      "label": "Title line 1",
+      "default": "LOREM"
+    },
+    {
+      "type": "text",
+      "id": "title_line2",
+      "label": "Title line 2 (accent color)",
+      "default": "IPSUM"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bento_cell",
+      "name": "Bento Cell",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description (optional)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "clock", "label": "Clock" },
+            { "value": "layers", "label": "Layers" },
+            { "value": "star", "label": "Star" },
+            { "value": "tool", "label": "Tool" },
+            { "value": "users", "label": "Users" }
+          ],
+          "default": "clock"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Hero",
+      "blocks": [
+        { "type": "bento_cell", "settings": { "number": "01", "title": "Шосейни\nвелосипеди", "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", "icon": "clock" } },
+        { "type": "bento_cell", "settings": { "number": "02", "title": "MTB", "icon": "layers" } },
+        { "type": "bento_cell", "settings": { "number": "03", "title": "Gravel", "icon": "star" } },
+        { "type": "bento_cell", "settings": { "number": "04", "title": "Сервиз", "icon": "tool" } },
+        { "type": "bento_cell", "settings": { "number": "05", "title": "Sunday Club", "icon": "users" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

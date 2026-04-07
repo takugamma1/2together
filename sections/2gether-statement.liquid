@@ -1,0 +1,103 @@
+<section class="tg-statement tg-section" id="statement">
+  <div class="tg-reveal">
+    <h2 class="tg-statement-quote">{{ section.settings.quote }}</h2>
+  </div>
+  <div class="tg-statement-divider"></div>
+  <div class="tg-statement-right tg-reveal">
+    <span class="tg-label">{{ section.settings.pillars_label }}</span>
+    <div class="tg-statement-pillars tg-stagger">
+      {% for block in section.blocks %}
+        {% if block.type == 'pillar' %}
+          <div class="tg-pillar tg-reveal" {{ block.shopify_attributes }}>
+            <span class="tg-pillar-num">{{ block.settings.number }}</span>
+            <svg class="tg-pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              {% case block.settings.icon %}
+                {% when 'clock' %}
+                  <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+                {% when 'layers' %}
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                {% when 'users' %}
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+                {% when 'star' %}
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              {% endcase %}
+            </svg>
+            <span class="tg-pillar-word">{{ block.settings.word }}</span>
+            <span class="tg-pillar-note">{{ block.settings.note }}</span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "2Gether Statement",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "quote",
+      "label": "Brand quote",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur <em>adipiscing elit</em>, sed do eiusmod tempor incididunt.</p>"
+    },
+    {
+      "type": "text",
+      "id": "pillars_label",
+      "label": "Pillars label",
+      "default": "Какво ни движи"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "clock", "label": "Clock" },
+            { "value": "layers", "label": "Layers" },
+            { "value": "users", "label": "Users" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "clock"
+        },
+        {
+          "type": "text",
+          "id": "word",
+          "label": "Pillar word",
+          "default": "Lorem ipsum"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Pillar note",
+          "default": "Dolor sit amet consectetur"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Statement",
+      "blocks": [
+        { "type": "pillar", "settings": { "number": "01", "icon": "clock", "word": "Lorem ipsum", "note": "Dolor sit amet consectetur" } },
+        { "type": "pillar", "settings": { "number": "02", "icon": "layers", "word": "Dolor amet", "note": "Adipiscing elit sed eiusmod" } },
+        { "type": "pillar", "settings": { "number": "03", "icon": "users", "word": "Consectetur", "note": "Tempor incididunt labore" } },
+        { "type": "pillar", "settings": { "number": "04", "icon": "star", "word": "Adipiscing", "note": "Ut enim ad minim veniam" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

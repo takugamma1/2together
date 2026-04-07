@@ -1,0 +1,127 @@
+<section class="tg-products tg-section" id="products">
+  <div class="tg-products-header">
+    <div>
+      <span class="tg-label">{{ section.settings.label_text }}</span>
+      <h2 class="tg-f-display tg-products-title">{{ section.settings.heading }}</h2>
+    </div>
+    {% if section.settings.view_all_link != blank %}
+      <a href="{{ section.settings.view_all_link }}" class="tg-products-link">{{ section.settings.view_all_text }} &rarr;</a>
+    {% endif %}
+  </div>
+
+  <div class="tg-products-grid">
+    {%- assign products_list = section.settings.collection.products -%}
+
+    {%- if products_list.size > 0 -%}
+      {%- assign hero_product = products_list[0] -%}
+      <a href="{{ hero_product.url }}" class="tg-product-card tg-product-card--hero">
+        {% if hero_product.featured_image != blank %}
+          {{ hero_product.featured_image | image_url: width: 1920 | image_tag: class: 'tg-product-img', loading: 'lazy', sizes: '100vw' }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
+        {% endif %}
+        {% if hero_product.available == false %}
+          <span class="tg-product-badge">{{ 'products.product.sold_out' | t }}</span>
+        {% elsif hero_product.compare_at_price > hero_product.price %}
+          <span class="tg-product-badge">{{ 'products.product.on_sale' | t | default: 'Sale' }}</span>
+        {% elsif hero_product.tags contains 'new' %}
+          <span class="tg-product-badge">Ново</span>
+        {% endif %}
+        <div class="tg-product-info">
+          <span class="tg-product-tag">{{ hero_product.type }}</span>
+          <span class="tg-product-name">{{ hero_product.title }}</span>
+          <span class="tg-product-price">{{ hero_product.price | money }}</span>
+          <span class="tg-product-more">Повече</span>
+        </div>
+      </a>
+
+      {% if products_list.size > 1 %}
+        <div class="tg-products-row">
+          {%- for product in products_list offset: 1 limit: 3 -%}
+            <a href="{{ product.url }}" class="tg-product-card tg-product-card--small">
+              {% if product.featured_image != blank %}
+                {{ product.featured_image | image_url: width: 700 | image_tag: class: 'tg-product-img', loading: 'lazy', sizes: '33vw' }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
+              {% endif %}
+              <div class="tg-product-info">
+                <span class="tg-product-tag">{{ product.type }}</span>
+                <span class="tg-product-name">{{ product.title }}</span>
+                <span class="tg-product-price">{{ product.price | money }}</span>
+                <span class="tg-product-more">Повече</span>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+      {% endif %}
+
+    {%- else -%}
+      {%- comment -%}Placeholder cards when no collection is selected{%- endcomment -%}
+      <div class="tg-product-card tg-product-card--hero">
+        {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
+        <span class="tg-product-badge">Ново</span>
+        <div class="tg-product-info">
+          <span class="tg-product-tag">Lorem ipsum / dolor sit</span>
+          <span class="tg-product-name">Lorem Ipsum Dolor<br>Sit Amet</span>
+          <span class="tg-product-price">2 490 лв.</span>
+          <span class="tg-product-more">Повече</span>
+        </div>
+      </div>
+      <div class="tg-products-row">
+        {% for i in (1..3) %}
+          <div class="tg-product-card tg-product-card--small">
+            {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
+            <div class="tg-product-info">
+              <span class="tg-product-tag">Lorem / dolor</span>
+              <span class="tg-product-name">Dolor Sit Amet</span>
+              <span class="tg-product-price">3 190 лв.</span>
+              <span class="tg-product-more">Повече</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "2Gether Products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label text",
+      "default": "Колекция"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Lorem Ipsum"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View all text",
+      "default": "Lorem ipsum"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Products"
+    }
+  ]
+}
+{% endschema %}

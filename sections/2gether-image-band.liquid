@@ -1,0 +1,55 @@
+<div class="tg-image-band">
+  <div class="tg-image-band-track">
+    {% for block in section.blocks %}
+      <div class="tg-image-band-cell" {{ block.shopify_attributes }}>
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '40vw' }}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        {% endif %}
+      </div>
+    {% endfor %}
+    {%- comment -%}Duplicate for seamless loop{%- endcomment -%}
+    {% for block in section.blocks %}
+      <div class="tg-image-band-cell">
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '40vw' }}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "2Gether Image Band",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Image Band",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

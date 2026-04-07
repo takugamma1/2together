@@ -1,0 +1,218 @@
+<section class="tg-community tg-section" id="community">
+  <div class="tg-community-image">
+    {% if section.settings.background_image != blank %}
+      {{ section.settings.background_image | image_url: width: 1920 | image_tag: loading: 'lazy', sizes: '100vw' }}
+    {% else %}
+      {{ 'lifestyle-2' | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+  <div class="tg-community-overlay"></div>
+  <div class="tg-community-diagonal"></div>
+  <div class="tg-community-content">
+    <div class="tg-community-top">
+      <div class="tg-community-top-left"></div>
+      <div class="tg-community-top-right">
+        <span class="tg-label">{{ section.settings.label_text }}</span>
+        <h2 class="tg-f-display tg-community-title">{{ section.settings.title }}</h2>
+        <p class="tg-community-text">{{ section.settings.description }}</p>
+        {% if section.settings.cta_text != blank %}
+          <a href="{{ section.settings.cta_link }}" class="tg-btn-primary" style="align-self:flex-start;">{{ section.settings.cta_text }} &rarr;</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="tg-community-pool">
+      <div class="tg-community-pool-left"></div>
+      <div class="tg-community-pool-right">
+        <div class="tg-pool-header">
+          <span class="tg-label">{{ section.settings.poll_label }}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--tg-s3);">
+          <div class="tg-pool-avatars">
+            {% for block in section.blocks %}
+              {% if block.type == 'avatar' %}
+                <div class="tg-pool-avatar" {{ block.shopify_attributes }}>{{ block.settings.initials }}</div>
+              {% endif %}
+            {% endfor %}
+            {% if section.settings.extra_voters != blank %}
+              <div class="tg-pool-avatar tg-pool-avatar--more">{{ section.settings.extra_voters }}</div>
+            {% endif %}
+          </div>
+          <span class="tg-pool-count">{{ section.settings.voter_count }}</span>
+        </div>
+        <div class="tg-pool-options">
+          {% for block in section.blocks %}
+            {% if block.type == 'poll_option' %}
+              <div class="tg-pool-option{% if block.settings.leading %} leading{% endif %}" {{ block.shopify_attributes }}>
+                <div class="tg-pool-bar" style="width:{{ block.settings.percentage }}%;"></div>
+                <div class="tg-pool-check"><div class="tg-pool-check-dot"></div></div>
+                <span class="tg-pool-destination">{{ block.settings.destination }}</span>
+                <span class="tg-pool-votes">{{ block.settings.percentage }}%</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if section.settings.youtube_url != blank %}
+    <a href="{{ section.settings.youtube_url }}" target="_blank" rel="noopener" class="tg-yt-widget">
+      <svg class="tg-yt-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8Z" fill="currentColor"/>
+        <path d="m9.6 15.6 6.3-3.6-6.3-3.6v7.2Z" fill="var(--tg-ink)"/>
+      </svg>
+      <div class="tg-yt-info">
+        <span class="tg-yt-subscribe">Subscribe</span>
+        <div class="tg-yt-stats">
+          <span class="tg-yt-stat"><strong>{{ section.settings.yt_subscribers }}</strong> subscribers</span>
+          <span class="tg-yt-stat"><strong>{{ section.settings.yt_views }}</strong> views</span>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "2Gether Community",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label",
+      "default": "Sunday Club"
+    },
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<p>RIDE <strong>TOGETHER</strong><br>EVERY SUNDAY</p>"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA text",
+      "default": "Lorem ipsum"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link"
+    },
+    {
+      "type": "header",
+      "content": "Poll"
+    },
+    {
+      "type": "text",
+      "id": "poll_label",
+      "label": "Poll label",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "type": "text",
+      "id": "extra_voters",
+      "label": "Extra voters badge",
+      "default": "+47"
+    },
+    {
+      "type": "text",
+      "id": "voter_count",
+      "label": "Voter count text",
+      "default": "52 lorem ipsum"
+    },
+    {
+      "type": "header",
+      "content": "YouTube Widget"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube channel URL"
+    },
+    {
+      "type": "text",
+      "id": "yt_subscribers",
+      "label": "Subscriber count",
+      "default": "2.4K"
+    },
+    {
+      "type": "text",
+      "id": "yt_views",
+      "label": "View count",
+      "default": "128K"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "avatar",
+      "name": "Voter Avatar",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "initials",
+          "label": "Initials",
+          "default": "АБ"
+        }
+      ]
+    },
+    {
+      "type": "poll_option",
+      "name": "Poll Option",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "destination",
+          "label": "Destination name",
+          "default": "Lorem Ipsum Dolor"
+        },
+        {
+          "type": "range",
+          "id": "percentage",
+          "label": "Percentage",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        },
+        {
+          "type": "checkbox",
+          "id": "leading",
+          "label": "Leading option",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Community",
+      "blocks": [
+        { "type": "avatar", "settings": { "initials": "КВ" } },
+        { "type": "avatar", "settings": { "initials": "МД" } },
+        { "type": "avatar", "settings": { "initials": "ИП" } },
+        { "type": "avatar", "settings": { "initials": "АС" } },
+        { "type": "avatar", "settings": { "initials": "ТН" } },
+        { "type": "poll_option", "settings": { "destination": "Lorem Ipsum Dolor", "percentage": 72, "leading": true } },
+        { "type": "poll_option", "settings": { "destination": "Consectetur Adipiscing", "percentage": 18, "leading": false } },
+        { "type": "poll_option", "settings": { "destination": "Sed Eiusmod Tempor", "percentage": 10, "leading": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

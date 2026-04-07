@@ -1,0 +1,193 @@
+{
+  "sections": {
+    "tg_hero": {
+      "type": "2gether-hero",
+      "blocks": {
+        "bento_1": {
+          "type": "bento_cell",
+          "settings": {
+            "number": "01",
+            "title": "Шосейни\nвелосипеди",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "icon": "clock"
+          }
+        },
+        "bento_2": {
+          "type": "bento_cell",
+          "settings": {
+            "number": "02",
+            "title": "MTB",
+            "icon": "layers"
+          }
+        },
+        "bento_3": {
+          "type": "bento_cell",
+          "settings": {
+            "number": "03",
+            "title": "Gravel",
+            "icon": "star"
+          }
+        },
+        "bento_4": {
+          "type": "bento_cell",
+          "settings": {
+            "number": "04",
+            "title": "Сервиз",
+            "icon": "tool"
+          }
+        },
+        "bento_5": {
+          "type": "bento_cell",
+          "settings": {
+            "number": "05",
+            "title": "Sunday Club",
+            "icon": "users"
+          }
+        }
+      },
+      "block_order": ["bento_1", "bento_2", "bento_3", "bento_4", "bento_5"],
+      "settings": {
+        "top_label": "2GETHER BIKES / VARNA",
+        "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.",
+        "cta_text": "Lorem ipsum",
+        "title_line1": "LOREM",
+        "title_line2": "IPSUM"
+      }
+    },
+    "tg_statement": {
+      "type": "2gether-statement",
+      "blocks": {
+        "pillar_1": {
+          "type": "pillar",
+          "settings": {
+            "number": "01",
+            "icon": "clock",
+            "word": "Lorem ipsum",
+            "note": "Dolor sit amet consectetur"
+          }
+        },
+        "pillar_2": {
+          "type": "pillar",
+          "settings": {
+            "number": "02",
+            "icon": "layers",
+            "word": "Dolor amet",
+            "note": "Adipiscing elit sed eiusmod"
+          }
+        },
+        "pillar_3": {
+          "type": "pillar",
+          "settings": {
+            "number": "03",
+            "icon": "users",
+            "word": "Consectetur",
+            "note": "Tempor incididunt labore"
+          }
+        },
+        "pillar_4": {
+          "type": "pillar",
+          "settings": {
+            "number": "04",
+            "icon": "star",
+            "word": "Adipiscing",
+            "note": "Ut enim ad minim veniam"
+          }
+        }
+      },
+      "block_order": ["pillar_1", "pillar_2", "pillar_3", "pillar_4"],
+      "settings": {
+        "quote": "<p>Lorem ipsum dolor sit amet, consectetur <em>adipiscing elit<\/em>, sed do eiusmod tempor incididunt.<\/p>",
+        "pillars_label": "Какво ни движи"
+      }
+    },
+    "tg_image_band": {
+      "type": "2gether-image-band",
+      "blocks": {
+        "img_1": { "type": "image" },
+        "img_2": { "type": "image" },
+        "img_3": { "type": "image" }
+      },
+      "block_order": ["img_1", "img_2", "img_3"],
+      "settings": {}
+    },
+    "tg_products": {
+      "type": "2gether-products",
+      "settings": {
+        "label_text": "Колекция",
+        "heading": "Lorem Ipsum",
+        "view_all_text": "Lorem ipsum"
+      }
+    },
+    "tg_community": {
+      "type": "2gether-community",
+      "blocks": {
+        "avatar_1": { "type": "avatar", "settings": { "initials": "КВ" } },
+        "avatar_2": { "type": "avatar", "settings": { "initials": "МД" } },
+        "avatar_3": { "type": "avatar", "settings": { "initials": "ИП" } },
+        "avatar_4": { "type": "avatar", "settings": { "initials": "АС" } },
+        "avatar_5": { "type": "avatar", "settings": { "initials": "ТН" } },
+        "poll_1": { "type": "poll_option", "settings": { "destination": "Lorem Ipsum Dolor", "percentage": 72, "leading": true } },
+        "poll_2": { "type": "poll_option", "settings": { "destination": "Consectetur Adipiscing", "percentage": 18, "leading": false } },
+        "poll_3": { "type": "poll_option", "settings": { "destination": "Sed Eiusmod Tempor", "percentage": 10, "leading": false } }
+      },
+      "block_order": ["avatar_1", "avatar_2", "avatar_3", "avatar_4", "avatar_5", "poll_1", "poll_2", "poll_3"],
+      "settings": {
+        "label_text": "Sunday Club",
+        "title": "<p>RIDE <strong>TOGETHER<\/strong><br>EVERY SUNDAY<\/p>",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "cta_text": "Lorem ipsum",
+        "poll_label": "Lorem ipsum dolor",
+        "extra_voters": "+47",
+        "voter_count": "52 lorem ipsum",
+        "yt_subscribers": "2.4K",
+        "yt_views": "128K"
+      }
+    },
+    "tg_services": {
+      "type": "2gether-services",
+      "blocks": {
+        "svc_1": { "type": "service_card", "settings": { "title": "Lorem Ipsum Dolor" } },
+        "svc_2": { "type": "service_card", "settings": { "title": "Consectetur Adipiscing" } },
+        "svc_3": { "type": "service_card", "settings": { "title": "Sed Eiusmod Tempor" } },
+        "svc_4": { "type": "service_card", "settings": { "title": "Ut Labore Et Dolore" } },
+        "svc_5": { "type": "service_card", "settings": { "title": "Magna Aliqua Veniam" } }
+      },
+      "block_order": ["svc_1", "svc_2", "svc_3", "svc_4", "svc_5"],
+      "settings": {
+        "label_text": "Услуги",
+        "heading": "<p>Lorem ipsum<br><strong>dolor sit<\/strong><\/p>",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore."
+      }
+    },
+    "tg_footer": {
+      "type": "2gether-footer",
+      "blocks": {
+        "col_1": { "type": "link_column", "settings": { "heading": "Магазин" } },
+        "col_2": { "type": "link_column", "settings": { "heading": "Компания" } },
+        "locale_bg": { "type": "locale_link", "settings": { "label": "BG" } },
+        "locale_en": { "type": "locale_link", "settings": { "label": "EN" } }
+      },
+      "block_order": ["col_1", "col_2", "locale_bg", "locale_en"],
+      "settings": {
+        "newsletter_title": "Lorem ipsum dolor sit amet",
+        "newsletter_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.",
+        "newsletter_placeholder": "your@email.com",
+        "newsletter_button": "Subscribe",
+        "map_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2907.5!2d27.9147!3d43.2141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDEyJzUwLjgiTiAyN8KwNTQnNTMuMCJF!5e0!3m2!1sbg!2sbg!4v1",
+        "store_name": "2GETHER BIKES",
+        "address": "Варна, България\n+359 XX XXX XXXX",
+        "jumbo_text": "2GETHER BIKES",
+        "jumbo_subtitle": "Варна, България"
+      }
+    }
+  },
+  "order": [
+    "tg_hero",
+    "tg_statement",
+    "tg_image_band",
+    "tg_products",
+    "tg_community",
+    "tg_services",
+    "tg_footer"
+  ]
+}

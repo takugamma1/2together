@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2GETHER BIKES / Home</title>
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+<style>
+
+/* ═══ DESIGN TOKENS ═══ */
+
+:root {
+
+  --ink: #0B1220;
+  --ink-90: #111B2E;
+  --ink-80: #16243A;
+  --ink-70: #1E3050;
+  --ink-60: #2A4068;
+  --ink-muted: #3D5A80;
+  --surface: #0D1526;
+  --surface-raised: #121E34;
+  --surface-elevated: #182640;
+  --flame: #E8601C;
+  --flame-light: #F47B3E;
+  --flame-glow: rgba(232, 96, 28, 0.15);
+  --flame-soft: #FFA468;
+  --text-primary: #E8ECF2;
+  --text-secondary: #8A9BB5;
+  --text-muted: #566A85;
+  --divider: rgba(138, 155, 181, 0.12);
+
+  /* Spacing: 4pt base */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+  --s9: 96px; --s10: 128px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 150ms;
+  --dur-med: 250ms;
+  --dur-slow: 400ms;
+}
+/* ═══ RESET ═══ */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html {
+
+  background: var(--ink);
+  color: var(--text-primary);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-60) transparent;
+}
+body {
+
+  overflow-x: hidden;
+}
+img {
+
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* ═══ TYPOGRAPHY ═══ */
+
+.f-display {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+.f-editorial {
+
+  font-family: 'Boska', serif;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.2;
+}
+.label {
+
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--flame);
+}
+/* ═══ GLOBAL GRAIN TEXTURE ═══ */
+
+section::before {
+
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+section { position: relative; }
+section > * { position: relative; z-index: 1; }
+/* ════════════════════════════════════════════
+   FLOATING BUBBLE NAVIGATION
+   ════════════════════════════════════════════ */
+
+.bubble-nav {
+
+  position: fixed;
+  right: var(--s6);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  z-index: 500;
+}
+.bubble {
+
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--ink-80);
+  border: 1.5px solid var(--ink-60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--dur-med) var(--ease-out);
+  position: relative;
+}
+.bubble:hover {
+
+  background: var(--flame-glow);
+  border-color: var(--flame);
+  transform: scale(1.15);
+}
+.bubble.active {
+
+  background: var(--flame);
+  border-color: var(--flame-light);
+  box-shadow: 0 0 20px rgba(232, 96, 28, 0.35);
+}
+.bubble.active .bubble-icon {
+
+  color: var(--ink);
+}
+.bubble-icon {
+
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-out);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+}
+.bubble:hover .bubble-icon {
+
+  color: var(--flame);
+}
+.bubble-label {
+
+  position: absolute;
+  right: calc(100% + var(--s3));
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--ink-80);
+  padding: var(--s2) var(--s3);
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all var(--dur-med) var(--ease-out);
+  pointer-events: none;
+}
+.bubble:hover .bubble-label {
+
+  opacity: 1;
+  transform: translateX(0);
+}
+/* ════════════════════════════════════════════
+   TOP NAV BAR
+   ════════════════════════════════════════════ */
+
+.top-nav {
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  padding: var(--s5) var(--s7);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background var(--dur-slow) var(--ease-out);
+}
+.top-nav.scrolled {
+
+  background: rgba(11, 18, 32, 0.92);
+  backdrop-filter: blur(12px);
+}
+.nav-brand {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-primary);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+.nav-links {
+
+  display: flex;
+  gap: var(--s7);
+  list-style: none;
+}
+.nav-links a {
+
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color var(--dur-fast) var(--ease-out);
+  position: relative;
+}
+.nav-links a:hover {
+
+  color: var(--text-primary);
+}
+.nav-links a::after {
+
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--flame);
+  transition: width var(--dur-med) var(--ease-out);
+}
+.nav-links a:hover::after {
+
+  width: 100%;
+}
+.nav-cta {
+
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink) !important;
+  background: var(--flame);
+  padding: var(--s2) var(--s5);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all var(--dur-med) var(--ease-out);
+}
+.nav-cta:hover {
+
+  background: var(--flame-light);
+  transform: translateY(-1px);
+}
+.nav-cta::after { display: none !important; }
+/* ════════════════════════════════════════════
+   HERO SECTION \'97 reduced, creative layout
+   ════════════════════════════════════════════ */
+
+.hero {
+
+  height: 78vh;
+  position: relative;
+  overflow: hidden;
+}
+.hero-image {
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.hero-image img {
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-overlay {
+
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    160deg,
+    rgba(11, 18, 32, 0.92) 0%,
+    rgba(11, 18, 32, 0.6) 40%,
+    rgba(11, 18, 32, 0.15) 65%,
+    rgba(11, 18, 32, 0.05) 80%
+  );
+}
+/* Diagonal cut line */
+
+.hero-diagonal {
+
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  clip-path: polygon(0 0, 42% 0, 32% 100%, 0 100%);
+  background: var(--ink);
+  opacity: 0.35;
+}
+/* Title spans full width at bottom, overlapping the image */
+
+.hero-content {
+
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+}
+/* Top area: subtitle + CTA pinned top-left */
+
+.hero-top-info {
+
+  padding: var(--s10) var(--s9) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  max-width: 380px;
+  align-self: start;
+}
+.hero-top-info .label {
+
+  font-size: 10px;
+}
+.hero-top-sub {
+
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.hero-top-cta {
+
+  display: flex;
+  gap: var(--s5);
+  align-items: center;
+  margin-top: var(--s3);
+}
+/* Bottom area: huge title spanning full width */
+
+.hero-bottom-title {
+
+  padding: 0 var(--s7) var(--s6);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.hero-title-main {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(4rem, 8vw, 9rem);
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.hero-title-main span {
+
+  color: var(--flame);
+}
+/* Accent word rotated on the right edge */
+
+.hero-title-accent {
+
+  font-family: 'Boska', serif;
+  font-style: italic;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  color: var(--flame-soft);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.06em;
+  padding-bottom: var(--s2);
+}
+.btn-primary {
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s2) var(--s8) var(--s2) var(--s6);
+  background: var(--flame);
+  color: var(--ink);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  transition: all var(--dur-med) var(--ease-out);
+}
+.btn-primary:hover {
+
+  background: var(--flame-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232, 96, 28, 0.3);
+}
+.btn-ghost {
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s4) 0;
+  background: none;
+  color: var(--text-secondary);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.btn-ghost:hover {
+
+  color: var(--flame);
+}
+/* ════════════════════════════════════════════
+   INSTAGRAM BUBBLE CATEGORY NAVIGATION
+   ════════════════════════════════════════════ */
+
+.category-bubbles {
+  display: flex;
+  justify-content: center;
+  gap: var(--s7);
+  padding: var(--s7) var(--s5);
+  background: var(--surface);
+  border-top: 1px solid var(--divider);
+  border-bottom: 1px solid var(--divider);
+}
+.cat-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--dur-med) var(--ease-out);
+}
+.cat-bubble:hover {
+  transform: translateY(-4px);
+}
+.cat-bubble-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--flame), var(--flame-light), var(--flame-soft));
+  transition: box-shadow var(--dur-med) var(--ease-out);
+}
+.cat-bubble:hover .cat-bubble-ring {
+  box-shadow: 0 4px 20px rgba(232, 96, 28, 0.4);
+}
+.cat-bubble-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.cat-bubble-inner svg {
+  width: 28px;
+  height: 28px;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.cat-bubble:hover .cat-bubble-inner svg {
+  color: var(--flame);
+}
+.cat-bubble-name {
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.cat-bubble:hover .cat-bubble-name {
+  color: var(--text-primary);
+}
+/* ════════════════════════════════════════════
+   BRAND STATEMENT
+   ════════════════════════════════════════════ */
+
+.statement {
+
+  padding: var(--s10) var(--s9);
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  gap: var(--s8);
+  min-height: 70vh;
+  align-items: center;
+}
+.statement-divider {
+
+  background: var(--divider);
+  height: 60%;
+  align-self: center;
+}
+.statement-quote {
+
+  font-family: 'Boska', serif;
+  font-style: italic;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+.statement-quote em {
+
+  color: var(--flame);
+  font-style: italic;
+}
+.statement-right {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s6);
+}
+.statement-pillars {
+
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.pillar {
+
+  display: grid;
+  grid-template-columns: 32px 20px 1fr 160px;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--divider);
+}
+.pillar:last-child { border-bottom: none; }
+
+.pillar-num {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--flame);
+}
+.pillar-word {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-primary);
+}
+.pillar-note {
+
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: right;
+  line-height: 1.5;
+}
+/* ════════════════════════════════════════════
+   FEATURED PRODUCTS
+   ════════════════════════════════════════════ */
+
+.products {
+
+  padding: var(--s7) var(--s9) var(--s7);
+}
+.products-header {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--s5);
+}
+.products-title {
+
+  font-size: clamp(2rem, 3vw, 2.8rem);
+}
+.products-link {
+
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--flame);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color var(--dur-fast) var(--ease-out);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.products-link:hover {
+
+  color: var(--flame-light);
+}
+/* Vertical product grid — diagonal-cut cells, ink bleeds through */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: 1.3fr 1fr 1fr;
+  gap: 0;
+  width: min(680px, 50vw);
+  height: calc(100vh - 140px);
+  max-height: 780px;
+  margin: 0 auto;
+  background: var(--ink);
+}
+.product-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+/* Each card gets a diagonal clip — the ink background shows through the cuts */
+/* Left column cards: right edge cuts inward (brand diagonal) */
+.product-card:first-child {
+  grid-row: 1 / 3;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+}
+.product-card:nth-child(4) {
+  grid-column: 1;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, calc(100% - 14px) 100%, 0 100%);
+}
+/* Right column cards: no horizontal cut needed */
+.product-card:nth-child(2) {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.product-card:nth-child(3) {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.product-card:nth-child(5) {
+  grid-column: 2;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+/* Horizontal cuts between rows — done via margin-top offset */
+.product-card:nth-child(3) {
+  clip-path: polygon(0 4px, 100% 0, 100% 100%, 0 100%);
+}
+.product-card:nth-child(4) {
+  clip-path: polygon(0 0, calc(100% - 7px) 4px, calc(100% - 14px) 100%, 0 100%);
+}
+.product-card:nth-child(5) {
+  clip-path: polygon(0 4px, 100% 0, 100% 100%, 0 100%);
+}
+.product-card .product-img {
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.product-card:hover .product-img {
+
+  transform: scale(1.04);
+}
+.product-info {
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--s4) var(--s4);
+  background: linear-gradient(to top, rgba(11, 18, 32, 0.9) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.product-tag {
+
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--flame);
+}
+.product-name {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+.product-price {
+
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+/* Community styles moved to bottom of stylesheet */
+/* ════════════════════════════════════════════
+   SERVICES / WORKSHOP
+   ════════════════════════════════════════════ */
+
+.services {
+
+  padding: var(--s10) var(--s9);
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: var(--s8);
+  align-items: start;
+}
+.services-left {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  position: sticky;
+  top: var(--s10);
+}
+.services-title {
+
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  color: var(--text-primary);
+}
+.services-title span {
+
+  color: var(--flame);
+}
+.services-desc {
+
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 380px;
+  line-height: 1.7;
+}
+.services-cta {
+
+  margin-top: var(--s4);
+}
+/* Image grid — 1 col, 5 rows */
+
+.service-grid {
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s4);
+}
+.service-card {
+
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.service-card img {
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.service-card:hover img {
+
+  transform: scale(1.05);
+}
+.service-card-overlay {
+
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(11, 18, 32, 0.75) 0%,
+    rgba(11, 18, 32, 0.4) 50%,
+    rgba(11, 18, 32, 0.15) 100%
+  );
+  display: flex;
+  align-items: center;
+  padding: 0 var(--s6);
+  transition: background var(--dur-med) var(--ease-out);
+}
+.service-card:hover .service-card-overlay {
+
+  background: linear-gradient(
+    to right,
+    rgba(232, 96, 28, 0.85) 0%,
+    rgba(232, 96, 28, 0.3) 50%,
+    rgba(11, 18, 32, 0.1) 100%
+  );
+}
+.service-card-name {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: clamp(15px, 1.2vw, 18px);
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.service-card-arrow {
+
+  position: absolute;
+  right: var(--s6);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all var(--dur-med) var(--ease-out);
+}
+.service-card:hover .service-card-arrow {
+
+  opacity: 1;
+  color: var(--text-primary);
+  transform: translateY(-50%) translateX(4px);
+}
+/* ════════════════════════════════════════════
+   IMAGE BAND (full-width break)
+   ════════════════════════════════════════════ */
+
+.image-band {
+  overflow: hidden;
+  height: 40vh;
+}
+.image-band-track {
+  display: flex;
+  gap: 2px;
+  height: 100%;
+  animation: marquee-scroll 20s linear infinite;
+  will-change: transform;
+}
+.image-band-track:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.image-band-cell {
+  overflow: hidden;
+  position: relative;
+  min-width: 40vw;
+  flex-shrink: 0;
+  height: 100%;
+}
+.image-band-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.image-band-cell:hover img {
+  transform: scale(1.05);
+}
+/* ════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════ */
+/* ═══ FOOTER ═══ */
+
+.footer {
+
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--divider);
+}
+/* ── Row 1: Full-width newsletter strip with image ── */
+
+.footer-newsletter {
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--s7);
+  padding: var(--s7) var(--s9);
+  border-bottom: 1px solid var(--divider);
+  overflow: hidden;
+}
+.footer-newsletter-bg {
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.footer-newsletter-bg img {
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.footer-newsletter-bg::after {
+
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(180, 70, 10, 0.92) 0%,
+    rgba(140, 50, 5, 0.85) 40%,
+    rgba(11, 18, 32, 0.9) 100%
+  );
+}
+.footer-newsletter > *:not(.footer-newsletter-bg) {
+
+  position: relative;
+  z-index: 1;
+}
+.footer-newsletter-info {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+.footer-newsletter-title {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+.footer-newsletter-text {
+
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  max-width: 440px;
+}
+.footer-newsletter-form {
+
+  display: flex;
+  gap: 0;
+  min-width: 360px;
+}
+.footer-newsletter-input {
+
+  background: rgba(11, 18, 32, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.footer-newsletter-input {
+
+  flex: 1;
+  padding: var(--s3) var(--s4);
+  background: var(--ink-60);
+  border: 1px solid var(--divider);
+  border-right: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: 'General Sans', sans-serif;
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+.footer-newsletter-input::placeholder {
+
+  color: var(--text-muted);
+}
+.footer-newsletter-input:focus {
+
+  border-color: var(--flame);
+}
+.footer-newsletter-btn {
+
+  padding: var(--s3) var(--s7) var(--s3) var(--s5);
+  background: var(--flame);
+  border: 1px solid var(--flame);
+  color: var(--ink);
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  transition: all var(--dur-med) var(--ease-out);
+}
+.footer-newsletter-btn:hover {
+
+  background: var(--flame-light);
+}
+/* ── Row 2: Map + Links ── */
+
+.footer-middle {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s7);
+  padding: var(--s6) var(--s9);
+  border-bottom: 1px solid var(--divider);
+}
+.footer-map {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.footer-map-frame {
+
+  width: 100%;
+  height: 140px;
+  border: 1px solid var(--divider);
+  filter: grayscale(1) invert(0.92) contrast(1.1);
+}
+.footer-map-address {
+
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.footer-map-address strong {
+
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.footer-links-grid {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s7);
+  align-content: start;
+}
+.footer-heading {
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--s4);
+}
+.footer-links {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  list-style: none;
+}
+.footer-links a {
+
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.footer-links a:hover {
+
+  color: var(--flame);
+}
+/* ── Row 3: Expressive jumbo brand bottom ── */
+
+.footer-brand-strip {
+
+  position: relative;
+  overflow: hidden;
+  padding: var(--s8) var(--s9) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footer-jumbo {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 900;
+  font-size: clamp(5rem, 14vw, 12rem);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  line-height: 0.85;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(
+    to bottom,
+    rgba(232, 96, 28, 0.22) 0%,
+    rgba(232, 96, 28, 0.08) 60%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  user-select: none;
+  margin-bottom: -0.1em;
+}
+.footer-jumbo-sub {
+
+  font-family: 'Boska', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.2vw, 1.6rem);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin-top: var(--s3);
+  opacity: 0.5;
+}
+/* ── Bottom bar ── */
+
+.footer-bottom {
+
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s6) var(--s9) var(--s5);
+  margin-top: var(--s5);
+}
+.footer-copy {
+
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.footer-locale {
+
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  gap: var(--s5);
+}
+.footer-locale a {
+
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+/* ═══ CART WIDGET ═══ */
+
+.nav-cart {
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.nav-cart:hover { color: var(--text-primary); }
+
+.cart-badge {
+
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  width: 16px;
+  height: 16px;
+  background: var(--flame);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ═══ PILLAR ICONS ═══ */
+
+.pillar-icon {
+
+  width: 20px;
+  height: 20px;
+  color: var(--flame);
+  flex-shrink: 0;
+}
+/* ═══ COMMUNITY \'97 diagonal split, content inside slash ═══ */
+
+.community {
+
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.community-image {
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.community-image img {
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Subtle gradient only on the slash side */
+
+.community-overlay {
+
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    rgba(11, 18, 32, 0.05) 0%,
+    rgba(11, 18, 32, 0.15) 40%,
+    rgba(11, 18, 32, 0.85) 55%,
+    rgba(11, 18, 32, 0.95) 70%,
+    rgba(11, 18, 32, 0.98) 100%
+  );
+}
+/* Diagonal slash \'97 right side is the content area */
+
+.community-diagonal {
+
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  clip-path: polygon(48% 0, 100% 0, 100% 100%, 38% 100%);
+  background: var(--ink);
+  opacity: 0.6;
+}
+/* Content container \'97 right-aligned inside the slash */
+
+.community-content {
+
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  background: none;
+}
+/* Top section: title + text/CTA on right */
+
+.community-top {
+
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--s9) var(--s7) 0;
+}
+.community-top-left {
+
+  /* empty \'97 image shows through here */
+}
+.community-top-right {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  padding-left: var(--s7);
+}
+.community-title {
+
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  color: var(--text-primary);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+.community-title span {
+
+  color: var(--flame);
+}
+.community-text {
+
+  font-size: 14px;
+  color: var(--text-secondary);
+  max-width: 360px;
+  line-height: 1.65;
+}
+/* Pool voting \'97 inside slash area */
+
+.community-pool {
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0 var(--s7) var(--s7);
+}
+.community-pool-left {
+
+  /* empty \'97 image side */
+}
+.community-pool-right {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  padding-left: var(--s7);
+}
+.pool-header {
+
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+.pool-header .label { font-size: 10px; }
+
+.pool-avatars {
+
+  display: flex;
+}
+.pool-avatar {
+
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  margin-left: -7px;
+  overflow: hidden;
+  background: var(--ink-60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.pool-avatar:first-child { margin-left: 0; }
+
+.pool-avatar--more {
+
+  background: var(--flame);
+  color: var(--ink);
+  font-size: 8px;
+  font-weight: 700;
+}
+.pool-count {
+
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: var(--s3);
+}
+.pool-options {
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+.pool-option {
+
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--divider);
+  cursor: pointer;
+  transition: all var(--dur-med) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+.pool-option:hover {
+
+  border-color: var(--flame);
+  background: var(--flame-glow);
+}
+.pool-option.leading {
+
+  border-color: var(--flame);
+}
+.pool-bar {
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--flame-glow);
+  z-index: 0;
+  transition: width var(--dur-slow) var(--ease-out);
+}
+.pool-option > * { position: relative; z-index: 1; }
+
+.pool-destination {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-primary);
+  flex: 1;
+}
+.pool-votes {
+
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.pool-check {
+
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--divider);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--dur-fast) var(--ease-out);
+}
+.pool-option.leading .pool-check {
+
+  border-color: var(--flame);
+  background: var(--flame);
+}
+.pool-check-dot {
+
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0;
+}
+.pool-option.leading .pool-check-dot {
+
+  opacity: 1;
+}
+/* YouTube widget \'97 positioned on the image side (bottom-left) */
+
+.yt-widget {
+
+  position: absolute;
+  bottom: var(--s7);
+  left: var(--s7);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  background: var(--flame);
+  padding: var(--s3) var(--s7) var(--s3) var(--s5);
+  cursor: pointer;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  transition: all var(--dur-med) var(--ease-out);
+}
+.yt-widget:hover {
+
+  background: var(--flame-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(232, 96, 28, 0.3);
+}
+.yt-icon {
+
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.yt-info {
+
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.yt-subscribe {
+
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.yt-stats {
+
+  display: flex;
+  gap: var(--s4);
+}
+.yt-stat {
+
+  font-size: 10px;
+  color: rgba(11, 18, 32, 0.6);
+  font-weight: 500;
+}
+.yt-stat strong {
+
+  color: var(--ink);
+  font-weight: 700;
+}
+/* ═══ SCROLL ANIMATIONS ═══ */
+
+.reveal {
+
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible {
+
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Staggered children */
+
+.stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+.stagger > .reveal:nth-child(2) { transition-delay: 60ms; }
+.stagger > .reveal:nth-child(3) { transition-delay: 120ms; }
+.stagger > .reveal:nth-child(4) { transition-delay: 180ms; }
+.stagger > .reveal:nth-child(5) { transition-delay: 240ms; }
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .scroll-line { animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+</style>
+</head>
+<body>
+<!-- ═══ TOP NAVIGATION ═══ -->
+
+<nav class="top-nav" id="topNav">
+
+  <a class="nav-brand" href="#">2GETHER</a>
+  <ul class="nav-links">
+    <li><a href="#hero">Начало</a></li>
+    <li><a href="#products">Магазин</a></li>
+    <li><a href="#community">Sunday Club</a></li>
+    <li><a href="#services">Услуги</a></li>
+    <li>
+      <a href="#" class="nav-cart" aria-label="Количка">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-badge">2</span>
+      </a>
+    </li>
+  </ul>
+
+</nav>
+<!-- ═══ FLOATING BUBBLE NAV ═══ -->
+
+<div class="bubble-nav" id="bubbleNav">
+
+  <a class="bubble active" href="#hero">
+    <span class="bubble-icon">01</span>
+    <span class="bubble-label">Начало</span>
+  </a>
+  <a class="bubble" href="#statement">
+    <span class="bubble-icon">02</span>
+    <span class="bubble-label">За нас</span>
+  </a>
+  <a class="bubble" href="#products">
+    <span class="bubble-icon">03</span>
+    <span class="bubble-label">Магазин</span>
+  </a>
+  <a class="bubble" href="#community">
+    <span class="bubble-icon">04</span>
+    <span class="bubble-label">Общност</span>
+  </a>
+  <a class="bubble" href="#services">
+    <span class="bubble-icon">05</span>
+    <span class="bubble-label">Услуги</span>
+  </a>
+
+</div>
+<!-- ═══ HERO ═══ -->
+
+<section class="hero" id="hero">
+
+  <div class="hero-image">
+    <img src="https://images.unsplash.com/photo-1541625602330-2277a4c46182?auto=format&fit=crop&w=1920&q=85" alt="Група колоездачи на пътя">
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-diagonal"></div>
+  <div class="hero-content">
+    <!-- Top: subtitle + CTA -->
+    <div class="hero-top-info">
+      <span class="label">2GETHER BIKES / VARNA</span>
+      <p class="hero-top-sub">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.
+      </p>
+      <div class="hero-top-cta">
+        <a href="#products" class="btn-primary">Lorem ipsum →</a>
+      </div>
+    </div>
+    <!-- Bottom: huge title spanning full width -->
+    <div class="hero-bottom-title">
+      <h1 class="hero-title-main">LOREM <span>IPSUM</span></h1>
+      <span class="hero-title-accent">dolor sit amet</span>
+    </div>
+  </div>
+
+</section>
+<!-- ═══ CATEGORY BUBBLES ═══ -->
+
+<div class="category-bubbles">
+
+  <a class="cat-bubble" href="#products">
+    <div class="cat-bubble-ring"><div class="cat-bubble-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    </div></div>
+    <span class="cat-bubble-name">Шосе</span>
+  </a>
+  <a class="cat-bubble" href="#products">
+    <div class="cat-bubble-ring"><div class="cat-bubble-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div></div>
+    <span class="cat-bubble-name">MTB</span>
+  </a>
+  <a class="cat-bubble" href="#products">
+    <div class="cat-bubble-ring"><div class="cat-bubble-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div></div>
+    <span class="cat-bubble-name">Gravel</span>
+  </a>
+  <a class="cat-bubble" href="#services">
+    <div class="cat-bubble-ring"><div class="cat-bubble-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+    </div></div>
+    <span class="cat-bubble-name">Сервиз</span>
+  </a>
+  <a class="cat-bubble" href="#community">
+    <div class="cat-bubble-ring"><div class="cat-bubble-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    </div></div>
+    <span class="cat-bubble-name">Клуб</span>
+  </a>
+  <a class="cat-bubble" href="#">
+    <div class="cat-bubble-ring"><div class="cat-bubble-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    </div></div>
+    <span class="cat-bubble-name">Магазин</span>
+  </a>
+
+</div>
+<!-- ═══ BRAND STATEMENT ═══ -->
+
+<section class="statement" id="statement">
+
+  <div class="reveal">
+    <h2 class="statement-quote">
+      Lorem ipsum dolor sit amet, consectetur <em>adipiscing elit</em>, sed do eiusmod tempor incididunt.
+    </h2>
+  </div>
+  <div class="statement-divider"></div>
+  <div class="statement-right reveal">
+    <span class="label">Какво ни движи</span>
+    <div class="statement-pillars stagger">
+      <div class="pillar reveal">
+        <span class="pillar-num">01</span>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <span class="pillar-word">Lorem ipsum</span>
+        <span class="pillar-note">Dolor sit amet consectetur</span>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">02</span>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span class="pillar-word">Dolor amet</span>
+        <span class="pillar-note">Adipiscing elit sed eiusmod</span>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">03</span>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span class="pillar-word">Consectetur</span>
+        <span class="pillar-note">Tempor incididunt labore</span>
+      </div>
+      <div class="pillar reveal">
+        <span class="pillar-num">04</span>
+        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span class="pillar-word">Adipiscing</span>
+        <span class="pillar-note">Ut enim ad minim veniam</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- ═══ IMAGE BAND ═══ -->
+
+<div class="image-band">
+  <div class="image-band-track">
+    <div class="image-band-cell">
+      <img src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=800&q=80" alt="Колоездене">
+    </div>
+    <div class="image-band-cell">
+      <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=800&q=80" alt="Планинско колоездене">
+    </div>
+    <div class="image-band-cell">
+      <img src="https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?auto=format&fit=crop&w=800&q=80" alt="Велосипед в планината">
+    </div>
+    <!-- Duplicated for seamless loop -->
+    <div class="image-band-cell">
+      <img src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=800&q=80" alt="Колоездене">
+    </div>
+    <div class="image-band-cell">
+      <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=800&q=80" alt="Планинско колоездене">
+    </div>
+    <div class="image-band-cell">
+      <img src="https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?auto=format&fit=crop&w=800&q=80" alt="Велосипед в планината">
+    </div>
+  </div>
+</div>
+<!-- ═══ FEATURED PRODUCTS ═══ -->
+
+<section class="products" id="products">
+
+  <div class="products-header">
+    <div>
+      <span class="label">Колекция</span>
+      <h2 class="f-display products-title">Lorem Ipsum</h2>
+    </div>
+    <a href="#" class="products-link">Lorem ipsum →</a>
+  </div>
+
+  <div class="products-grid">
+    <!-- Featured large product -->
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=1000&q=80" alt="Велосипед">
+      <div class="product-info">
+        <span class="product-tag">Lorem ipsum</span>
+        <span class="product-name">Lorem Ipsum Dolor</span>
+        <span class="product-price">2 490 лв.</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=600&q=80" alt="MTB велосипед">
+      <div class="product-info">
+        <span class="product-tag">Lorem</span>
+        <span class="product-name">Dolor Sit Amet</span>
+        <span class="product-price">3 190 лв.</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?auto=format&fit=crop&w=600&q=80" alt="Велосипед планински">
+      <div class="product-info">
+        <span class="product-tag">Lorem</span>
+        <span class="product-name">Consectetur Elit</span>
+        <span class="product-price">1 890 лв.</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=600&q=80" alt="Колоездене">
+      <div class="product-info">
+        <span class="product-tag">Lorem</span>
+        <span class="product-name">Sed Eiusmod Tempor</span>
+        <span class="product-price">4 290 лв.</span>
+      </div>
+    </div>
+    <div class="product-card">
+      <img class="product-img" src="https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=600&q=80" alt="Велосипед">
+      <div class="product-info">
+        <span class="product-tag">Lorem</span>
+        <span class="product-name">Ut Labore Dolore</span>
+        <span class="product-price">2 790 лв.</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- ═══ COMMUNITY / SUNDAY CLUB ═══ -->
+
+<section class="community" id="community">
+
+  <div class="community-image">
+    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1920&q=85" alt="Група колоездачи">
+  </div>
+  <div class="community-overlay"></div>
+  <div class="community-diagonal"></div>
+  <div class="community-content">
+    <!-- Top row: empty left | title + text + CTA on right (inside slash) -->
+    <div class="community-top">
+      <div class="community-top-left"></div>
+      <div class="community-top-right">
+        <span class="label">Sunday Club</span>
+        <h2 class="f-display community-title">RIDE <span>TOGETHER</span><br>EVERY SUNDAY</h2>
+        <p class="community-text">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        </p>
+        <a href="#" class="btn-primary" style="align-self:flex-start;">Lorem ipsum →</a>
+      </div>
+    </div>
+
+    <!-- Bottom row: empty left | pool voting on right (inside slash) -->
+    <div class="community-pool">
+      <div class="community-pool-left"></div>
+      <div class="community-pool-right">
+        <div class="pool-header">
+          <span class="label">Lorem ipsum dolor</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--s3);">
+          <div class="pool-avatars">
+            <div class="pool-avatar">КВ</div>
+            <div class="pool-avatar">МД</div>
+            <div class="pool-avatar">ИП</div>
+            <div class="pool-avatar">АС</div>
+            <div class="pool-avatar">ТН</div>
+            <div class="pool-avatar pool-avatar--more">+47</div>
+          </div>
+          <span class="pool-count">52 lorem ipsum</span>
+        </div>
+        <div class="pool-options">
+          <div class="pool-option leading">
+            <div class="pool-bar" style="width:72%;"></div>
+            <div class="pool-check"><div class="pool-check-dot"></div></div>
+            <span class="pool-destination">Lorem Ipsum Dolor</span>
+            <span class="pool-votes">72%</span>
+          </div>
+          <div class="pool-option">
+            <div class="pool-bar" style="width:18%;"></div>
+            <div class="pool-check"><div class="pool-check-dot"></div></div>
+            <span class="pool-destination">Consectetur Adipiscing</span>
+            <span class="pool-votes">18%</span>
+          </div>
+          <div class="pool-option">
+            <div class="pool-bar" style="width:10%;"></div>
+            <div class="pool-check"><div class="pool-check-dot"></div></div>
+            <span class="pool-destination">Sed Eiusmod Tempor</span>
+            <span class="pool-votes">10%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YouTube subscribe widget \'97 on image side, bottom-left -->
+  <div class="yt-widget">
+    <svg class="yt-icon" viewBox="0 0 24 24" fill="none">
+      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8Z" fill="currentColor"/>
+      <path d="m9.6 15.6 6.3-3.6-6.3-3.6v7.2Z" fill="var(--ink)"/>
+    </svg>
+    <div class="yt-info">
+      <span class="yt-subscribe">Subscribe</span>
+      <div class="yt-stats">
+        <span class="yt-stat"><strong>2.4K</strong> subscribers</span>
+        <span class="yt-stat"><strong>128K</strong> views</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+<!-- ═══ SERVICES ═══ -->
+
+<section class="services" id="services">
+
+  <div class="services-left">
+    <span class="label">Услуги</span>
+    <h2 class="f-display services-title reveal">
+      Lorem ipsum<br><span>dolor sit</span>
+    </h2>
+    <p class="services-desc reveal">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.
+    </p>
+  </div>
+  <div class="service-grid stagger">
+    <div class="service-card reveal">
+      <img src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=800&h=240&q=80" alt="Service 1">
+      <div class="service-card-overlay">
+        <span class="service-card-name">Lorem Ipsum Dolor</span>
+      </div>
+      <span class="service-card-arrow">→</span>
+    </div>
+    <div class="service-card reveal">
+      <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?auto=format&fit=crop&w=800&h=240&q=80" alt="Service 2">
+      <div class="service-card-overlay">
+        <span class="service-card-name">Consectetur Adipiscing</span>
+      </div>
+      <span class="service-card-arrow">→</span>
+    </div>
+    <div class="service-card reveal">
+      <img src="https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?auto=format&fit=crop&w=800&h=240&q=80" alt="Service 3">
+      <div class="service-card-overlay">
+        <span class="service-card-name">Sed Eiusmod Tempor</span>
+      </div>
+      <span class="service-card-arrow">→</span>
+    </div>
+    <div class="service-card reveal">
+      <img src="https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&h=240&q=80" alt="Service 4">
+      <div class="service-card-overlay">
+        <span class="service-card-name">Ut Labore Et Dolore</span>
+      </div>
+      <span class="service-card-arrow">→</span>
+    </div>
+    <div class="service-card reveal">
+      <img src="https://images.unsplash.com/photo-1596495578065-6e0763fa1178?auto=format&fit=crop&w=800&h=240&q=80" alt="Service 5">
+      <div class="service-card-overlay">
+        <span class="service-card-name">Magna Aliqua Veniam</span>
+      </div>
+      <span class="service-card-arrow">→</span>
+    </div>
+  </div>
+
+</section>
+<!-- ═══ FOOTER ═══ -->
+
+<footer class="footer">
+
+  <!-- Row 1: Full-width newsletter -->
+  <div class="footer-newsletter">
+    <div class="footer-newsletter-bg">
+      <img src="https://images.unsplash.com/photo-1541625602330-2277a4c46182?auto=format&fit=crop&w=1920&q=80" alt="">
+    </div>
+    <div class="footer-newsletter-info">
+      <span class="footer-newsletter-title">Lorem ipsum dolor sit amet</span>
+      <p class="footer-newsletter-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.</p>
+    </div>
+    <form class="footer-newsletter-form" onsubmit="return false;">
+      <input type="email" class="footer-newsletter-input" placeholder="your@email.com">
+      <button class="footer-newsletter-btn">Subscribe</button>
+    </form>
+  </div>
+
+  <!-- Row 2: Map + Links side by side -->
+  <div class="footer-middle">
+    <div class="footer-map">
+      <iframe class="footer-map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2907.5!2d27.9147!3d43.2141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDEyJzUwLjgiTiAyN8KwNTQnNTMuMCJF!5e0!3m2!1sbg!2sbg!4v1" allowfullscreen="" loading="lazy"></iframe>
+      <div class="footer-map-address">
+        <strong>2GETHER BIKES</strong><br>
+        Варна, България<br>
+        +359 XX XXX XXXX
+      </div>
+    </div>
+    <div class="footer-links-grid">
+      <div>
+        <div class="footer-heading">Магазин</div>
+        <ul class="footer-links">
+          <li><a href="#">Lorem ipsum</a></li>
+          <li><a href="#">Dolor sit</a></li>
+          <li><a href="#">Amet consectetur</a></li>
+          <li><a href="#">Adipiscing elit</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Компания</div>
+        <ul class="footer-links">
+          <li><a href="#">Lorem ipsum</a></li>
+          <li><a href="#">Dolor sit amet</a></li>
+          <li><a href="#">Consectetur</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Expressive jumbo brand -->
+  <div class="footer-brand-strip">
+    <div class="footer-jumbo">2GETHER BIKES</div>
+    <div class="footer-jumbo-sub">Варна, България</div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="footer-bottom">
+    <span class="footer-copy">\'a9 2026 2GETHER BIKES</span>
+    <div class="footer-locale">
+      <a href="#">BG</a>
+      <a href="#">EN</a>
+    </div>
+  </div>
+
+</footer>
+<script>
+
+// ═══ Scroll-based nav highlight ═══
+
+const topNav = document.getElementById('topNav');
+const bubbles = document.querySelectorAll('.bubble');
+const sections = ['hero', 'statement', 'products', 'community', 'services'].map(id => document.getElementById(id));
+
+function updateNav() {
+
+  // Top nav background
+  if (window.scrollY > 80) {
+    topNav.classList.add('scrolled');
+  } else {
+    topNav.classList.remove('scrolled');
+  }
+
+  // Bubble active state
+  const scrollPos = window.scrollY + window.innerHeight / 3;
+  let activeIndex = 0;
+
+  sections.forEach((section, i) => {
+    if (section && section.offsetTop <= scrollPos) {
+      activeIndex = i;
+    }
+  });
+
+  bubbles.forEach((b, i) => {
+    b.classList.toggle('active', i === activeIndex);
+  });
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+
+updateNav();
+// ═══ Intersection Observer for reveals ═══
+
+const observer = new IntersectionObserver((entries) => {
+
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// ═══ Smooth scroll for bubble nav ═══
+
+bubbles.forEach(bubble => {
+
+  bubble.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(bubble.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>
+
