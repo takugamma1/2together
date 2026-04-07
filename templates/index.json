@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "tg_hero": {
@@ -9,6 +18,7 @@
             "number": "01",
             "title": "Шосейни\nвелосипеди",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "link": "",
             "icon": "clock"
           }
         },
@@ -17,6 +27,8 @@
           "settings": {
             "number": "02",
             "title": "MTB",
+            "description": "",
+            "link": "",
             "icon": "layers"
           }
         },
@@ -25,6 +37,8 @@
           "settings": {
             "number": "03",
             "title": "Gravel",
+            "description": "",
+            "link": "",
             "icon": "star"
           }
         },
@@ -33,6 +47,8 @@
           "settings": {
             "number": "04",
             "title": "Сервиз",
+            "description": "",
+            "link": "",
             "icon": "tool"
           }
         },
@@ -41,17 +57,26 @@
           "settings": {
             "number": "05",
             "title": "Sunday Club",
+            "description": "",
+            "link": "",
             "icon": "users"
           }
         }
       },
-      "block_order": ["bento_1", "bento_2", "bento_3", "bento_4", "bento_5"],
+      "block_order": [
+        "bento_1",
+        "bento_2",
+        "bento_3",
+        "bento_4",
+        "bento_5"
+      ],
       "settings": {
         "top_label": "2GETHER BIKES / VARNA",
         "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.",
         "cta_text": "Lorem ipsum",
-        "title_line1": "LOREM",
-        "title_line2": "IPSUM"
+        "cta_link": "",
+        "title_line1": "2GETHER",
+        "title_line2": "BIKES"
       }
     },
     "tg_statement": {
@@ -94,20 +119,38 @@
           }
         }
       },
-      "block_order": ["pillar_1", "pillar_2", "pillar_3", "pillar_4"],
+      "block_order": [
+        "pillar_1",
+        "pillar_2",
+        "pillar_3",
+        "pillar_4"
+      ],
       "settings": {
-        "quote": "<p>Lorem ipsum dolor sit amet, consectetur <em>adipiscing elit<\/em>, sed do eiusmod tempor incididunt.<\/p>",
+        "quote": "<p>Lorem ipsum dolor sit amet, consectetur <em>adipiscing elit</em>, sed do eiusmod tempor incididunt.</p>",
         "pillars_label": "Какво ни движи"
       }
     },
     "tg_image_band": {
       "type": "2gether-image-band",
       "blocks": {
-        "img_1": { "type": "image" },
-        "img_2": { "type": "image" },
-        "img_3": { "type": "image" }
+        "img_1": {
+          "type": "image",
+          "settings": {}
+        },
+        "img_2": {
+          "type": "image",
+          "settings": {}
+        },
+        "img_3": {
+          "type": "image",
+          "settings": {}
+        }
       },
-      "block_order": ["img_1", "img_2", "img_3"],
+      "block_order": [
+        "img_1",
+        "img_2",
+        "img_3"
+      ],
       "settings": {}
     },
     "tg_products": {
@@ -115,30 +158,89 @@
       "settings": {
         "label_text": "Колекция",
         "heading": "Lorem Ipsum",
-        "view_all_text": "Lorem ipsum"
+        "collection": "",
+        "view_all_text": "Lorem ipsum",
+        "view_all_link": ""
       }
     },
     "tg_community": {
       "type": "2gether-community",
       "blocks": {
-        "avatar_1": { "type": "avatar", "settings": { "initials": "КВ" } },
-        "avatar_2": { "type": "avatar", "settings": { "initials": "МД" } },
-        "avatar_3": { "type": "avatar", "settings": { "initials": "ИП" } },
-        "avatar_4": { "type": "avatar", "settings": { "initials": "АС" } },
-        "avatar_5": { "type": "avatar", "settings": { "initials": "ТН" } },
-        "poll_1": { "type": "poll_option", "settings": { "destination": "Lorem Ipsum Dolor", "percentage": 72, "leading": true } },
-        "poll_2": { "type": "poll_option", "settings": { "destination": "Consectetur Adipiscing", "percentage": 18, "leading": false } },
-        "poll_3": { "type": "poll_option", "settings": { "destination": "Sed Eiusmod Tempor", "percentage": 10, "leading": false } }
+        "avatar_1": {
+          "type": "avatar",
+          "settings": {
+            "initials": "КВ"
+          }
+        },
+        "avatar_2": {
+          "type": "avatar",
+          "settings": {
+            "initials": "МД"
+          }
+        },
+        "avatar_3": {
+          "type": "avatar",
+          "settings": {
+            "initials": "ИП"
+          }
+        },
+        "avatar_4": {
+          "type": "avatar",
+          "settings": {
+            "initials": "АС"
+          }
+        },
+        "avatar_5": {
+          "type": "avatar",
+          "settings": {
+            "initials": "ТН"
+          }
+        },
+        "poll_1": {
+          "type": "poll_option",
+          "settings": {
+            "destination": "Lorem Ipsum Dolor",
+            "percentage": 72,
+            "leading": true
+          }
+        },
+        "poll_2": {
+          "type": "poll_option",
+          "settings": {
+            "destination": "Consectetur Adipiscing",
+            "percentage": 18,
+            "leading": false
+          }
+        },
+        "poll_3": {
+          "type": "poll_option",
+          "settings": {
+            "destination": "Sed Eiusmod Tempor",
+            "percentage": 10,
+            "leading": false
+          }
+        }
       },
-      "block_order": ["avatar_1", "avatar_2", "avatar_3", "avatar_4", "avatar_5", "poll_1", "poll_2", "poll_3"],
+      "block_order": [
+        "avatar_1",
+        "avatar_2",
+        "avatar_3",
+        "avatar_4",
+        "avatar_5",
+        "poll_1",
+        "poll_2",
+        "poll_3"
+      ],
       "settings": {
         "label_text": "Sunday Club",
-        "title": "<p>RIDE <strong>TOGETHER<\/strong><br>EVERY SUNDAY<\/p>",
+        "title": "<p>RIDE <strong>TOGETHER</strong><br>EVERY SUNDAY</p>",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "cta_text": "Lorem ipsum",
+        "cta_link": "",
         "poll_label": "Lorem ipsum dolor",
         "extra_voters": "+47",
         "voter_count": "52 lorem ipsum",
+        "youtube_url": "",
         "yt_subscribers": "2.4K",
         "yt_views": "128K"
       }
@@ -146,28 +248,93 @@
     "tg_services": {
       "type": "2gether-services",
       "blocks": {
-        "svc_1": { "type": "service_card", "settings": { "title": "Lorem Ipsum Dolor" } },
-        "svc_2": { "type": "service_card", "settings": { "title": "Consectetur Adipiscing" } },
-        "svc_3": { "type": "service_card", "settings": { "title": "Sed Eiusmod Tempor" } },
-        "svc_4": { "type": "service_card", "settings": { "title": "Ut Labore Et Dolore" } },
-        "svc_5": { "type": "service_card", "settings": { "title": "Magna Aliqua Veniam" } }
+        "svc_1": {
+          "type": "service_card",
+          "settings": {
+            "title": "Lorem Ipsum Dolor",
+            "link": ""
+          }
+        },
+        "svc_2": {
+          "type": "service_card",
+          "settings": {
+            "title": "Consectetur Adipiscing",
+            "link": ""
+          }
+        },
+        "svc_3": {
+          "type": "service_card",
+          "settings": {
+            "title": "Sed Eiusmod Tempor",
+            "link": ""
+          }
+        },
+        "svc_4": {
+          "type": "service_card",
+          "settings": {
+            "title": "Ut Labore Et Dolore",
+            "link": ""
+          }
+        },
+        "svc_5": {
+          "type": "service_card",
+          "settings": {
+            "title": "Magna Aliqua Veniam",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["svc_1", "svc_2", "svc_3", "svc_4", "svc_5"],
+      "block_order": [
+        "svc_1",
+        "svc_2",
+        "svc_3",
+        "svc_4",
+        "svc_5"
+      ],
       "settings": {
         "label_text": "Услуги",
-        "heading": "<p>Lorem ipsum<br><strong>dolor sit<\/strong><\/p>",
+        "heading": "<p>Lorem ipsum<br><strong>dolor sit</strong></p>",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore."
       }
     },
     "tg_footer": {
       "type": "2gether-footer",
       "blocks": {
-        "col_1": { "type": "link_column", "settings": { "heading": "Магазин" } },
-        "col_2": { "type": "link_column", "settings": { "heading": "Компания" } },
-        "locale_bg": { "type": "locale_link", "settings": { "label": "BG" } },
-        "locale_en": { "type": "locale_link", "settings": { "label": "EN" } }
+        "col_1": {
+          "type": "link_column",
+          "settings": {
+            "heading": "Магазин",
+            "menu": ""
+          }
+        },
+        "col_2": {
+          "type": "link_column",
+          "settings": {
+            "heading": "Компания",
+            "menu": ""
+          }
+        },
+        "locale_bg": {
+          "type": "locale_link",
+          "settings": {
+            "label": "BG",
+            "link": ""
+          }
+        },
+        "locale_en": {
+          "type": "locale_link",
+          "settings": {
+            "label": "EN",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["col_1", "col_2", "locale_bg", "locale_en"],
+      "block_order": [
+        "col_1",
+        "col_2",
+        "locale_bg",
+        "locale_en"
+      ],
       "settings": {
         "newsletter_title": "Lorem ipsum dolor sit amet",
         "newsletter_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.",
