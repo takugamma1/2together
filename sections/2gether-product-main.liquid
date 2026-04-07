@@ -1,0 +1,518 @@
+{{ '2gether-product.css' | asset_url | stylesheet_tag }}
+
+{%- assign product = product -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="tg-pdp">
+  <div class="tg-pdp-main">
+    {%- comment -%}LEFT: Product Gallery{%- endcomment -%}
+    <div class="tg-pdp-gallery">
+      {%- comment -%}Hero image with editorial float{%- endcomment -%}
+      <section class="tg-pdp-hero-media">
+        {% if product.featured_image != blank %}
+          {{ product.featured_image | image_url: width: 1920 | image_tag: loading: 'eager', sizes: '66vw' }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag }}
+        {% endif %}
+        <div class="tg-pdp-hero-gradient"></div>
+        <div class="tg-pdp-editorial-float">
+          {% if product.tags contains 'new' %}
+            <span class="tg-label">{{ section.settings.editorial_badge | default: 'New Arrival' }}</span>
+          {% elsif section.settings.editorial_badge != blank %}
+            <span class="tg-label">{{ section.settings.editorial_badge }}</span>
+          {% endif %}
+          {% if section.settings.editorial_headline != blank %}
+            <h2 class="tg-pdp-editorial-title">{{ section.settings.editorial_headline }}</h2>
+          {% endif %}
+          {% if section.settings.editorial_text != blank %}
+            <p class="tg-pdp-editorial-text">{{ section.settings.editorial_text }}</p>
+          {% endif %}
+        </div>
+      </section>
+
+      {%- comment -%}Detail images grid{%- endcomment -%}
+      {% if product.images.size > 1 %}
+        <div class="tg-pdp-detail-grid">
+          {%- for image in product.images offset: 1 limit: 2 -%}
+            <div class="tg-pdp-detail-cell">
+              {{ image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '33vw' }}
+            </div>
+          {%- endfor -%}
+        </div>
+      {% endif %}
+
+      {%- comment -%}Technical Specs{%- endcomment -%}
+      {% if section.blocks.size > 0 %}
+        {%- assign has_specs = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'spec' -%}
+            {%- assign has_specs = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {% if has_specs %}
+          <section class="tg-pdp-specs">
+            <div class="tg-pdp-specs-grid">
+              {% for block in section.blocks %}
+                {% if block.type == 'spec' %}
+                  <div class="tg-pdp-spec" {{ block.shopify_attributes }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      {% case block.settings.icon %}
+                        {% when 'weight' %}
+                          <circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/>
+                        {% when 'gear' %}
+                          <circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        {% when 'frame' %}
+                          <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+                        {% when 'shield' %}
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        {% when 'speed' %}
+                          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        {% when 'check' %}
+                          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                      {% endcase %}
+                    </svg>
+                    <span class="tg-pdp-spec-label">{{ block.settings.label }}</span>
+                    <span class="tg-pdp-spec-value">{{ block.settings.value }}</span>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+      {% endif %}
+
+      {%- comment -%}Related Products Scroller{%- endcomment -%}
+      {% if section.settings.related_collection != blank %}
+        {%- assign related_products = section.settings.related_collection.products -%}
+        {% if related_products.size > 0 %}
+          <section class="tg-pdp-related">
+            <div class="tg-pdp-related-header">
+              <div>
+                <span class="tg-label">{{ section.settings.related_label | default: 'The Fleet' }}</span>
+                <h3 class="tg-pdp-related-title">{{ section.settings.related_heading | default: 'Related Performance' }}</h3>
+              </div>
+              <div class="tg-pdp-related-arrows">
+                <button class="tg-pdp-related-arrow" data-dir="prev" aria-label="Previous">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <button class="tg-pdp-related-arrow" data-dir="next" aria-label="Next">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="tg-pdp-related-track" id="tgRelatedTrack">
+              {%- for rec in related_products limit: 8 -%}
+                {% if rec.handle != product.handle %}
+                  <a href="{{ rec.url }}" class="tg-pdp-related-card">
+                    <div class="tg-pdp-related-card-image">
+                      {% if rec.featured_image != blank %}
+                        {{ rec.featured_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      {% endif %}
+                    </div>
+                    <h5 class="tg-pdp-related-card-title">{{ rec.title }}</h5>
+                    <p class="tg-pdp-related-card-price">{{ rec.price | money }}</p>
+                  </a>
+                {% endif %}
+              {%- endfor -%}
+            </div>
+          </section>
+        {% endif %}
+      {% endif %}
+
+      {%- comment -%}Bestsellers Grid{%- endcomment -%}
+      {% if section.settings.bestsellers_collection != blank %}
+        {%- assign best_products = section.settings.bestsellers_collection.products -%}
+        {% if best_products.size > 0 %}
+          <section class="tg-pdp-bestsellers">
+            <span class="tg-label">{{ section.settings.bestsellers_label | default: 'Worldwide Favorites' }}</span>
+            <h3 class="tg-pdp-related-title" style="margin-top:var(--tg-s2);">{{ section.settings.bestsellers_heading | default: 'Bestsellers' }}</h3>
+            <div class="tg-pdp-bestsellers-grid">
+              {%- for bp in best_products limit: 4 -%}
+                <a href="{{ bp.url }}" class="tg-pdp-bestseller-card">
+                  <div class="tg-pdp-bestseller-image">
+                    {% if bp.featured_image != blank %}
+                      {{ bp.featured_image | image_url: width: 200 | image_tag: loading: 'lazy' }}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    {% endif %}
+                  </div>
+                  <div class="tg-pdp-bestseller-info">
+                    <h6 class="tg-pdp-bestseller-title">{{ bp.title }}</h6>
+                    <p class="tg-pdp-bestseller-subtitle">{{ bp.type }}</p>
+                    <p class="tg-pdp-bestseller-price">{{ bp.price | money }}</p>
+                  </div>
+                </a>
+              {%- endfor -%}
+            </div>
+          </section>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {%- comment -%}RIGHT: Sticky Sidebar{%- endcomment -%}
+    <div class="tg-pdp-sidebar">
+      <div class="tg-pdp-sidebar-inner">
+        {%- comment -%}Product Identity{%- endcomment -%}
+        <div class="tg-pdp-identity">
+          <div class="tg-pdp-identity-header">
+            <h1 class="tg-pdp-product-title">{{ product.title }}</h1>
+            <span class="tg-pdp-product-price" data-product-price>
+              {% if current_variant.compare_at_price > current_variant.price %}
+                <s>{{ current_variant.compare_at_price | money }}</s>
+              {% endif %}
+              {{ current_variant.price | money }}
+            </span>
+          </div>
+          {% if product.description != blank %}
+            <p class="tg-pdp-product-desc">{{ product.description | strip_html | truncate: 200 }}</p>
+          {% endif %}
+        </div>
+
+        {%- comment -%}Variant Selectors{%- endcomment -%}
+        {%- form 'product', product, id: 'tg-product-form', data-product-form: '' -%}
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+          {% for option in product.options_with_values %}
+            <div class="tg-pdp-variant-group">
+              {% if option.name == 'Color' or option.name == 'Colour' or option.name == 'Цвят' %}
+                <span class="tg-pdp-variant-label">{{ option.name }}: {{ option.selected_value }}</span>
+                <div class="tg-pdp-color-swatches">
+                  {% for value in option.values %}
+                    <button
+                      type="button"
+                      class="tg-pdp-color-swatch{% if option.selected_value == value %} active{% endif %}"
+                      style="background-color: {{ value | handle }};"
+                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      data-value="{{ value }}"
+                      aria-label="{{ value }}"
+                    ></button>
+                  {% endfor %}
+                </div>
+              {% elsif option.name == 'Size' or option.name == 'Размер' %}
+                <div class="tg-pdp-variant-label-row">
+                  <span class="tg-pdp-variant-label">{{ option.name }}</span>
+                  {% if section.settings.size_guide_link != blank %}
+                    <a href="{{ section.settings.size_guide_link }}" class="tg-pdp-size-guide">Size Guide</a>
+                  {% endif %}
+                </div>
+                <div class="tg-pdp-size-grid">
+                  {% for value in option.values %}
+                    <button
+                      type="button"
+                      class="tg-pdp-size-btn{% if option.selected_value == value %} active{% endif %}"
+                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      data-value="{{ value }}"
+                    >{{ value }}</button>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <span class="tg-pdp-variant-label">{{ option.name }}</span>
+                <div class="tg-pdp-size-grid">
+                  {% for value in option.values %}
+                    <button
+                      type="button"
+                      class="tg-pdp-size-btn{% if option.selected_value == value %} active{% endif %}"
+                      data-option-index="{{ forloop.parentloop.index0 }}"
+                      data-value="{{ value }}"
+                    >{{ value }}</button>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {%- comment -%}CTA Buttons{%- endcomment -%}
+          <div class="tg-pdp-cta-group">
+            <button type="submit" class="tg-pdp-btn-atc"{% unless current_variant.available %} disabled{% endunless %}>
+              {% if current_variant.available %}
+                {{ 'products.product.add_to_cart' | t | default: 'ADD TO BAG' }}
+              {% else %}
+                {{ 'products.product.sold_out' | t | default: 'SOLD OUT' }}
+              {% endif %}
+            </button>
+            {% if section.settings.show_buy_now %}
+              {{ form | payment_button }}
+            {% endif %}
+          </div>
+        {%- endform -%}
+
+        {%- comment -%}Trust Signals{%- endcomment -%}
+        {%- assign has_trust = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'trust_signal' -%}
+            {%- assign has_trust = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {% if has_trust %}
+          <div class="tg-pdp-trust">
+            {% for block in section.blocks %}
+              {% if block.type == 'trust_signal' %}
+                <div class="tg-pdp-trust-item" {{ block.shopify_attributes }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    {% case block.settings.icon %}
+                      {% when 'manufacturing' %}
+                        <circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                      {% when 'shield' %}
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      {% when 'shipping' %}
+                        <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+                      {% when 'return' %}
+                        <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+                      {% when 'star' %}
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    {% endcase %}
+                  </svg>
+                  <span class="tg-pdp-trust-text">{{ block.settings.text }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Related products scroller
+  (function() {
+    const track = document.getElementById('tgRelatedTrack');
+    if (!track) return;
+    document.querySelectorAll('.tg-pdp-related-arrow').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = btn.dataset.dir === 'prev' ? -1 : 1;
+        track.scrollBy({ left: dir * 320, behavior: 'smooth' });
+      });
+    });
+  })();
+
+  // Variant selector (basic)
+  (function() {
+    const form = document.getElementById('tg-product-form');
+    if (!form) return;
+    const buttons = form.querySelectorAll('[data-option-index]');
+    const variantInput = form.querySelector('[data-variant-id]');
+    const productJson = {{ product.variants | json }};
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = btn.dataset.optionIndex;
+        const val = btn.dataset.value;
+        // Update active state
+        btn.parentElement.querySelectorAll('[data-option-index="' + idx + '"]').forEach(b => {
+          b.classList.remove('active');
+        });
+        btn.classList.add('active');
+
+        // Find matching variant
+        const options = [];
+        form.querySelectorAll('[data-option-index]').forEach(b => {
+          if (b.classList.contains('active')) {
+            options[parseInt(b.dataset.optionIndex)] = b.dataset.value;
+          }
+        });
+
+        const match = productJson.find(v => {
+          return v.options.every((opt, i) => options[i] === undefined || opt === options[i]);
+        });
+
+        if (match && variantInput) {
+          variantInput.value = match.id;
+          // Update price
+          const priceEl = document.querySelector('[data-product-price]');
+          if (priceEl) {
+            let html = '';
+            if (match.compare_at_price && match.compare_at_price > match.price) {
+              html += '<s>' + Shopify.formatMoney(match.compare_at_price) + '</s>';
+            }
+            html += Shopify.formatMoney(match.price);
+            priceEl.innerHTML = html;
+          }
+          // Update ATC button
+          const atcBtn = form.querySelector('.tg-pdp-btn-atc');
+          if (atcBtn) {
+            if (match.available) {
+              atcBtn.disabled = false;
+              atcBtn.textContent = '{{ "products.product.add_to_cart" | t | default: "ADD TO BAG" }}';
+            } else {
+              atcBtn.disabled = true;
+              atcBtn.textContent = '{{ "products.product.sold_out" | t | default: "SOLD OUT" }}';
+            }
+          }
+          // Update URL
+          const url = new URL(window.location);
+          url.searchParams.set('variant', match.id);
+          window.history.replaceState({}, '', url);
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "2Gether Product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Editorial Float"
+    },
+    {
+      "type": "text",
+      "id": "editorial_badge",
+      "label": "Badge text",
+      "default": "New Arrival"
+    },
+    {
+      "type": "text",
+      "id": "editorial_headline",
+      "label": "Editorial headline",
+      "default": "Engineered for Velocity."
+    },
+    {
+      "type": "textarea",
+      "id": "editorial_text",
+      "label": "Editorial text"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "url",
+      "id": "size_guide_link",
+      "label": "Size guide link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_now",
+      "label": "Show Buy Now button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Related Products"
+    },
+    {
+      "type": "collection",
+      "id": "related_collection",
+      "label": "Related products collection"
+    },
+    {
+      "type": "text",
+      "id": "related_label",
+      "label": "Related label",
+      "default": "The Fleet"
+    },
+    {
+      "type": "text",
+      "id": "related_heading",
+      "label": "Related heading",
+      "default": "Related Performance"
+    },
+    {
+      "type": "header",
+      "content": "Bestsellers"
+    },
+    {
+      "type": "collection",
+      "id": "bestsellers_collection",
+      "label": "Bestsellers collection"
+    },
+    {
+      "type": "text",
+      "id": "bestsellers_label",
+      "label": "Bestsellers label",
+      "default": "Worldwide Favorites"
+    },
+    {
+      "type": "text",
+      "id": "bestsellers_heading",
+      "label": "Bestsellers heading",
+      "default": "Bestsellers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Tech Spec",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "weight", "label": "Weight" },
+            { "value": "gear", "label": "Gear/Drivetrain" },
+            { "value": "frame", "label": "Frame" },
+            { "value": "shield", "label": "Shield/Warranty" },
+            { "value": "speed", "label": "Speed/Lightning" },
+            { "value": "check", "label": "Checkmark" }
+          ],
+          "default": "weight"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Weight"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "6.8kg Ultra-Light"
+        }
+      ]
+    },
+    {
+      "type": "trust_signal",
+      "name": "Trust Signal",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "manufacturing", "label": "Manufacturing" },
+            { "value": "shield", "label": "Shield/Warranty" },
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "return", "label": "Returns" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "manufacturing"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Engineered in Bulgaria"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Product",
+      "blocks": [
+        { "type": "spec", "settings": { "icon": "weight", "label": "Weight", "value": "6.8kg Ultra-Light" } },
+        { "type": "spec", "settings": { "icon": "gear", "label": "Drivetrain", "value": "Electronic Shift 12sp" } },
+        { "type": "spec", "settings": { "icon": "frame", "label": "Frame", "value": "Toray T1100 Carbon" } },
+        { "type": "spec", "settings": { "icon": "shield", "label": "Warranty", "value": "Lifetime Frame Guard" } },
+        { "type": "trust_signal", "settings": { "icon": "manufacturing", "text": "Engineered in Bulgaria" } },
+        { "type": "trust_signal", "settings": { "icon": "shield", "text": "Lifetime Frame Warranty" } },
+        { "type": "trust_signal", "settings": { "icon": "shipping", "text": "Global Express Delivery" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
