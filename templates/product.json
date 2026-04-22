@@ -12,7 +12,7 @@
     "main": {
       "type": "2gether-product",
       "settings": {
-        "hero_label": "Engineering Velocity",
+        "hero_label": "",
         "hero_title": "",
         "features_label": "Други снимки",
         "spec_label": "Specification",
