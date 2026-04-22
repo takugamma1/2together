@@ -24,7 +24,7 @@
         "brand_title": "PURE FIBER",
         "brand_description": "Every frame is handcrafted with aerospace-grade carbon fiber, engineered for the perfect balance of stiffness and compliance.",
         "brand_image": "shopify://shop_images/res_f4c4fd015afc00adf3ca397fbbf26ce7.avif",
-        "show_dynamic_checkout": true
+        "show_dynamic_checkout": false
       }
     }
   },
