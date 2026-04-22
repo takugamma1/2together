@@ -8,11 +8,7 @@
   min-height: 100vh;
 }
 
-body.tg-contact-active #header-group,
-body.tg-contact-active footer {
-  display: none;
-}
-
+/* Unified header/footer kept — only layout padding removed */
 body.tg-contact-active .content-for-layout {
   max-width: none;
   padding: 0;

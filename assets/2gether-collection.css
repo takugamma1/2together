@@ -10,12 +10,7 @@
   font-family: 'General Sans', sans-serif;
 }
 
-/* ── Hide default Shopify chrome ── */
-body.tg-collection-active #header-group,
-body.tg-collection-active footer {
-  display: none;
-}
-
+/* ── Page shell — keep unified header/footer, just strip layout padding ── */
 body.tg-collection-active .content-for-layout {
   max-width: none;
   padding: 0;
@@ -310,7 +305,7 @@ body.tg-collection-active .content-for-layout {
    MAIN CONTENT AREA
    ══════════════════════════════════════ */
 .tg-coll-main {
-  padding-top: 68px;
+  padding-top: var(--tg-s3);
 }
 
 /* ── Hero Banner ── */
@@ -459,10 +454,10 @@ body.tg-collection-active .content-for-layout {
   transform: translateY(-2px);
 }
 
-/* Card image */
+/* Card image — picture-heavy portrait ratio */
 .tg-coll-card-image {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
 }
 
@@ -490,26 +485,42 @@ body.tg-collection-active .content-for-layout {
   pointer-events: none;
 }
 
-/* Badges */
-.tg-coll-badge {
+/* Badge cluster — stacks at top-left, custom tags at top-right */
+.tg-coll-badges {
   position: absolute;
   top: var(--tg-s3);
   left: var(--tg-s3);
+  right: var(--tg-s3);
   z-index: 3;
-  padding: var(--tg-s1) var(--tg-s3) var(--tg-s1) var(--tg-s2);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--tg-s2);
+  pointer-events: none;
+}
+
+.tg-coll-badges-left,
+.tg-coll-badges-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s2);
+}
+
+.tg-coll-badges-right { align-items: flex-end; }
+
+.tg-coll-badge {
+  padding: var(--tg-s1) var(--tg-s4) var(--tg-s1) var(--tg-s3);
   font-family: 'Technor', sans-serif;
   font-weight: 700;
   font-size: 10px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  line-height: 1.6;
+  pointer-events: auto;
 }
 
-.tg-coll-badge--sale {
-  background: var(--tg-flame);
-  color: var(--tg-ink);
-}
-
+.tg-coll-badge--sale,
 .tg-coll-badge--new {
   background: var(--tg-flame);
   color: var(--tg-ink);
@@ -518,6 +529,13 @@ body.tg-collection-active .content-for-layout {
 .tg-coll-badge--sold-out {
   background: var(--tg-ink-60);
   color: var(--tg-text-secondary);
+}
+
+.tg-coll-badge--tag {
+  background: rgba(11, 18, 32, 0.78);
+  color: var(--tg-text-primary);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 /* Card info */
@@ -853,8 +871,9 @@ body.tg-collection-active .content-for-layout {
   }
 
   .tg-coll-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     padding: var(--tg-s3) var(--tg-s4) var(--tg-s6);
+    gap: var(--tg-s3);
   }
 
   .tg-coll-nav-links {
@@ -866,4 +885,13 @@ body.tg-collection-active .content-for-layout {
     gap: var(--tg-s4);
     text-align: center;
   }
+}
+
+@media (max-width: 480px) {
+  .tg-coll-grid {
+    grid-template-columns: 1fr;
+    gap: var(--tg-s4);
+  }
+  .tg-coll-hero { padding: var(--tg-s6) var(--tg-s4) var(--tg-s4); }
+  .tg-coll-main { padding-top: var(--tg-s2); }
 }

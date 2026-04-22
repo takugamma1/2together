@@ -8,12 +8,7 @@
   min-height: 100vh;
 }
 
-/* ── Hide default Shopify chrome ── */
-body.tg-about-active #header-group,
-body.tg-about-active footer {
-  display: none;
-}
-
+/* ── Page shell — keep unified header/footer, just strip layout padding ── */
 body.tg-about-active .content-for-layout {
   max-width: none;
   padding: 0;

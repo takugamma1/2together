@@ -603,11 +603,30 @@
 
 .tg-product-card--hero .tg-product-price { font-size: 16px; }
 
-.tg-product-badge {
+/* Badge cluster — left column = status, right column = editorial tags */
+.tg-pcard-badges {
   position: absolute;
   top: var(--tg-s5);
+  left: var(--tg-s5);
   right: var(--tg-s5);
   z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--tg-s3);
+  pointer-events: none;
+}
+
+.tg-pcard-badges-left,
+.tg-pcard-badges-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s2);
+}
+
+.tg-pcard-badges-right { align-items: flex-end; }
+
+.tg-product-badge {
   padding: var(--tg-s2) var(--tg-s5) var(--tg-s2) var(--tg-s4);
   background: var(--tg-flame);
   color: var(--tg-ink);
@@ -617,6 +636,22 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  pointer-events: auto;
+  line-height: 1.3;
+}
+
+.tg-product-badge--sale { background: var(--tg-flame); color: var(--tg-ink); }
+
+.tg-product-badge--sold-out {
+  background: var(--tg-ink-60);
+  color: var(--tg-text-secondary);
+}
+
+.tg-product-badge--tag {
+  background: rgba(11, 18, 32, 0.78);
+  color: var(--tg-text-primary);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .tg-product-more {
@@ -1271,4 +1306,310 @@
 @media (prefers-reduced-motion: reduce) {
   .tg-reveal { opacity: 1; transform: none; transition: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* ================================================
+   HEADER LAYERING FIX
+   The hero bento grid is absolutely positioned at
+   z-index: 12, equal to --layer-header-menu (also 12).
+   At equal z-index, DOM order wins and bento paints
+   over the sticky header. Raise the header stack.
+   ================================================ */
+:root {
+  --layer-header-menu: 50;
+}
+
+#header-group {
+  position: relative;
+  z-index: 50;
+  isolation: isolate;
+}
+
+/* ================================================
+   UNIFIED HEADER — brand styling
+   ================================================ */
+body header-component {
+  background: var(--tg-ink);
+  color: var(--tg-text-primary);
+}
+
+body header-component a,
+body header-component button {
+  color: var(--tg-text-primary);
+}
+
+body header-component a:hover,
+body header-component button:hover {
+  color: var(--tg-flame);
+}
+
+body header-component .header__heading-logo,
+body header-component .header__logo {
+  filter: none;
+}
+
+/* Nav link hover — orange accent underline */
+body header-component nav a {
+  position: relative;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+body header-component nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--tg-flame);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--tg-dur-med) var(--tg-ease-out);
+}
+
+body header-component nav a:hover::after,
+body header-component nav a[aria-expanded='true']::after {
+  transform: scaleX(1);
+}
+
+/* Taller header section — more presence for future mega-menu hover */
+body header-component {
+  --header-min-block-size: 88px;
+  min-block-size: 88px;
+}
+
+/* ================================================
+   MOBILE RESPONSIVE
+   2gether-custom.css had NO mobile breakpoints.
+   Add a coherent set for the home hero, statement,
+   product grid, community, and footer.
+   ================================================ */
+
+/* Tablet — collapse decorative columns */
+@media (max-width: 1024px) {
+  .tg-hero-top-info {
+    padding: var(--tg-s7) var(--tg-s5) 0;
+    max-width: 360px;
+  }
+
+  .tg-hero-bento {
+    right: var(--tg-s5);
+    width: min(420px, 44vw);
+    height: min(420px, 54vh);
+  }
+
+  .tg-statement {
+    padding: var(--tg-s7) var(--tg-s5);
+    grid-template-columns: 1fr;
+    gap: var(--tg-s5);
+  }
+
+  .tg-statement-divider {
+    display: none;
+  }
+
+  .tg-products { padding: var(--tg-s5); }
+
+  .tg-products-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--tg-s3);
+  }
+
+  .tg-community-top,
+  .tg-community-pool {
+    grid-template-columns: 1fr;
+    padding: var(--tg-s7) var(--tg-s5) 0;
+    gap: var(--tg-s5);
+  }
+
+  .tg-community-top-right,
+  .tg-community-pool-right {
+    padding-left: 0;
+  }
+
+  .tg-footer-bottom {
+    padding: var(--tg-s5);
+    flex-direction: column;
+    gap: var(--tg-s3);
+    text-align: center;
+  }
+}
+
+/* Mobile — stack everything */
+@media (max-width: 768px) {
+  .tg-hero {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .tg-hero-image,
+  .tg-hero-overlay,
+  .tg-hero-diagonal {
+    position: absolute;
+  }
+
+  .tg-hero-diagonal {
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 35%);
+    opacity: 0.55;
+  }
+
+  .tg-hero-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: var(--tg-s7);
+  }
+
+  .tg-hero-top-info {
+    padding: var(--tg-s6) var(--tg-s4) 0;
+    max-width: 100%;
+  }
+
+  .tg-hero-bottom-title {
+    padding: var(--tg-s4) var(--tg-s4) var(--tg-s5);
+  }
+
+  .tg-hero-title-main {
+    font-size: clamp(3rem, 14vw, 5rem);
+    white-space: normal;
+    line-height: 0.9;
+  }
+
+  /* Bento: move from absolute to flow, single column stack */
+  .tg-hero-bento {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    width: 100%;
+    height: auto;
+    margin: var(--tg-s4) 0;
+    padding: 0 var(--tg-s4);
+    z-index: 11;
+  }
+
+  .tg-bento-cell {
+    min-height: 120px;
+    padding: var(--tg-s4);
+  }
+
+  .tg-bento-cell:nth-child(1) {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-height: 160px;
+  }
+
+  .tg-bento-cell:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .tg-bento-cell:nth-child(3) { grid-column: 2; grid-row: 2; }
+  .tg-bento-cell:nth-child(4) { grid-column: 1; grid-row: 3; }
+  .tg-bento-cell:nth-child(5) { grid-column: 2; grid-row: 3; }
+
+  .tg-bento-cell:nth-child(1) .tg-bento-num { font-size: 32px; }
+  .tg-bento-cell:nth-child(1) .tg-bento-title { font-size: 17px; }
+
+  /* Statement */
+  .tg-statement {
+    padding: var(--tg-s6) var(--tg-s4);
+    min-height: auto;
+  }
+
+  .tg-pillar {
+    grid-template-columns: 24px 18px 1fr;
+    gap: var(--tg-s2);
+    padding: var(--tg-s3) 0;
+  }
+
+  .tg-pillar-note {
+    grid-column: 3;
+    text-align: left;
+    margin-top: var(--tg-s1);
+    font-size: 11px;
+  }
+
+  /* Image band */
+  .tg-image-band { height: 28vh; }
+  .tg-image-band-cell { min-width: 75vw; }
+
+  /* Products */
+  .tg-products { padding: var(--tg-s5) var(--tg-s4); }
+
+  .tg-products-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--tg-s3);
+    margin-bottom: var(--tg-s4);
+  }
+
+  .tg-products-row {
+    grid-template-columns: 1fr;
+    gap: var(--tg-s4);
+  }
+
+  .tg-product-card--hero {
+    height: clamp(320px, 70vw, 420px);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 32px) 100%, 0 100%);
+  }
+
+  .tg-product-card--small { height: clamp(260px, 80vw, 360px); }
+
+  .tg-product-card--hero .tg-product-info { padding: var(--tg-s5); }
+
+  .tg-product-info { padding: var(--tg-s4); }
+
+  .tg-product-more {
+    padding: var(--tg-s2) var(--tg-s4);
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  /* Community / Sunday Club */
+  .tg-community { min-height: auto; }
+
+  .tg-community-diagonal {
+    clip-path: polygon(0 60%, 100% 45%, 100% 100%, 0 100%);
+    opacity: 0.75;
+  }
+
+  .tg-community-top {
+    padding: var(--tg-s7) var(--tg-s4) 0;
+  }
+
+  .tg-community-pool { padding: 0 var(--tg-s4) var(--tg-s6); }
+
+  .tg-community-text { max-width: 100%; }
+
+  .tg-yt-widget {
+    bottom: var(--tg-s4);
+    left: var(--tg-s4);
+    padding: var(--tg-s2) var(--tg-s5) var(--tg-s2) var(--tg-s3);
+  }
+}
+
+/* Small phones — tighten further */
+@media (max-width: 480px) {
+  .tg-hero-bento { grid-template-columns: 1fr; }
+
+  .tg-bento-cell:nth-child(1),
+  .tg-bento-cell:nth-child(2),
+  .tg-bento-cell:nth-child(3),
+  .tg-bento-cell:nth-child(4),
+  .tg-bento-cell:nth-child(5) {
+    grid-column: 1;
+  }
+
+  .tg-bento-cell:nth-child(1) { grid-row: 1; min-height: 140px; }
+  .tg-bento-cell:nth-child(2) { grid-row: 2; }
+  .tg-bento-cell:nth-child(3) { grid-row: 3; }
+  .tg-bento-cell:nth-child(4) { grid-row: 4; }
+  .tg-bento-cell:nth-child(5) { grid-row: 5; }
+
+  .tg-hero-title-main { font-size: clamp(2.5rem, 16vw, 4rem); }
+
+  body header-component {
+    --header-min-block-size: 64px;
+    min-block-size: 64px;
+  }
 }

@@ -1,0 +1,34 @@
+{%- doc -%}
+  Badges overlaid on a 2gether product image:
+    — left column: sale %, new, sold out (status)
+    — right column: hashtag tags from product.tags (editorial)
+  Expects `product` to be a Product object.
+{%- enddoc -%}
+
+{%- liquid
+  assign discount_pct = 0
+  if product.compare_at_price > product.price
+    assign diff = product.compare_at_price | minus: product.price | times: 100.0
+    assign discount_pct = diff | divided_by: product.compare_at_price | round
+  endif
+-%}
+
+<div class="tg-pcard-badges">
+  <div class="tg-pcard-badges-left">
+    {%- if discount_pct > 0 -%}
+      <span class="tg-product-badge tg-product-badge--sale">-{{ discount_pct }}%</span>
+    {%- elsif product.tags contains 'new' or product.tags contains 'НОВО' -%}
+      <span class="tg-product-badge">Ново</span>
+    {%- endif -%}
+    {%- unless product.available -%}
+      <span class="tg-product-badge tg-product-badge--sold-out">Изчерпан</span>
+    {%- endunless -%}
+  </div>
+  <div class="tg-pcard-badges-right">
+    {%- for tag in product.tags -%}
+      {%- if tag contains '#' -%}
+        <span class="tg-product-badge tg-product-badge--tag">{{ tag | remove: '#' }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>

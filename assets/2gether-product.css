@@ -804,12 +804,7 @@
   margin: 0;
 }
 
-/* ── Hide default Shopify chrome on product page ── */
-body.tg-product-active #header-group,
-body.tg-product-active footer {
-  display: none;
-}
-
+/* ── Page shell — keep unified header/footer, only layout padding stripped ── */
 body.tg-product-active .content-for-layout {
   max-width: none;
   padding: 0;
@@ -843,17 +838,42 @@ body.tg-product-active .content-for-layout {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .tg-product-hero {
+    aspect-ratio: 4 / 5;
+  }
+
+  .tg-product-hero-text {
+    padding: var(--tg-s5);
+  }
+
+  .tg-product-features {
+    padding: var(--tg-s5) var(--tg-s4);
+  }
+
   .tg-product-features-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--tg-s3);
   }
 
   .tg-product-related-grid,
   .tg-product-bestsellers-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--tg-s3);
   }
 
   .tg-product-panel {
-    padding: var(--tg-s6) var(--tg-s5);
+    padding: var(--tg-s6) var(--tg-s4);
   }
+}
+
+@media (max-width: 480px) {
+  .tg-product-hero-text { padding: var(--tg-s4); }
+  .tg-product-hero-title { font-size: clamp(1.8rem, 9vw, 2.4rem); }
+  .tg-product-features-grid,
+  .tg-product-related-grid,
+  .tg-product-bestsellers-grid {
+    grid-template-columns: 1fr;
+  }
+  .tg-product-panel { padding: var(--tg-s5) var(--tg-s4); }
 }

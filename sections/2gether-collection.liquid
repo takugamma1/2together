@@ -11,28 +11,6 @@
   assign products_count = collection.products_count
 -%}
 
-<!-- Top Navigation -->
-<nav class="tg-coll-nav">
-  <a href="/" class="tg-coll-nav-brand">2GETHER</a>
-  <ul class="tg-coll-nav-links">
-    <li><a href="/collections/all">Shop</a></li>
-    <li><a href="/collections">Collections</a></li>
-    <li><a href="/pages/about">About</a></li>
-    <li><a href="/pages/contact">Contact</a></li>
-  </ul>
-  <div class="tg-coll-nav-icons">
-    <a href="/search" aria-label="Search">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    </a>
-    <a href="/account" aria-label="Account">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-    </a>
-    <a href="/cart" aria-label="Cart">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-    </a>
-  </div>
-</nav>
-
 <!-- Mobile filter overlay -->
 <div class="tg-filter-overlay" id="tg-filter-overlay" onclick="document.getElementById('tg-filter-sidebar').classList.remove('open');this.classList.remove('open');"></div>
 
@@ -153,15 +131,33 @@
                 {{ 'product-1' | placeholder_svg_tag }}
               {% endif %}
 
-              {% if product.compare_at_price > product.price %}
-                <span class="tg-coll-badge tg-coll-badge--sale">Sale</span>
-              {% elsif product.tags contains 'new' %}
-                <span class="tg-coll-badge tg-coll-badge--new">New</span>
-              {% endif %}
+              {%- liquid
+                assign discount_pct = 0
+                if product.compare_at_price > product.price
+                  assign diff = product.compare_at_price | minus: product.price | times: 100.0
+                  assign discount_pct = diff | divided_by: product.compare_at_price | round
+                endif
+              -%}
 
-              {% unless product.available %}
-                <span class="tg-coll-badge tg-coll-badge--sold-out">Sold Out</span>
-              {% endunless %}
+              <div class="tg-coll-badges">
+                <div class="tg-coll-badges-left">
+                  {% if discount_pct > 0 %}
+                    <span class="tg-coll-badge tg-coll-badge--sale">-{{ discount_pct }}%</span>
+                  {% elsif product.tags contains 'new' or product.tags contains 'НОВО' %}
+                    <span class="tg-coll-badge tg-coll-badge--new">Ново</span>
+                  {% endif %}
+                  {% unless product.available %}
+                    <span class="tg-coll-badge tg-coll-badge--sold-out">Изчерпан</span>
+                  {% endunless %}
+                </div>
+                <div class="tg-coll-badges-right">
+                  {%- for tag in product.tags -%}
+                    {%- if tag contains '#' -%}
+                      <span class="tg-coll-badge tg-coll-badge--tag">{{ tag | remove: '#' }}</span>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
             </a>
 
             <!-- Card info -->

@@ -20,13 +20,7 @@
         {% else %}
           {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
         {% endif %}
-        {% if hero_product.available == false %}
-          <span class="tg-product-badge">{{ 'products.product.sold_out' | t }}</span>
-        {% elsif hero_product.compare_at_price > hero_product.price %}
-          <span class="tg-product-badge">{{ 'products.product.on_sale' | t | default: 'Sale' }}</span>
-        {% elsif hero_product.tags contains 'new' %}
-          <span class="tg-product-badge">Ново</span>
-        {% endif %}
+        {%- render 'tg-product-badges', product: hero_product -%}
         <div class="tg-product-info">
           <span class="tg-product-tag">{{ hero_product.type }}</span>
           <span class="tg-product-name">{{ hero_product.title }}</span>
@@ -44,6 +38,7 @@
               {% else %}
                 {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
               {% endif %}
+              {%- render 'tg-product-badges', product: product -%}
               <div class="tg-product-info">
                 <span class="tg-product-tag">{{ product.type }}</span>
                 <span class="tg-product-name">{{ product.title }}</span>
@@ -59,7 +54,12 @@
       {%- comment -%}Placeholder cards when no collection is selected{%- endcomment -%}
       <div class="tg-product-card tg-product-card--hero">
         {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
-        <span class="tg-product-badge">Ново</span>
+        <div class="tg-pcard-badges">
+          <div class="tg-pcard-badges-left">
+            <span class="tg-product-badge">Ново</span>
+          </div>
+          <div class="tg-pcard-badges-right"></div>
+        </div>
         <div class="tg-product-info">
           <span class="tg-product-tag">Lorem ipsum / dolor sit</span>
           <span class="tg-product-name">Lorem Ipsum Dolor<br>Sit Amet</span>
