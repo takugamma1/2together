@@ -12,7 +12,7 @@
     "main": {
       "type": "2gether-collection",
       "settings": {
-        "hero_title": "",
+        "hero_title": "Категория колелета",
         "products_per_page": 8
       }
     }
