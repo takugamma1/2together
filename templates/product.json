@@ -11,6 +11,28 @@
   "sections": {
     "main": {
       "type": "2gether-product",
+      "blocks": {
+        "feature_card_PNM7p8": {
+          "type": "feature_card",
+          "settings": {
+            "image": "{{ product.featured_image }}",
+            "title": "Feature",
+            "description": ""
+          }
+        },
+        "feature_card_UYHYHb": {
+          "type": "feature_card",
+          "settings": {
+            "image": "{{ product.featured_image }}",
+            "title": "Feature",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "feature_card_PNM7p8",
+        "feature_card_UYHYHb"
+      ],
       "settings": {
         "hero_label": "",
         "hero_title": "",
