@@ -1,0 +1,820 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+  assign logo_text = section.settings.logo_text | default: shop.name
+-%}
+
+<tg-header class="tg-header" data-sticky="{{ section.settings.sticky }}">
+  <div class="tg-header-inner">
+    <a href="{{ routes.root_url }}" class="tg-header-brand" aria-label="{{ shop.name }}">
+      {% if section.settings.logo != blank %}
+        {{ section.settings.logo | image_url: width: 240 | image_tag: class: 'tg-header-logo', loading: 'eager', alt: shop.name }}
+      {% else %}
+        <span class="tg-header-wordmark">{{ logo_text }}</span>
+      {% endif %}
+    </a>
+
+    <nav class="tg-header-nav" aria-label="Primary">
+      <ul class="tg-header-nav-list">
+        {%- for link in menu.links -%}
+          {%- assign has_children = false -%}
+          {%- if link.links.size > 0 -%}{%- assign has_children = true -%}{%- endif -%}
+
+          {%- comment -%} Look up matching block for this link handle (for mega-menu media){%- endcomment -%}
+          {%- assign mega_block = null -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'mega_panel' and block.settings.link_handle == link.handle -%}
+              {%- assign mega_block = block -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <li class="tg-header-nav-item{% if has_children %} has-mega{% endif %}">
+            <a href="{{ link.url }}" class="tg-header-nav-link"{% if has_children %} aria-haspopup="true" aria-expanded="false"{% endif %}>
+              {{ link.title }}
+              {% if has_children %}
+                <svg class="tg-header-nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              {% endif %}
+            </a>
+
+            {% if has_children %}
+              <div class="tg-mega" role="menu">
+                <div class="tg-mega-inner">
+                  <div class="tg-mega-cols">
+                    {%- assign col_items = link.links | slice: 0, 12 -%}
+                    <ul class="tg-mega-col">
+                      {%- for child in col_items -%}
+                        {%- if forloop.index <= 6 -%}
+                          <li>
+                            <a href="{{ child.url }}" class="tg-mega-link">
+                              <span class="tg-mega-link-title">{{ child.title }}</span>
+                              {% if child.links.size > 0 %}
+                                <span class="tg-mega-link-count">{{ child.links.size }}</span>
+                              {% endif %}
+                            </a>
+                            {% if child.links.size > 0 %}
+                              <ul class="tg-mega-sublist">
+                                {%- for grandchild in child.links limit: 4 -%}
+                                  <li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
+                                {%- endfor -%}
+                              </ul>
+                            {% endif %}
+                          </li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+
+                    {% if link.links.size > 6 %}
+                      <ul class="tg-mega-col">
+                        {%- for child in link.links offset: 6 limit: 6 -%}
+                          <li>
+                            <a href="{{ child.url }}" class="tg-mega-link">
+                              <span class="tg-mega-link-title">{{ child.title }}</span>
+                              {% if child.links.size > 0 %}
+                                <span class="tg-mega-link-count">{{ child.links.size }}</span>
+                              {% endif %}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {% endif %}
+                  </div>
+
+                  {% if mega_block %}
+                    <aside class="tg-mega-feature" {{ mega_block.shopify_attributes }}>
+                      {% if mega_block.settings.image != blank %}
+                        <a href="{{ mega_block.settings.cta_link | default: link.url }}" class="tg-mega-feature-media">
+                          {{ mega_block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '320px' }}
+                          <div class="tg-mega-feature-overlay">
+                            <span class="tg-label">{{ mega_block.settings.eyebrow }}</span>
+                            <span class="tg-mega-feature-title">{{ mega_block.settings.heading }}</span>
+                            {% if mega_block.settings.cta_text != blank %}
+                              <span class="tg-mega-feature-cta">{{ mega_block.settings.cta_text }} &rarr;</span>
+                            {% endif %}
+                          </div>
+                        </a>
+                      {% endif %}
+                    </aside>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="tg-header-actions">
+      {% if section.settings.show_search %}
+        <a href="{{ routes.search_url }}" class="tg-header-icon" aria-label="{{ 'general.search.search' | t | default: 'Search' }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+        </a>
+      {% endif %}
+      {% if section.settings.show_account %}
+        <a href="{{ routes.account_url }}" class="tg-header-icon" aria-label="{{ 'customer.account.title' | t | default: 'Account' }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </a>
+      {% endif %}
+      <a href="{{ routes.cart_url }}" class="tg-header-icon tg-header-cart" aria-label="{{ 'sections.cart.title' | t | default: 'Cart' }}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="tg-header-cart-count" data-tg-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+      <button type="button" class="tg-header-burger" aria-label="Menu" aria-expanded="false" data-tg-burger>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="tg-drawer" data-tg-drawer hidden>
+    <div class="tg-drawer-header">
+      <a href="{{ routes.root_url }}" class="tg-drawer-brand">{{ logo_text }}</a>
+      <button type="button" class="tg-drawer-close" aria-label="Close" data-tg-drawer-close>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <nav class="tg-drawer-nav" aria-label="Mobile primary">
+      <ul class="tg-drawer-list">
+        {%- for link in menu.links -%}
+          <li class="tg-drawer-item{% if link.links.size > 0 %} has-children{% endif %}">
+            {% if link.links.size > 0 %}
+              <button type="button" class="tg-drawer-toggle" aria-expanded="false">
+                {{ link.title }}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <ul class="tg-drawer-sub">
+                <li><a href="{{ link.url }}" class="tg-drawer-sub-all">View all {{ link.title | downcase }} &rarr;</a></li>
+                {%- for child in link.links -%}
+                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {% else %}
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            {% endif %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+    <div class="tg-drawer-footer">
+      {% if section.settings.show_search %}
+        <a href="{{ routes.search_url }}">{{ 'general.search.search' | t | default: 'Search' }}</a>
+      {% endif %}
+      {% if section.settings.show_account %}
+        <a href="{{ routes.account_url }}">{{ 'customer.account.title' | t | default: 'Account' }}</a>
+      {% endif %}
+      <a href="{{ routes.cart_url }}">{{ 'sections.cart.title' | t | default: 'Cart' }} ({{ cart.item_count }})</a>
+    </div>
+  </div>
+</tg-header>
+
+{% schema %}
+{
+  "name": "2Gether Header",
+  "tag": "header",
+  "class": "tg-header-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Wordmark (used if no logo image)",
+      "default": "2GETHER"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Primary menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account icon",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_panel",
+      "name": "Mega-menu panel",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Add a featured image panel next to the dropdown of a top-level menu link. Match the link by its handle (e.g. catalog, road-bikes)."
+        },
+        {
+          "type": "text",
+          "id": "link_handle",
+          "label": "Menu link handle",
+          "info": "Exact handle of the top-level menu link to attach this panel to."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Feature image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow label",
+          "default": "Featured"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA text",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+  tg-header {
+    display: block;
+    position: relative;
+    z-index: 100;
+    background: #0B1220;
+    color: #E8ECF2;
+    font-family: 'General Sans', sans-serif;
+    isolation: isolate;
+  }
+
+  tg-header[data-sticky='true'] {
+    position: sticky;
+    top: 0;
+  }
+
+  .tg-header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+    padding: 18px 48px;
+    min-height: 88px;
+    border-bottom: 1px solid rgba(138, 155, 181, 0.12);
+    background: inherit;
+  }
+
+  .tg-header-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tg-header-logo {
+    display: block;
+    max-height: 36px;
+    width: auto;
+  }
+
+  .tg-header-wordmark {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: #E8ECF2;
+  }
+
+  .tg-header-wordmark::first-letter {
+    color: #E8601C;
+  }
+
+  /* Primary nav */
+  .tg-header-nav {
+    justify-self: center;
+  }
+
+  .tg-header-nav-list {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tg-header-nav-item {
+    position: static;
+  }
+
+  .tg-header-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    color: #E8ECF2;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: color 150ms ease;
+  }
+
+  .tg-header-nav-link::after {
+    content: '';
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 4px;
+    height: 2px;
+    background: #E8601C;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tg-header-nav-item:hover .tg-header-nav-link,
+  .tg-header-nav-item:focus-within .tg-header-nav-link {
+    color: #FFA468;
+  }
+
+  .tg-header-nav-item:hover .tg-header-nav-link::after,
+  .tg-header-nav-item:focus-within .tg-header-nav-link::after {
+    transform: scaleX(1);
+  }
+
+  .tg-header-nav-caret {
+    opacity: 0.6;
+    transition: transform 200ms ease;
+  }
+
+  .tg-header-nav-item:hover .tg-header-nav-caret {
+    transform: rotate(180deg);
+    opacity: 1;
+  }
+
+  /* Mega-menu panel */
+  .tg-mega {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: #0D1526;
+    border-top: 1px solid rgba(138, 155, 181, 0.12);
+    box-shadow: 0 24px 40px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 200ms ease, transform 200ms ease, visibility 0s 200ms;
+    z-index: 100;
+  }
+
+  .tg-header-nav-item.has-mega:hover .tg-mega,
+  .tg-header-nav-item.has-mega:focus-within .tg-mega {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 200ms ease, transform 200ms ease, visibility 0s 0s;
+  }
+
+  .tg-mega-inner {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 48px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 40px 48px 48px;
+  }
+
+  .tg-mega-cols {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 48px;
+  }
+
+  .tg-mega-col {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tg-mega-col > li {
+    padding: 2px 0;
+  }
+
+  .tg-mega-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    color: #E8ECF2;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(138, 155, 181, 0.08);
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .tg-mega-link-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .tg-mega-link-count {
+    font-size: 11px;
+    color: #566A85;
+    font-weight: 500;
+  }
+
+  .tg-mega-link:hover {
+    color: #E8601C;
+    border-bottom-color: #E8601C;
+  }
+
+  .tg-mega-sublist {
+    list-style: none;
+    margin: 6px 0 14px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tg-mega-sublist a {
+    display: block;
+    padding: 4px 0;
+    color: #8A9BB5;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 150ms ease, padding-left 150ms ease;
+  }
+
+  .tg-mega-sublist a:hover {
+    color: #E8ECF2;
+    padding-left: 6px;
+  }
+
+  .tg-mega-feature {
+    align-self: stretch;
+  }
+
+  .tg-mega-feature-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 4px;
+    aspect-ratio: 4 / 5;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .tg-mega-feature-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tg-mega-feature-media:hover img {
+    transform: scale(1.04);
+  }
+
+  .tg-mega-feature-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 24px;
+    background: linear-gradient(to top, rgba(11, 18, 32, 0.95) 0%, rgba(11, 18, 32, 0.4) 60%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #E8ECF2;
+  }
+
+  .tg-mega-feature-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 1.15;
+  }
+
+  .tg-mega-feature-cta {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #E8601C;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Header actions */
+  .tg-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .tg-header-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #E8ECF2;
+    text-decoration: none;
+    transition: color 150ms ease, background 150ms ease;
+  }
+
+  .tg-header-icon:hover {
+    background: rgba(232, 96, 28, 0.12);
+    color: #FFA468;
+  }
+
+  .tg-header-cart {
+    position: relative;
+  }
+
+  .tg-header-cart-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: #E8601C;
+    color: #0B1220;
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .tg-header-cart-count[hidden] { display: none; }
+
+  /* Hamburger */
+  .tg-header-burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+  }
+
+  .tg-header-burger span {
+    display: block;
+    height: 2px;
+    background: #E8ECF2;
+    transition: transform 250ms ease, opacity 200ms ease;
+  }
+
+  /* Drawer */
+  .tg-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: #0B1220;
+    display: flex;
+    flex-direction: column;
+    color: #E8ECF2;
+    transform: translateX(100%);
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+  }
+
+  .tg-drawer[data-open='true'] {
+    transform: translateX(0);
+  }
+
+  .tg-drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(138, 155, 181, 0.12);
+  }
+
+  .tg-drawer-brand {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.04em;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .tg-drawer-close {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .tg-drawer-nav {
+    padding: 8px 0;
+  }
+
+  .tg-drawer-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tg-drawer-item {
+    border-bottom: 1px solid rgba(138, 155, 181, 0.08);
+  }
+
+  .tg-drawer-item > a,
+  .tg-drawer-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 18px 24px;
+    color: #E8ECF2;
+    font-family: 'Technor', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .tg-drawer-toggle svg {
+    transition: transform 200ms ease;
+  }
+
+  .tg-drawer-item.has-children[data-open='true'] .tg-drawer-toggle svg {
+    transform: rotate(180deg);
+  }
+
+  .tg-drawer-sub {
+    list-style: none;
+    margin: 0;
+    padding: 0 24px 16px;
+    display: none;
+  }
+
+  .tg-drawer-item.has-children[data-open='true'] .tg-drawer-sub {
+    display: block;
+  }
+
+  .tg-drawer-sub a {
+    display: block;
+    padding: 10px 0;
+    color: #8A9BB5;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .tg-drawer-sub a:hover { color: #FFA468; }
+
+  .tg-drawer-sub-all {
+    color: #E8601C !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px !important;
+    letter-spacing: 0.08em;
+  }
+
+  .tg-drawer-footer {
+    margin-top: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid rgba(138, 155, 181, 0.12);
+  }
+
+  .tg-drawer-footer a {
+    color: #8A9BB5;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  .tg-drawer-footer a:hover { color: #FFA468; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .tg-header-nav { display: none; }
+    .tg-header-burger { display: flex; }
+    .tg-header-inner {
+      grid-template-columns: auto 1fr auto;
+      padding: 12px 20px;
+      min-height: 64px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .tg-header-inner { padding: 10px 16px; min-height: 56px; }
+    .tg-header-actions { gap: 0; }
+    .tg-header-icon { width: 36px; height: 36px; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+(function () {
+  const header = document.querySelector('tg-header');
+  if (!header) return;
+
+  const burger = header.querySelector('[data-tg-burger]');
+  const drawer = header.querySelector('[data-tg-drawer]');
+  const drawerClose = header.querySelector('[data-tg-drawer-close]');
+
+  function openDrawer() {
+    if (!drawer) return;
+    drawer.hidden = false;
+    requestAnimationFrame(() => drawer.setAttribute('data-open', 'true'));
+    if (burger) burger.setAttribute('aria-expanded', 'true');
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    if (!drawer) return;
+    drawer.removeAttribute('data-open');
+    if (burger) burger.setAttribute('aria-expanded', 'false');
+    setTimeout(() => { drawer.hidden = true; }, 320);
+    document.documentElement.style.overflow = '';
+  }
+
+  if (burger) burger.addEventListener('click', openDrawer);
+  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+
+  if (drawer) {
+    drawer.querySelectorAll('.tg-drawer-toggle').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.tg-drawer-item');
+        const isOpen = item.getAttribute('data-open') === 'true';
+        item.setAttribute('data-open', isOpen ? 'false' : 'true');
+        btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    });
+  }
+
+  // Update cart count via Shopify cart fetch
+  function refreshCart() {
+    fetch(window.Shopify?.routes?.root ? window.Shopify.routes.root + 'cart.js' : '/cart.js')
+      .then((r) => r.json())
+      .then((cart) => {
+        const el = header.querySelector('[data-tg-cart-count]');
+        if (!el) return;
+        el.textContent = cart.item_count;
+        if (cart.item_count > 0) el.removeAttribute('hidden');
+        else el.setAttribute('hidden', '');
+      })
+      .catch(() => {});
+  }
+  document.addEventListener('cart:refresh', refreshCart);
+  document.addEventListener('cart:updated', refreshCart);
+})();
+{% endjavascript %}
