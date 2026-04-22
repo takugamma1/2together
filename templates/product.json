@@ -18,10 +18,12 @@
         "spec_label": "Specification",
         "spec_title": "AERO",
         "spec_title_accent": "SPEC",
-        "spec_description": "",
+        "spec_description": "Планински байк предназначен за приключенски пътешествия по неравни терени. Издържлива рамка и надежна окачване осигуряват стабилност и комфорт при всякакви условия. Подходящ за любители на природата и активния начин на живот. Перфектен избор за планински маршрути и офроуд приключения.",
+        "spec_image": "shopify://shop_images/res_f4c4fd015afc00adf3ca397fbbf26ce7.avif",
         "brand_label": "Our Process",
         "brand_title": "PURE FIBER",
         "brand_description": "Every frame is handcrafted with aerospace-grade carbon fiber, engineered for the perfect balance of stiffness and compliance.",
+        "brand_image": "shopify://shop_images/res_f4c4fd015afc00adf3ca397fbbf26ce7.avif",
         "show_dynamic_checkout": false
       }
     }
