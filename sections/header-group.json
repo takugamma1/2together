@@ -1,11 +1,33 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header",
   "sections": {
     "tg_header": {
       "type": "tg-header",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "mega_panel_M3wU9b": {
+          "type": "mega_panel",
+          "settings": {
+            "link_handle": "",
+            "eyebrow": "Featured",
+            "heading": "",
+            "cta_text": "Shop now",
+            "cta_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_panel_M3wU9b"
+      ],
       "settings": {
         "logo_text": "2GETHER",
         "menu": "main-menu",
@@ -15,5 +37,7 @@
       }
     }
   },
-  "order": ["tg_header"]
+  "order": [
+    "tg_header"
+  ]
 }
