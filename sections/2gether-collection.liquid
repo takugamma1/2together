@@ -9,21 +9,36 @@
 {%- liquid
   assign sort_by = collection.sort_by | default: collection.default_sort_by
   assign products_count = collection.products_count
+
+  assign active_filter_count = 0
+  for filter in collection.filters
+    case filter.type
+      when 'list'
+        for value in filter.values
+          if value.active
+            assign active_filter_count = active_filter_count | plus: 1
+          endif
+        endfor
+      when 'price_range'
+        if filter.min_value.value or filter.max_value.value
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+    endcase
+  endfor
 -%}
 
-<!-- Mobile filter overlay -->
-<div class="tg-filter-overlay" id="tg-filter-overlay" onclick="document.getElementById('tg-filter-sidebar').classList.remove('open');this.classList.remove('open');"></div>
-
-<!-- Mobile filter toggle -->
-<button class="tg-filter-toggle" onclick="document.getElementById('tg-filter-sidebar').classList.toggle('open');document.getElementById('tg-filter-overlay').classList.toggle('open');">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6M9 8h6M17 16h6"/></svg>
-  Filters
-</button>
+<!-- Filter drawer overlay -->
+<div class="tg-filter-overlay" id="tg-filter-overlay" data-tg-filter-close></div>
 
 <div class="tg-collection-page">
-  <!-- ═══ LEFT SIDEBAR: Filters ═══ -->
-  <aside class="tg-coll-sidebar" id="tg-filter-sidebar">
-    <button class="tg-filter-close" onclick="document.getElementById('tg-filter-sidebar').classList.remove('open');document.getElementById('tg-filter-overlay').classList.remove('open');">✕</button>
+  <!-- ═══ FILTER DRAWER (overlay on all viewports) ═══ -->
+  <aside class="tg-coll-sidebar" id="tg-filter-sidebar" aria-hidden="true">
+    <div class="tg-coll-sidebar-head">
+      <span class="tg-coll-sidebar-title">Filters</span>
+      <button class="tg-filter-close" type="button" data-tg-filter-close aria-label="Close filters">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
 
     {% for filter in collection.filters %}
       <div class="tg-filter-group">
@@ -76,7 +91,12 @@
     {% endfor %}
 
     {% if collection.filters.size > 0 %}
-      <button class="tg-filter-apply" onclick="tgApplyFilters()">Apply Filters</button>
+      <div class="tg-filter-actions">
+        {% if active_filter_count > 0 %}
+          <a href="{{ collection.url }}" class="tg-filter-clear">Clear all</a>
+        {% endif %}
+        <button class="tg-filter-apply" type="button" onclick="tgApplyFilters()">Apply Filters</button>
+      </div>
     {% endif %}
   </aside>
 
@@ -96,11 +116,24 @@
         {% if collection.description != blank %}
           <p class="tg-coll-hero-desc">{{ collection.description | strip_html }}</p>
         {% endif %}
-        <div class="tg-coll-hero-actions">
-          <a href="#tg-products-grid" class="tg-coll-browse-btn">Browse &darr;</a>
-        </div>
       </div>
-      <div class="tg-coll-hero-right">
+    </div>
+
+    <!-- Toolbar: Filters · Sort · Count -->
+    <div class="tg-coll-toolbar">
+      <div class="tg-coll-toolbar-left">
+        {% if collection.filters.size > 0 %}
+          <button type="button" class="tg-filter-toggle" data-tg-filter-open aria-expanded="false" aria-controls="tg-filter-sidebar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6M9 8h6M17 16h6"/></svg>
+            <span>Filters</span>
+            {% if active_filter_count > 0 %}
+              <span class="tg-filter-toggle-count">{{ active_filter_count }}</span>
+            {% endif %}
+          </button>
+        {% endif %}
+        <div class="tg-coll-count">{{ products_count }} {{ products_count | pluralize: 'product', 'products' }}</div>
+      </div>
+      <div class="tg-coll-toolbar-right">
         <div class="tg-coll-sort">
           <label for="tg-sort-select">Sort:</label>
           <select id="tg-sort-select" onchange="tgApplySort(this.value)">
@@ -114,7 +147,6 @@
             <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
           </select>
         </div>
-        <div class="tg-coll-count">{{ products_count }} {{ products_count | pluralize: 'Machine', 'Machines' }}</div>
       </div>
     </div>
 
@@ -259,6 +291,39 @@
 </div>
 
 <script>
+  // Filter drawer open / close (works on all viewports)
+  (function() {
+    const sidebar = document.getElementById('tg-filter-sidebar');
+    const overlay = document.getElementById('tg-filter-overlay');
+    if (!sidebar || !overlay) return;
+
+    const openBtn = document.querySelector('[data-tg-filter-open]');
+
+    function open() {
+      sidebar.classList.add('open');
+      overlay.classList.add('open');
+      sidebar.setAttribute('aria-hidden', 'false');
+      if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+      sidebar.setAttribute('aria-hidden', 'true');
+      if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (openBtn) openBtn.addEventListener('click', open);
+    document.querySelectorAll('[data-tg-filter-close]').forEach(function(el) {
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) close();
+    });
+  })();
+
   // Sort
   function tgApplySort(value) {
     var url = new URL(window.location);
