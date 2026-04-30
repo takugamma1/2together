@@ -1,9 +1,13 @@
 /* === 2GETHER BIKES — PRODUCT PAGE === */
 
+:root {
+  --tg-header-h: 88px;
+}
+
 /* ── Page Shell ── */
 .tg-product-page {
   display: grid;
-  grid-template-columns: 1fr 420px;
+  grid-template-columns: 1fr 400px;
   min-height: 100vh;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
@@ -441,33 +445,20 @@
 .tg-product-right {
   background: var(--tg-surface);
   border-left: 1px solid var(--tg-divider);
-  height: 100vh;
+  height: calc(100vh - var(--tg-header-h));
+  height: calc(100dvh - var(--tg-header-h));
   position: sticky;
-  top: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--tg-ink-60) transparent;
-}
-
-.tg-product-right::-webkit-scrollbar {
-  width: 4px;
-}
-
-.tg-product-right::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tg-product-right::-webkit-scrollbar-thumb {
-  background: var(--tg-ink-60);
-  border-radius: 2px;
+  top: var(--tg-header-h);
+  overflow: hidden;
 }
 
 .tg-product-panel {
-  padding: var(--tg-s7) var(--tg-s6);
+  padding: var(--tg-s5) var(--tg-s5);
   display: flex;
   flex-direction: column;
-  gap: var(--tg-s6);
-  min-height: 100%;
+  gap: var(--tg-s4);
+  height: 100%;
+  box-sizing: border-box;
 }
 
 /* Back link */
@@ -490,13 +481,13 @@
 .tg-product-header {
   display: flex;
   flex-direction: column;
-  gap: var(--tg-s3);
+  gap: var(--tg-s2);
 }
 
 .tg-product-type-label {
   font-family: 'General Sans', sans-serif;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--tg-flame);
@@ -505,7 +496,7 @@
 .tg-product-title {
   font-family: 'Technor', sans-serif;
   font-weight: 700;
-  font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+  font-size: clamp(1.5rem, 1.8vw, 1.9rem);
   letter-spacing: -0.02em;
   line-height: 1;
   color: var(--tg-text-primary);
@@ -514,13 +505,13 @@
 .tg-product-price {
   font-family: 'Technor', sans-serif;
   font-weight: 600;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--tg-text-primary);
   letter-spacing: -0.01em;
 }
 
 .tg-product-price-compare {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--tg-text-muted);
   text-decoration: line-through;
   margin-left: var(--tg-s3);
@@ -529,9 +520,13 @@
 
 /* Description */
 .tg-product-description {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--tg-text-secondary);
-  line-height: 1.65;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .tg-product-description p {
@@ -546,14 +541,23 @@
 }
 
 /* Color swatches */
+.tg-product-option {
+  display: flex;
+  flex-direction: column;
+}
+
+.tg-product-option + .tg-product-option {
+  margin-top: var(--tg-s3);
+}
+
 .tg-product-option-label {
   font-family: 'General Sans', sans-serif;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tg-text-muted);
-  margin-bottom: var(--tg-s3);
+  margin-bottom: var(--tg-s2);
 }
 
 .tg-product-option-label span {
@@ -571,8 +575,8 @@
 }
 
 .tg-color-swatch {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -606,13 +610,13 @@
 }
 
 .tg-size-swatch {
-  padding: var(--tg-s2) var(--tg-s4);
+  padding: 6px var(--tg-s3);
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
   color: var(--tg-text-secondary);
   font-family: 'General Sans', sans-serif;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.04em;
   cursor: pointer;
   transition: all var(--tg-dur-fast) var(--tg-ease-out);
@@ -633,7 +637,7 @@
 .tg-product-actions {
   display: flex;
   flex-direction: column;
-  gap: var(--tg-s3);
+  gap: var(--tg-s2);
 }
 
 .tg-btn-add-cart {
@@ -642,12 +646,12 @@
   justify-content: center;
   gap: var(--tg-s2);
   width: 100%;
-  padding: var(--tg-s4) var(--tg-s6);
+  padding: var(--tg-s3) var(--tg-s5);
   background: var(--tg-flame);
   color: var(--tg-ink);
   font-family: 'General Sans', sans-serif;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border: none;
@@ -668,12 +672,12 @@
   justify-content: center;
   gap: var(--tg-s2);
   width: 100%;
-  padding: var(--tg-s4) var(--tg-s6);
+  padding: var(--tg-s3) var(--tg-s5);
   background: transparent;
   color: var(--tg-text-primary);
   font-family: 'General Sans', sans-serif;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border: 1px solid var(--tg-divider);
@@ -690,16 +694,16 @@
 .tg-product-trust {
   display: flex;
   flex-direction: column;
-  gap: var(--tg-s4);
+  gap: 0;
   margin-top: auto;
-  padding-top: var(--tg-s6);
+  padding-top: var(--tg-s3);
 }
 
 .tg-trust-item {
   display: flex;
   align-items: center;
   gap: var(--tg-s3);
-  padding: var(--tg-s3) 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--tg-divider);
 }
 
@@ -708,17 +712,17 @@
 }
 
 .tg-trust-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   color: var(--tg-flame);
   flex-shrink: 0;
   opacity: 0.8;
 }
 
 .tg-trust-text {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--tg-text-secondary);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .tg-trust-text strong {
@@ -813,15 +817,79 @@ body.tg-product-active .content-for-layout {
 
 /* ── Responsive ── */
 @media (max-width: 1024px) {
-  .tg-product-page {
-    grid-template-columns: 1fr;
+  :root {
+    --tg-drawer-peek: 132px;
   }
 
+  .tg-product-page {
+    grid-template-columns: 1fr;
+    padding-bottom: var(--tg-drawer-peek);
+  }
+
+  /* ── Bottom-sheet drawer ── */
   .tg-product-right {
-    position: relative;
-    height: auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    height: 92vh;
+    height: 92dvh;
+    max-height: 92vh;
+    max-height: 92dvh;
     border-left: none;
     border-top: 1px solid var(--tg-divider);
+    border-radius: 18px 18px 0 0;
+    background: var(--tg-surface);
+    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+    z-index: 90;
+    transform: translateY(calc(100% - var(--tg-drawer-peek)));
+    transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+    touch-action: pan-y;
+  }
+
+  .tg-product-right.tg-drawer-open {
+    transform: translateY(0);
+  }
+
+  /* Drag handle pill */
+  .tg-product-right::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--tg-text-muted);
+    opacity: 0.55;
+    border-radius: 2px;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .tg-product-panel {
+    padding: var(--tg-s5) var(--tg-s4) var(--tg-s4);
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--tg-ink-60) transparent;
+  }
+
+  .tg-product-panel::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .tg-product-panel::-webkit-scrollbar-thumb {
+    background: var(--tg-ink-60);
+    border-radius: 2px;
+  }
+
+  /* Hide back link when drawer is collapsed (peek) — saves space for CTA */
+  .tg-product-right:not(.tg-drawer-open) .tg-product-back {
+    display: none;
   }
 
   .tg-product-features-grid {
@@ -861,10 +929,6 @@ body.tg-product-active .content-for-layout {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--tg-s3);
   }
-
-  .tg-product-panel {
-    padding: var(--tg-s6) var(--tg-s4);
-  }
 }
 
 @media (max-width: 480px) {
@@ -875,5 +939,4 @@ body.tg-product-active .content-for-layout {
   .tg-product-bestsellers-grid {
     grid-template-columns: 1fr;
   }
-  .tg-product-panel { padding: var(--tg-s5) var(--tg-s4); }
 }

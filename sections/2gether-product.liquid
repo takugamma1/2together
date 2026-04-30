@@ -88,7 +88,18 @@
     </div>
 
     <!-- Related Products -->
-    {% if recommendations.products.size > 0 or product.collections.first.products.size > 1 %}
+    {%- liquid
+      assign related_products = nil
+      assign related_count = 0
+      if recommendations.performed and recommendations.products_count > 0
+        assign related_products = recommendations.products
+        assign related_count = recommendations.products_count
+      elsif product.collections.first
+        assign related_products = product.collections.first.products
+        assign related_count = product.collections.first.products_count
+      endif
+    -%}
+    {% if related_count > 1 %}
       <div class="tg-product-related">
         <div class="tg-product-related-header">
           <div class="tg-product-related-title">Related Products</div>
@@ -97,7 +108,6 @@
           {% endif %}
         </div>
         <div class="tg-product-related-grid">
-          {% assign related_products = recommendations.products | default: product.collections.first.products %}
           {% for item in related_products limit: 4 %}
             {% if item.id != product.id %}
               <a href="{{ item.url }}" class="tg-related-card">
@@ -120,7 +130,7 @@
     {% endif %}
 
     <!-- Bestsellers -->
-    {% if product.collections.first.products.size > 1 %}
+    {% if product.collections.first and product.collections.first.products.size > 1 %}
       <div class="tg-product-bestsellers">
         <div class="tg-product-bestsellers-header">
           <div class="tg-product-bestsellers-title">Bestsellers</div>
@@ -303,6 +313,79 @@
 </div>
 
 <script>
+/* ── Mobile drawer (bottom sheet) ── */
+(function() {
+  const drawer = document.querySelector('.tg-product-right');
+  if (!drawer) return;
+
+  const mq = window.matchMedia('(max-width: 1024px)');
+  const panel = drawer.querySelector('.tg-product-panel');
+
+  const isMobile = function() { return mq.matches; };
+  const isOpen = function() { return drawer.classList.contains('tg-drawer-open'); };
+  const open = function() {
+    drawer.classList.add('tg-drawer-open');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = function() {
+    drawer.classList.remove('tg-drawer-open');
+    document.body.style.overflow = '';
+    if (panel) panel.scrollTop = 0;
+  };
+
+  // Tap when collapsed → expand
+  drawer.addEventListener('click', function(e) {
+    if (!isMobile()) return;
+    if (isOpen()) return;
+    // Don't intercept clicks on links/buttons inside collapsed peek (e.g. add-to-cart)
+    const interactive = e.target.closest('button, a, input, select, label');
+    if (interactive) return;
+    open();
+  });
+
+  // Swipe gestures
+  let touchStartY = 0;
+  let touchStartX = 0;
+  let touchTime = 0;
+  let panelStartScrollTop = 0;
+
+  drawer.addEventListener('touchstart', function(e) {
+    if (!isMobile()) return;
+    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches[0].clientX;
+    touchTime = Date.now();
+    panelStartScrollTop = panel ? panel.scrollTop : 0;
+  }, { passive: true });
+
+  drawer.addEventListener('touchend', function(e) {
+    if (!isMobile()) return;
+    const endY = e.changedTouches[0].clientY;
+    const endX = e.changedTouches[0].clientX;
+    const dy = touchStartY - endY;
+    const dx = Math.abs(endX - touchStartX);
+
+    // Ignore mostly-horizontal swipes
+    if (dx > Math.abs(dy)) return;
+
+    // Swipe up → open
+    if (dy > 40 && !isOpen()) {
+      open();
+    }
+    // Swipe down (only when scrolled to top) → close
+    else if (dy < -50 && isOpen() && panelStartScrollTop <= 0) {
+      close();
+    }
+  }, { passive: true });
+
+  // Restore body overflow if viewport grows past breakpoint
+  mq.addEventListener('change', function(e) {
+    if (!e.matches) {
+      drawer.classList.remove('tg-drawer-open');
+      document.body.style.overflow = '';
+    }
+  });
+})();
+
 (function() {
   const form = document.getElementById('tg-product-form');
   const variantInput = document.getElementById('tg-variant-id');
