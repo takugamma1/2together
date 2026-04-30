@@ -20,12 +20,19 @@
   overflow: hidden;
 }
 
-/* Hero image block */
+/* ── Product Gallery ── */
+.tg-product-gallery {
+  background: var(--tg-ink);
+}
+
+/* Hero image — clean, no overlay */
 .tg-product-hero {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+  background: var(--tg-surface);
+  user-select: none;
 }
 
 .tg-product-hero img {
@@ -33,31 +40,15 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 180ms var(--tg-ease-out);
 }
 
-.tg-product-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(11, 18, 32, 0.85) 0%,
-    rgba(11, 18, 32, 0.3) 40%,
-    transparent 70%
-  );
-  pointer-events: none;
+.tg-product-hero img.is-swapping {
+  opacity: 0;
 }
 
-/* Hero headline overlaying bottom */
-.tg-product-hero-text {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: var(--tg-s7);
-  z-index: 2;
-}
-
-.tg-product-hero-label {
+/* Hero spec_label/spec_title left intact for the spec section */
+.tg-product-spec .tg-product-hero-label {
   font-family: 'General Sans', sans-serif;
   font-weight: 600;
   font-size: 11px;
@@ -67,98 +58,124 @@
   margin-bottom: var(--tg-s3);
 }
 
-.tg-product-hero-title {
-  font-family: 'Technor', sans-serif;
-  font-weight: 700;
-  font-size: clamp(2.4rem, 4vw, 3.6rem);
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+/* Prev / Next arrows on hero */
+.tg-hero-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(11, 18, 32, 0.55);
   color: var(--tg-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity var(--tg-dur-med) var(--tg-ease-out),
+              background var(--tg-dur-fast) var(--tg-ease-out);
 }
 
-/* ── Feature highlight cards ── */
-.tg-product-features {
-  padding: var(--tg-s7);
-  background: var(--tg-ink);
+.tg-product-hero:hover .tg-hero-nav,
+.tg-product-hero:focus-within .tg-hero-nav {
+  opacity: 1;
 }
 
-.tg-product-features-label {
+.tg-hero-nav:hover {
+  background: rgba(11, 18, 32, 0.85);
+}
+
+.tg-hero-nav:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--tg-flame);
+  outline-offset: 2px;
+}
+
+.tg-hero-prev { left: var(--tg-s4); }
+.tg-hero-next { right: var(--tg-s4); }
+
+/* Image counter pill */
+.tg-hero-counter {
+  position: absolute;
+  bottom: var(--tg-s4);
+  right: var(--tg-s4);
+  padding: 4px 10px;
+  background: rgba(11, 18, 32, 0.65);
+  color: var(--tg-text-primary);
   font-family: 'General Sans', sans-serif;
-  font-weight: 600;
   font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--tg-flame);
-  margin-bottom: var(--tg-s5);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 2;
+  pointer-events: none;
 }
 
-.tg-product-features-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--tg-s3);
+/* Thumbnail strip */
+.tg-product-thumbs {
+  display: flex;
+  gap: var(--tg-s2);
+  padding: var(--tg-s4) var(--tg-s5);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tg-ink-60) transparent;
+  background: var(--tg-ink);
+  -webkit-overflow-scrolling: touch;
 }
 
-.tg-feature-card {
-  position: relative;
-  aspect-ratio: 1;
-  overflow: hidden;
+.tg-product-thumbs::-webkit-scrollbar { height: 4px; }
+.tg-product-thumbs::-webkit-scrollbar-track { background: transparent; }
+.tg-product-thumbs::-webkit-scrollbar-thumb {
+  background: var(--tg-ink-60);
+  border-radius: 2px;
+}
+
+.tg-thumb {
+  flex: 0 0 auto;
+  width: 76px;
+  height: 76px;
+  padding: 0;
+  border: 2px solid transparent;
   background: var(--tg-surface-raised);
   cursor: pointer;
-  transition: transform var(--tg-dur-med) var(--tg-ease-out);
+  overflow: hidden;
+  scroll-snap-align: start;
+  position: relative;
+  transition: border-color var(--tg-dur-fast) var(--tg-ease-out),
+              transform var(--tg-dur-fast) var(--tg-ease-out);
 }
 
-.tg-feature-card:hover {
-  transform: scale(1.02);
-}
-
-.tg-feature-card img {
+.tg-thumb img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s var(--tg-ease-out);
+  transition: opacity var(--tg-dur-fast) var(--tg-ease-out);
+  opacity: 0.65;
 }
 
-.tg-feature-card:hover img {
-  transform: scale(1.06);
+.tg-thumb:hover img { opacity: 0.85; }
+
+.tg-thumb.is-active {
+  border-color: var(--tg-flame);
 }
 
-.tg-feature-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(11, 18, 32, 0.85) 0%,
-    rgba(11, 18, 32, 0.3) 60%,
-    transparent 100%
-  );
-  pointer-events: none;
+.tg-thumb.is-active img {
+  opacity: 1;
 }
 
-.tg-feature-card-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: var(--tg-s4);
-  z-index: 2;
-}
-
-.tg-feature-card-title {
-  font-family: 'Technor', sans-serif;
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--tg-text-primary);
-  line-height: 1.2;
-}
-
-.tg-feature-card-desc {
-  font-size: 11px;
-  color: var(--tg-text-secondary);
-  line-height: 1.4;
-  margin-top: 2px;
+.tg-thumb:focus-visible {
+  outline: 2px solid var(--tg-flame);
+  outline-offset: 2px;
 }
 
 /* ── Spec statement block ── */
@@ -731,7 +748,6 @@
 }
 
 /* ── Grain texture on sections ── */
-.tg-product-features::before,
 .tg-product-spec::before,
 .tg-product-related::before,
 .tg-product-bestsellers::before,
@@ -745,14 +761,12 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.tg-product-features,
 .tg-product-spec,
 .tg-product-related,
 .tg-product-bestsellers {
   position: relative;
 }
 
-.tg-product-features > *,
 .tg-product-spec > *,
 .tg-product-related > *,
 .tg-product-bestsellers > * {
@@ -892,8 +906,25 @@ body.tg-product-active .content-for-layout {
     display: none;
   }
 
-  .tg-product-features-grid {
-    grid-template-columns: repeat(2, 1fr);
+  /* Gallery: tighter on tablet/mobile */
+  .tg-product-hero {
+    aspect-ratio: 4 / 3;
+  }
+
+  .tg-hero-nav {
+    opacity: 1;
+    background: rgba(11, 18, 32, 0.4);
+    width: 38px;
+    height: 38px;
+  }
+
+  .tg-product-thumbs {
+    padding: var(--tg-s3) var(--tg-s4);
+  }
+
+  .tg-thumb {
+    width: 64px;
+    height: 64px;
   }
 
   .tg-product-related-grid,
@@ -908,20 +939,7 @@ body.tg-product-active .content-for-layout {
 
 @media (max-width: 768px) {
   .tg-product-hero {
-    aspect-ratio: 4 / 5;
-  }
-
-  .tg-product-hero-text {
-    padding: var(--tg-s5);
-  }
-
-  .tg-product-features {
-    padding: var(--tg-s5) var(--tg-s4);
-  }
-
-  .tg-product-features-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--tg-s3);
+    aspect-ratio: 1 / 1;
   }
 
   .tg-product-related-grid,
@@ -932,9 +950,11 @@ body.tg-product-active .content-for-layout {
 }
 
 @media (max-width: 480px) {
-  .tg-product-hero-text { padding: var(--tg-s4); }
-  .tg-product-hero-title { font-size: clamp(1.8rem, 9vw, 2.4rem); }
-  .tg-product-features-grid,
+  .tg-thumb {
+    width: 56px;
+    height: 56px;
+  }
+
   .tg-product-related-grid,
   .tg-product-bestsellers-grid {
     grid-template-columns: 1fr;
