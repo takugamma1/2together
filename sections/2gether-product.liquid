@@ -10,63 +10,75 @@
   <!-- ═══ LEFT COLUMN: Editorial Content ═══ -->
   <div class="tg-product-left">
 
-    <!-- Hero Image -->
-    <div class="tg-product-hero">
-      {% if product.featured_image %}
-        {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'eager', sizes: '(max-width: 1024px) 100vw, 60vw' }}
-      {% else %}
-        {{ 'product-1' | placeholder_svg_tag }}
-      {% endif %}
-      <div class="tg-product-hero-overlay"></div>
-      <div class="tg-product-hero-text">
-        <div class="tg-product-hero-label">{{ section.settings.hero_label | default: 'Engineering Velocity' }}</div>
-        <h2 class="tg-product-hero-title">{{ section.settings.hero_title | default: product.title }}</h2>
-      </div>
-    </div>
+    <!-- Product Gallery: Hero + Thumbnail Carousel -->
+    {%- liquid
+      assign gallery_media = product.media
+      if gallery_media.size == 0 and product.featured_image
+        assign gallery_media = product.images
+      endif
+    -%}
 
-    <!-- Feature Highlights -->
-    <div class="tg-product-features">
-      <div class="tg-product-features-label">{{ section.settings.features_label | default: 'Key Performance' }}</div>
-      <div class="tg-product-features-grid">
-        {% for block in section.blocks %}
-          {% if block.type == 'feature_card' %}
-            <div class="tg-feature-card" {{ block.shopify_attributes }}>
-              {% if block.settings.image != blank %}
-                {{ block.settings.image | image_url: width: 400 | image_tag: loading: 'lazy' }}
-              {% else %}
-                <div style="width:100%;height:100%;background:var(--tg-surface-raised);"></div>
-              {% endif %}
-              <div class="tg-feature-card-overlay"></div>
-              <div class="tg-feature-card-info">
-                <div class="tg-feature-card-title">{{ block.settings.title }}</div>
-                {% if block.settings.description != blank %}
-                  <div class="tg-feature-card-desc">{{ block.settings.description }}</div>
-                {% endif %}
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
+    <div class="tg-product-gallery" data-tg-gallery>
+      <div class="tg-product-hero">
+        {% if gallery_media.size > 0 %}
+          {%- assign first_media = gallery_media | first -%}
+          {%- assign first_preview = first_media.preview_image | default: first_media -%}
+          <img
+            data-tg-hero-img
+            src="{{ first_preview | image_url: width: 1600 }}"
+            srcset="{{ first_preview | image_url: width: 800 }} 800w, {{ first_preview | image_url: width: 1200 }} 1200w, {{ first_preview | image_url: width: 1600 }} 1600w, {{ first_preview | image_url: width: 2000 }} 2000w"
+            sizes="(max-width: 1024px) 100vw, 60vw"
+            alt="{{ first_media.alt | default: product.title | escape }}"
+            loading="eager"
+            width="1600"
+            height="1200"
+          >
+        {% elsif product.featured_image %}
+          {{ product.featured_image | image_url: width: 1600 | image_tag: loading: 'eager', sizes: '(max-width: 1024px) 100vw, 60vw', data-tg-hero-img: '' }}
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag }}
+        {% endif %}
 
-        {%- comment -%} Fallback: Show product images as feature cards if no blocks configured {%- endcomment -%}
-        {% assign feature_block_count = 0 %}
-        {% for block in section.blocks %}
-          {% if block.type == 'feature_card' %}
-            {% assign feature_block_count = feature_block_count | plus: 1 %}
-          {% endif %}
-        {% endfor %}
-
-        {% if feature_block_count == 0 %}
-          {% for media in product.media limit: 4 offset: 1 %}
-            <div class="tg-feature-card">
-              {{ media | image_url: width: 400 | image_tag: loading: 'lazy' }}
-              <div class="tg-feature-card-overlay"></div>
-              <div class="tg-feature-card-info">
-                <div class="tg-feature-card-title">{{ media.alt | default: product.title }}</div>
-              </div>
-            </div>
-          {% endfor %}
+        {% if gallery_media.size > 1 %}
+          <button type="button" class="tg-hero-nav tg-hero-prev" data-tg-prev aria-label="Previous image">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="tg-hero-nav tg-hero-next" data-tg-next aria-label="Next image">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <div class="tg-hero-counter" data-tg-counter aria-hidden="true">
+            <span data-tg-counter-current>1</span> / {{ gallery_media.size }}
+          </div>
         {% endif %}
       </div>
+
+      {% if gallery_media.size > 1 %}
+        <div class="tg-product-thumbs" data-tg-thumbs role="tablist" aria-label="Product images">
+          {% for media in gallery_media %}
+            {%- assign preview = media.preview_image | default: media -%}
+            <button
+              type="button"
+              class="tg-thumb{% if forloop.first %} is-active{% endif %}"
+              data-tg-thumb
+              data-index="{{ forloop.index0 }}"
+              data-img-src="{{ preview | image_url: width: 1600 }}"
+              data-img-srcset="{{ preview | image_url: width: 800 }} 800w, {{ preview | image_url: width: 1200 }} 1200w, {{ preview | image_url: width: 1600 }} 1600w, {{ preview | image_url: width: 2000 }} 2000w"
+              data-img-alt="{{ media.alt | default: product.title | escape }}"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-label="View image {{ forloop.index }} of {{ gallery_media.size }}"
+            >
+              <img
+                src="{{ preview | image_url: width: 240 }}"
+                alt=""
+                loading="lazy"
+                width="120"
+                height="120"
+              >
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
 
     <!-- Spec Statement -->
@@ -313,6 +325,110 @@
 </div>
 
 <script>
+/* ── Product image gallery (thumbnails + arrows + swipe + keyboard) ── */
+(function() {
+  const gallery = document.querySelector('[data-tg-gallery]');
+  if (!gallery) return;
+
+  const heroImg = gallery.querySelector('[data-tg-hero-img]');
+  const thumbs = Array.from(gallery.querySelectorAll('[data-tg-thumb]'));
+  const prev = gallery.querySelector('[data-tg-prev]');
+  const next = gallery.querySelector('[data-tg-next]');
+  const counter = gallery.querySelector('[data-tg-counter-current]');
+  const heroWrap = gallery.querySelector('.tg-product-hero');
+
+  if (!heroImg || thumbs.length < 2) return;
+
+  let index = 0;
+  let isAnimating = false;
+
+  function setIndex(i, opts) {
+    opts = opts || {};
+    const len = thumbs.length;
+    if (i < 0) i = len - 1;
+    if (i >= len) i = 0;
+    if (i === index && !opts.force) return;
+
+    const t = thumbs[i];
+    const src = t.dataset.imgSrc;
+    const srcset = t.dataset.imgSrcset || '';
+    const alt = t.dataset.imgAlt || '';
+
+    isAnimating = true;
+    heroImg.classList.add('is-swapping');
+
+    // Swap after short fade
+    window.setTimeout(function() {
+      heroImg.src = src;
+      if (srcset) heroImg.srcset = srcset;
+      heroImg.alt = alt;
+      // Wait for load to fade back in
+      if (heroImg.complete) {
+        heroImg.classList.remove('is-swapping');
+        isAnimating = false;
+      } else {
+        heroImg.addEventListener('load', function onLoad() {
+          heroImg.classList.remove('is-swapping');
+          heroImg.removeEventListener('load', onLoad);
+          isAnimating = false;
+        });
+      }
+    }, 150);
+
+    thumbs.forEach(function(tt, idx) {
+      const active = idx === i;
+      tt.classList.toggle('is-active', active);
+      tt.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+
+    if (counter) counter.textContent = String(i + 1);
+
+    // Scroll active thumbnail into view (only if not user-initiated scroll)
+    if (!opts.skipScroll) {
+      try {
+        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } catch (e) { /* old browsers */ }
+    }
+
+    index = i;
+  }
+
+  thumbs.forEach(function(t, i) {
+    t.addEventListener('click', function() { setIndex(i); });
+  });
+
+  if (prev) prev.addEventListener('click', function() { setIndex(index - 1); });
+  if (next) next.addEventListener('click', function() { setIndex(index + 1); });
+
+  // Keyboard arrows when gallery has focus
+  gallery.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); setIndex(index - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); setIndex(index + 1); }
+  });
+
+  // Touch swipe on hero image
+  if (heroWrap) {
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchTime = 0;
+
+    heroWrap.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchTime = Date.now();
+    }, { passive: true });
+
+    heroWrap.addEventListener('touchend', function(e) {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      // Ignore mostly vertical swipes (page scroll) or slow drags
+      if (Math.abs(dx) < 40 || Math.abs(dy) > Math.abs(dx)) return;
+      if (Date.now() - touchTime > 500) return;
+      setIndex(index + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+  }
+})();
+
 /* ── Mobile drawer (bottom sheet) ── */
 (function() {
   const drawer = document.querySelector('.tg-product-right');
