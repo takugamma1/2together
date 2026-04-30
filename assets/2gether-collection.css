@@ -3,11 +3,12 @@
 /* ── Page Shell ── */
 .tg-collection-page {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px minmax(0, 1fr);
   min-height: 100vh;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
   font-family: 'General Sans', sans-serif;
+  overflow-x: hidden;
 }
 
 /* ── Page shell — keep unified header/footer, just strip layout padding ── */
@@ -15,6 +16,10 @@ body.tg-collection-active .content-for-layout {
   max-width: none;
   padding: 0;
   margin: 0;
+}
+
+body.tg-collection-active {
+  overflow-x: hidden;
 }
 
 /* ══════════════════════════════════════
@@ -433,14 +438,15 @@ body.tg-collection-active .content-for-layout {
    ══════════════════════════════════════ */
 .tg-coll-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--tg-s3);
-  padding: var(--tg-s3) var(--tg-s7) var(--tg-s7);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--tg-s4);
+  padding: var(--tg-s4) var(--tg-s6) var(--tg-s7);
 }
 
 /* ── Product Card ── */
 .tg-coll-card {
   position: relative;
+  min-width: 0;
   background: var(--tg-surface-raised);
   overflow: hidden;
   display: flex;
@@ -540,29 +546,42 @@ body.tg-collection-active .content-for-layout {
 
 /* Card info */
 .tg-coll-card-info {
-  padding: var(--tg-s4) var(--tg-s4) 0;
+  padding: var(--tg-s3) var(--tg-s3) 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: var(--tg-s3);
+  gap: var(--tg-s2);
+  min-width: 0;
+}
+
+.tg-coll-card-info > a {
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .tg-coll-card-name {
   font-family: 'Technor', sans-serif;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--tg-text-primary);
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .tg-coll-card-price {
   font-family: 'Technor', sans-serif;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--tg-flame);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tg-coll-card-price-compare {
@@ -577,7 +596,8 @@ body.tg-collection-active .content-for-layout {
 .tg-coll-card-swatches {
   display: flex;
   gap: var(--tg-s2);
-  padding: var(--tg-s3) var(--tg-s4) var(--tg-s2);
+  padding: var(--tg-s2) var(--tg-s3);
+  flex-wrap: wrap;
 }
 
 .tg-coll-card-swatch {
@@ -600,13 +620,13 @@ body.tg-collection-active .content-for-layout {
   justify-content: center;
   gap: var(--tg-s2);
   width: 100%;
-  padding: var(--tg-s3) var(--tg-s4);
+  padding: var(--tg-s3) var(--tg-s3);
   background: var(--tg-flame);
   color: var(--tg-ink);
   font-family: 'General Sans', sans-serif;
   font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
@@ -814,9 +834,15 @@ body.tg-collection-active .content-for-layout {
 /* ══════════════════════════════════════
    RESPONSIVE
    ══════════════════════════════════════ */
+@media (max-width: 1280px) {
+  .tg-coll-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 1024px) {
   .tg-collection-page {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .tg-coll-sidebar {
@@ -824,7 +850,7 @@ body.tg-collection-active .content-for-layout {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 280px;
+    width: min(280px, 85vw);
     z-index: 600;
     transform: translateX(-100%);
     transition: transform var(--tg-dur-slow) var(--tg-ease-out);
@@ -856,13 +882,26 @@ body.tg-collection-active .content-for-layout {
   .tg-filter-overlay.open {
     display: block;
   }
+
+  .tg-coll-hero {
+    padding: var(--tg-s6) var(--tg-s5) var(--tg-s5);
+    gap: var(--tg-s5);
+  }
+
+  .tg-coll-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: var(--tg-s4) var(--tg-s5) var(--tg-s7);
+    gap: var(--tg-s3);
+  }
 }
 
 @media (max-width: 768px) {
   .tg-coll-hero {
     flex-direction: column;
     align-items: flex-start;
-    padding: var(--tg-s7) var(--tg-s5) var(--tg-s5);
+    padding: var(--tg-s6) var(--tg-s4) var(--tg-s4);
+    gap: var(--tg-s4);
+    min-height: 0;
   }
 
   .tg-coll-hero-right {
@@ -871,8 +910,8 @@ body.tg-collection-active .content-for-layout {
   }
 
   .tg-coll-grid {
-    grid-template-columns: repeat(2, 1fr);
-    padding: var(--tg-s3) var(--tg-s4) var(--tg-s6);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: var(--tg-s3) var(--tg-s4) var(--tg-s7);
     gap: var(--tg-s3);
   }
 
@@ -884,14 +923,66 @@ body.tg-collection-active .content-for-layout {
     flex-direction: column;
     gap: var(--tg-s4);
     text-align: center;
+    padding: var(--tg-s5) var(--tg-s4);
+  }
+
+  /* Add bottom space for the fixed FILTERS button on mobile */
+  .tg-coll-pagination {
+    padding-bottom: calc(var(--tg-s8) + var(--tg-s5));
   }
 }
 
 @media (max-width: 480px) {
   .tg-coll-grid {
-    grid-template-columns: 1fr;
-    gap: var(--tg-s4);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--tg-s2);
+    padding: var(--tg-s3) var(--tg-s3) var(--tg-s7);
   }
-  .tg-coll-hero { padding: var(--tg-s6) var(--tg-s4) var(--tg-s4); }
+
+  .tg-coll-hero {
+    padding: var(--tg-s5) var(--tg-s3) var(--tg-s4);
+  }
+
+  .tg-coll-card-info {
+    padding: var(--tg-s2) var(--tg-s2) 0;
+    flex-direction: column;
+    gap: var(--tg-s1);
+  }
+
+  .tg-coll-card-name {
+    font-size: 12px;
+  }
+
+  .tg-coll-card-price {
+    font-size: 12px;
+  }
+
+  .tg-coll-card-swatches {
+    padding: var(--tg-s2);
+  }
+
+  .tg-coll-card-add {
+    padding: var(--tg-s2) var(--tg-s2);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    gap: var(--tg-s1);
+  }
+
+  .tg-coll-card-add svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .tg-coll-badges {
+    top: var(--tg-s2);
+    left: var(--tg-s2);
+    right: var(--tg-s2);
+  }
+
+  .tg-coll-badge {
+    font-size: 9px;
+    padding: 2px var(--tg-s3) 2px var(--tg-s2);
+  }
+
   .tg-coll-main { padding-top: var(--tg-s2); }
 }
