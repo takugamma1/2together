@@ -17,7 +17,8 @@
         "mega_panel_M3wU9b": {
           "type": "mega_panel",
           "settings": {
-            "link_handle": "",
+            "link_handle": "https://brandshop.custom95.com/",
+            "image": "shopify://shop_images/Screenshot_898_5B1_5D.png",
             "eyebrow": "Featured",
             "heading": "",
             "cta_text": "Shop now",
