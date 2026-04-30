@@ -13,22 +13,6 @@
   "sections": {
     "tg_header": {
       "type": "tg-header",
-      "blocks": {
-        "mega_panel_M3wU9b": {
-          "type": "mega_panel",
-          "settings": {
-            "link_handle": "https://brandshop.custom95.com/",
-            "image": "shopify://shop_images/Screenshot_898_5B1_5D.png",
-            "eyebrow": "Featured",
-            "heading": "",
-            "cta_text": "Shop now",
-            "cta_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "mega_panel_M3wU9b"
-      ],
       "settings": {
         "logo_text": "2GETHER",
         "menu": "main-menu",
