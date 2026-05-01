@@ -267,28 +267,32 @@
         "svc_2": {
           "type": "service_card",
           "settings": {
-            "title": "Consectetur Adipiscing",
+            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
+            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "link": ""
           }
         },
         "svc_3": {
           "type": "service_card",
           "settings": {
-            "title": "Sed Eiusmod Tempor",
+            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
+            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "link": ""
           }
         },
         "svc_4": {
           "type": "service_card",
           "settings": {
-            "title": "Ut Labore Et Dolore",
+            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
+            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "link": ""
           }
         },
         "svc_5": {
           "type": "service_card",
           "settings": {
-            "title": "Magna Aliqua Veniam",
+            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
+            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "link": ""
           }
         }
