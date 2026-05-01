@@ -28,10 +28,10 @@
         "nav_tile_igVqRq": {
           "type": "nav_tile",
           "settings": {
-            "link_handle": "",
+            "link_handle": "НАЕМ НА КОЛЕЛА",
             "image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg",
-            "descriptor": "",
-            "number": "",
+            "descriptor": "2",
+            "number": "2",
             "title": "RENT A BIKE",
             "link": ""
           }
