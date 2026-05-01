@@ -555,10 +555,6 @@
   transition: opacity var(--tg-dur-med) var(--tg-ease-out);
 }
 
-.tg-product-card--hero::after {
-  background: linear-gradient(160deg, rgba(11,18,32,0.7) 0%, rgba(11,18,32,0.25) 35%, transparent 55%, rgba(11,18,32,0.15) 80%, rgba(11,18,32,0.5) 100%);
-}
-
 .tg-product-card:hover::after { opacity: 0.8; }
 
 .tg-product-info {
