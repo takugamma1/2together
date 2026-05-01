@@ -31,13 +31,15 @@
         "img_3"
       ],
       "settings": {
-        "hero_line1": "CONTACT",
-        "hero_line2": "/ SIGNAL",
+        "hero_line1": "Свържи се",
+        "hero_line2": "/ с нас",
         "hero_subtitle": "",
+        "address": "",
         "phone": "+359 2 000 0000",
         "email": "signal@2gether.cc",
-        "support_email": "support@2gether.cc",
+        "hours": "",
         "support_text": "",
+        "support_email": "support@2gether.cc",
         "quote": ""
       }
     }
