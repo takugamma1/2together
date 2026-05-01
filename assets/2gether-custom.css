@@ -1320,10 +1320,20 @@
   --layer-header-menu: 50;
 }
 
+/* Sticky must live on the SCROLL ANCESTOR's direct child, not on the
+   element-inside-the-element. Since tg-header is wrapped in #header-group
+   (which itself is the same height as the header), put sticky here. */
 #header-group {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 50;
   isolation: isolate;
+}
+
+/* Allow the header section to flag itself non-sticky via the existing
+   `data-sticky="false"` attribute on tg-header. */
+#header-group:has(tg-header[data-sticky='false']) {
+  position: relative;
 }
 
 /* ================================================
