@@ -952,7 +952,7 @@
 .tg-services {
   padding: var(--tg-s10) var(--tg-s9);
   display: grid;
-  grid-template-columns: 0.4fr 0.6fr;
+  grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
   gap: var(--tg-s8);
   align-items: start;
   background: var(--tg-ink);
@@ -1022,7 +1022,7 @@
 .tg-service-card-name {
   font-family: 'Technor', sans-serif;
   font-weight: 600;
-  font-size: clamp(15px, 1.2vw, 18px);
+  font-size: clamp(13px, 1.2vw, 18px);
   color: var(--tg-text-primary);
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1427,6 +1427,40 @@ body header-component {
     padding-left: 0;
   }
 
+  /* Services — single column stack */
+  .tg-services {
+    grid-template-columns: 1fr;
+    gap: var(--tg-s6);
+    padding: var(--tg-s7) var(--tg-s5);
+  }
+
+  .tg-services-left {
+    position: static;
+    top: auto;
+  }
+
+  /* Image band */
+  .tg-image-band-cell {
+    min-width: 50vw;
+  }
+
+  /* Footer — newsletter stacks; map+links stack */
+  .tg-footer-newsletter {
+    grid-template-columns: 1fr;
+    gap: var(--tg-s5);
+    padding: var(--tg-s6) var(--tg-s5);
+  }
+
+  .tg-footer-middle {
+    grid-template-columns: 1fr;
+    gap: var(--tg-s6);
+    padding: var(--tg-s6) var(--tg-s5);
+  }
+
+  .tg-footer-brand-strip {
+    padding: var(--tg-s7) var(--tg-s5) 0;
+  }
+
   .tg-footer-bottom {
     padding: var(--tg-s5);
     flex-direction: column;
@@ -1586,6 +1620,57 @@ body header-component {
     left: var(--tg-s4);
     padding: var(--tg-s2) var(--tg-s5) var(--tg-s2) var(--tg-s3);
   }
+
+  /* Services — tighten card height/padding on phones */
+  .tg-services {
+    padding: var(--tg-s6) var(--tg-s4);
+    gap: var(--tg-s5);
+  }
+
+  .tg-services-title {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+  }
+
+  .tg-service-card {
+    height: 96px;
+  }
+
+  .tg-service-card-overlay {
+    padding: 0 var(--tg-s4);
+  }
+
+  .tg-service-card-arrow {
+    right: var(--tg-s4);
+  }
+
+  /* Image band — faster marquee on small screens */
+  .tg-image-band-track {
+    animation-duration: 14s;
+  }
+
+  /* Footer newsletter form must shrink on phones */
+  .tg-footer-newsletter-form {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .tg-footer-newsletter-title {
+    font-size: 17px;
+  }
+
+  .tg-footer-newsletter,
+  .tg-footer-middle {
+    padding-left: var(--tg-s4);
+    padding-right: var(--tg-s4);
+  }
+
+  .tg-footer-links-grid {
+    gap: var(--tg-s5);
+  }
+
+  .tg-footer-brand-strip {
+    padding: var(--tg-s7) var(--tg-s4) 0;
+  }
 }
 
 /* Small phones — tighten further */
@@ -1611,5 +1696,63 @@ body header-component {
   body header-component {
     --header-min-block-size: 64px;
     min-block-size: 64px;
+  }
+
+  /* Statement pillar — let the note wrap below the word at narrow widths */
+  .tg-statement-quote {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+  }
+
+  .tg-pillar {
+    grid-template-columns: 22px 18px 1fr;
+    gap: 6px;
+  }
+
+  /* Image band shorter */
+  .tg-image-band {
+    height: 22vh;
+    min-height: 180px;
+  }
+
+  /* Community — break long Cyrillic words and stop YT widget from
+     overlapping the poll on very small screens */
+  .tg-pool-option {
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .tg-yt-widget {
+    bottom: var(--tg-s3);
+    left: var(--tg-s3);
+    right: var(--tg-s3);
+    padding: var(--tg-s2) var(--tg-s3);
+  }
+
+  /* Services — single column with shorter cards */
+  .tg-service-card {
+    height: 84px;
+  }
+
+  /* Footer — center the newsletter info, condense map */
+  .tg-footer-newsletter {
+    padding: var(--tg-s5) var(--tg-s3);
+  }
+
+  .tg-footer-middle {
+    padding: var(--tg-s5) var(--tg-s3);
+  }
+
+  .tg-footer-map-frame {
+    height: 120px;
+  }
+
+  .tg-footer-brand-strip {
+    padding: var(--tg-s6) var(--tg-s3) 0;
+  }
+
+  .tg-footer-newsletter-input,
+  .tg-footer-newsletter-btn {
+    font-size: 12px;
+    padding: var(--tg-s3) var(--tg-s3);
   }
 }
