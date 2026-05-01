@@ -16,7 +16,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "01",
-            "title": "Шосейни\nвелосипеди",
+            "title": "СЕРВИЗ НА КОЛЕЛА",
             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             "link": "",
             "icon": "clock"
@@ -26,7 +26,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "02",
-            "title": "MTB",
+            "title": "НАЕМ НА КОЛЕЛА",
             "description": "",
             "link": "",
             "icon": "layers"
@@ -36,7 +36,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "03",
-            "title": "Gravel",
+            "title": "КОЛЕЛА",
             "description": "",
             "link": "",
             "icon": "star"
@@ -46,7 +46,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "04",
-            "title": "Сервиз",
+            "title": "МЪРЧ",
             "description": "",
             "link": "",
             "icon": "tool"
@@ -56,7 +56,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "05",
-            "title": "Sunday Club",
+            "title": "OFF-ROAD",
             "description": "",
             "link": "",
             "icon": "users"
