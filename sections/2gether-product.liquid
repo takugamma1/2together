@@ -468,11 +468,18 @@
 
     if (counter) counter.textContent = String(i + 1);
 
-    // Scroll active thumbnail into view (only if not user-initiated scroll)
+    // Scroll active thumbnail into view — only inside the thumbs container,
+    // never the page (avoids horizontal page scroll cascading from scrollIntoView).
     if (!opts.skipScroll) {
-      try {
-        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      } catch (e) { /* old browsers */ }
+      const thumbsParent = t.parentElement;
+      if (thumbsParent) {
+        const targetLeft = t.offsetLeft - (thumbsParent.clientWidth / 2) + (t.clientWidth / 2);
+        try {
+          thumbsParent.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+        } catch (e) {
+          thumbsParent.scrollLeft = Math.max(0, targetLeft);
+        }
+      }
     }
 
     index = i;
