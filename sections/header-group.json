@@ -29,6 +29,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "",
+            "image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg",
             "descriptor": "",
             "number": "",
             "title": "RENT A BIKE",
@@ -39,6 +40,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "",
+            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "descriptor": "",
             "number": "",
             "title": "BICYCLE",
@@ -49,6 +51,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "",
+            "image": "shopify://shop_images/Screenshot_4_5B1_5D.png",
             "descriptor": "",
             "number": "",
             "title": "MERCHANDISE",
@@ -59,6 +62,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "",
+            "image": "shopify://shop_images/pexels-malcolnphoto-34077919.jpg",
             "descriptor": "",
             "number": "",
             "title": "OFF-ROAD TOURS",
