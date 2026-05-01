@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "tg_service": {
@@ -54,7 +63,26 @@
         "cat_suspension",
         "cat_other"
       ],
-      "settings": {}
+      "settings": {
+        "hero_image": "shopify://shop_images/pexels-lebele-17593893.jpg",
+        "hero_eyebrow": "Bike service",
+        "hero_title": "BOOK YOUR",
+        "hero_title_accent": "SERVICE",
+        "hero_sub": "Tell us what is wrong, pick a time, drop the bike off. We handle the rest.",
+        "hero_cta": "Book now",
+        "form_caption_eyebrow": "Workshop",
+        "form_caption": "Hands-on by certified mechanics. Most jobs done in 24h.",
+        "form_eyebrow": "All in one form",
+        "form_title": "TELL US WHAT IS WRONG",
+        "form_submit": "Book service",
+        "form_note": "We will reply within 24h to confirm the slot. Drop-off only — no on-site repairs while you wait.",
+        "form_success": "Thanks — we got your booking. We will reply within 24h to confirm.",
+        "prices_eyebrow": "Our rates",
+        "prices_title": "PRICES & PACKAGES",
+        "prices_intro": "",
+        "cta_title": "Ready to book?",
+        "cta_btn": "Pick a time"
+      }
     }
   },
   "order": [
