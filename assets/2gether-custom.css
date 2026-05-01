@@ -833,6 +833,8 @@
   transition: all var(--tg-dur-med) var(--tg-ease-out);
   position: relative;
   overflow: hidden;
+  width: 100%;
+  min-width: 0;
 }
 
 .tg-pool-option:hover {
@@ -859,7 +861,10 @@
   font-weight: 600;
   font-size: 13px;
   color: var(--tg-text-primary);
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .tg-pool-votes {
@@ -1595,12 +1600,25 @@ body header-component {
     white-space: nowrap;
   }
 
-  /* Community / Sunday Club */
+  /* Community / Sunday Club — flip layout for vertical stacking */
   .tg-community { min-height: auto; }
+
+  /* Overlay was a left→right gradient (built for desktop split layout).
+     On mobile content stacks vertically, so use a top→bottom gradient
+     that keeps the image visible up top and dark behind the text below. */
+  .tg-community-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(11, 18, 32, 0.15) 0%,
+      rgba(11, 18, 32, 0.55) 35%,
+      rgba(11, 18, 32, 0.92) 65%,
+      rgba(11, 18, 32, 0.98) 100%
+    );
+  }
 
   .tg-community-diagonal {
     clip-path: polygon(0 60%, 100% 45%, 100% 100%, 0 100%);
-    opacity: 0.75;
+    opacity: 0.6;
   }
 
   .tg-community-top {
@@ -1610,6 +1628,12 @@ body header-component {
   .tg-community-pool { padding: 0 var(--tg-s4) var(--tg-s6); }
 
   .tg-community-text { max-width: 100%; }
+
+  /* Make sure the pool right column actually goes full width */
+  .tg-community-pool-right {
+    width: 100%;
+    min-width: 0;
+  }
 
   .tg-yt-widget {
     bottom: var(--tg-s4);
@@ -1710,13 +1734,7 @@ body header-component {
     min-height: 180px;
   }
 
-  /* Community — break long Cyrillic words and stop YT widget from
-     overlapping the poll on very small screens */
-  .tg-pool-option {
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-  }
-
+  /* Community — keep YT widget above the poll, no aggressive char break */
   .tg-yt-widget {
     bottom: var(--tg-s3);
     left: var(--tg-s3);

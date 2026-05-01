@@ -34,10 +34,10 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
       {% endif %}
-      <a href="{{ routes.cart_url }}" class="tg-header-icon tg-header-cart" aria-label="{{ 'sections.cart.title' | t | default: 'Cart' }}">
+      <button type="button" class="tg-header-icon tg-header-cart" aria-label="{{ 'sections.cart.title' | t | default: 'Cart' }}" aria-controls="tg-cart-drawer" data-tg-cart-open>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span class="tg-header-cart-count" data-tg-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
-      </a>
+      </button>
       <button type="button" class="tg-header-burger" aria-label="Open menu" aria-expanded="false" aria-controls="tg-takeover" data-tg-burger>
         <span></span><span></span><span></span>
       </button>
@@ -207,6 +207,40 @@
         </div>
       {% endif %}
     </div>
+  </div>
+
+  <!-- ── Cart drawer (sliced) ── -->
+  <div id="tg-cart-drawer" class="tg-cart-drawer" data-tg-cart-drawer hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Shopping cart">
+    <div class="tg-cart-drawer-backdrop" data-tg-cart-close></div>
+    <aside class="tg-cart-drawer-panel">
+      <header class="tg-cart-drawer-head">
+        <div class="tg-cart-drawer-head-text">
+          <span class="tg-cart-drawer-eyebrow">Cart</span>
+          <span class="tg-cart-drawer-count"><span data-tg-cart-drawer-count>{{ cart.item_count }}</span> {{ cart.item_count | pluralize: 'item', 'items' }}</span>
+        </div>
+        <button type="button" class="tg-cart-drawer-close" data-tg-cart-close aria-label="Close cart">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </header>
+
+      <div class="tg-cart-drawer-body" data-tg-cart-body>
+        <div class="tg-cart-drawer-loading" data-tg-cart-loading>
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <footer class="tg-cart-drawer-foot" data-tg-cart-foot>
+        <div class="tg-cart-drawer-subtotal">
+          <span>Subtotal</span>
+          <strong data-tg-cart-subtotal>{{ cart.total_price | money }}</strong>
+        </div>
+        <a href="/checkout" class="tg-cart-drawer-checkout" data-tg-cart-checkout>
+          Checkout
+          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+        </a>
+        <a href="{{ routes.cart_url }}" class="tg-cart-drawer-view">View full cart</a>
+      </footer>
+    </aside>
   </div>
 </tg-header>
 
@@ -889,6 +923,402 @@
       opacity: 1;
     }
   }
+
+  /* ════════════════════════════════════
+     CART DRAWER — sliced, slides from right
+     ════════════════════════════════════ */
+  .tg-cart-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 280ms ease, visibility 0s linear 280ms;
+  }
+
+  .tg-cart-drawer[data-open='true'] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 280ms ease, visibility 0s linear 0s;
+  }
+
+  .tg-cart-drawer[hidden] { display: none; }
+
+  .tg-cart-drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 18, 32, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  /* Sliced left edge — diagonal cut on the panel itself */
+  .tg-cart-drawer-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(420px, 92vw);
+    background: #0D1526;
+    color: #E8ECF2;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -16px 0 40px rgba(0, 0, 0, 0.5);
+    /* Top-left corner cut — brand slash */
+    clip-path: polygon(28px 0, 100% 0, 100% 100%, 0 100%, 0 28px);
+  }
+
+  .tg-cart-drawer[data-open='true'] .tg-cart-drawer-panel {
+    transform: translateX(0);
+  }
+
+  /* Header */
+  .tg-cart-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid rgba(138, 155, 181, 0.12);
+    flex-shrink: 0;
+  }
+
+  .tg-cart-drawer-head-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .tg-cart-drawer-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #E8601C;
+  }
+
+  .tg-cart-drawer-eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 1.5px;
+    background: #E8601C;
+  }
+
+  .tg-cart-drawer-count {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #E8ECF2;
+    letter-spacing: -0.01em;
+  }
+
+  .tg-cart-drawer-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(138, 155, 181, 0.2);
+    background: transparent;
+    color: #E8ECF2;
+    cursor: pointer;
+    transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+    flex-shrink: 0;
+  }
+
+  .tg-cart-drawer-close:hover {
+    border-color: #E8601C;
+    color: #E8601C;
+  }
+
+  /* Body — items list (rendered by JS) */
+  .tg-cart-drawer-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 18px 28px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(138, 155, 181, 0.2) transparent;
+  }
+
+  .tg-cart-drawer-body::-webkit-scrollbar { width: 4px; }
+  .tg-cart-drawer-body::-webkit-scrollbar-thumb {
+    background: rgba(138, 155, 181, 0.2);
+    border-radius: 2px;
+  }
+
+  /* Loading dots */
+  .tg-cart-drawer-loading {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    padding: 32px 0;
+  }
+
+  .tg-cart-drawer-loading span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #E8601C;
+    animation: tg-cart-pulse 1s ease-in-out infinite;
+  }
+
+  .tg-cart-drawer-loading span:nth-child(2) { animation-delay: 0.15s; }
+  .tg-cart-drawer-loading span:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes tg-cart-pulse {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Empty state */
+  .tg-cart-drawer-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 56px 24px;
+    gap: 16px;
+  }
+
+  .tg-cart-drawer-empty svg {
+    width: 48px;
+    height: 48px;
+    color: rgba(232, 96, 28, 0.45);
+  }
+
+  .tg-cart-drawer-empty p {
+    font-family: 'Technor', sans-serif;
+    font-size: 16px;
+    color: #8A9BB5;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .tg-cart-drawer-empty a {
+    margin-top: 8px;
+    padding: 12px 28px 12px 22px;
+    background: #E8601C;
+    color: #0B1220;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: background 150ms ease;
+  }
+
+  .tg-cart-drawer-empty a:hover { background: #F47B3E; }
+
+  /* Item row */
+  .tg-cart-item {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(138, 155, 181, 0.08);
+    align-items: start;
+  }
+
+  .tg-cart-item:last-child { border-bottom: none; }
+
+  .tg-cart-item-img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    background: #121E34;
+    /* Tiny brand corner cut */
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
+  }
+
+  .tg-cart-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .tg-cart-item-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #E8ECF2;
+    text-decoration: none;
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .tg-cart-item-title:hover { color: #E8601C; }
+
+  .tg-cart-item-variant {
+    font-size: 11px;
+    color: #8A9BB5;
+    letter-spacing: 0.02em;
+  }
+
+  .tg-cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .tg-cart-item-qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(138, 155, 181, 0.2);
+  }
+
+  .tg-cart-item-qty button {
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    color: #8A9BB5;
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 120ms ease;
+  }
+
+  .tg-cart-item-qty button:hover { color: #E8601C; }
+
+  .tg-cart-item-qty button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .tg-cart-item-qty span {
+    min-width: 22px;
+    text-align: center;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #E8ECF2;
+  }
+
+  .tg-cart-item-remove {
+    background: none;
+    border: none;
+    color: #566A85;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 0 6px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 120ms ease;
+  }
+
+  .tg-cart-item-remove:hover { color: #E8601C; }
+
+  .tg-cart-item-price {
+    font-family: 'Technor', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #E8ECF2;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  /* Footer */
+  .tg-cart-drawer-foot {
+    padding: 18px 28px 24px;
+    border-top: 1px solid rgba(138, 155, 181, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  .tg-cart-drawer-foot[hidden] { display: none; }
+
+  .tg-cart-drawer-subtotal {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'General Sans', sans-serif;
+  }
+
+  .tg-cart-drawer-subtotal > span {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8A9BB5;
+  }
+
+  .tg-cart-drawer-subtotal strong {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #E8ECF2;
+    letter-spacing: -0.01em;
+  }
+
+  .tg-cart-drawer-checkout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 28px 16px 22px;
+    background: #E8601C;
+    color: #0B1220;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    /* Parallelogram — matches buy buttons across the brand */
+    clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  }
+
+  .tg-cart-drawer-checkout:hover {
+    background: #F47B3E;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(232, 96, 28, 0.35);
+  }
+
+  .tg-cart-drawer-view {
+    text-align: center;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8A9BB5;
+    text-decoration: none;
+    transition: color 120ms ease;
+  }
+
+  .tg-cart-drawer-view:hover { color: #E8601C; }
+
+  @media (max-width: 480px) {
+    .tg-cart-drawer-panel {
+      width: 100%;
+      clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
+    }
+    .tg-cart-drawer-head { padding: 20px 20px 16px; }
+    .tg-cart-drawer-body { padding: 14px 20px; }
+    .tg-cart-drawer-foot { padding: 16px 20px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tg-cart-drawer-panel { transition: none !important; }
+    .tg-cart-drawer-loading span { animation: none !important; opacity: 1; transform: none; }
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -961,20 +1391,195 @@
     });
   });
 
-  // Cart count refresh (preserved from previous header)
-  function refreshCart() {
-    fetch(window.Shopify?.routes?.root ? window.Shopify.routes.root + 'cart.js' : '/cart.js')
+  // ── Cart drawer ─────────────────────────────────────────────────
+  const cartDrawer = header.querySelector('[data-tg-cart-drawer]');
+  const cartOpenBtn = header.querySelector('[data-tg-cart-open]');
+  const cartClosers = header.querySelectorAll('[data-tg-cart-close]');
+  const cartBody = cartDrawer ? cartDrawer.querySelector('[data-tg-cart-body]') : null;
+  const cartFoot = cartDrawer ? cartDrawer.querySelector('[data-tg-cart-foot]') : null;
+  const cartCountBadge = header.querySelector('[data-tg-cart-count]');
+  const cartDrawerCount = cartDrawer ? cartDrawer.querySelector('[data-tg-cart-drawer-count]') : null;
+  const cartSubtotal = cartDrawer ? cartDrawer.querySelector('[data-tg-cart-subtotal]') : null;
+  const cartRoot = window.Shopify?.routes?.root || '/';
+
+  function moneyFormat(cents) {
+    const n = (cents / 100).toFixed(2);
+    return n + ' лв';
+  }
+
+  function pluralize(n, one, many) {
+    return n === 1 ? one : many;
+  }
+
+  function updateCartCounts(itemCount) {
+    if (cartCountBadge) {
+      cartCountBadge.textContent = itemCount;
+      if (itemCount > 0) cartCountBadge.removeAttribute('hidden');
+      else cartCountBadge.setAttribute('hidden', '');
+    }
+    if (cartDrawerCount) cartDrawerCount.textContent = itemCount;
+    const countLine = cartDrawer ? cartDrawer.querySelector('.tg-cart-drawer-count') : null;
+    if (countLine) {
+      const n = itemCount;
+      countLine.innerHTML = '<span data-tg-cart-drawer-count>' + n + '</span> ' + pluralize(n, 'item', 'items');
+    }
+  }
+
+  function renderCart(cart) {
+    if (!cartBody) return;
+    updateCartCounts(cart.item_count || 0);
+
+    if (!cart.items || cart.items.length === 0) {
+      cartBody.innerHTML =
+        '<div class="tg-cart-drawer-empty">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">' +
+            '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>' +
+            '<line x1="3" y1="6" x2="21" y2="6"/>' +
+            '<path d="M16 10a4 4 0 0 1-8 0"/>' +
+          '</svg>' +
+          '<p>Your cart is empty</p>' +
+          '<a href="/collections/all">Browse</a>' +
+        '</div>';
+      if (cartFoot) cartFoot.hidden = true;
+      return;
+    }
+
+    if (cartFoot) cartFoot.hidden = false;
+    if (cartSubtotal) cartSubtotal.textContent = moneyFormat(cart.total_price);
+
+    const html = cart.items.map((item) => {
+      const img = item.image
+        ? '<img class="tg-cart-item-img" src="' + item.image + '" alt="" loading="lazy">'
+        : '<div class="tg-cart-item-img"></div>';
+      const variant =
+        item.variant_title && item.variant_title !== 'Default Title'
+          ? '<span class="tg-cart-item-variant">' + escapeHtml(item.variant_title) + '</span>'
+          : '';
+      return (
+        '<div class="tg-cart-item" data-tg-cart-key="' + item.key + '">' +
+          img +
+          '<div class="tg-cart-item-info">' +
+            '<a class="tg-cart-item-title" href="' + item.url + '">' + escapeHtml(item.product_title) + '</a>' +
+            variant +
+            '<div class="tg-cart-item-controls">' +
+              '<div class="tg-cart-item-qty">' +
+                '<button type="button" data-tg-qty-dec aria-label="Decrease">−</button>' +
+                '<span>' + item.quantity + '</span>' +
+                '<button type="button" data-tg-qty-inc aria-label="Increase">+</button>' +
+              '</div>' +
+              '<button type="button" class="tg-cart-item-remove" data-tg-remove>Remove</button>' +
+            '</div>' +
+          '</div>' +
+          '<span class="tg-cart-item-price">' + moneyFormat(item.final_line_price) + '</span>' +
+        '</div>'
+      );
+    }).join('');
+    cartBody.innerHTML = html;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+  }
+
+  function fetchCart() {
+    return fetch(cartRoot + 'cart.js', { credentials: 'same-origin' })
       .then((r) => r.json())
-      .then((cart) => {
-        const el = header.querySelector('[data-tg-cart-count]');
-        if (!el) return;
-        el.textContent = cart.item_count;
-        if (cart.item_count > 0) el.removeAttribute('hidden');
-        else el.setAttribute('hidden', '');
-      })
+      .then((cart) => { renderCart(cart); return cart; })
       .catch(() => {});
   }
+
+  function changeQty(key, qty) {
+    if (!cartBody) return;
+    cartBody.style.opacity = '0.5';
+    fetch(cartRoot + 'cart/change.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ id: key, quantity: qty }),
+    })
+      .then((r) => r.json())
+      .then((cart) => { renderCart(cart); cartBody.style.opacity = ''; document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart })); })
+      .catch(() => { cartBody.style.opacity = ''; });
+  }
+
+  function openCart() {
+    if (!cartDrawer) return;
+    cartDrawer.hidden = false;
+    void cartDrawer.offsetWidth;
+    cartDrawer.setAttribute('data-open', 'true');
+    cartDrawer.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    fetchCart();
+    const closeBtn = cartDrawer.querySelector('.tg-cart-drawer-close');
+    if (closeBtn) closeBtn.focus({ preventScroll: true });
+  }
+
+  function closeCart() {
+    if (!cartDrawer) return;
+    cartDrawer.removeAttribute('data-open');
+    cartDrawer.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!cartDrawer.hasAttribute('data-open')) cartDrawer.hidden = true;
+    }, 280);
+    if (cartOpenBtn) cartOpenBtn.focus({ preventScroll: true });
+  }
+
+  if (cartOpenBtn) cartOpenBtn.addEventListener('click', openCart);
+  cartClosers.forEach((el) => el.addEventListener('click', closeCart));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cartDrawer && cartDrawer.getAttribute('data-open') === 'true') closeCart();
+  });
+
+  // Delegate qty + remove inside the drawer
+  if (cartBody) {
+    cartBody.addEventListener('click', (e) => {
+      const row = e.target.closest('[data-tg-cart-key]');
+      if (!row) return;
+      const key = row.getAttribute('data-tg-cart-key');
+      const qtyEl = row.querySelector('.tg-cart-item-qty span');
+      const currentQty = qtyEl ? parseInt(qtyEl.textContent, 10) : 1;
+
+      if (e.target.closest('[data-tg-qty-inc]')) changeQty(key, currentQty + 1);
+      else if (e.target.closest('[data-tg-qty-dec]')) changeQty(key, Math.max(0, currentQty - 1));
+      else if (e.target.closest('[data-tg-remove]')) changeQty(key, 0);
+    });
+  }
+
+  // Cart count badge refresh + opt-in event
+  function refreshCart() { fetchCart(); }
   document.addEventListener('cart:refresh', refreshCart);
-  document.addEventListener('cart:updated', refreshCart);
+  document.addEventListener('cart:updated', (e) => {
+    if (e.detail) updateCartCounts(e.detail.item_count);
+    else fetchCart();
+  });
+
+  // Intercept Add to Cart forms — AJAX add and auto-open the drawer.
+  // Targets our custom product form by id, plus any form with data-tg-ajax.
+  document.addEventListener('submit', (e) => {
+    const form = e.target;
+    if (!form || form.tagName !== 'FORM') return;
+    const isProductForm = form.id === 'tg-product-form' || form.hasAttribute('data-tg-ajax');
+    if (!isProductForm) return;
+    e.preventDefault();
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    const fd = new FormData(form);
+    fetch(cartRoot + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      credentials: 'same-origin',
+      body: fd,
+    })
+      .then((r) => r.json())
+      .then(() => fetchCart())
+      .then(() => { openCart(); })
+      .catch(() => {})
+      .finally(() => { if (submitBtn) submitBtn.disabled = false; });
+  });
 })();
 {% endjavascript %}
