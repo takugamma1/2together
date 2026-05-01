@@ -12,11 +12,14 @@
   background: var(--tg-ink);
   color: var(--tg-text-primary);
   font-family: 'General Sans', sans-serif;
-  overflow-x: hidden;
+  /* `clip` (not hidden) prevents horizontal page scroll WITHOUT
+     creating a scroll container — keeps position: sticky working
+     for the header above and the right purchase panel here. */
+  overflow-x: clip;
 }
 
 body.tg-product-active {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ── LEFT COLUMN: Editorial Content ── */

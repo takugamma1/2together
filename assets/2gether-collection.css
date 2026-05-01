@@ -7,7 +7,10 @@
   background: var(--tg-ink);
   color: var(--tg-text-primary);
   font-family: 'General Sans', sans-serif;
-  overflow-x: hidden;
+  /* `clip` (not hidden) prevents horizontal page scroll WITHOUT
+     creating a scroll container — keeps position: sticky working
+     for the header. */
+  overflow-x: clip;
 }
 
 /* ── Page shell — keep unified header/footer, just strip layout padding ── */
@@ -18,7 +21,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 body.tg-collection-active {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ══════════════════════════════════════
