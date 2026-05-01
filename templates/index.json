@@ -305,8 +305,8 @@
         "svc_5"
       ],
       "settings": {
-        "label_text": "Услуги",
-        "heading": "<p>Lorem ipsum<br><strong>dolor sit</strong></p>",
+        "label_text": "КАТЕГОРИИ ПРОДУКТИ",
+        "heading": "<p>Lorem ipsum<br/><strong>dolor sit</strong></p>",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore."
       }
     },
