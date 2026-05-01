@@ -6,6 +6,11 @@
 {%- liquid
   assign logo_text = section.settings.logo_text | default: shop.name
   assign current_path = request.path
+  assign nav_menu = linklists[section.settings.menu]
+  assign menu_links_count = 0
+  if nav_menu and nav_menu.links
+    assign menu_links_count = nav_menu.links.size
+  endif
 -%}
 
 <tg-header class="tg-header" data-sticky="{{ section.settings.sticky }}">
@@ -61,7 +66,53 @@
       -%}
 
       <div class="tg-takeover-grid" data-tg-takeover-grid>
-        {% if nav_tile_count > 0 %}
+        {% if menu_links_count > 0 %}
+          {%- comment -%} Menu mode — drive tiles from the configured Shopify menu, enrich with matching nav_tile blocks {%- endcomment -%}
+          {% for link in nav_menu.links %}
+            {%- liquid
+              assign matched_block = null
+              for block in section.blocks
+                if block.type == 'nav_tile' and block.settings.link_handle != blank and block.settings.link_handle == link.handle
+                  assign matched_block = block
+                endif
+              endfor
+
+              assign auto_num = forloop.index | prepend: '0' | slice: -2, 2
+              assign tile_num = matched_block.settings.number | default: auto_num
+              assign tile_descriptor = matched_block.settings.descriptor
+              assign tile_image = matched_block.settings.image
+
+              assign is_active = false
+              if current_path != '/' and link.url contains current_path
+                assign is_active = true
+              endif
+            -%}
+            <a href="{{ link.url }}" class="tg-takeover-tile{% if is_active %} is-active{% endif %}{% if link.active %} is-active{% endif %}" style="--tg-tile-i: {{ forloop.index0 }};">
+              <div class="tg-takeover-tile-media">
+                {% if tile_image != blank %}
+                  {{ tile_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: link.title, sizes: '(max-width: 768px) 100vw, 33vw' }}
+                {% else %}
+                  <div class="tg-takeover-tile-placeholder" aria-hidden="true"></div>
+                {% endif %}
+                <div class="tg-takeover-tile-overlay"></div>
+              </div>
+              <div class="tg-takeover-tile-info">
+                <span class="tg-takeover-tile-num">{{ tile_num }}</span>
+                <span class="tg-takeover-tile-title">{{ link.title }}</span>
+                {% if tile_descriptor != blank %}
+                  <span class="tg-takeover-tile-desc">{{ tile_descriptor }}</span>
+                {% endif %}
+                <span class="tg-takeover-tile-arrow" aria-hidden="true">
+                  <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M0 5h20M16 1l4 4-4 4"/>
+                  </svg>
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+
+        {% elsif nav_tile_count > 0 %}
+          {%- comment -%} Block mode — no menu selected, render nav_tile blocks directly {%- endcomment -%}
           {% for block in section.blocks %}
             {% if block.type == 'nav_tile' %}
               {%- liquid
@@ -70,7 +121,7 @@
                 if current_path != '/' and tile_link contains current_path
                   assign is_active = true
                 endif
-                assign tile_num = forloop.index | prepend: '0' | slice: -2, 2
+                assign auto_num = forloop.index | prepend: '0' | slice: -2, 2
               -%}
               <a href="{{ tile_link }}" class="tg-takeover-tile{% if is_active %} is-active{% endif %}" {{ block.shopify_attributes }} style="--tg-tile-i: {{ forloop.index0 }};">
                 <div class="tg-takeover-tile-media">
@@ -82,7 +133,7 @@
                   <div class="tg-takeover-tile-overlay"></div>
                 </div>
                 <div class="tg-takeover-tile-info">
-                  <span class="tg-takeover-tile-num">{{ block.settings.number | default: tile_num }}</span>
+                  <span class="tg-takeover-tile-num">{{ block.settings.number | default: auto_num }}</span>
                   <span class="tg-takeover-tile-title">{{ block.settings.title | default: 'Category' }}</span>
                   {% if block.settings.descriptor != blank %}
                     <span class="tg-takeover-tile-desc">{{ block.settings.descriptor }}</span>
@@ -97,8 +148,8 @@
             {% endif %}
           {% endfor %}
         {% else %}
-          {%- comment -%} Fallback so the menu works before the merchant configures tiles {%- endcomment -%}
-          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups,Rent A Bike|Daily, weekly, by the route,Bicycles|Road, MTB, gravel, e-bike,Merchandise|Apparel, parts, accessories,Price List|Service rates & rental tariffs,Offroad Tours|Group rides into the wild' | split: ',' -%}
+          {%- comment -%} Fallback so the menu works before the merchant configures anything {%- endcomment -%}
+          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups||Rent A Bike|Daily, weekly, by the route||Bicycles|Road, MTB, gravel, e-bike||Merchandise|Apparel, parts, accessories||Price List|Service rates & rental tariffs||Offroad Tours|Group rides into the wild' | split: '||' -%}
           {% for entry in default_tiles %}
             {%- assign parts = entry | split: '|' -%}
             {%- assign t_num = forloop.index | prepend: '0' | slice: -2, 2 -%}
@@ -179,6 +230,13 @@
       "content": "Navigation takeover"
     },
     {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Source menu",
+      "default": "main-menu",
+      "info": "Top-level links from this menu drive the takeover tiles. Add a Navigation tile block below and match its handle to attach an image and descriptor to a specific link."
+    },
+    {
       "type": "text",
       "id": "takeover_footer_text",
       "label": "Footer line (optional)"
@@ -191,10 +249,19 @@
       "limit": 8,
       "settings": [
         {
+          "type": "paragraph",
+          "content": "Attach an image and descriptor to a menu link by matching its handle. Or fill in title + link directly to use this block as a standalone tile (when no source menu is selected)."
+        },
+        {
           "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Category"
+          "id": "link_handle",
+          "label": "Match menu link handle",
+          "info": "Exact handle of the source-menu link this tile decorates (e.g. bicycles, rent-a-bike)."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Tile image"
         },
         {
           "type": "text",
@@ -208,9 +275,14 @@
           "info": "Defaults to position (01, 02, …)"
         },
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Tile image"
+          "type": "header",
+          "content": "Standalone (no source menu) only"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category"
         },
         {
           "type": "url",
