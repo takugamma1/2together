@@ -17,45 +17,51 @@
         "nav_tile_LJHd78": {
           "type": "nav_tile",
           "settings": {
-            "title": "BIKESHOP & BIKE SERVICE",
+            "link_handle": "",
+            "image": "shopify://shop_images/pexels-lebele-17593893.jpg",
             "descriptor": "",
             "number": "",
+            "title": "BIKESHOP & BIKE SERVICE",
             "link": ""
           }
         },
         "nav_tile_igVqRq": {
           "type": "nav_tile",
           "settings": {
-            "title": "RENT A BIKE",
+            "link_handle": "",
             "descriptor": "",
             "number": "",
+            "title": "RENT A BIKE",
             "link": ""
           }
         },
         "nav_tile_gygNUN": {
           "type": "nav_tile",
           "settings": {
-            "title": "BICYCLE",
+            "link_handle": "",
             "descriptor": "",
             "number": "",
+            "title": "BICYCLE",
             "link": ""
           }
         },
         "nav_tile_PKGhED": {
           "type": "nav_tile",
           "settings": {
-            "title": "MERCHANDISE",
+            "link_handle": "",
             "descriptor": "",
             "number": "",
+            "title": "MERCHANDISE",
             "link": ""
           }
         },
         "nav_tile_bRNc8c": {
           "type": "nav_tile",
           "settings": {
-            "title": "OFF-ROAD TOURS",
+            "link_handle": "",
             "descriptor": "",
             "number": "",
+            "title": "OFF-ROAD TOURS",
             "link": ""
           }
         }
@@ -73,6 +79,7 @@
         "sticky": true,
         "show_search": false,
         "show_account": true,
+        "menu": "main-menu",
         "takeover_footer_text": ""
       }
     }
