@@ -4,8 +4,8 @@
 {% # theme-check-enable RemoteAsset %}
 
 {%- liquid
-  assign menu = linklists[section.settings.menu]
   assign logo_text = section.settings.logo_text | default: shop.name
+  assign current_path = request.path
 -%}
 
 <tg-header class="tg-header" data-sticky="{{ section.settings.sticky }}">
@@ -17,95 +17,6 @@
         <span class="tg-header-wordmark">{{ logo_text }}</span>
       {% endif %}
     </a>
-
-    <nav class="tg-header-nav" aria-label="Primary">
-      <ul class="tg-header-nav-list">
-        {%- for link in menu.links -%}
-          {%- assign has_children = false -%}
-          {%- if link.links.size > 0 -%}{%- assign has_children = true -%}{%- endif -%}
-
-          {%- comment -%} Look up matching block for this link handle (for mega-menu media){%- endcomment -%}
-          {%- assign mega_block = null -%}
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'mega_panel' and block.settings.link_handle == link.handle -%}
-              {%- assign mega_block = block -%}
-            {%- endif -%}
-          {%- endfor -%}
-
-          <li class="tg-header-nav-item{% if has_children %} has-mega{% endif %}">
-            <a href="{{ link.url }}" class="tg-header-nav-link"{% if has_children %} aria-haspopup="true" aria-expanded="false"{% endif %}>
-              {{ link.title }}
-              {% if has_children %}
-                <svg class="tg-header-nav-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-              {% endif %}
-            </a>
-
-            {% if has_children %}
-              <div class="tg-mega" role="menu">
-                <div class="tg-mega-inner">
-                  <div class="tg-mega-cols">
-                    {%- assign col_items = link.links | slice: 0, 12 -%}
-                    <ul class="tg-mega-col">
-                      {%- for child in col_items -%}
-                        {%- if forloop.index <= 6 -%}
-                          <li>
-                            <a href="{{ child.url }}" class="tg-mega-link">
-                              <span class="tg-mega-link-title">{{ child.title }}</span>
-                              {% if child.links.size > 0 %}
-                                <span class="tg-mega-link-count">{{ child.links.size }}</span>
-                              {% endif %}
-                            </a>
-                            {% if child.links.size > 0 %}
-                              <ul class="tg-mega-sublist">
-                                {%- for grandchild in child.links limit: 4 -%}
-                                  <li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>
-                                {%- endfor -%}
-                              </ul>
-                            {% endif %}
-                          </li>
-                        {%- endif -%}
-                      {%- endfor -%}
-                    </ul>
-
-                    {% if link.links.size > 6 %}
-                      <ul class="tg-mega-col">
-                        {%- for child in link.links offset: 6 limit: 6 -%}
-                          <li>
-                            <a href="{{ child.url }}" class="tg-mega-link">
-                              <span class="tg-mega-link-title">{{ child.title }}</span>
-                              {% if child.links.size > 0 %}
-                                <span class="tg-mega-link-count">{{ child.links.size }}</span>
-                              {% endif %}
-                            </a>
-                          </li>
-                        {%- endfor -%}
-                      </ul>
-                    {% endif %}
-                  </div>
-
-                  {% if mega_block %}
-                    <aside class="tg-mega-feature" {{ mega_block.shopify_attributes }}>
-                      {% if mega_block.settings.image != blank %}
-                        <a href="{{ mega_block.settings.cta_link | default: link.url }}" class="tg-mega-feature-media">
-                          {{ mega_block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '320px' }}
-                          <div class="tg-mega-feature-overlay">
-                            <span class="tg-label">{{ mega_block.settings.eyebrow }}</span>
-                            <span class="tg-mega-feature-title">{{ mega_block.settings.heading }}</span>
-                            {% if mega_block.settings.cta_text != blank %}
-                              <span class="tg-mega-feature-cta">{{ mega_block.settings.cta_text }} &rarr;</span>
-                            {% endif %}
-                          </div>
-                        </a>
-                      {% endif %}
-                    </aside>
-                  {% endif %}
-                </div>
-              </div>
-            {% endif %}
-          </li>
-        {%- endfor -%}
-      </ul>
-    </nav>
 
     <div class="tg-header-actions">
       {% if section.settings.show_search %}
@@ -122,50 +33,101 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span class="tg-header-cart-count" data-tg-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
       </a>
-      <button type="button" class="tg-header-burger" aria-label="Menu" aria-expanded="false" data-tg-burger>
+      <button type="button" class="tg-header-burger" aria-label="Open menu" aria-expanded="false" aria-controls="tg-takeover" data-tg-burger>
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 
-  <!-- Mobile drawer -->
-  <div class="tg-drawer" data-tg-drawer hidden>
-    <div class="tg-drawer-header">
-      <a href="{{ routes.root_url }}" class="tg-drawer-brand">{{ logo_text }}</a>
-      <button type="button" class="tg-drawer-close" aria-label="Close" data-tg-drawer-close>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <nav class="tg-drawer-nav" aria-label="Mobile primary">
-      <ul class="tg-drawer-list">
-        {%- for link in menu.links -%}
-          <li class="tg-drawer-item{% if link.links.size > 0 %} has-children{% endif %}">
-            {% if link.links.size > 0 %}
-              <button type="button" class="tg-drawer-toggle" aria-expanded="false">
-                {{ link.title }}
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <ul class="tg-drawer-sub">
-                <li><a href="{{ link.url }}" class="tg-drawer-sub-all">View all {{ link.title | downcase }} &rarr;</a></li>
-                {%- for child in link.links -%}
-                  <li><a href="{{ child.url }}">{{ child.title }}</a></li>
-                {%- endfor -%}
-              </ul>
-            {% else %}
-              <a href="{{ link.url }}">{{ link.title }}</a>
+  <!-- Full-screen navigation takeover -->
+  <div id="tg-takeover" class="tg-takeover" data-tg-takeover hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Main navigation">
+    <div class="tg-takeover-backdrop" data-tg-takeover-close></div>
+
+    <div class="tg-takeover-inner">
+      <div class="tg-takeover-head">
+        <span class="tg-takeover-eyebrow">{{ section.settings.takeover_eyebrow | default: 'Navigate' }}</span>
+        <button type="button" class="tg-takeover-close" data-tg-takeover-close aria-label="Close menu">
+          <span>Close</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      {%- liquid
+        assign nav_tile_count = 0
+        for block in section.blocks
+          if block.type == 'nav_tile'
+            assign nav_tile_count = nav_tile_count | plus: 1
+          endif
+        endfor
+      -%}
+
+      <div class="tg-takeover-grid" data-tg-takeover-grid>
+        {% if nav_tile_count > 0 %}
+          {% for block in section.blocks %}
+            {% if block.type == 'nav_tile' %}
+              {%- liquid
+                assign tile_link = block.settings.link | default: '#'
+                assign is_active = false
+                if current_path != '/' and tile_link contains current_path
+                  assign is_active = true
+                endif
+                assign tile_num = forloop.index | prepend: '0' | slice: -2, 2
+              -%}
+              <a href="{{ tile_link }}" class="tg-takeover-tile{% if is_active %} is-active{% endif %}" {{ block.shopify_attributes }} style="--tg-tile-i: {{ forloop.index0 }};">
+                <div class="tg-takeover-tile-media">
+                  {% if block.settings.image != blank %}
+                    {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: block.settings.title, sizes: '(max-width: 768px) 100vw, 33vw' }}
+                  {% else %}
+                    <div class="tg-takeover-tile-placeholder" aria-hidden="true"></div>
+                  {% endif %}
+                  <div class="tg-takeover-tile-overlay"></div>
+                </div>
+                <div class="tg-takeover-tile-info">
+                  <span class="tg-takeover-tile-num">{{ block.settings.number | default: tile_num }}</span>
+                  <span class="tg-takeover-tile-title">{{ block.settings.title }}</span>
+                  {% if block.settings.descriptor != blank %}
+                    <span class="tg-takeover-tile-desc">{{ block.settings.descriptor }}</span>
+                  {% endif %}
+                  <span class="tg-takeover-tile-arrow" aria-hidden="true">
+                    <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <path d="M0 5h20M16 1l4 4-4 4"/>
+                    </svg>
+                  </span>
+                </div>
+              </a>
             {% endif %}
-          </li>
-        {%- endfor -%}
-      </ul>
-    </nav>
-    <div class="tg-drawer-footer">
-      {% if section.settings.show_search %}
-        <a href="{{ routes.search_url }}">{{ 'general.search.search' | t | default: 'Search' }}</a>
+          {% endfor %}
+        {% else %}
+          {%- comment -%} Fallback so the menu works before the merchant configures tiles {%- endcomment -%}
+          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups,Rent A Bike|Daily, weekly, by the route,Bicycles|Road, MTB, gravel, e-bike,Merchandise|Apparel, parts, accessories,Price List|Service rates & rental tariffs,Offroad Tours|Group rides into the wild' | split: ',' -%}
+          {% for entry in default_tiles %}
+            {%- assign parts = entry | split: '|' -%}
+            {%- assign t_num = forloop.index | prepend: '0' | slice: -2, 2 -%}
+            <a href="#" class="tg-takeover-tile" style="--tg-tile-i: {{ forloop.index0 }};">
+              <div class="tg-takeover-tile-media">
+                <div class="tg-takeover-tile-placeholder" aria-hidden="true"></div>
+                <div class="tg-takeover-tile-overlay"></div>
+              </div>
+              <div class="tg-takeover-tile-info">
+                <span class="tg-takeover-tile-num">{{ t_num }}</span>
+                <span class="tg-takeover-tile-title">{{ parts[0] }}</span>
+                <span class="tg-takeover-tile-desc">{{ parts[1] }}</span>
+                <span class="tg-takeover-tile-arrow" aria-hidden="true">
+                  <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M0 5h20M16 1l4 4-4 4"/>
+                  </svg>
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      {% if section.settings.takeover_footer_text != blank %}
+        <div class="tg-takeover-foot">
+          <span class="tg-takeover-foot-text">{{ section.settings.takeover_footer_text }}</span>
+        </div>
       {% endif %}
-      {% if section.settings.show_account %}
-        <a href="{{ routes.account_url }}">{{ 'customer.account.title' | t | default: 'Account' }}</a>
-      {% endif %}
-      <a href="{{ routes.cart_url }}">{{ 'sections.cart.title' | t | default: 'Cart' }} ({{ cart.item_count }})</a>
     </div>
   </div>
 </tg-header>
@@ -176,6 +138,10 @@
   "tag": "header",
   "class": "tg-header-section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
     {
       "type": "image_picker",
       "id": "logo",
@@ -188,16 +154,14 @@
       "default": "2GETHER"
     },
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Primary menu",
-      "default": "main-menu"
-    },
-    {
       "type": "checkbox",
       "id": "sticky",
       "label": "Sticky header",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Header actions"
     },
     {
       "type": "checkbox",
@@ -210,49 +174,110 @@
       "id": "show_account",
       "label": "Show account icon",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation takeover"
+    },
+    {
+      "type": "text",
+      "id": "takeover_eyebrow",
+      "label": "Eyebrow label",
+      "default": "Navigate"
+    },
+    {
+      "type": "text",
+      "id": "takeover_footer_text",
+      "label": "Footer line (optional)"
     }
   ],
   "blocks": [
     {
-      "type": "mega_panel",
-      "name": "Mega-menu panel",
+      "type": "nav_tile",
+      "name": "Navigation tile",
+      "limit": 8,
       "settings": [
         {
-          "type": "paragraph",
-          "content": "Add a featured image panel next to the dropdown of a top-level menu link. Match the link by its handle (e.g. catalog, road-bikes)."
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category"
         },
         {
           "type": "text",
-          "id": "link_handle",
-          "label": "Menu link handle",
-          "info": "Exact handle of the top-level menu link to attach this panel to."
+          "id": "descriptor",
+          "label": "Descriptor (1 line)"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number override",
+          "info": "Defaults to position (01, 02, …)"
         },
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Feature image"
-        },
-        {
-          "type": "text",
-          "id": "eyebrow",
-          "label": "Eyebrow label",
-          "default": "Featured"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading"
-        },
-        {
-          "type": "text",
-          "id": "cta_text",
-          "label": "CTA text",
-          "default": "Shop now"
+          "label": "Tile image"
         },
         {
           "type": "url",
-          "id": "cta_link",
-          "label": "CTA link"
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Header",
+      "blocks": [
+        {
+          "type": "nav_tile",
+          "settings": {
+            "title": "Bikeshop & Bike Service",
+            "descriptor": "Pro fitting, repairs, tune-ups",
+            "number": "01"
+          }
+        },
+        {
+          "type": "nav_tile",
+          "settings": {
+            "title": "Rent A Bike",
+            "descriptor": "Daily, weekly, by the route",
+            "number": "02"
+          }
+        },
+        {
+          "type": "nav_tile",
+          "settings": {
+            "title": "Bicycles",
+            "descriptor": "Road, MTB, gravel, e-bike",
+            "number": "03"
+          }
+        },
+        {
+          "type": "nav_tile",
+          "settings": {
+            "title": "Merchandise",
+            "descriptor": "Apparel, parts, accessories",
+            "number": "04"
+          }
+        },
+        {
+          "type": "nav_tile",
+          "settings": {
+            "title": "Price List",
+            "descriptor": "Service rates & rental tariffs",
+            "number": "05"
+          }
+        },
+        {
+          "type": "nav_tile",
+          "settings": {
+            "title": "Offroad Tours",
+            "descriptor": "Group rides into the wild",
+            "number": "06"
+          }
         }
       ]
     }
@@ -277,16 +302,17 @@
   }
 
   .tg-header-inner {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 32px;
+    gap: 24px;
     padding: 18px 48px;
     min-height: 88px;
     border-bottom: 1px solid rgba(138, 155, 181, 0.12);
     background: inherit;
   }
 
+  /* Brand */
   .tg-header-brand {
     display: inline-flex;
     align-items: center;
@@ -311,234 +337,6 @@
 
   .tg-header-wordmark::first-letter {
     color: #E8601C;
-  }
-
-  /* Primary nav */
-  .tg-header-nav {
-    justify-self: center;
-  }
-
-  .tg-header-nav-list {
-    display: flex;
-    gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .tg-header-nav-item {
-    position: static;
-  }
-
-  .tg-header-nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px;
-    color: #E8ECF2;
-    font-family: 'General Sans', sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    transition: color 150ms ease;
-  }
-
-  .tg-header-nav-link::after {
-    content: '';
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: 4px;
-    height: 2px;
-    background: #E8601C;
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .tg-header-nav-item:hover .tg-header-nav-link,
-  .tg-header-nav-item:focus-within .tg-header-nav-link {
-    color: #FFA468;
-  }
-
-  .tg-header-nav-item:hover .tg-header-nav-link::after,
-  .tg-header-nav-item:focus-within .tg-header-nav-link::after {
-    transform: scaleX(1);
-  }
-
-  .tg-header-nav-caret {
-    opacity: 0.6;
-    transition: transform 200ms ease;
-  }
-
-  .tg-header-nav-item:hover .tg-header-nav-caret {
-    transform: rotate(180deg);
-    opacity: 1;
-  }
-
-  /* Mega-menu panel */
-  .tg-mega {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    background: #0D1526;
-    border-top: 1px solid rgba(138, 155, 181, 0.12);
-    box-shadow: 0 24px 40px rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: opacity 200ms ease, transform 200ms ease, visibility 0s 200ms;
-    z-index: 100;
-  }
-
-  .tg-header-nav-item.has-mega:hover .tg-mega,
-  .tg-header-nav-item.has-mega:focus-within .tg-mega {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    transition: opacity 200ms ease, transform 200ms ease, visibility 0s 0s;
-  }
-
-  .tg-mega-inner {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 48px;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 40px 48px 48px;
-  }
-
-  .tg-mega-cols {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 48px;
-  }
-
-  .tg-mega-col {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .tg-mega-col > li {
-    padding: 2px 0;
-  }
-
-  .tg-mega-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 10px 0;
-    color: #E8ECF2;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(138, 155, 181, 0.08);
-    transition: color 150ms ease, border-color 150ms ease;
-  }
-
-  .tg-mega-link-title {
-    font-family: 'Technor', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
-
-  .tg-mega-link-count {
-    font-size: 11px;
-    color: #566A85;
-    font-weight: 500;
-  }
-
-  .tg-mega-link:hover {
-    color: #E8601C;
-    border-bottom-color: #E8601C;
-  }
-
-  .tg-mega-sublist {
-    list-style: none;
-    margin: 6px 0 14px;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .tg-mega-sublist a {
-    display: block;
-    padding: 4px 0;
-    color: #8A9BB5;
-    text-decoration: none;
-    font-size: 13px;
-    transition: color 150ms ease, padding-left 150ms ease;
-  }
-
-  .tg-mega-sublist a:hover {
-    color: #E8ECF2;
-    padding-left: 6px;
-  }
-
-  .tg-mega-feature {
-    align-self: stretch;
-  }
-
-  .tg-mega-feature-media {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    border-radius: 4px;
-    aspect-ratio: 4 / 5;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .tg-mega-feature-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .tg-mega-feature-media:hover img {
-    transform: scale(1.04);
-  }
-
-  .tg-mega-feature-overlay {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 24px;
-    background: linear-gradient(to top, rgba(11, 18, 32, 0.95) 0%, rgba(11, 18, 32, 0.4) 60%, transparent 100%);
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    color: #E8ECF2;
-  }
-
-  .tg-mega-feature-title {
-    font-family: 'Technor', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 1.15;
-  }
-
-  .tg-mega-feature-cta {
-    margin-top: 8px;
-    font-size: 13px;
-    color: #E8601C;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
   }
 
   /* Header actions */
@@ -566,10 +364,6 @@
     color: #FFA468;
   }
 
-  .tg-header-cart {
-    position: relative;
-  }
-
   .tg-header-cart-count {
     position: absolute;
     top: 2px;
@@ -591,174 +385,434 @@
 
   .tg-header-cart-count[hidden] { display: none; }
 
-  /* Hamburger */
+  /* Burger — always visible, morphs to X when open */
   .tg-header-burger {
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    width: 40px;
+    width: 44px;
     height: 40px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 8px;
+    margin-left: 4px;
   }
 
   .tg-header-burger span {
     display: block;
     height: 2px;
+    width: 100%;
     background: #E8ECF2;
-    transition: transform 250ms ease, opacity 200ms ease;
+    transform-origin: center;
+    transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 200ms ease;
   }
 
-  /* Drawer */
-  .tg-drawer {
+  .tg-header-burger[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .tg-header-burger[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .tg-header-burger[aria-expanded='true'] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ════════════════════════════════════
+     FULL-SCREEN NAVIGATION TAKEOVER
+     ════════════════════════════════════ */
+  .tg-takeover {
     position: fixed;
     inset: 0;
     z-index: 200;
-    background: #0B1220;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0s linear 320ms;
+  }
+
+  .tg-takeover[data-open='true'] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0s linear 0s;
+  }
+
+  .tg-takeover[hidden] { display: none; }
+
+  .tg-takeover-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 18, 32, 0.96);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .tg-takeover-inner {
+    position: relative;
+    height: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 32px 48px 48px;
     display: flex;
     flex-direction: column;
-    color: #E8ECF2;
-    transform: translateX(100%);
-    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
     overflow-y: auto;
   }
 
-  .tg-drawer[data-open='true'] {
-    transform: translateX(0);
-  }
-
-  .tg-drawer-header {
+  /* Head: eyebrow + close */
+  .tg-takeover-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 24px;
-    border-bottom: 1px solid rgba(138, 155, 181, 0.12);
+    margin-bottom: 32px;
+    flex-shrink: 0;
   }
 
-  .tg-drawer-brand {
-    font-family: 'Technor', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 0.04em;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .tg-drawer-close {
-    background: none;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    padding: 8px;
-  }
-
-  .tg-drawer-nav {
-    padding: 8px 0;
-  }
-
-  .tg-drawer-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .tg-drawer-item {
-    border-bottom: 1px solid rgba(138, 155, 181, 0.08);
-  }
-
-  .tg-drawer-item > a,
-  .tg-drawer-toggle {
-    display: flex;
-    justify-content: space-between;
+  .tg-takeover-eyebrow {
+    display: inline-flex;
     align-items: center;
-    width: 100%;
-    padding: 18px 24px;
+    gap: 12px;
+    font-family: 'General Sans', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #E8601C;
+  }
+
+  .tg-takeover-eyebrow::before {
+    content: '';
+    width: 28px;
+    height: 1.5px;
+    background: #E8601C;
+  }
+
+  .tg-takeover-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: transparent;
+    border: 1px solid rgba(138, 155, 181, 0.2);
     color: #E8ECF2;
-    font-family: 'Technor', sans-serif;
+    font-family: 'General Sans', sans-serif;
     font-weight: 600;
-    font-size: 16px;
-    letter-spacing: 0.04em;
+    font-size: 11px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    text-decoration: none;
-    background: none;
-    border: none;
     cursor: pointer;
-    text-align: left;
+    transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
   }
 
-  .tg-drawer-toggle svg {
-    transition: transform 200ms ease;
+  .tg-takeover-close:hover {
+    border-color: #E8601C;
+    color: #E8601C;
+    background: rgba(232, 96, 28, 0.06);
   }
 
-  .tg-drawer-item.has-children[data-open='true'] .tg-drawer-toggle svg {
-    transform: rotate(180deg);
+  /* Tiles grid */
+  .tg-takeover-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
-  .tg-drawer-sub {
-    list-style: none;
-    margin: 0;
-    padding: 0 24px 16px;
-    display: none;
-  }
-
-  .tg-drawer-item.has-children[data-open='true'] .tg-drawer-sub {
-    display: block;
-  }
-
-  .tg-drawer-sub a {
-    display: block;
-    padding: 10px 0;
-    color: #8A9BB5;
+  /* Tile — sliced corner cut, hero image, info bottom-left */
+  .tg-takeover-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    background: #121E34;
     text-decoration: none;
-    font-size: 14px;
+    color: inherit;
+    min-height: 280px;
+    aspect-ratio: 4 / 5;
+    /* Sliced top-right corner cut — brand signature */
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+    transform: translateY(24px);
+    opacity: 0;
+    transition: transform 460ms cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 320ms ease,
+                filter 280ms ease;
+    /* Stagger via per-tile index */
+    --tg-stagger-base: 60ms;
+    --tg-stagger-step: 50ms;
   }
 
-  .tg-drawer-sub a:hover { color: #FFA468; }
-
-  .tg-drawer-sub-all {
-    color: #E8601C !important;
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 12px !important;
-    letter-spacing: 0.08em;
+  .tg-takeover[data-open='true'] .tg-takeover-tile {
+    transform: translateY(0);
+    opacity: 1;
+    transition-delay: calc(var(--tg-stagger-base) + (var(--tg-tile-i, 0) * var(--tg-stagger-step)));
   }
 
-  .tg-drawer-footer {
-    margin-top: auto;
-    padding: 24px;
+  /* Tile media */
+  .tg-takeover-tile-media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .tg-takeover-tile-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                filter 320ms ease;
+    filter: brightness(0.7);
+  }
+
+  .tg-takeover-tile-placeholder {
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(135deg, rgba(232, 96, 28, 0.08) 0%, transparent 60%),
+      repeating-linear-gradient(45deg, rgba(138, 155, 181, 0.04) 0 12px, transparent 12px 24px),
+      #121E34;
+  }
+
+  .tg-takeover-tile-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(11, 18, 32, 0.92) 0%,
+      rgba(11, 18, 32, 0.55) 35%,
+      rgba(11, 18, 32, 0.2) 65%,
+      transparent 100%
+    );
+    pointer-events: none;
+    transition: background 280ms ease;
+  }
+
+  /* Tile info */
+  .tg-takeover-tile-info {
+    position: relative;
+    z-index: 2;
+    padding: 28px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    border-top: 1px solid rgba(138, 155, 181, 0.12);
+    color: #E8ECF2;
   }
 
-  .tg-drawer-footer a {
+  .tg-takeover-tile-num {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: #E8601C;
+    margin-bottom: 4px;
+    transition: transform 320ms ease;
+  }
+
+  .tg-takeover-tile-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: clamp(20px, 2vw, 28px);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    text-transform: uppercase;
+    color: #E8ECF2;
+    position: relative;
+    padding-bottom: 6px;
+  }
+
+  /* Flame underline that slides in from the left on hover */
+  .tg-takeover-tile-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 36px;
+    height: 2px;
+    background: #E8601C;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tg-takeover-tile-desc {
+    font-size: 13px;
     color: #8A9BB5;
-    text-decoration: none;
-    font-size: 14px;
+    line-height: 1.4;
+    max-width: 280px;
+  }
+
+  .tg-takeover-tile-arrow {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 6px;
+    color: #E8601C;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 280ms ease, transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Active tile (current page) — permanent flame underline + dot */
+  .tg-takeover-tile.is-active .tg-takeover-tile-title::after {
+    transform: scaleX(1);
+  }
+
+  .tg-takeover-tile.is-active::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 28px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #E8601C;
+    box-shadow: 0 0 14px rgba(232, 96, 28, 0.7);
+    z-index: 3;
+  }
+
+  /* ── SPOTLIGHT HOVER ──
+     When any tile is hovered, dim+desaturate the others, brighten the focused one */
+  .tg-takeover-grid:has(.tg-takeover-tile:hover) .tg-takeover-tile:not(:hover) {
+    opacity: 0.45;
+    filter: grayscale(0.55);
+  }
+
+  .tg-takeover-tile:hover .tg-takeover-tile-media img {
+    transform: scale(1.06);
+    filter: brightness(0.85);
+  }
+
+  .tg-takeover-tile:hover .tg-takeover-tile-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(11, 18, 32, 0.78) 0%,
+      rgba(11, 18, 32, 0.35) 40%,
+      rgba(11, 18, 32, 0.12) 70%,
+      transparent 100%
+    );
+  }
+
+  .tg-takeover-tile:hover .tg-takeover-tile-title::after {
+    transform: scaleX(1);
+  }
+
+  .tg-takeover-tile:hover .tg-takeover-tile-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .tg-takeover-tile:hover .tg-takeover-tile-num {
+    transform: translateX(2px);
+  }
+
+  /* Keyboard focus = same as hover */
+  .tg-takeover-tile:focus-visible {
+    outline: 2px solid #E8601C;
+    outline-offset: -2px;
+  }
+
+  .tg-takeover-grid:has(.tg-takeover-tile:focus-visible) .tg-takeover-tile:not(:focus-visible) {
+    opacity: 0.45;
+    filter: grayscale(0.55);
+  }
+
+  .tg-takeover-tile:focus-visible .tg-takeover-tile-title::after {
+    transform: scaleX(1);
+  }
+
+  .tg-takeover-tile:focus-visible .tg-takeover-tile-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Footer line (optional) */
+  .tg-takeover-foot {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(138, 155, 181, 0.12);
+    flex-shrink: 0;
+  }
+
+  .tg-takeover-foot-text {
+    font-size: 12px;
+    color: #566A85;
     letter-spacing: 0.04em;
   }
 
-  .tg-drawer-footer a:hover { color: #FFA468; }
-
-  /* Responsive */
+  /* ── Responsive ── */
   @media (max-width: 1024px) {
-    .tg-header-nav { display: none; }
-    .tg-header-burger { display: flex; }
     .tg-header-inner {
-      grid-template-columns: auto 1fr auto;
       padding: 12px 20px;
       min-height: 64px;
     }
+
+    .tg-takeover-inner {
+      padding: 24px 24px 32px;
+    }
+
+    .tg-takeover-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .tg-takeover-tile {
+      min-height: 240px;
+      aspect-ratio: 1 / 1;
+    }
+
+    .tg-takeover-tile-info {
+      padding: 20px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tg-takeover-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .tg-takeover-tile {
+      min-height: 180px;
+      aspect-ratio: 16 / 9;
+    }
+
+    .tg-takeover-tile-title {
+      font-size: 22px;
+    }
+
+    .tg-takeover-eyebrow { font-size: 10px; }
   }
 
   @media (max-width: 480px) {
     .tg-header-inner { padding: 10px 16px; min-height: 56px; }
     .tg-header-actions { gap: 0; }
     .tg-header-icon { width: 36px; height: 36px; }
+    .tg-takeover-inner { padding: 20px 16px 28px; }
+    .tg-takeover-head { margin-bottom: 20px; }
+    .tg-takeover-close span { display: none; }
+    .tg-takeover-close { padding: 10px 12px; }
+  }
+
+  /* Reduced motion: drop scale + stagger */
+  @media (prefers-reduced-motion: reduce) {
+    .tg-takeover-tile,
+    .tg-takeover-tile-media img,
+    .tg-takeover-tile-arrow,
+    .tg-takeover-tile-num,
+    .tg-takeover-tile-title::after {
+      transition: none !important;
+      transform: none !important;
+    }
+    .tg-takeover[data-open='true'] .tg-takeover-tile {
+      transform: none;
+      opacity: 1;
+    }
   }
 {% endstylesheet %}
 
@@ -768,40 +822,71 @@
   if (!header) return;
 
   const burger = header.querySelector('[data-tg-burger]');
-  const drawer = header.querySelector('[data-tg-drawer]');
-  const drawerClose = header.querySelector('[data-tg-drawer-close]');
+  const takeover = header.querySelector('[data-tg-takeover]');
+  if (!burger || !takeover) return;
 
-  function openDrawer() {
-    if (!drawer) return;
-    drawer.hidden = false;
-    requestAnimationFrame(() => drawer.setAttribute('data-open', 'true'));
-    if (burger) burger.setAttribute('aria-expanded', 'true');
-    document.documentElement.style.overflow = 'hidden';
-  }
+  const closers = header.querySelectorAll('[data-tg-takeover-close]');
 
-  function closeDrawer() {
-    if (!drawer) return;
-    drawer.removeAttribute('data-open');
-    if (burger) burger.setAttribute('aria-expanded', 'false');
-    setTimeout(() => { drawer.hidden = true; }, 320);
-    document.documentElement.style.overflow = '';
-  }
+  let lastFocus = null;
 
-  if (burger) burger.addEventListener('click', openDrawer);
-  if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
-
-  if (drawer) {
-    drawer.querySelectorAll('.tg-drawer-toggle').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const item = btn.closest('.tg-drawer-item');
-        const isOpen = item.getAttribute('data-open') === 'true';
-        item.setAttribute('data-open', isOpen ? 'false' : 'true');
-        btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-      });
+  function open() {
+    lastFocus = document.activeElement;
+    takeover.hidden = false;
+    // Force a reflow so the transition fires
+    void takeover.offsetWidth;
+    requestAnimationFrame(() => {
+      takeover.setAttribute('data-open', 'true');
+      takeover.setAttribute('aria-hidden', 'false');
     });
+    burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Close menu');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    // Focus the close button for keyboard nav
+    const close = takeover.querySelector('.tg-takeover-close');
+    if (close) close.focus({ preventScroll: true });
   }
 
-  // Update cart count via Shopify cart fetch
+  function close() {
+    takeover.removeAttribute('data-open');
+    takeover.setAttribute('aria-hidden', 'true');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Open menu');
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (burger.getAttribute('aria-expanded') === 'false') {
+        takeover.hidden = true;
+      }
+    }, 320);
+    if (lastFocus && typeof lastFocus.focus === 'function') {
+      lastFocus.focus({ preventScroll: true });
+    }
+  }
+
+  function toggle() {
+    if (takeover.getAttribute('data-open') === 'true') close();
+    else open();
+  }
+
+  burger.addEventListener('click', toggle);
+  closers.forEach((el) => el.addEventListener('click', close));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && takeover.getAttribute('data-open') === 'true') {
+      close();
+    }
+  });
+
+  // Close after a tile click — gives the page transition time to start
+  takeover.querySelectorAll('.tg-takeover-tile').forEach((tile) => {
+    tile.addEventListener('click', () => {
+      // Don't await — let the link navigate naturally
+      setTimeout(close, 0);
+    });
+  });
+
+  // Cart count refresh (preserved from previous header)
   function refreshCart() {
     fetch(window.Shopify?.routes?.root ? window.Shopify.routes.root + 'cart.js' : '/cart.js')
       .then((r) => r.json())
