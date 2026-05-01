@@ -71,11 +71,39 @@
           {% for link in nav_menu.links %}
             {%- liquid
               assign matched_block = null
+              assign positional_block = null
+              assign nav_tile_position = 0
+
+              assign link_handle_norm = link.handle | downcase | strip
+              assign link_title_norm = link.title | downcase | strip | replace: ' ', '-'
+              assign link_title_plain = link.title | downcase | strip
+
               for block in section.blocks
-                if block.type == 'nav_tile' and block.settings.link_handle != blank and block.settings.link_handle == link.handle
-                  assign matched_block = block
+                if block.type != 'nav_tile'
+                  continue
+                endif
+                assign nav_tile_position = nav_tile_position | plus: 1
+
+                comment
+                  Track the block at this menu link's position as a fallback,
+                  so blocks added in the same order as the menu Just Work.
+                endcomment
+                if nav_tile_position == forloop.index and positional_block == null
+                  assign positional_block = block
+                endif
+
+                if block.settings.link_handle != blank and matched_block == null
+                  assign block_match = block.settings.link_handle | downcase | strip
+                  assign block_match_slug = block_match | replace: ' ', '-'
+                  if block_match == link_handle_norm or block_match == link_title_plain or block_match_slug == link_handle_norm
+                    assign matched_block = block
+                  endif
                 endif
               endfor
+
+              if matched_block == null
+                assign matched_block = positional_block
+              endif
 
               assign auto_num = forloop.index | prepend: '0' | slice: -2, 2
               assign tile_num = matched_block.settings.number | default: auto_num
@@ -250,13 +278,13 @@
       "settings": [
         {
           "type": "paragraph",
-          "content": "Attach an image and descriptor to a menu link by matching its handle. Or fill in title + link directly to use this block as a standalone tile (when no source menu is selected)."
+          "content": "Attach an image and descriptor to a menu link. Leave 'Match' blank to bind this block to the menu link in the same position. Or type the link's title or handle to bind explicitly. Or fill in title + link below to use this block standalone (when no source menu is selected)."
         },
         {
           "type": "text",
           "id": "link_handle",
-          "label": "Match menu link handle",
-          "info": "Exact handle of the source-menu link this tile decorates (e.g. bicycles, rent-a-bike)."
+          "label": "Match menu link",
+          "info": "Type the menu link's title (e.g. \"Сервиз на колела\") or handle (e.g. \"bicycles\"). Leave blank to bind by position."
         },
         {
           "type": "image_picker",
