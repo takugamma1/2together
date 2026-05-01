@@ -259,7 +259,8 @@
         "svc_1": {
           "type": "service_card",
           "settings": {
-            "title": "Lorem Ipsum Dolor",
+            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
+            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "link": ""
           }
         },
