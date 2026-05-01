@@ -81,21 +81,148 @@
       {% endif %}
     </div>
 
-    <!-- Spec Statement -->
-    <div class="tg-product-spec">
-      <div class="tg-product-spec-text">
-        <div class="tg-product-hero-label">{{ section.settings.spec_label | default: 'Specification' }}</div>
-        <h3 class="tg-product-spec-title">
-          {{ section.settings.spec_title | default: 'AERO' }} <span>{{ section.settings.spec_title_accent | default: 'SPEC' }}</span>
-        </h3>
-        <p class="tg-product-spec-desc">{{ section.settings.spec_description | default: product.description | strip_html | truncate: 200 }}</p>
+    {%- liquid
+      assign stat_count = 0
+      assign feature_count = 0
+      assign included_count = 0
+      for block in section.blocks
+        case block.type
+          when 'stat_tile'
+            assign stat_count = stat_count | plus: 1
+          when 'feature_card'
+            assign feature_count = feature_count | plus: 1
+          when 'included_item'
+            assign included_count = included_count | plus: 1
+        endcase
+      endfor
+    -%}
+
+    <!-- ═══ STATS STRIP — quick scan of key data ═══ -->
+    {% if stat_count > 0 %}
+      <div class="tg-stats-strip">
+        {% for block in section.blocks %}
+          {% if block.type == 'stat_tile' %}
+            <div class="tg-stat-tile" {{ block.shopify_attributes }}>
+              <div class="tg-stat-tile-label">{{ block.settings.label }}</div>
+              <div class="tg-stat-tile-value">
+                {{ block.settings.value }}{% if block.settings.unit != blank %}<span class="tg-stat-tile-unit">{{ block.settings.unit }}</span>{% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
-      <div class="tg-product-spec-image">
-        {% if section.settings.spec_image != blank %}
-          {{ section.settings.spec_image | image_url: width: 600 | image_tag: loading: 'lazy' }}
-        {% elsif product.media.size > 1 %}
-          {{ product.media[1] | image_url: width: 600 | image_tag: loading: 'lazy' }}
+    {% endif %}
+
+    <!-- ═══ STORY — bold brand statement + image ═══ -->
+    <div class="tg-story">
+      <div class="tg-story-text">
+        <div class="tg-eyebrow">{{ section.settings.story_label | default: 'Built For' }}</div>
+        <h2 class="tg-story-title">
+          {{ section.settings.story_title | default: 'PURPOSEFUL' }}<span class="tg-story-title-accent">{{ section.settings.story_title_accent | default: 'CRAFT' }}</span>
+        </h2>
+        <p class="tg-story-desc">
+          {%- if section.settings.story_description != blank -%}
+            {{ section.settings.story_description }}
+          {%- else -%}
+            {{ product.description | strip_html | truncate: 240 }}
+          {%- endif -%}
+        </p>
+      </div>
+      <div class="tg-story-media">
+        {% if section.settings.story_image != blank %}
+          {{ section.settings.story_image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'tg-story-img' }}
+        {% elsif gallery_media.size > 1 %}
+          {%- assign story_preview = gallery_media[1].preview_image | default: gallery_media[1] -%}
+          <img class="tg-story-img" src="{{ story_preview | image_url: width: 900 }}" alt="" loading="lazy">
         {% endif %}
+      </div>
+    </div>
+
+    <!-- ═══ FEATURE HIGHLIGHTS — 3 sliced cards with icons ═══ -->
+    {% if feature_count > 0 %}
+      <div class="tg-features">
+        <div class="tg-section-head">
+          <div class="tg-eyebrow">{{ section.settings.features_label | default: 'Highlights' }}</div>
+          <h3 class="tg-section-title">{{ section.settings.features_title | default: 'BUILT IN' }}</h3>
+        </div>
+        <div class="tg-features-grid">
+          {% for block in section.blocks %}
+            {% if block.type == 'feature_card' %}
+              <div class="tg-feature" {{ block.shopify_attributes }}>
+                <div class="tg-feature-icon-wrap">
+                  {% if block.settings.icon_svg != blank %}
+                    {{ block.settings.icon_svg }}
+                  {% else %}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+                  {% endif %}
+                </div>
+                <div class="tg-feature-body">
+                  <div class="tg-feature-title">{{ block.settings.title }}</div>
+                  {% if block.settings.description != blank %}
+                    <p class="tg-feature-desc">{{ block.settings.description }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- ═══ WHAT'S IN THE BOX — visual checklist ═══ -->
+    {% if included_count > 0 %}
+      <div class="tg-included">
+        <div class="tg-section-head">
+          <div class="tg-eyebrow">{{ section.settings.included_label | default: 'In The Box' }}</div>
+          <h3 class="tg-section-title">{{ section.settings.included_title | default: 'WHAT YOU GET' }}</h3>
+        </div>
+        <ul class="tg-included-list">
+          {% for block in section.blocks %}
+            {% if block.type == 'included_item' %}
+              <li class="tg-included-item" {{ block.shopify_attributes }}>
+                <span class="tg-included-check" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+                <span class="tg-included-text">{{ block.settings.title }}</span>
+                {% if block.settings.note != blank %}
+                  <span class="tg-included-note">{{ block.settings.note }}</span>
+                {% endif %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <!-- ═══ SUPPORT STRIP — sliced trust pills ═══ -->
+    <div class="tg-support">
+      <div class="tg-support-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <div>
+          <strong>{{ section.settings.support_1_title | default: 'Lifetime Warranty' }}</strong>
+          <span>{{ section.settings.support_1_desc | default: 'On every frame' }}</span>
+        </div>
+      </div>
+      <div class="tg-support-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+        <div>
+          <strong>{{ section.settings.support_2_title | default: 'Free Shipping' }}</strong>
+          <span>{{ section.settings.support_2_desc | default: 'Orders over €500' }}</span>
+        </div>
+      </div>
+      <div class="tg-support-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        <div>
+          <strong>{{ section.settings.support_3_title | default: '30-Day Returns' }}</strong>
+          <span>{{ section.settings.support_3_desc | default: 'No questions asked' }}</span>
+        </div>
+      </div>
+      <div class="tg-support-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <div>
+          <strong>{{ section.settings.support_4_title | default: 'Expert Assembly' }}</strong>
+          <span>{{ section.settings.support_4_desc | default: 'Pro fitting included' }}</span>
+        </div>
       </div>
     </div>
 
@@ -121,34 +248,6 @@
         </div>
         <div class="tg-product-related-grid">
           {% for item in related_products limit: 4 %}
-            {% if item.id != product.id %}
-              <a href="{{ item.url }}" class="tg-related-card">
-                <div class="tg-related-card-image">
-                  {% if item.featured_image %}
-                    {{ item.featured_image | image_url: width: 400 | image_tag: loading: 'lazy' }}
-                  {% else %}
-                    {{ 'product-1' | placeholder_svg_tag }}
-                  {% endif %}
-                </div>
-                <div class="tg-related-card-info">
-                  <div class="tg-related-card-name">{{ item.title }}</div>
-                  <div class="tg-related-card-price">{{ item.price | money }}</div>
-                </div>
-              </a>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
-
-    <!-- Bestsellers -->
-    {% if product.collections.first and product.collections.first.products.size > 1 %}
-      <div class="tg-product-bestsellers">
-        <div class="tg-product-bestsellers-header">
-          <div class="tg-product-bestsellers-title">Bestsellers</div>
-        </div>
-        <div class="tg-product-bestsellers-grid">
-          {% for item in product.collections.first.products limit: 4 %}
             {% if item.id != product.id %}
               <a href="{{ item.url }}" class="tg-related-card">
                 <div class="tg-related-card-image">
@@ -301,24 +400,10 @@
         </div>
       {%- endform -%}
 
-      <!-- Trust / Value Points -->
-      <div class="tg-product-trust">
-        <div class="tg-trust-item">
-          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          <div class="tg-trust-text"><strong>Lifetime Frame Warranty</strong> — Full carbon frame coverage</div>
-        </div>
-        <div class="tg-trust-item">
-          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-          <div class="tg-trust-text"><strong>Free Shipping</strong> — On all orders over €500</div>
-        </div>
-        <div class="tg-trust-item">
-          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-          <div class="tg-trust-text"><strong>30-Day Returns</strong> — No questions asked</div>
-        </div>
-        <div class="tg-trust-item">
-          <svg class="tg-trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <div class="tg-trust-text"><strong>Expert Assembly</strong> — Professional bike fitting included</div>
-        </div>
+      <!-- Compact reassurance line — full trust pills live in the support strip below -->
+      <div class="tg-product-reassure">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span>Lifetime warranty · Free shipping · 30-day returns</span>
       </div>
     </div>
   </div>
@@ -575,65 +660,125 @@
   "settings": [
     {
       "type": "header",
-      "content": "Hero Area"
+      "content": "Story Block"
     },
     {
       "type": "text",
-      "id": "hero_label",
-      "label": "Hero label",
-      "default": "Engineering Velocity"
+      "id": "story_label",
+      "label": "Story eyebrow",
+      "default": "Built For"
     },
     {
       "type": "text",
-      "id": "hero_title",
-      "label": "Hero title",
-      "info": "Leave blank to use product title"
+      "id": "story_title",
+      "label": "Story title",
+      "default": "PURPOSEFUL"
+    },
+    {
+      "type": "text",
+      "id": "story_title_accent",
+      "label": "Story title (flame accent)",
+      "default": "CRAFT"
+    },
+    {
+      "type": "textarea",
+      "id": "story_description",
+      "label": "Story description",
+      "info": "Leave blank to use product description"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story image",
+      "info": "Falls back to second product image"
     },
     {
       "type": "header",
-      "content": "Features"
+      "content": "Feature Highlights"
     },
     {
       "type": "text",
       "id": "features_label",
-      "label": "Features label",
-      "default": "Key Performance"
+      "label": "Features eyebrow",
+      "default": "Highlights"
+    },
+    {
+      "type": "text",
+      "id": "features_title",
+      "label": "Features title",
+      "default": "BUILT IN"
     },
     {
       "type": "header",
-      "content": "Spec Section"
+      "content": "What's In The Box"
     },
     {
       "type": "text",
-      "id": "spec_label",
-      "label": "Spec label",
-      "default": "Specification"
+      "id": "included_label",
+      "label": "Included eyebrow",
+      "default": "In The Box"
     },
     {
       "type": "text",
-      "id": "spec_title",
-      "label": "Spec title",
-      "default": "AERO"
-    },
-    {
-      "type": "text",
-      "id": "spec_title_accent",
-      "label": "Spec title accent",
-      "default": "SPEC"
-    },
-    {
-      "type": "textarea",
-      "id": "spec_description",
-      "label": "Spec description"
-    },
-    {
-      "type": "image_picker",
-      "id": "spec_image",
-      "label": "Spec image"
+      "id": "included_title",
+      "label": "Included title",
+      "default": "WHAT YOU GET"
     },
     {
       "type": "header",
-      "content": "Brand Section"
+      "content": "Support Strip"
+    },
+    {
+      "type": "text",
+      "id": "support_1_title",
+      "label": "Pill 1 title",
+      "default": "Lifetime Warranty"
+    },
+    {
+      "type": "text",
+      "id": "support_1_desc",
+      "label": "Pill 1 description",
+      "default": "On every frame"
+    },
+    {
+      "type": "text",
+      "id": "support_2_title",
+      "label": "Pill 2 title",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "support_2_desc",
+      "label": "Pill 2 description",
+      "default": "Orders over €500"
+    },
+    {
+      "type": "text",
+      "id": "support_3_title",
+      "label": "Pill 3 title",
+      "default": "30-Day Returns"
+    },
+    {
+      "type": "text",
+      "id": "support_3_desc",
+      "label": "Pill 3 description",
+      "default": "No questions asked"
+    },
+    {
+      "type": "text",
+      "id": "support_4_title",
+      "label": "Pill 4 title",
+      "default": "Expert Assembly"
+    },
+    {
+      "type": "text",
+      "id": "support_4_desc",
+      "label": "Pill 4 description",
+      "default": "Pro fitting included"
+    },
+    {
+      "type": "header",
+      "content": "Brand Statement (closer)"
     },
     {
       "type": "text",
@@ -671,24 +816,70 @@
   ],
   "blocks": [
     {
-      "type": "feature_card",
-      "name": "Feature Card",
+      "type": "stat_tile",
+      "name": "Stat tile",
+      "limit": 6,
       "settings": [
         {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Weight"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "14"
+        },
+        {
+          "type": "text",
+          "id": "unit",
+          "label": "Unit",
+          "default": "kg"
+        }
+      ]
+    },
+    {
+      "type": "feature_card",
+      "name": "Feature highlight",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG (24x24)",
+          "info": "Paste inline SVG, defaults to a checkmark in a circle"
         },
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Feature"
+          "default": "Aerospace Carbon"
         },
         {
           "type": "text",
           "id": "description",
-          "label": "Description"
+          "label": "Description",
+          "default": "Hand-laid for optimal stiffness-to-weight ratio."
+        }
+      ]
+    },
+    {
+      "type": "included_item",
+      "name": "Included item",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Item",
+          "default": "Frame & fork"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Note (optional)"
         }
       ]
     }
