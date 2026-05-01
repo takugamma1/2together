@@ -14,6 +14,7 @@
     "tg_header": {
       "type": "tg-header",
       "settings": {
+        "logo": "shopify://shop_images/image0.png",
         "logo_text": "2GETHER",
         "menu": "main-menu",
         "sticky": true,
