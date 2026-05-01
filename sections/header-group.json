@@ -17,7 +17,7 @@
         "nav_tile_LJHd78": {
           "type": "nav_tile",
           "settings": {
-            "title": "Category",
+            "title": "BIKESHOP & BIKE SERVICE",
             "descriptor": "",
             "number": "",
             "link": ""
@@ -26,7 +26,7 @@
         "nav_tile_igVqRq": {
           "type": "nav_tile",
           "settings": {
-            "title": "Category",
+            "title": "RENT A BIKE",
             "descriptor": "",
             "number": "",
             "link": ""
@@ -35,7 +35,7 @@
         "nav_tile_gygNUN": {
           "type": "nav_tile",
           "settings": {
-            "title": "Category",
+            "title": "BICYCLE",
             "descriptor": "",
             "number": "",
             "link": ""
@@ -44,7 +44,7 @@
         "nav_tile_PKGhED": {
           "type": "nav_tile",
           "settings": {
-            "title": "Category",
+            "title": "MERCHANDISE",
             "descriptor": "",
             "number": "",
             "link": ""
@@ -53,16 +53,7 @@
         "nav_tile_bRNc8c": {
           "type": "nav_tile",
           "settings": {
-            "title": "Category",
-            "descriptor": "",
-            "number": "",
-            "link": ""
-          }
-        },
-        "nav_tile_GJN9yd": {
-          "type": "nav_tile",
-          "settings": {
-            "title": "Category",
+            "title": "OFF-ROAD TOURS",
             "descriptor": "",
             "number": "",
             "link": ""
@@ -74,8 +65,7 @@
         "nav_tile_igVqRq",
         "nav_tile_gygNUN",
         "nav_tile_PKGhED",
-        "nav_tile_bRNc8c",
-        "nav_tile_GJN9yd"
+        "nav_tile_bRNc8c"
       ],
       "settings": {
         "logo": "shopify://shop_images/image0.png",
