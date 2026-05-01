@@ -15,7 +15,7 @@
         "feature_card_PNM7p8": {
           "type": "feature_card",
           "settings": {
-            "image": "{{ product.featured_image }}",
+            "icon_svg": "",
             "title": "Feature",
             "description": ""
           }
@@ -23,7 +23,7 @@
         "feature_card_UYHYHb": {
           "type": "feature_card",
           "settings": {
-            "image": "{{ product.featured_image }}",
+            "icon_svg": "",
             "title": "Feature",
             "description": ""
           }
@@ -34,14 +34,22 @@
         "feature_card_UYHYHb"
       ],
       "settings": {
-        "hero_label": "",
-        "hero_title": "",
+        "story_label": "Built For",
+        "story_title": "PURPOSEFUL",
+        "story_title_accent": "CRAFT",
+        "story_description": "",
         "features_label": "Други снимки",
-        "spec_label": "Specification",
-        "spec_title": "AERO",
-        "spec_title_accent": "SPEC",
-        "spec_description": "Планински байк предназначен за приключенски пътешествия по неравни терени. Издържлива рамка и надежна окачване осигуряват стабилност и комфорт при всякакви условия. Подходящ за любители на природата и активния начин на живот. Перфектен избор за планински маршрути и офроуд приключения.",
-        "spec_image": "shopify://shop_images/santa-cruz-hightower-c-r-29-glossy-translucent-purple-m_20_281_29_939d9055-cd83-47f7-acb5-71743bb20a35.jpg",
+        "features_title": "BUILT IN",
+        "included_label": "In The Box",
+        "included_title": "WHAT YOU GET",
+        "support_1_title": "Lifetime Warranty",
+        "support_1_desc": "On every frame",
+        "support_2_title": "Free Shipping",
+        "support_2_desc": "Orders over €500",
+        "support_3_title": "30-Day Returns",
+        "support_3_desc": "No questions asked",
+        "support_4_title": "Expert Assembly",
+        "support_4_desc": "Pro fitting included",
         "brand_label": "Our Process",
         "brand_title": "PURE FIBER",
         "brand_description": "Every frame is handcrafted with aerospace-grade carbon fiber, engineered for the perfect balance of stiffness and compliance.",
