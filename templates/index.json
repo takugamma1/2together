@@ -157,8 +157,8 @@
       "type": "2gether-products",
       "settings": {
         "label_text": "Колекция",
-        "heading": "Lorem Ipsum",
-        "collection": "frontpage",
+        "heading": "Велосипеди",
+        "collection": "velosipedi-c59",
         "view_all_text": "Lorem ipsum",
         "view_all_link": ""
       }
