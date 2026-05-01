@@ -423,10 +423,8 @@
     isolation: isolate;
   }
 
-  tg-header[data-sticky='true'] {
-    position: sticky;
-    top: 0;
-  }
+  /* Stickiness is handled by #header-group in 2gether-custom.css —
+     this attribute is read there via :has(). */
 
   .tg-header-inner {
     display: flex;
@@ -483,6 +481,12 @@
     border-radius: 50%;
     color: #E8ECF2;
     text-decoration: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
     transition: color 150ms ease, background 150ms ease;
   }
 

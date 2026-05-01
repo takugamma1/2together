@@ -1,0 +1,414 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-bike-service.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-service-active');</script>
+
+<div class="tg-service-page">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="tg-service-hero">
+    <div class="tg-service-hero-media">
+      {% if section.settings.hero_image != blank %}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'eager', sizes: '100vw', class: 'tg-service-hero-img' }}
+      {% else %}
+        <div class="tg-service-hero-placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <div class="tg-service-hero-overlay"></div>
+    </div>
+    <div class="tg-service-hero-content">
+      <span class="tg-eyebrow">{{ section.settings.hero_eyebrow | default: 'Bike service' }}</span>
+      <h1 class="tg-service-hero-title">
+        {{ section.settings.hero_title | default: 'BOOK YOUR' }} <span>{{ section.settings.hero_title_accent | default: 'SERVICE' }}</span>
+      </h1>
+      <p class="tg-service-hero-sub">{{ section.settings.hero_sub | default: 'Tell us what is wrong, pick a time, drop the bike off. We handle the rest.' }}</p>
+      <a href="#tg-service-book" class="tg-service-hero-cta">
+        {{ section.settings.hero_cta | default: 'Book now' }}
+        <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ BOOKING FORM ═══ -->
+  <section id="tg-service-book" class="tg-service-book">
+    <aside class="tg-service-book-media">
+      {% if section.settings.form_image != blank %}
+        {{ section.settings.form_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '50vw', class: 'tg-service-book-img' }}
+      {% else %}
+        <div class="tg-service-hero-placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <div class="tg-service-book-media-info">
+        <span class="tg-eyebrow">{{ section.settings.form_caption_eyebrow | default: 'Workshop' }}</span>
+        <p>{{ section.settings.form_caption | default: 'Hands-on by certified mechanics. Most jobs done in 24h.' }}</p>
+      </div>
+    </aside>
+
+    <div class="tg-service-book-form-wrap">
+      <header class="tg-service-book-head">
+        <span class="tg-eyebrow">{{ section.settings.form_eyebrow | default: 'Step 1 of 1' }}</span>
+        <h2 class="tg-service-book-title">{{ section.settings.form_title | default: 'TELL US WHAT IS WRONG' }}</h2>
+      </header>
+
+      {%- form 'contact', id: 'tg-service-form', class: 'tg-service-form' -%}
+        <input type="hidden" name="contact[type]" value="Bike service booking">
+
+        {% if form.posted_successfully? %}
+          <div class="tg-service-form-ok">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ section.settings.form_success | default: 'Thanks — we got your booking. We will reply within 24h to confirm.' }}
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="tg-service-form-error">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="tg-service-form-grid">
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">What is the problem?</span>
+            <select name="contact[problem_category]" required>
+              <option value="" disabled selected>Pick a category</option>
+              <option value="Brake system">Brake system / Спирачна система</option>
+              <option value="Drivetrain">Drivetrain / Трансмисия</option>
+              <option value="Wheels">Wheels / Капли</option>
+              <option value="Suspension">Suspension / Окачване</option>
+              <option value="Service package">Service package / Пакетно обслужване</option>
+              <option value="Other">Other / Друго</option>
+            </select>
+          </label>
+
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">Describe the issue</span>
+            <textarea name="contact[problem_description]" rows="4" placeholder="What is happening? When did it start? Any details help." required></textarea>
+          </label>
+
+          <label class="tg-service-field">
+            <span class="tg-service-field-label">Preferred date</span>
+            <input type="date" name="contact[preferred_date]" required>
+          </label>
+
+          <label class="tg-service-field">
+            <span class="tg-service-field-label">Preferred time</span>
+            <select name="contact[preferred_time]" required>
+              <option value="" disabled selected>Pick a slot</option>
+              <option value="Morning (9:00 — 12:00)">Morning · 9:00 — 12:00</option>
+              <option value="Afternoon (12:00 — 16:00)">Afternoon · 12:00 — 16:00</option>
+              <option value="Evening (16:00 — 19:00)">Evening · 16:00 — 19:00</option>
+            </select>
+          </label>
+
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">Bike (make / model)</span>
+            <input type="text" name="contact[bike]" placeholder="e.g. Trek Marlin 7, 2022">
+          </label>
+
+          <label class="tg-service-field">
+            <span class="tg-service-field-label">Your name</span>
+            <input type="text" name="contact[name]" required>
+          </label>
+
+          <label class="tg-service-field">
+            <span class="tg-service-field-label">Phone</span>
+            <input type="tel" name="contact[phone]" required>
+          </label>
+
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">Email</span>
+            <input type="email" name="contact[email]" required>
+          </label>
+        </div>
+
+        <button type="submit" class="tg-service-form-submit">
+          {{ section.settings.form_submit | default: 'Book service' }}
+          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+        </button>
+
+        <p class="tg-service-form-note">
+          {{ section.settings.form_note | default: 'We will reply within 24h to confirm the slot. Drop-off only — no on-site repairs while you wait.' }}
+        </p>
+      {%- endform -%}
+    </div>
+  </section>
+
+  <!-- ═══ PRICING ACCORDION ═══ -->
+  {%- liquid
+    assign pricing_count = 0
+    for block in section.blocks
+      if block.type == 'pricing_category'
+        assign pricing_count = pricing_count | plus: 1
+      endif
+    endfor
+    assign nl = '
+'
+  -%}
+
+  {% if pricing_count > 0 %}
+    <section class="tg-service-prices">
+      <header class="tg-service-prices-head">
+        <span class="tg-eyebrow">{{ section.settings.prices_eyebrow | default: 'Our rates' }}</span>
+        <h2 class="tg-service-prices-title">{{ section.settings.prices_title | default: 'PRICES & PACKAGES' }}</h2>
+        {% if section.settings.prices_intro != blank %}
+          <p class="tg-service-prices-intro">{{ section.settings.prices_intro }}</p>
+        {% endif %}
+      </header>
+
+      <div class="tg-service-prices-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'pricing_category' %}
+            <details class="tg-price-cat" {{ block.shopify_attributes }} {% if forloop.first %}open{% endif %}>
+              <summary class="tg-price-cat-head">
+                <span class="tg-price-cat-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                <span class="tg-price-cat-name">{{ block.settings.name }}</span>
+                <span class="tg-price-cat-toggle" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+              </summary>
+              <ul class="tg-price-cat-body">
+                {%- assign rows = block.settings.items | split: nl -%}
+                {%- for row in rows -%}
+                  {%- assign line = row | strip -%}
+                  {%- if line == '' -%}{%- continue -%}{%- endif -%}
+                  {%- assign parts = line | split: '|' -%}
+                  <li class="tg-price-row">
+                    <span class="tg-price-row-name">{{ parts[0] | strip }}</span>
+                    <span class="tg-price-row-prices">
+                      {% if parts.size > 1 %}<span class="tg-price-row-bgn">{{ parts[1] | strip }} лв.</span>{% endif %}
+                      {% if parts.size > 2 %}<span class="tg-price-row-eur">{{ parts[2] | strip }}€</span>{% endif %}
+                    </span>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ═══ CTA STRIP ═══ -->
+  <section class="tg-service-cta">
+    <h3 class="tg-service-cta-title">{{ section.settings.cta_title | default: 'Ready to book?' }}</h3>
+    <a href="#tg-service-book" class="tg-service-cta-btn">
+      {{ section.settings.cta_btn | default: 'Pick a time' }}
+      <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+    </a>
+  </section>
+</div>
+
+<script>
+  // Auto-scroll to the booking form on success
+  (function () {
+    const ok = document.querySelector('.tg-service-form-ok');
+    if (ok) ok.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Bike Service",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow",
+      "default": "Bike service"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title",
+      "default": "BOOK YOUR"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_accent",
+      "label": "Title (flame accent)",
+      "default": "SERVICE"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Subtitle",
+      "default": "Tell us what is wrong, pick a time, drop the bike off. We handle the rest."
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "CTA label",
+      "default": "Book now"
+    },
+    {
+      "type": "header",
+      "content": "Booking form"
+    },
+    {
+      "type": "image_picker",
+      "id": "form_image",
+      "label": "Form-side image"
+    },
+    {
+      "type": "text",
+      "id": "form_caption_eyebrow",
+      "label": "Image caption eyebrow",
+      "default": "Workshop"
+    },
+    {
+      "type": "text",
+      "id": "form_caption",
+      "label": "Image caption",
+      "default": "Hands-on by certified mechanics. Most jobs done in 24h."
+    },
+    {
+      "type": "text",
+      "id": "form_eyebrow",
+      "label": "Form eyebrow",
+      "default": "All in one form"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form title",
+      "default": "TELL US WHAT IS WRONG"
+    },
+    {
+      "type": "text",
+      "id": "form_submit",
+      "label": "Submit label",
+      "default": "Book service"
+    },
+    {
+      "type": "textarea",
+      "id": "form_note",
+      "label": "Below-form note",
+      "default": "We will reply within 24h to confirm the slot. Drop-off only — no on-site repairs while you wait."
+    },
+    {
+      "type": "textarea",
+      "id": "form_success",
+      "label": "Success message",
+      "default": "Thanks — we got your booking. We will reply within 24h to confirm."
+    },
+    {
+      "type": "header",
+      "content": "Pricing accordion"
+    },
+    {
+      "type": "text",
+      "id": "prices_eyebrow",
+      "label": "Eyebrow",
+      "default": "Our rates"
+    },
+    {
+      "type": "text",
+      "id": "prices_title",
+      "label": "Title",
+      "default": "PRICES & PACKAGES"
+    },
+    {
+      "type": "textarea",
+      "id": "prices_intro",
+      "label": "Intro paragraph"
+    },
+    {
+      "type": "header",
+      "content": "Closing CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "CTA title",
+      "default": "Ready to book?"
+    },
+    {
+      "type": "text",
+      "id": "cta_btn",
+      "label": "CTA button label",
+      "default": "Pick a time"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pricing_category",
+      "name": "Pricing category",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Category name",
+          "default": "Category"
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Items",
+          "info": "One per line. Format: Service name | BGN price | EUR price (price 2 optional). Example: СМЯНА НА ГУМА | 10 | 5.11"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bike Service",
+      "blocks": [
+        {
+          "type": "pricing_category",
+          "settings": {
+            "name": "ПАКЕТНО ОБСЛУЖВАНЕ",
+            "items": "ПАКЕТ ПРИГОТВЯНЕ ЗА СЪХРАНЕНИЕ | 50 | 25.56\nПАКЕТ ПОДГОТВЯНЕ ЗА СЕЗОНА | 95 | 48.57\nПАКЕТ ЦЯЛОСТНА ПРОФИЛАКТИКА | 145 | 74.14\nПАКЕТ ПРЕМИУМ ЦЯЛОСТНА ПРОФИЛАКТИКА | 245 | 125.27\nПАКЕТ ОКАЧВАНЕ | 90 - 290 | 46.02 - 148.27\nПАКЕТ ФОЛИРАНЕ НА ВЕЛОСИПЕД | 200 - 350 | 102.26 - 178.95\nПАКЕТ ПОЧИСТВАНЕ | 20 | 10.23\nПАКЕТ ПРЕМИУМ ПОЧИСТВАНЕ | 45 | 23.01\nПАКЕТ СКОРОСТНА СИСТЕМА | 50 | 25.56\nПАКЕТ СПИРАЧНА СИСТЕМА V-BRAKE | 20 | 10.23\nПАКЕТ СПИРАЧНА СИСТЕМА МЕХАНИЧНИ ДИСКОВИ СПИРАЧКИ | 30 | 15.34\nПАКЕТ СПИРАЧНА СИСТЕМА ХИДРАВЛИЧНИ ДИСКОВИ СПИРАЧКИ | 50 | 25.56\nПАКЕТ ЛАГЕРИ НА РАМКА | 75 | 38.35"
+          }
+        },
+        {
+          "type": "pricing_category",
+          "settings": {
+            "name": "ВСИЧКО ПО КАПЛИТЕ",
+            "items": "СМЯНА НА ГУМА | 10 | 5.11\nЛЕПЕНЕ НА ГУМА | 10 | 5.11\nМОНТАЖ НА ТУБУЛАРНА ГУМА | 35 | 17.90\nМОНТАЖ НА БЕЗКАМЕРНА ГУМА | 20 | 10.23\nСМЯНА НА ГУМА НА ЕЛ. ТРОТИНЕТКА | 20 | 10.23\nСМЯНА НА ГУМА НА ЕЛ. МОТОР | 20 | 10.23\nСМЯНА НА ЗАДНА КАПЛА НА ВЕЛОСИПЕД С ДИСК | 30 | 15.34\nСМЯНА НА ПРЕДНА КАПЛА НА ВЕЛОСИПЕД С ДИСК | 20 | 10.23\nПРОФИЛАКТИКА НА ЗАДНА ГЛАВИНА (с некапсуловани лагери) | 35 | 17.90\nПРОФИЛАКТИКА НА ГЛАВИНА (с капсуловани лагери) | 35 | 17.90\nПРОФИЛАКТИКА НА ПРЕДНА ГЛАВИНА (с некапсуловани лагери) | 30 | 15.34\nЦЕНТРОВКА НА КАПЛА | 25 | 12.78\nНАПЛИТАНЕ НА КАПЛА И ЦЕНТРОВКА | 45 | 22.50\nРАЗПЛИТАНЕ НА ПРЕДНА КАПЛА | 15 | 7.67\nРАЗПЛИТАНЕ НА ЗАДНА КАПЛА | 20 | 10.23\nРАЗПЛИТАНЕ, НАПЛИТАНЕ И ЦЕНТРОВКА | 50 | 25.56"
+          }
+        },
+        {
+          "type": "pricing_category",
+          "settings": {
+            "name": "ТРАНСМИСИЯ",
+            "items": "СМЯНА НА КОМАНДА | 25 | 12.78\nСМЯНА НА ЗАДНИ ВЕНЦИ | 10 | 5.11\nСМЯНА НА ЛЯВ КУРБЕЛ | 10 | 5.11\nСМЯНА НА КУРБЕЛИ | 25 | 12.78\nСМЯНА НА ПЛОЧА | 30 | 15.34\nСМЯНА НА ВЕРИГА | 20 | 10.23\nМОНТАЖ НА ВОДАЧ ЗА ВЕРИГА | 25 | 12.78\nСМАЗВАНЕ НА ВЕРИГА | 3 | 1.53\nСМЯНА НА ЖИЛО ЗА СКОРОСТИ | 20 | 10.23\nСМЯНА НА БРОНЯ И ЖИЛО ЗА СКОРОСТИ | 25 | 12.78\nСМЯНА НА БРОНЯ И ЖИЛО ЗА СКОРОСТИ С ВЪТРЕШНО ОКАБЕЛЯВАНЕ | 35 | 17.90\nСМЯНА НА СРЕДНО ДВИЖЕНИЕ | 30 | 15.34\nПРОФИЛАКТИКА НА СРЕДНО ДВИЖЕНИЕ (при средните с некапсуловани лагери) | 30 | 15.34\nРЕМОНТ НА РЕЗБА НА РАМКА ПРИ СРЕДНОТО ДВИЖЕНИЕ | 30 | 15.34\nВЪЗСТАНОВЯВАНЕ НА РЕЗБА НА КУРБЕЛ | 40 | 20.45\nРЕГУЛИРАНЕ НА СКОРОСТИ | 15 | 7.67\nИЗПРАВЯНЕ НА УХО ЗА СКОРОСТИ И НАСТРОЙВАНЕ | 25 | 12.78\nСМЯНА НА УХО И НАСТРОЙВАНЕ НА СКОРОСТИ | 25 | 12.78\nСМЯНА НА ЗАДЕН ДЕРАЙЛЬОР | 25 | 12.78\nСМЯНА НА ПРЕДЕН ДЕРАЙЛЬОР | 25 | 12.78\nМОНТАЖ НА ПЕДАЛИ | 5 | 2.56\nСМЯНА НА ПЕДАЛИ | 8 | 4.09\nМОНТАЖ И НАСТРОЙВАНЕ НА ПАРЧЕТА И ШПАЙКОВЕ | 15 | 7.67\nПРОФИЛАКТИКА НА ПЕДАЛИ (с капсуловани лагери) | 30 | 15.34"
+          }
+        },
+        {
+          "type": "pricing_category",
+          "settings": {
+            "name": "СПИРАЧНА СИСТЕМА",
+            "items": "СМЯНА НА СПИРАЧНО ЛОСТЧЕ (механично) | 12 | 6.14\nСМЯНА НА СПИРАЧНО ЛОСТЧЕ (хидравлично) | 30 | 15.34\nСМЯНА НА V-BRAKE СПИРАЧКА | 15 | 7.67\nСМЯНА НА ДИСКОВА МЕХАНИЧНА СПИРАЧКА | 20 | 10.23\nСМЯНА НА ДИСКОВА ХИДРАВЛИЧНА СПИРАЧКА | 20 | 10.23\nСМЯНА НА ДИСКОВА СПИРАЧКА С ВЪТРЕШНО ОКАБЕЛЯВАНЕ | 30 | 15.34\nСМЯНА НА РОТОР | 5 | 2.56\nСМЯНА НА ЖИЛО НА СПИРАЧКА (V-BRAKE, U-BRAKE, ЧЕЛЮСТНА, МЕХАНИЧНА ДИСКОВА) | 15 | 7.67\nСМЯНА НА БРОНЯ И ЖИЛО НА СПИРАЧКА (V-BRAKE, U-BRAKE, ЧЕЛЮСТНА, МЕХАНИЧНА ДИСКОВА) | 20 | 10.23\nСМЯНА НА БРОНЯ И ЖИЛО НА СПИРАЧКА С ВЪТРЕШНО ОКАБЕЛЯВАНЕ | 25 | 12.78\nСМЯНА НА НАКЛАДКИ НА ДИСКОВА СПИРАЧКА | 10 | 5.11\nСМЯНА НА КАЛОДКИ НА V-BRAKE СПИРАЧКА | 10 | 5.11\nРЕГЛАЖ НА СПИРАЧКА | 10 | 5.11\nИЗПРАВЯНЕ НА РОТОР | 10 | 5.11\nСКЪСЯВАНЕ НА СПИРАЧЕН ХИДРАВЛИЧЕН МАРКУЧ | 20 | 10.23"
+          }
+        },
+        {
+          "type": "pricing_category",
+          "settings": {
+            "name": "ОКАЧВАНЕ",
+            "items": "СМЯНА НА ЧАШКИ (челни лагери) | 30 | 15.34\nМОНТАЖ НА ЧАШКИ (челни лагери) | 15 | 7.67\nОБИРАНЕ НА ЛУФТ В ЧАШКИ НА РЕЗБА | 10 | 5.11\nОБИРАНЕ НА ЛУФТ В ЧАШКИ | 5 | 2.56\nПРОФИЛАКТИКА НА ВИЛКА/ШОК | 90 - 290 | 46.02 - 148.27\nДЕМОНТАЖ И МОНТАЖ НА ВИЛКА | 15 | 7.67\nДЕМОНТАЖ И МОНТАЖ НА ШОК | 15 | 7.67\nПОДМЯНА НА ВСИЧКИ ЛАГЕРИ НА РАМКА | 75 | 38.35\nПРОФИЛАКТИКА НА ЧАШКИ | 25 | 12.78"
+          }
+        },
+        {
+          "type": "pricing_category",
+          "settings": {
+            "name": "ДРУГИ",
+            "items": "СМЯНА НА КОРМИЛО | 10 | 5.11\nСМЯНА НА ЛАПА | 10 | 5.11\nСМЯНА НА СЕДЛО | 10 | 5.11\nСМЯНА НА ГЮДЕЛИН | 30 | 15.34\nСМЯНА НА ГРИПОВЕ | 5 | 2.56\nСМЯНА НА СЕДЛОВО КОЛЧЕ | 10 | 5.11\nМОНТАЖ НА БАГАЖНИК | 10 - 20 | 5.11 - 10.23\nМОНТАЖ НА ЧИП ЗА ЕЛЕКТРИЧЕСКИ ВЕЛОСИПЕД | 110 | 56.24\nДИАГНОСТИКА НА ЕЛЕКТРИЧЕСКИ ВЕЛОСИПЕД С ЕЛЕКТРОДВИГАТЕЛ BOSCH | 80 | 40.90\nСГЛОБЯВАНЕ НА НОВ ВЕЛОСИПЕД | 50 | 25.56\nСГЛОБЯВАНЕ НА ВЕЛОСИПЕД | 85 | 43.46\nХОТЕЛ ЗА ВЕЛОСИПЕДИ (на месец) | 35 | 17.90"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
