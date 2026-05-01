@@ -45,7 +45,6 @@
 
     <div class="tg-takeover-inner">
       <div class="tg-takeover-head">
-        <span class="tg-takeover-eyebrow">{{ section.settings.takeover_eyebrow | default: 'Navigate' }}</span>
         <button type="button" class="tg-takeover-close" data-tg-takeover-close aria-label="Close menu">
           <span>Close</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -84,7 +83,7 @@
                 </div>
                 <div class="tg-takeover-tile-info">
                   <span class="tg-takeover-tile-num">{{ block.settings.number | default: tile_num }}</span>
-                  <span class="tg-takeover-tile-title">{{ block.settings.title }}</span>
+                  <span class="tg-takeover-tile-title">{{ block.settings.title | default: 'Category' }}</span>
                   {% if block.settings.descriptor != blank %}
                     <span class="tg-takeover-tile-desc">{{ block.settings.descriptor }}</span>
                   {% endif %}
@@ -178,12 +177,6 @@
     {
       "type": "header",
       "content": "Navigation takeover"
-    },
-    {
-      "type": "text",
-      "id": "takeover_eyebrow",
-      "label": "Eyebrow label",
-      "default": "Navigate"
     },
     {
       "type": "text",
@@ -464,32 +457,13 @@
     overflow-y: auto;
   }
 
-  /* Head: eyebrow + close */
+  /* Head: just the close button on the right */
   .tg-takeover-head {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     flex-shrink: 0;
-  }
-
-  .tg-takeover-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-family: 'General Sans', sans-serif;
-    font-weight: 600;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #E8601C;
-  }
-
-  .tg-takeover-eyebrow::before {
-    content: '';
-    width: 28px;
-    height: 1.5px;
-    background: #E8601C;
   }
 
   .tg-takeover-close {
@@ -515,11 +489,12 @@
     background: rgba(232, 96, 28, 0.06);
   }
 
-  /* Tiles grid */
+  /* Tiles grid — fills the available height as 3 cols × 2 rows on desktop */
   .tg-takeover-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 16px;
     flex: 1 1 auto;
     min-height: 0;
   }
@@ -534,8 +509,7 @@
     background: #121E34;
     text-decoration: none;
     color: inherit;
-    min-height: 280px;
-    aspect-ratio: 4 / 5;
+    min-height: 200px;
     /* Sliced top-right corner cut — brand signature */
     clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
     transform: translateY(24px);
@@ -756,14 +730,17 @@
       padding: 24px 24px 32px;
     }
 
+    /* 2 cols × 3 rows; let tiles take a fixed aspect since the panel scrolls */
     .tg-takeover-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: none;
       gap: 14px;
+      flex: 0 0 auto;
     }
 
     .tg-takeover-tile {
-      min-height: 240px;
-      aspect-ratio: 1 / 1;
+      min-height: 220px;
+      aspect-ratio: 4 / 5;
     }
 
     .tg-takeover-tile-info {
@@ -778,15 +755,13 @@
     }
 
     .tg-takeover-tile {
-      min-height: 180px;
-      aspect-ratio: 16 / 9;
+      min-height: 160px;
+      aspect-ratio: 16 / 10;
     }
 
     .tg-takeover-tile-title {
       font-size: 22px;
     }
-
-    .tg-takeover-eyebrow { font-size: 10px; }
   }
 
   @media (max-width: 480px) {
@@ -794,7 +769,7 @@
     .tg-header-actions { gap: 0; }
     .tg-header-icon { width: 36px; height: 36px; }
     .tg-takeover-inner { padding: 20px 16px 28px; }
-    .tg-takeover-head { margin-bottom: 20px; }
+    .tg-takeover-head { margin-bottom: 16px; }
     .tg-takeover-close span { display: none; }
     .tg-takeover-close { padding: 10px 12px; }
   }
