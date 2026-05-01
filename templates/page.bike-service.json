@@ -56,63 +56,9 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
-    },
-    "2gether_services_UDjkJp": {
-      "type": "2gether-services",
-      "blocks": {
-        "service_card_byTAe7": {
-          "type": "service_card",
-          "settings": {
-            "title": "Lorem Ipsum Dolor",
-            "link": ""
-          }
-        },
-        "service_card_JFdGVL": {
-          "type": "service_card",
-          "settings": {
-            "title": "Consectetur Adipiscing",
-            "link": ""
-          }
-        },
-        "service_card_NLp3CV": {
-          "type": "service_card",
-          "settings": {
-            "title": "Sed Eiusmod Tempor",
-            "link": ""
-          }
-        },
-        "service_card_RC86RE": {
-          "type": "service_card",
-          "settings": {
-            "title": "Ut Labore Et Dolore",
-            "link": ""
-          }
-        },
-        "service_card_jpCaMw": {
-          "type": "service_card",
-          "settings": {
-            "title": "Magna Aliqua Veniam",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "service_card_byTAe7",
-        "service_card_JFdGVL",
-        "service_card_NLp3CV",
-        "service_card_RC86RE",
-        "service_card_jpCaMw"
-      ],
-      "name": "2Gether Services",
-      "settings": {
-        "label_text": "Услуги",
-        "heading": "<p>Lorem ipsum<br><strong>dolor sit</strong></p>",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore."
-      }
     }
   },
   "order": [
-    "main",
-    "2gether_services_UDjkJp"
+    "main"
   ]
 }
