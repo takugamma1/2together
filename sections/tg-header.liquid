@@ -177,11 +177,12 @@
           {% endfor %}
         {% else %}
           {%- comment -%} Fallback so the menu works before the merchant configures anything {%- endcomment -%}
-          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups||Rent A Bike|Daily, weekly, by the route||Bicycles|Road, MTB, gravel, e-bike||Merchandise|Apparel, parts, accessories||Price List|Service rates & rental tariffs||Offroad Tours|Group rides into the wild' | split: '||' -%}
+          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups|/pages/bike-service||Rent A Bike|Daily, weekly, by the route|/pages/rent-a-bike||Bicycles|Road, MTB, gravel, e-bike|/collections/all||Merchandise|Apparel, parts, accessories|/collections/merchandise||Price List|Service rates & rental tariffs|/pages/bike-service#tg-service-prices||Offroad Tours|Group rides into the wild|/pages/offroad-tours' | split: '||' -%}
           {% for entry in default_tiles %}
             {%- assign parts = entry | split: '|' -%}
             {%- assign t_num = forloop.index | prepend: '0' | slice: -2, 2 -%}
-            <a href="#" class="tg-takeover-tile" style="--tg-tile-i: {{ forloop.index0 }};">
+            {%- assign t_link = parts[2] | default: '#' | strip -%}
+            <a href="{{ t_link }}" class="tg-takeover-tile" style="--tg-tile-i: {{ forloop.index0 }};">
               <div class="tg-takeover-tile-media">
                 <div class="tg-takeover-tile-placeholder" aria-hidden="true"></div>
                 <div class="tg-takeover-tile-overlay"></div>

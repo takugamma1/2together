@@ -213,6 +213,303 @@ body.tg-service-active {
   gap: var(--tg-s4);
 }
 
+/* ──────────────────────────────────────
+   WIZARD — progress + steps
+   ────────────────────────────────────── */
+.tg-wizard-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s2);
+}
+
+.tg-wizard-progress-track {
+  position: relative;
+  height: 2px;
+  background: var(--tg-divider);
+  overflow: hidden;
+}
+
+.tg-wizard-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 33%;
+  background: var(--tg-flame);
+  transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tg-wizard-progress-steps {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--tg-s3);
+}
+
+.tg-wizard-step-label {
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  transition: color 200ms var(--tg-ease-out);
+  white-space: nowrap;
+}
+
+.tg-wizard-step-label.is-done {
+  color: var(--tg-text-secondary);
+}
+
+.tg-wizard-step-label.is-active {
+  color: var(--tg-flame);
+}
+
+/* Step panels — only one visible at a time */
+.tg-wizard-step {
+  display: none;
+  flex-direction: column;
+  gap: var(--tg-s4);
+  animation: tg-wizard-fade 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tg-wizard-step.is-active {
+  display: flex;
+}
+
+@keyframes tg-wizard-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-wizard-step,
+  .tg-wizard-progress-fill {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.tg-wizard-step-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: var(--tg-s2);
+  border-bottom: 1px solid var(--tg-divider);
+}
+
+.tg-wizard-step-num {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--tg-flame);
+}
+
+.tg-wizard-step-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  margin: 0;
+}
+
+/* Step actions row (Back / Next or Submit) */
+.tg-wizard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--tg-s3);
+  margin-top: var(--tg-s3);
+  padding-top: var(--tg-s4);
+  border-top: 1px dashed var(--tg-divider);
+}
+
+.tg-wizard-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s2);
+  padding: var(--tg-s3) var(--tg-s5);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--tg-divider);
+  background: transparent;
+  color: var(--tg-text-secondary);
+  cursor: pointer;
+  transition: all 180ms var(--tg-ease-out);
+}
+
+.tg-wizard-btn:hover {
+  border-color: var(--tg-flame);
+  color: var(--tg-flame);
+}
+
+.tg-wizard-btn--next {
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  border-color: var(--tg-flame);
+  padding: var(--tg-s3) var(--tg-s7) var(--tg-s3) var(--tg-s5);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+.tg-wizard-btn--next:hover {
+  background: var(--tg-flame-light);
+  color: var(--tg-ink);
+  border-color: var(--tg-flame-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232, 96, 28, 0.35);
+}
+
+/* Invalid field state — inputs shake & highlight */
+.tg-service-field input.tg-invalid,
+.tg-service-field select.tg-invalid,
+.tg-service-field textarea.tg-invalid {
+  border-color: #ff6363;
+  background: rgba(255, 99, 99, 0.06);
+  animation: tg-wizard-shake 320ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes tg-wizard-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+
+/* ──────────────────────────────────────
+   CHECKBOXES (symptom multi-select)
+   ────────────────────────────────────── */
+.tg-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px var(--tg-s3);
+}
+
+.tg-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--tg-s2);
+  padding: var(--tg-s2) var(--tg-s3);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+  min-width: 0;
+}
+
+.tg-check:hover {
+  border-color: var(--tg-text-muted);
+}
+
+.tg-check input { display: none; }
+
+.tg-check-box {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--tg-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: all 150ms ease;
+  margin-top: 1px;
+}
+
+.tg-check input:checked + .tg-check-box {
+  background: var(--tg-flame);
+  border-color: var(--tg-flame);
+  color: var(--tg-ink);
+}
+
+.tg-check input:checked ~ .tg-check-label {
+  color: var(--tg-text-primary);
+}
+
+.tg-check:has(input:checked) {
+  border-color: var(--tg-flame);
+  background: rgba(232, 96, 28, 0.06);
+}
+
+.tg-check-label {
+  font-size: 12px;
+  color: var(--tg-text-secondary);
+  line-height: 1.4;
+  min-width: 0;
+}
+
+/* ──────────────────────────────────────
+   RADIOS (urgency, flexibility)
+   ────────────────────────────────────── */
+.tg-radio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px var(--tg-s3);
+}
+
+.tg-radio-grid--inline {
+  grid-template-columns: 1fr;
+}
+
+.tg-radio {
+  display: flex;
+  align-items: center;
+  gap: var(--tg-s2);
+  padding: var(--tg-s3);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+  min-width: 0;
+}
+
+.tg-radio:hover {
+  border-color: var(--tg-text-muted);
+}
+
+.tg-radio input { display: none; }
+
+.tg-radio-dot {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--tg-text-muted);
+  position: relative;
+  transition: all 150ms ease;
+}
+
+.tg-radio input:checked + .tg-radio-dot {
+  border-color: var(--tg-flame);
+}
+
+.tg-radio input:checked + .tg-radio-dot::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--tg-flame);
+}
+
+.tg-radio:has(input:checked) {
+  border-color: var(--tg-flame);
+  background: rgba(232, 96, 28, 0.06);
+}
+
+.tg-radio-label {
+  font-size: 12px;
+  color: var(--tg-text-secondary);
+  line-height: 1.4;
+  min-width: 0;
+}
+
+.tg-radio:has(input:checked) .tg-radio-label {
+  color: var(--tg-text-primary);
+}
+
 .tg-service-field {
   display: flex;
   flex-direction: column;
@@ -620,6 +917,28 @@ body.tg-service-active {
 
   .tg-service-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Wizard collapses to single-column for fields + checkbox/radio grids */
+  .tg-checkbox-grid,
+  .tg-radio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Hide the verbose step labels on phones, keep just the progress bar */
+  .tg-wizard-progress-steps {
+    display: none;
+  }
+
+  .tg-wizard-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--tg-s2);
+  }
+
+  .tg-wizard-btn,
+  .tg-wizard-btn--next {
+    justify-content: center;
   }
 
   .tg-service-prices {

@@ -51,7 +51,7 @@
         <h2 class="tg-service-book-title">{{ section.settings.form_title | default: 'TELL US WHAT IS WRONG' }}</h2>
       </header>
 
-      {%- form 'contact', id: 'tg-service-form', class: 'tg-service-form' -%}
+      {%- form 'contact', id: 'tg-service-form', class: 'tg-service-form', data-tg-wizard: '' -%}
         <input type="hidden" name="contact[type]" value="Bike service booking">
 
         {% if form.posted_successfully? %}
@@ -67,33 +67,109 @@
           </div>
         {% endif %}
 
-        <div class="tg-service-form-grid">
+        <!-- Progress bar -->
+        <div class="tg-wizard-progress" aria-hidden="true">
+          <div class="tg-wizard-progress-track">
+            <div class="tg-wizard-progress-fill" data-tg-wizard-fill style="width: 33%"></div>
+          </div>
+          <div class="tg-wizard-progress-steps">
+            <span class="tg-wizard-step-label is-active" data-tg-step-label="1">01 · Problem</span>
+            <span class="tg-wizard-step-label" data-tg-step-label="2">02 · Timing</span>
+            <span class="tg-wizard-step-label" data-tg-step-label="3">03 · Details</span>
+          </div>
+        </div>
+
+        <!-- ── STEP 1: PROBLEM ── -->
+        <div class="tg-wizard-step is-active" data-tg-step="1">
+          <header class="tg-wizard-step-head">
+            <span class="tg-wizard-step-num">01</span>
+            <h3 class="tg-wizard-step-title">What is wrong?</h3>
+          </header>
+
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">What is the problem?</span>
-            <select name="contact[problem_category]" required>
-              <option value="" disabled selected>Pick a category</option>
-              <option value="Brake system">Brake system / Спирачна система</option>
-              <option value="Drivetrain">Drivetrain / Трансмисия</option>
-              <option value="Wheels">Wheels / Капли</option>
-              <option value="Suspension">Suspension / Окачване</option>
-              <option value="Service package">Service package / Пакетно обслужване</option>
-              <option value="Other">Other / Друго</option>
+            <span class="tg-service-field-label">Problem area</span>
+            <select name="contact[problem_area]" required data-tg-validate>
+              <option value="" disabled selected>Pick the part of the bike</option>
+              <option value="Brakes">Brakes / Спирачки</option>
+              <option value="Drivetrain (gears, chain)">Drivetrain — gears, chain / Трансмисия</option>
+              <option value="Wheels and tires">Wheels &amp; tires / Капли и гуми</option>
+              <option value="Suspension (fork/shock)">Suspension — fork or shock / Окачване</option>
+              <option value="Frame / bearings">Frame &amp; bearings / Рамка и лагери</option>
+              <option value="Electric system">Electric system (e-bike) / Електрика</option>
+              <option value="Full service package">Full service package / Пакетно обслужване</option>
+              <option value="Other / I'm not sure">Other / I'm not sure / Друго</option>
             </select>
           </label>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Describe the issue</span>
-            <textarea name="contact[problem_description]" rows="4" placeholder="What is happening? When did it start? Any details help." required></textarea>
+            <span class="tg-service-field-label">Symptoms (pick all that apply)</span>
+            <div class="tg-checkbox-grid">
+              {% assign symptoms = 'Strange noise|Brakes feel weak|Won\'t shift,Skips gears|Tire flat or slow leak|Wheel wobble or out of true|Loose / play in a part|Crash damage|Won\'t turn on (e-bike)|Annual tune-up' | split: '|' %}
+              {% for symptom in symptoms %}
+                <label class="tg-check">
+                  <input type="checkbox" name="contact[symptoms][]" value="{{ symptom }}">
+                  <span class="tg-check-box"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <span class="tg-check-label">{{ symptom }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </label>
+
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">Describe in your own words</span>
+            <textarea name="contact[problem_description]" rows="3" placeholder="When did it start? Anything else that helps us prepare?" required data-tg-validate></textarea>
+          </label>
+
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">When did the issue start?</span>
+            <select name="contact[issue_started]" data-tg-validate>
+              <option value="" disabled selected>Pick one</option>
+              <option value="Today">Today</option>
+              <option value="This week">This week</option>
+              <option value="This month">This month</option>
+              <option value="Months ago">Months ago — got worse over time</option>
+              <option value="Don't remember">Don't remember</option>
+            </select>
+          </label>
+
+          <div class="tg-wizard-actions">
+            <span></span>
+            <button type="button" class="tg-wizard-btn tg-wizard-btn--next" data-tg-next>
+              Next: Timing
+              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── STEP 2: TIMING ── -->
+        <div class="tg-wizard-step" data-tg-step="2">
+          <header class="tg-wizard-step-head">
+            <span class="tg-wizard-step-num">02</span>
+            <h3 class="tg-wizard-step-title">How fast can we help?</h3>
+          </header>
+
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">How urgent is it?</span>
+            <div class="tg-radio-grid">
+              {% assign urgencies = 'Today if possible|This week|Within 2 weeks|Whenever you have a slot' | split: '|' %}
+              {% for u in urgencies %}
+                <label class="tg-radio">
+                  <input type="radio" name="contact[urgency]" value="{{ u }}" required data-tg-validate{% if forloop.first %} checked{% endif %}>
+                  <span class="tg-radio-dot"></span>
+                  <span class="tg-radio-label">{{ u }}</span>
+                </label>
+              {% endfor %}
+            </div>
           </label>
 
           <label class="tg-service-field">
-            <span class="tg-service-field-label">Preferred date</span>
-            <input type="date" name="contact[preferred_date]" required>
+            <span class="tg-service-field-label">When can you drop the bike off?</span>
+            <input type="date" name="contact[preferred_date]" required data-tg-validate>
           </label>
 
           <label class="tg-service-field">
             <span class="tg-service-field-label">Preferred time</span>
-            <select name="contact[preferred_time]" required>
+            <select name="contact[preferred_time]" required data-tg-validate>
               <option value="" disabled selected>Pick a slot</option>
               <option value="Morning (9:00 — 12:00)">Morning · 9:00 — 12:00</option>
               <option value="Afternoon (12:00 — 16:00)">Afternoon · 12:00 — 16:00</option>
@@ -102,30 +178,76 @@
           </label>
 
           <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">Are you flexible?</span>
+            <div class="tg-radio-grid tg-radio-grid--inline">
+              <label class="tg-radio">
+                <input type="radio" name="contact[flexibility]" value="Yes — pick the soonest free slot" checked>
+                <span class="tg-radio-dot"></span>
+                <span class="tg-radio-label">Yes — soonest free slot is fine</span>
+              </label>
+              <label class="tg-radio">
+                <input type="radio" name="contact[flexibility]" value="No — needs to be the slot above">
+                <span class="tg-radio-dot"></span>
+                <span class="tg-radio-label">No — only the slot above</span>
+              </label>
+            </div>
+          </label>
+
+          <div class="tg-wizard-actions">
+            <button type="button" class="tg-wizard-btn tg-wizard-btn--back" data-tg-back>
+              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
+              Back
+            </button>
+            <button type="button" class="tg-wizard-btn tg-wizard-btn--next" data-tg-next>
+              Next: Your details
+              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── STEP 3: DETAILS ── -->
+        <div class="tg-wizard-step" data-tg-step="3">
+          <header class="tg-wizard-step-head">
+            <span class="tg-wizard-step-num">03</span>
+            <h3 class="tg-wizard-step-title">How do we reach you?</h3>
+          </header>
+
+          <label class="tg-service-field tg-service-field--full">
             <span class="tg-service-field-label">Bike (make / model)</span>
             <input type="text" name="contact[bike]" placeholder="e.g. Trek Marlin 7, 2022">
           </label>
 
           <label class="tg-service-field">
             <span class="tg-service-field-label">Your name</span>
-            <input type="text" name="contact[name]" required>
+            <input type="text" name="contact[name]" required data-tg-validate>
           </label>
 
           <label class="tg-service-field">
             <span class="tg-service-field-label">Phone</span>
-            <input type="tel" name="contact[phone]" required>
+            <input type="tel" name="contact[phone]" required data-tg-validate>
           </label>
 
           <label class="tg-service-field tg-service-field--full">
             <span class="tg-service-field-label">Email</span>
-            <input type="email" name="contact[email]" required>
+            <input type="email" name="contact[email]" required data-tg-validate>
           </label>
-        </div>
 
-        <button type="submit" class="tg-service-form-submit">
-          {{ section.settings.form_submit | default: 'Book service' }}
-          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
-        </button>
+          <label class="tg-service-field tg-service-field--full">
+            <span class="tg-service-field-label">Anything else?</span>
+            <textarea name="contact[notes]" rows="2" placeholder="Optional. Allergies to glitter, stickers you'd like to keep, etc."></textarea>
+          </label>
+
+          <div class="tg-wizard-actions">
+            <button type="button" class="tg-wizard-btn tg-wizard-btn--back" data-tg-back>
+              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
+              Back
+            </button>
+            <button type="submit" class="tg-service-form-submit">
+              {{ section.settings.form_submit | default: 'Book service' }}
+              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+            </button>
+          </div>
+        </div>
 
         <p class="tg-service-form-note">
           {{ section.settings.form_note | default: 'We will reply within 24h to confirm the slot. Drop-off only — no on-site repairs while you wait.' }}
@@ -145,7 +267,7 @@
   -%}
 
   {% if pricing_count > 0 %}
-    <section class="tg-service-prices">
+    <section id="tg-service-prices" class="tg-service-prices" style="scroll-margin-top: 100px;">
       <header class="tg-service-prices-head">
         <span class="tg-eyebrow">{{ section.settings.prices_eyebrow | default: 'Our rates' }}</span>
         <h2 class="tg-service-prices-title">{{ section.settings.prices_title | default: 'PRICES & PACKAGES' }}</h2>
@@ -202,6 +324,87 @@
   (function () {
     const ok = document.querySelector('.tg-service-form-ok');
     if (ok) ok.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  })();
+
+  // ── 3-step wizard ──────────────────────────────────────────────
+  (function () {
+    const wizard = document.querySelector('[data-tg-wizard]');
+    if (!wizard) return;
+
+    const steps = Array.from(wizard.querySelectorAll('[data-tg-step]'));
+    const labels = Array.from(wizard.querySelectorAll('[data-tg-step-label]'));
+    const fill = wizard.querySelector('[data-tg-wizard-fill]');
+    const total = steps.length;
+    let current = 1;
+
+    function isVisible(el) {
+      return el && el.offsetParent !== null;
+    }
+
+    function validateStep(stepNum) {
+      const step = steps.find(s => s.dataset.tgStep === String(stepNum));
+      if (!step) return true;
+      const fields = step.querySelectorAll('[data-tg-validate]');
+      let firstInvalid = null;
+      let ok = true;
+      for (const f of fields) {
+        // Skip visually hidden conditional fields
+        if (!isVisible(f)) continue;
+        if (!f.checkValidity()) {
+          ok = false;
+          if (!firstInvalid) firstInvalid = f;
+          f.classList.add('tg-invalid');
+        } else {
+          f.classList.remove('tg-invalid');
+        }
+      }
+      if (firstInvalid) {
+        firstInvalid.focus({ preventScroll: false });
+        firstInvalid.reportValidity();
+      }
+      return ok;
+    }
+
+    function goTo(n) {
+      n = Math.max(1, Math.min(total, n));
+      current = n;
+      steps.forEach(s => s.classList.toggle('is-active', s.dataset.tgStep === String(n)));
+      labels.forEach(l => {
+        const ln = parseInt(l.dataset.tgStepLabel, 10);
+        l.classList.toggle('is-active', ln === n);
+        l.classList.toggle('is-done', ln < n);
+      });
+      if (fill) fill.style.width = ((n / total) * 100) + '%';
+      // Scroll the wizard head into view
+      const head = wizard.querySelector('.tg-wizard-progress');
+      if (head) head.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    wizard.addEventListener('click', (e) => {
+      if (e.target.closest('[data-tg-next]')) {
+        if (validateStep(current)) goTo(current + 1);
+      } else if (e.target.closest('[data-tg-back]')) {
+        goTo(current - 1);
+      }
+    });
+
+    // On form submit, validate the final step (browser also runs HTML5 validation)
+    wizard.addEventListener('submit', (e) => {
+      if (!validateStep(current)) {
+        e.preventDefault();
+      }
+    });
+
+    // Clear invalid state on input
+    wizard.addEventListener('input', (e) => {
+      if (e.target.classList && e.target.classList.contains('tg-invalid')) {
+        e.target.classList.remove('tg-invalid');
+      }
+    });
+
+    // If form has a server-side error after submit, jump to the last step
+    const errorBox = wizard.querySelector('.tg-service-form-error');
+    if (errorBox) goTo(total);
   })();
 </script>
 
