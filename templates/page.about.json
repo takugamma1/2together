@@ -64,6 +64,7 @@
         "mosaic_3"
       ],
       "settings": {
+        "hero_image": "shopify://shop_images/Screenshot_898_5B1_5D.png",
         "hero_line1": "ENGINEERED",
         "hero_line2": "FOR THE",
         "hero_line3": "NIGHT",
@@ -77,9 +78,11 @@
         "community_title": "SUNDAY CLUB",
         "community_desc": "",
         "community_cta_text": "Join the Ride",
+        "community_cta_link": "",
         "cta_title": "READY FOR THE",
         "cta_title_accent": "DARK?",
-        "cta_btn_text": "Explore Our Machines"
+        "cta_btn_text": "Explore Our Machines",
+        "cta_link": ""
       }
     }
   },
