@@ -61,10 +61,10 @@
         "nav_tile_bRNc8c": {
           "type": "nav_tile",
           "settings": {
-            "link_handle": "",
+            "link_handle": "OFF-ROAD TOUR",
             "image": "shopify://shop_images/pexels-malcolnphoto-34077919.jpg",
-            "descriptor": "",
-            "number": "",
+            "descriptor": "5",
+            "number": "5",
             "title": "OFF-ROAD TOURS",
             "link": ""
           }
