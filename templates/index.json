@@ -136,15 +136,21 @@
       "blocks": {
         "img_1": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg"
+          }
         },
         "img_2": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/pexels-lebele-17593893.jpg"
+          }
         },
         "img_3": {
           "type": "image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg"
+          }
         }
       },
       "block_order": [
@@ -233,8 +239,9 @@
         "poll_3"
       ],
       "settings": {
+        "background_image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg",
         "label_text": "Sunday Club",
-        "title": "<p>RIDE <strong>TOGETHER</strong><br>EVERY SUNDAY</p>",
+        "title": "<p>RIDE <strong>TOGETHER</strong><br/>EVERY SUNDAY</p>",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "cta_text": "Lorem ipsum",
         "cta_link": "",
