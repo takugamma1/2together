@@ -39,10 +39,10 @@
         "nav_tile_gygNUN": {
           "type": "nav_tile",
           "settings": {
-            "link_handle": "",
+            "link_handle": "КОЛЕЛА",
             "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
-            "descriptor": "",
-            "number": "",
+            "descriptor": "3",
+            "number": "3",
             "title": "BICYCLE",
             "link": ""
           }
@@ -50,10 +50,10 @@
         "nav_tile_PKGhED": {
           "type": "nav_tile",
           "settings": {
-            "link_handle": "",
+            "link_handle": "МЪРЧ",
             "image": "shopify://shop_images/Screenshot_4_5B1_5D.png",
-            "descriptor": "",
-            "number": "",
+            "descriptor": "4",
+            "number": "4",
             "title": "MERCHANDISE",
             "link": ""
           }
