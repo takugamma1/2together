@@ -158,7 +158,7 @@
       "settings": {
         "label_text": "Колекция",
         "heading": "Lorem Ipsum",
-        "collection": "",
+        "collection": "frontpage",
         "view_all_text": "Lorem ipsum",
         "view_all_link": ""
       }
