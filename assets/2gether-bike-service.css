@@ -238,27 +238,59 @@ body.tg-service-active {
 }
 
 .tg-wizard-progress-steps {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--tg-s3);
+  margin-top: var(--tg-s2);
 }
 
 .tg-wizard-step-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s2);
   font-family: 'General Sans', sans-serif;
   font-weight: 600;
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-size: 11px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--tg-text-muted);
   transition: color 200ms var(--tg-ease-out);
   white-space: nowrap;
+  min-width: 0;
+}
+
+.tg-wizard-step-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--tg-divider);
+  background: transparent;
+  color: inherit;
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  flex-shrink: 0;
+  transition: all 220ms var(--tg-ease-out);
 }
 
 .tg-wizard-step-label.is-done {
   color: var(--tg-text-secondary);
 }
 
+.tg-wizard-step-label.is-done .tg-wizard-step-dot {
+  background: var(--tg-flame);
+  border-color: var(--tg-flame);
+  color: var(--tg-ink);
+}
+
 .tg-wizard-step-label.is-active {
+  color: var(--tg-flame);
+}
+
+.tg-wizard-step-label.is-active .tg-wizard-step-dot {
+  border-color: var(--tg-flame);
   color: var(--tg-flame);
 }
 
@@ -312,6 +344,100 @@ body.tg-service-active {
   text-transform: uppercase;
   color: var(--tg-text-primary);
   margin: 0;
+}
+
+.tg-wizard-step-sub {
+  font-size: 13px;
+  color: var(--tg-text-secondary);
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+
+/* ──────────────────────────────────────
+   STEP 1 — Booking (date + time slots)
+   ────────────────────────────────────── */
+.tg-booking-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s4);
+}
+
+.tg-booking-date input[type="date"] {
+  font-family: 'Technor', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: var(--tg-s4) var(--tg-s5);
+  cursor: pointer;
+  color-scheme: dark;
+}
+
+.tg-booking-date-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--tg-text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* Time slot tiles */
+.tg-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--tg-s2);
+  border: 0;
+  padding: 0;
+}
+
+.tg-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--tg-s4) var(--tg-s3);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  cursor: pointer;
+  transition: all 180ms var(--tg-ease-out);
+  text-align: left;
+  min-width: 0;
+}
+
+.tg-slot input { display: none; }
+
+.tg-slot:hover {
+  border-color: var(--tg-text-muted);
+}
+
+.tg-slot:has(input:checked) {
+  border-color: var(--tg-flame);
+  background: rgba(232, 96, 28, 0.08);
+}
+
+.tg-slot:has(input:checked)::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tg-flame);
+}
+
+.tg-slot-name {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--tg-text-primary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.tg-slot-hours {
+  font-size: 11px;
+  color: var(--tg-text-muted);
+  letter-spacing: 0.02em;
 }
 
 /* Step actions row (Back / Next or Submit) */
@@ -925,10 +1051,25 @@ body.tg-service-active {
     grid-template-columns: 1fr;
   }
 
-  /* Hide the verbose step labels on phones, keep just the progress bar */
-  .tg-wizard-progress-steps {
-    display: none;
+  /* On phones, keep numbered dots but hide the verbose label text */
+  .tg-wizard-step-label {
+    justify-content: center;
+    font-size: 0;
   }
+
+  .tg-wizard-step-label .tg-wizard-step-dot {
+    font-size: 11px;
+  }
+
+  /* Time-slot grid: 3-up still works in compact mode but reduce padding */
+  .tg-slot {
+    padding: var(--tg-s3) var(--tg-s2);
+    text-align: center;
+    align-items: center;
+  }
+
+  .tg-slot-name { font-size: 12px; }
+  .tg-slot-hours { font-size: 10px; }
 
   .tg-wizard-actions {
     flex-direction: column-reverse;

@@ -68,22 +68,88 @@
         {% endif %}
 
         <!-- Progress bar -->
-        <div class="tg-wizard-progress" aria-hidden="true">
+        <div class="tg-wizard-progress">
           <div class="tg-wizard-progress-track">
             <div class="tg-wizard-progress-fill" data-tg-wizard-fill style="width: 33%"></div>
           </div>
           <div class="tg-wizard-progress-steps">
-            <span class="tg-wizard-step-label is-active" data-tg-step-label="1">01 · Problem</span>
-            <span class="tg-wizard-step-label" data-tg-step-label="2">02 · Timing</span>
-            <span class="tg-wizard-step-label" data-tg-step-label="3">03 · Details</span>
+            <span class="tg-wizard-step-label is-active" data-tg-step-label="1">
+              <span class="tg-wizard-step-dot">1</span>
+              <span>Date &amp; time</span>
+            </span>
+            <span class="tg-wizard-step-label" data-tg-step-label="2">
+              <span class="tg-wizard-step-dot">2</span>
+              <span>The problem</span>
+            </span>
+            <span class="tg-wizard-step-label" data-tg-step-label="3">
+              <span class="tg-wizard-step-dot">3</span>
+              <span>Your details</span>
+            </span>
           </div>
         </div>
 
-        <!-- ── STEP 1: PROBLEM ── -->
+        <!-- ── STEP 1: DATE & TIME ── -->
         <div class="tg-wizard-step is-active" data-tg-step="1">
           <header class="tg-wizard-step-head">
-            <span class="tg-wizard-step-num">01</span>
-            <h3 class="tg-wizard-step-title">What is wrong?</h3>
+            <span class="tg-wizard-step-num">01 · Booking</span>
+            <h3 class="tg-wizard-step-title">When can you bring it in?</h3>
+            <p class="tg-wizard-step-sub">Pick a day and a time slot. We will confirm by email within 24h.</p>
+          </header>
+
+          <div class="tg-booking-grid">
+            <label class="tg-service-field tg-service-field--full tg-booking-date">
+              <span class="tg-service-field-label">Date</span>
+              <input type="date" name="contact[preferred_date]" required data-tg-validate>
+              <span class="tg-booking-date-hint">Tap to open the calendar</span>
+            </label>
+
+            <fieldset class="tg-service-field tg-service-field--full">
+              <legend class="tg-service-field-label">Time slot</legend>
+              <div class="tg-slot-grid">
+                {% assign slots = 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
+                {% for slot in slots %}
+                  {%- assign sp = slot | split: '|' -%}
+                  <label class="tg-slot">
+                    <input type="radio" name="contact[preferred_time]" value="{{ sp[0] }} ({{ sp[1] }})" required data-tg-validate>
+                    <span class="tg-slot-name">{{ sp[0] }}</span>
+                    <span class="tg-slot-hours">{{ sp[1] }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+
+            <label class="tg-service-field tg-service-field--full">
+              <span class="tg-service-field-label">How flexible are you?</span>
+              <div class="tg-radio-grid tg-radio-grid--inline">
+                <label class="tg-radio">
+                  <input type="radio" name="contact[flexibility]" value="Yes — pick the soonest free slot" checked>
+                  <span class="tg-radio-dot"></span>
+                  <span class="tg-radio-label">Soonest free slot is fine</span>
+                </label>
+                <label class="tg-radio">
+                  <input type="radio" name="contact[flexibility]" value="No — needs to be the slot above">
+                  <span class="tg-radio-dot"></span>
+                  <span class="tg-radio-label">Only the slot above</span>
+                </label>
+              </div>
+            </label>
+          </div>
+
+          <div class="tg-wizard-actions">
+            <span></span>
+            <button type="button" class="tg-wizard-btn tg-wizard-btn--next" data-tg-next>
+              Next: The problem
+              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── STEP 2: THE PROBLEM ── -->
+        <div class="tg-wizard-step" data-tg-step="2">
+          <header class="tg-wizard-step-head">
+            <span class="tg-wizard-step-num">02 · Diagnostics</span>
+            <h3 class="tg-wizard-step-title">What is wrong with the bike?</h3>
+            <p class="tg-wizard-step-sub">The more we know up front, the faster we get you back on the road.</p>
           </header>
 
           <label class="tg-service-field tg-service-field--full">
@@ -104,7 +170,7 @@
           <label class="tg-service-field tg-service-field--full">
             <span class="tg-service-field-label">Symptoms (pick all that apply)</span>
             <div class="tg-checkbox-grid">
-              {% assign symptoms = 'Strange noise|Brakes feel weak|Won\'t shift,Skips gears|Tire flat or slow leak|Wheel wobble or out of true|Loose / play in a part|Crash damage|Won\'t turn on (e-bike)|Annual tune-up' | split: '|' %}
+              {% assign symptoms = 'Strange noise|Brakes feel weak|Skips gears or won\'t shift|Tire flat or slow leak|Wheel wobble / out of true|Loose / play in a part|Crash damage|Won\'t turn on (e-bike)|Annual tune-up' | split: '|' %}
               {% for symptom in symptoms %}
                 <label class="tg-check">
                   <input type="checkbox" name="contact[symptoms][]" value="{{ symptom }}">
@@ -116,13 +182,8 @@
           </label>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Describe in your own words</span>
-            <textarea name="contact[problem_description]" rows="3" placeholder="When did it start? Anything else that helps us prepare?" required data-tg-validate></textarea>
-          </label>
-
-          <label class="tg-service-field tg-service-field--full">
             <span class="tg-service-field-label">When did the issue start?</span>
-            <select name="contact[issue_started]" data-tg-validate>
+            <select name="contact[issue_started]">
               <option value="" disabled selected>Pick one</option>
               <option value="Today">Today</option>
               <option value="This week">This week</option>
@@ -132,65 +193,9 @@
             </select>
           </label>
 
-          <div class="tg-wizard-actions">
-            <span></span>
-            <button type="button" class="tg-wizard-btn tg-wizard-btn--next" data-tg-next>
-              Next: Timing
-              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- ── STEP 2: TIMING ── -->
-        <div class="tg-wizard-step" data-tg-step="2">
-          <header class="tg-wizard-step-head">
-            <span class="tg-wizard-step-num">02</span>
-            <h3 class="tg-wizard-step-title">How fast can we help?</h3>
-          </header>
-
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">How urgent is it?</span>
-            <div class="tg-radio-grid">
-              {% assign urgencies = 'Today if possible|This week|Within 2 weeks|Whenever you have a slot' | split: '|' %}
-              {% for u in urgencies %}
-                <label class="tg-radio">
-                  <input type="radio" name="contact[urgency]" value="{{ u }}" required data-tg-validate{% if forloop.first %} checked{% endif %}>
-                  <span class="tg-radio-dot"></span>
-                  <span class="tg-radio-label">{{ u }}</span>
-                </label>
-              {% endfor %}
-            </div>
-          </label>
-
-          <label class="tg-service-field">
-            <span class="tg-service-field-label">When can you drop the bike off?</span>
-            <input type="date" name="contact[preferred_date]" required data-tg-validate>
-          </label>
-
-          <label class="tg-service-field">
-            <span class="tg-service-field-label">Preferred time</span>
-            <select name="contact[preferred_time]" required data-tg-validate>
-              <option value="" disabled selected>Pick a slot</option>
-              <option value="Morning (9:00 — 12:00)">Morning · 9:00 — 12:00</option>
-              <option value="Afternoon (12:00 — 16:00)">Afternoon · 12:00 — 16:00</option>
-              <option value="Evening (16:00 — 19:00)">Evening · 16:00 — 19:00</option>
-            </select>
-          </label>
-
-          <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Are you flexible?</span>
-            <div class="tg-radio-grid tg-radio-grid--inline">
-              <label class="tg-radio">
-                <input type="radio" name="contact[flexibility]" value="Yes — pick the soonest free slot" checked>
-                <span class="tg-radio-dot"></span>
-                <span class="tg-radio-label">Yes — soonest free slot is fine</span>
-              </label>
-              <label class="tg-radio">
-                <input type="radio" name="contact[flexibility]" value="No — needs to be the slot above">
-                <span class="tg-radio-dot"></span>
-                <span class="tg-radio-label">No — only the slot above</span>
-              </label>
-            </div>
+            <span class="tg-service-field-label">Describe it in your own words</span>
+            <textarea name="contact[problem_description]" rows="3" placeholder="When did it start? Anything else that helps us prepare?" required data-tg-validate></textarea>
           </label>
 
           <div class="tg-wizard-actions">
@@ -205,11 +210,12 @@
           </div>
         </div>
 
-        <!-- ── STEP 3: DETAILS ── -->
+        <!-- ── STEP 3: YOUR DETAILS ── -->
         <div class="tg-wizard-step" data-tg-step="3">
           <header class="tg-wizard-step-head">
-            <span class="tg-wizard-step-num">03</span>
+            <span class="tg-wizard-step-num">03 · Contact</span>
             <h3 class="tg-wizard-step-title">How do we reach you?</h3>
+            <p class="tg-wizard-step-sub">We will email a confirmation and call only if we need extra info.</p>
           </header>
 
           <label class="tg-service-field tg-service-field--full">
@@ -234,7 +240,7 @@
 
           <label class="tg-service-field tg-service-field--full">
             <span class="tg-service-field-label">Anything else?</span>
-            <textarea name="contact[notes]" rows="2" placeholder="Optional. Allergies to glitter, stickers you'd like to keep, etc."></textarea>
+            <textarea name="contact[notes]" rows="2" placeholder="Optional — anything you would like us to know."></textarea>
           </label>
 
           <div class="tg-wizard-actions">
