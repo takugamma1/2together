@@ -1,0 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "tg_rental": {
+      "type": "2gether-bike-rental",
+      "settings": {
+        "hero_eyebrow": "Rent a bike",
+        "hero_title": "PICK YOUR",
+        "hero_title_accent": "RIDE",
+        "hero_sub": "Daily, weekly or by the route. Build your crew, pick the dates, ride out.",
+        "hero_cta": "Build your crew",
+        "max_per_bike": 4,
+        "form_submit": "Reserve crew",
+        "form_note": "We confirm by email within 24h. A €100 deposit is held on pickup and refunded at drop-off.",
+        "form_success": "Thanks — your reservation is in. We will reply within 24h with availability.",
+        "daily_label": "From €15 / day",
+        "daily_text": "Same-day pickup if reserved before 14:00.",
+        "weekly_label": "From €80 / week",
+        "weekly_text": "20% off any 7-day reservation.",
+        "group_label": "5 riders+",
+        "group_text": "Group discounts available. We deliver to hotels."
+      }
+    }
+  },
+  "order": [
+    "tg_rental"
+  ]
+}
