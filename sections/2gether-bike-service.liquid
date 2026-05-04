@@ -97,11 +97,34 @@
           </header>
 
           <div class="tg-booking-grid">
-            <label class="tg-service-field tg-service-field--full tg-booking-date">
+            <div class="tg-service-field tg-service-field--full">
               <span class="tg-service-field-label">Date</span>
-              <input type="date" name="contact[preferred_date]" required data-tg-validate>
-              <span class="tg-booking-date-hint">Tap to open the calendar</span>
-            </label>
+
+              <!-- Custom calendar picker -->
+              <div class="tg-cal" data-tg-cal>
+                <div class="tg-cal-head">
+                  <button type="button" class="tg-cal-nav" data-tg-cal-prev aria-label="Previous month">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <span class="tg-cal-title" data-tg-cal-title aria-live="polite"></span>
+                  <button type="button" class="tg-cal-nav" data-tg-cal-next aria-label="Next month">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                </div>
+                <div class="tg-cal-weekdays" aria-hidden="true">
+                  <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+                </div>
+                <div class="tg-cal-grid" data-tg-cal-grid role="grid">
+                  <!-- Filled by JS -->
+                </div>
+                <p class="tg-cal-selected" data-tg-cal-selected>
+                  <span class="tg-cal-selected-empty">Pick a day above</span>
+                </p>
+              </div>
+
+              <!-- Hidden field populated by the calendar -->
+              <input type="hidden" name="contact[preferred_date]" data-tg-cal-input data-tg-validate required>
+            </div>
 
             <fieldset class="tg-service-field tg-service-field--full">
               <legend class="tg-service-field-label">Time slot</legend>
@@ -170,7 +193,7 @@
           <label class="tg-service-field tg-service-field--full">
             <span class="tg-service-field-label">Symptoms (pick all that apply)</span>
             <div class="tg-checkbox-grid">
-              {% assign symptoms = 'Strange noise|Brakes feel weak|Skips gears or won\'t shift|Tire flat or slow leak|Wheel wobble / out of true|Loose / play in a part|Crash damage|Won\'t turn on (e-bike)|Annual tune-up' | split: '|' %}
+              {% assign symptoms = "Strange noise|Brakes feel weak|Skips gears or won't shift|Tire flat or slow leak|Wheel wobble / out of true|Loose / play in a part|Crash damage|Won't turn on (e-bike)|Annual tune-up" | split: '|' %}
               {% for symptom in symptoms %}
                 <label class="tg-check">
                   <input type="checkbox" name="contact[symptoms][]" value="{{ symptom }}">
@@ -330,6 +353,129 @@
   (function () {
     const ok = document.querySelector('.tg-service-form-ok');
     if (ok) ok.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  })();
+
+  // ── Calendar picker ─────────────────────────────────────────────
+  (function () {
+    const cal = document.querySelector('[data-tg-cal]');
+    if (!cal) return;
+
+    const titleEl = cal.querySelector('[data-tg-cal-title]');
+    const gridEl = cal.querySelector('[data-tg-cal-grid]');
+    const prevBtn = cal.querySelector('[data-tg-cal-prev]');
+    const nextBtn = cal.querySelector('[data-tg-cal-next]');
+    const selectedEl = cal.querySelector('[data-tg-cal-selected]');
+    const hiddenInput = document.querySelector('[data-tg-cal-input]');
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const maxDate = new Date(today);
+    maxDate.setDate(maxDate.getDate() + 90); // 3 months ahead
+
+    let view = new Date(today.getFullYear(), today.getMonth(), 1);
+    let selected = null;
+
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                        'July', 'August', 'September', 'October', 'November', 'December'];
+
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function isoDate(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function sameDate(a, b) { return a && b && a.toDateString() === b.toDateString(); }
+
+    function render() {
+      titleEl.textContent = monthNames[view.getMonth()] + ' ' + view.getFullYear();
+
+      const year = view.getFullYear();
+      const month = view.getMonth();
+      const firstDay = new Date(year, month, 1);
+      // Mon = 0, Sun = 6
+      const startOffset = (firstDay.getDay() + 6) % 7;
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      // Disable prev nav if showing this month already
+      const prevMonth = new Date(year, month - 1, 1);
+      const lastOfPrev = new Date(year, month, 0);
+      prevBtn.disabled = lastOfPrev < today;
+      // Disable next nav if 3 months out
+      nextBtn.disabled = new Date(year, month + 1, 1) > maxDate;
+
+      let html = '';
+
+      // Leading blanks
+      for (let i = 0; i < startOffset; i++) {
+        html += '<span class="tg-cal-cell tg-cal-cell--blank" aria-hidden="true"></span>';
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const date = new Date(year, month, d);
+        const iso = isoDate(date);
+        const dow = date.getDay(); // 0 = Sun
+        const past = date < today;
+        const tooFar = date > maxDate;
+        // Sundays closed
+        const closed = dow === 0;
+        const disabled = past || tooFar || closed;
+        const isSelected = sameDate(date, selected);
+        const isToday = sameDate(date, today);
+
+        const classes = [
+          'tg-cal-cell',
+          disabled ? 'is-disabled' : '',
+          isSelected ? 'is-selected' : '',
+          isToday ? 'is-today' : ''
+        ].filter(Boolean).join(' ');
+
+        const aria = disabled ? 'aria-disabled="true"' : 'tabindex="0"';
+        const tag = disabled ? 'span' : 'button';
+        html += '<' + tag + ' type="button" class="' + classes + '" data-tg-cal-day="' + iso + '" ' + aria + '>'
+              + '<span class="tg-cal-cell-num">' + d + '</span>'
+              + '</' + tag + '>';
+      }
+
+      gridEl.innerHTML = html;
+    }
+
+    function pick(date) {
+      selected = date;
+      if (hiddenInput) {
+        hiddenInput.value = isoDate(date);
+        hiddenInput.classList.remove('tg-invalid');
+        hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      const fmt = date.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
+      selectedEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ' + fmt;
+      render();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (prevBtn.disabled) return;
+      view = new Date(view.getFullYear(), view.getMonth() - 1, 1);
+      render();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (nextBtn.disabled) return;
+      view = new Date(view.getFullYear(), view.getMonth() + 1, 1);
+      render();
+    });
+
+    gridEl.addEventListener('click', (e) => {
+      const cell = e.target.closest('[data-tg-cal-day]');
+      if (!cell || cell.classList.contains('is-disabled')) return;
+      const [y, m, d] = cell.dataset.tgCalDay.split('-').map(Number);
+      pick(new Date(y, m - 1, d));
+    });
+
+    gridEl.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const cell = e.target.closest('[data-tg-cal-day]');
+      if (!cell || cell.classList.contains('is-disabled')) return;
+      e.preventDefault();
+      const [y, m, d] = cell.dataset.tgCalDay.split('-').map(Number);
+      pick(new Date(y, m - 1, d));
+    });
+
+    render();
   })();
 
   // ── 3-step wizard ──────────────────────────────────────────────
