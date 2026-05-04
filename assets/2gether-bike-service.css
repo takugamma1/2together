@@ -506,6 +506,175 @@ body.tg-service-active {
 }
 
 /* ──────────────────────────────────────
+   CALENDAR PICKER
+   ────────────────────────────────────── */
+.tg-cal {
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  padding: var(--tg-s4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s3);
+}
+
+.tg-cal-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--tg-s3);
+}
+
+.tg-cal-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  text-align: center;
+}
+
+.tg-cal-nav {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--tg-divider);
+  color: var(--tg-text-secondary);
+  cursor: pointer;
+  transition: border-color 150ms var(--tg-ease-out),
+              color 150ms var(--tg-ease-out);
+}
+
+.tg-cal-nav:not(:disabled):hover {
+  border-color: var(--tg-flame);
+  color: var(--tg-flame);
+}
+
+.tg-cal-nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.tg-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.tg-cal-weekdays span {
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  text-align: center;
+  padding: 6px 0;
+}
+
+.tg-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.tg-cal-cell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--tg-text-secondary);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 150ms var(--tg-ease-out),
+              background 150ms var(--tg-ease-out),
+              color 150ms var(--tg-ease-out);
+  padding: 0;
+}
+
+.tg-cal-cell--blank {
+  cursor: default;
+}
+
+.tg-cal-cell:not(.is-disabled):not(.is-selected):hover {
+  border-color: var(--tg-flame);
+  color: var(--tg-flame);
+}
+
+.tg-cal-cell.is-disabled {
+  color: var(--tg-text-muted);
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  text-decoration: line-through;
+}
+
+.tg-cal-cell.is-today::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--tg-flame);
+}
+
+.tg-cal-cell.is-selected {
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  border-color: var(--tg-flame);
+  font-weight: 700;
+  /* Brand corner cut on the selected day */
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
+}
+
+.tg-cal-cell.is-selected.is-today::after {
+  background: var(--tg-ink);
+}
+
+.tg-cal-cell:focus-visible {
+  outline: 2px solid var(--tg-flame);
+  outline-offset: -2px;
+}
+
+.tg-cal-selected {
+  display: flex;
+  align-items: center;
+  gap: var(--tg-s2);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--tg-flame);
+  margin: var(--tg-s2) 0 0;
+  padding: var(--tg-s2) 0 0;
+  border-top: 1px dashed var(--tg-divider);
+}
+
+.tg-cal-selected svg { flex-shrink: 0; }
+
+.tg-cal-selected-empty {
+  color: var(--tg-text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .tg-cal {
+    padding: var(--tg-s3);
+  }
+  .tg-cal-cell {
+    font-size: 12px;
+  }
+  .tg-cal-weekdays span { font-size: 9px; }
+}
+
+/* ──────────────────────────────────────
    CHECKBOXES (symptom multi-select)
    ────────────────────────────────────── */
 .tg-checkbox-grid {
