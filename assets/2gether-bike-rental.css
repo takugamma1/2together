@@ -1,0 +1,1063 @@
+/* === 2GETHER — BIKE RENTAL PAGE === */
+
+body.tg-rental-active .content-for-layout {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+body.tg-rental-active {
+  overflow-x: clip;
+}
+
+.tg-rental-page {
+  background: var(--tg-ink);
+  color: var(--tg-text-primary);
+  font-family: 'General Sans', sans-serif;
+  overflow-x: clip;
+}
+
+/* ════════════════════════════════════════
+   HERO — full bleed, dark veil
+   ════════════════════════════════════════ */
+.tg-rental-hero {
+  position: relative;
+  min-height: clamp(400px, 70vh, 640px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.tg-rental-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.tg-rental-hero-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tg-rental-hero-placeholder {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at top right, rgba(232, 96, 28, 0.18), transparent 55%),
+    repeating-linear-gradient(135deg, rgba(138, 155, 181, 0.06) 0 16px, transparent 16px 32px),
+    var(--tg-surface);
+}
+
+.tg-rental-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(11, 18, 32, 0.94) 0%, rgba(11, 18, 32, 0.55) 35%, rgba(11, 18, 32, 0.15) 70%, transparent 100%);
+}
+
+.tg-rental-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--tg-s8) var(--tg-s7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s4);
+}
+
+.tg-rental-hero-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+}
+
+.tg-rental-hero-title span {
+  color: var(--tg-flame);
+}
+
+.tg-rental-hero-sub {
+  font-size: 15px;
+  color: var(--tg-text-secondary);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+.tg-rental-hero-cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s3);
+  padding: var(--tg-s3) var(--tg-s6) var(--tg-s3) var(--tg-s5);
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-top: var(--tg-s3);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  transition: background 200ms var(--tg-ease-out),
+              transform 200ms var(--tg-ease-out),
+              box-shadow 200ms var(--tg-ease-out);
+}
+
+.tg-rental-hero-cta:hover {
+  background: var(--tg-flame-light);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(232, 96, 28, 0.4);
+}
+
+/* ════════════════════════════════════════
+   WIZARD CONTAINER
+   ════════════════════════════════════════ */
+.tg-rental-build {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--tg-s7) var(--tg-s7) var(--tg-s8);
+  scroll-margin-top: 100px;
+}
+
+.tg-rental-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s6);
+}
+
+/* Inline status banners */
+.tg-rental-ok,
+.tg-rental-error {
+  display: flex;
+  align-items: center;
+  gap: var(--tg-s3);
+  padding: var(--tg-s4);
+  font-size: 13px;
+  line-height: 1.5;
+  border-left: 3px solid var(--tg-flame);
+  background: rgba(232, 96, 28, 0.08);
+  color: var(--tg-text-primary);
+}
+
+.tg-rental-error {
+  border-left-color: #ff6363;
+  background: rgba(255, 99, 99, 0.08);
+}
+
+.tg-rental-ok svg { flex-shrink: 0; color: var(--tg-flame); }
+
+/* ════════════════════════════════════════
+   PROGRESS BAR
+   ════════════════════════════════════════ */
+.tg-r-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s3);
+}
+
+.tg-r-progress-track {
+  position: relative;
+  height: 2px;
+  background: var(--tg-divider);
+  overflow: hidden;
+}
+
+.tg-r-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 33%;
+  background: var(--tg-flame);
+  transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tg-r-progress-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--tg-s3);
+}
+
+.tg-r-progress-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s2);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  transition: color 200ms var(--tg-ease-out);
+}
+
+.tg-r-progress-steps li.is-done { color: var(--tg-text-secondary); }
+.tg-r-progress-steps li.is-active { color: var(--tg-flame); }
+
+.tg-r-step-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  font-size: 11px;
+  font-weight: 700;
+  background: transparent;
+}
+
+.tg-r-progress-steps li.is-active .tg-r-step-dot {
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  border-color: var(--tg-flame);
+}
+
+.tg-r-progress-steps li.is-done .tg-r-step-dot {
+  background: var(--tg-text-secondary);
+  color: var(--tg-ink);
+  border-color: var(--tg-text-secondary);
+}
+
+/* ════════════════════════════════════════
+   STEPS — only one visible
+   ════════════════════════════════════════ */
+.tg-r-step {
+  display: none;
+  flex-direction: column;
+  gap: var(--tg-s5);
+  animation: tg-r-fade 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tg-r-step.is-active { display: flex; }
+
+@keyframes tg-r-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-r-step,
+  .tg-r-progress-fill { animation: none !important; transition: none !important; }
+}
+
+.tg-r-step-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: var(--tg-s3);
+  border-bottom: 1px solid var(--tg-divider);
+}
+
+.tg-r-step-num {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--tg-flame);
+}
+
+.tg-r-step-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  margin: 0;
+}
+
+.tg-r-step-sub {
+  font-size: 14px;
+  color: var(--tg-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 600px;
+}
+
+/* ════════════════════════════════════════
+   STEP 1 — CHARACTER SELECT GRID
+   ════════════════════════════════════════ */
+.tg-bike-roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  gap: var(--tg-s4);
+  padding-bottom: 140px; /* space for sticky summary */
+}
+
+.tg-bike-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--tg-surface-raised);
+  cursor: pointer;
+  overflow: hidden;
+  /* Sliced top-right + sliced bottom-left = "fighter card" silhouette */
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+  border: 2px solid transparent;
+  transition: transform 280ms var(--tg-ease-out),
+              border-color 200ms var(--tg-ease-out),
+              box-shadow 280ms var(--tg-ease-out);
+  user-select: none;
+}
+
+.tg-bike-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.tg-bike-card.is-selected {
+  border-color: var(--tg-flame);
+  box-shadow: 0 0 0 1px var(--tg-flame), 0 18px 40px rgba(232, 96, 28, 0.25);
+}
+
+/* Card media — light backdrop, contain so the WHOLE bike shows */
+.tg-bike-card-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #F3F4F6;
+  padding: var(--tg-s3);
+}
+
+.tg-bike-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 500ms var(--tg-ease-out);
+}
+
+.tg-bike-card:hover .tg-bike-card-media img {
+  transform: scale(1.04);
+}
+
+.tg-bike-card-placeholder {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(232, 96, 28, 0.15), transparent 50%),
+    repeating-linear-gradient(45deg, rgba(138, 155, 181, 0.06) 0 14px, transparent 14px 28px),
+    var(--tg-surface);
+}
+
+/* No dark overlay — the media area now has a light backdrop and we
+   want the bike to read clean. Keep the element so JS can hook it. */
+.tg-bike-card-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: background 280ms ease;
+}
+
+.tg-bike-card.is-selected .tg-bike-card-overlay {
+  background: rgba(232, 96, 28, 0.06);
+}
+
+/* Type badge — top-left flame chip */
+.tg-bike-card-badge {
+  position: absolute;
+  top: var(--tg-s3);
+  left: var(--tg-s3);
+  z-index: 2;
+  padding: 4px var(--tg-s3) 4px var(--tg-s2);
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+.tg-bike-card-tag {
+  position: absolute;
+  top: var(--tg-s3);
+  right: calc(var(--tg-s3) + 24px); /* avoid the corner cut */
+  z-index: 2;
+  padding: 4px var(--tg-s3);
+  background: rgba(11, 18, 32, 0.7);
+  color: var(--tg-text-primary);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+/* Selected check (top-right inside card) */
+.tg-bike-card-selected {
+  position: absolute;
+  top: var(--tg-s3);
+  right: calc(var(--tg-s3) + 4px);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 180ms var(--tg-ease-out), transform 240ms var(--tg-ease-out);
+}
+
+.tg-bike-card.is-selected .tg-bike-card-selected {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Card info */
+.tg-bike-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s2);
+  padding: var(--tg-s4) var(--tg-s5) var(--tg-s5);
+}
+
+.tg-bike-card-name {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.tg-bike-card-desc {
+  font-size: 12px;
+  color: var(--tg-text-secondary);
+  line-height: 1.45;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tg-bike-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tg-s2);
+  margin-top: auto;
+  padding-top: var(--tg-s3);
+  border-top: 1px dashed var(--tg-divider);
+}
+
+.tg-bike-card-price {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--tg-flame);
+  white-space: nowrap;
+}
+
+.tg-bike-card-price small {
+  font-size: 10px;
+  color: var(--tg-text-muted);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+/* Quantity controls */
+.tg-bike-qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--tg-divider);
+  background: var(--tg-surface);
+  flex-shrink: 0;
+}
+
+.tg-bike-qty-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  color: var(--tg-text-secondary);
+  cursor: pointer;
+  transition: color 150ms ease, background 150ms ease;
+}
+
+.tg-bike-qty-btn:hover {
+  color: var(--tg-flame);
+  background: rgba(232, 96, 28, 0.08);
+}
+
+.tg-bike-qty-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--tg-text-primary);
+}
+
+.tg-bike-card.is-selected .tg-bike-qty {
+  border-color: var(--tg-flame);
+}
+
+.tg-bike-card.is-selected .tg-bike-qty-num { color: var(--tg-flame); }
+
+/* ════════════════════════════════════════
+   STICKY ROSTER SUMMARY
+   ════════════════════════════════════════ */
+.tg-roster-summary {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  gap: var(--tg-s4);
+  padding: var(--tg-s3) var(--tg-s5);
+  background: rgba(11, 18, 32, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--tg-divider);
+  box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.45);
+  transform: translateY(100%);
+  transition: transform 300ms var(--tg-ease-out);
+}
+
+.tg-roster-summary.is-visible {
+  display: flex;
+  transform: translateY(0);
+}
+
+.tg-roster-summary-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.tg-roster-summary-count {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--tg-flame);
+  line-height: 1;
+}
+
+.tg-roster-summary-label {
+  font-family: 'General Sans', sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  margin-top: 4px;
+}
+
+.tg-roster-summary-bikes {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tg-roster-summary-hint {
+  font-size: 12px;
+  color: var(--tg-text-muted);
+  font-style: italic;
+}
+
+.tg-roster-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px var(--tg-s3);
+  background: rgba(232, 96, 28, 0.12);
+  color: var(--tg-flame);
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  border: 1px solid rgba(232, 96, 28, 0.3);
+}
+
+/* ════════════════════════════════════════
+   STEP 2 — DATES
+   ════════════════════════════════════════ */
+.tg-r-date-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--tg-s4);
+}
+
+.tg-r-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tg-r-field--full { grid-column: 1 / -1; }
+
+.tg-r-field-label {
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+}
+
+.tg-r-field input,
+.tg-r-field select,
+.tg-r-field textarea {
+  width: 100%;
+  padding: var(--tg-s3) var(--tg-s4);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  color: var(--tg-text-primary);
+  font-family: 'General Sans', sans-serif;
+  font-size: 14px;
+  border-radius: 0;
+  outline: none;
+  transition: border-color var(--tg-dur-fast) var(--tg-ease-out),
+              background var(--tg-dur-fast) var(--tg-ease-out);
+  min-width: 0;
+}
+
+.tg-r-field textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.tg-r-field select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238A9BB5' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--tg-s4) center;
+  padding-right: var(--tg-s7);
+  cursor: pointer;
+}
+
+.tg-r-field input:focus,
+.tg-r-field select:focus,
+.tg-r-field textarea:focus {
+  border-color: var(--tg-flame);
+  background: var(--tg-surface-elevated);
+}
+
+.tg-r-field input.tg-r-invalid,
+.tg-r-field select.tg-r-invalid,
+.tg-r-field textarea.tg-r-invalid {
+  border-color: #ff6363;
+  background: rgba(255, 99, 99, 0.06);
+  animation: tg-r-shake 320ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes tg-r-shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+
+/* Time slot pills (reused style from bike-service but local) */
+.tg-r-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--tg-s2);
+}
+
+.tg-r-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--tg-s3) var(--tg-s2);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+  text-align: center;
+  min-height: 64px;
+}
+
+.tg-r-slot input { display: none; }
+.tg-r-slot:hover { border-color: var(--tg-text-muted); }
+
+.tg-r-slot:has(input:checked) {
+  border-color: var(--tg-flame);
+  background: rgba(232, 96, 28, 0.08);
+}
+
+.tg-r-slot:has(input:checked)::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tg-flame);
+}
+
+.tg-r-slot-name {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+}
+
+.tg-r-slot-hours {
+  font-size: 10px;
+  color: var(--tg-text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* Duration display */
+.tg-r-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--tg-s3) var(--tg-s4);
+  background: var(--tg-surface);
+  border-left: 2px solid var(--tg-divider);
+  font-family: 'General Sans', sans-serif;
+  transition: border-color 200ms ease;
+}
+
+.tg-r-summary-row.has-value { border-left-color: var(--tg-flame); }
+
+.tg-r-summary-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  font-weight: 600;
+}
+
+.tg-r-summary-value {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--tg-text-primary);
+}
+
+/* ════════════════════════════════════════
+   STEP 3 — CONTACT
+   ════════════════════════════════════════ */
+.tg-r-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--tg-s4);
+}
+
+/* Final summary card */
+.tg-r-final-summary {
+  background: var(--tg-surface);
+  border: 1px solid var(--tg-divider);
+  border-left-width: 3px;
+  border-left-color: var(--tg-flame);
+  padding: var(--tg-s4) var(--tg-s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s3);
+}
+
+.tg-r-final-summary h4 {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tg-flame);
+  margin: 0;
+}
+
+.tg-r-final-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--tg-s2);
+  margin: 0;
+  padding: 0;
+}
+
+.tg-r-final-list > div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: var(--tg-s3);
+  align-items: baseline;
+}
+
+.tg-r-final-list dt {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  font-weight: 600;
+}
+
+.tg-r-final-list dd {
+  font-size: 13px;
+  color: var(--tg-text-primary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.tg-r-final-empty {
+  font-size: 12px;
+  color: var(--tg-text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════
+   ACTION BUTTONS
+   ════════════════════════════════════════ */
+.tg-r-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--tg-s3);
+  margin-top: var(--tg-s3);
+  padding-top: var(--tg-s4);
+  border-top: 1px dashed var(--tg-divider);
+}
+
+.tg-r-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s2);
+  padding: var(--tg-s3) var(--tg-s5);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--tg-divider);
+  background: transparent;
+  color: var(--tg-text-secondary);
+  cursor: pointer;
+  transition: all 180ms var(--tg-ease-out);
+  white-space: nowrap;
+}
+
+.tg-r-btn:hover:not(:disabled) {
+  border-color: var(--tg-flame);
+  color: var(--tg-flame);
+}
+
+.tg-r-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tg-r-btn--next,
+.tg-r-btn--submit {
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+  border-color: var(--tg-flame);
+  padding: var(--tg-s3) var(--tg-s7) var(--tg-s3) var(--tg-s5);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+}
+
+.tg-r-btn--next:hover:not(:disabled),
+.tg-r-btn--submit:hover {
+  background: var(--tg-flame-light);
+  border-color: var(--tg-flame-light);
+  color: var(--tg-ink);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232, 96, 28, 0.35);
+}
+
+.tg-r-btn--next:disabled {
+  background: var(--tg-surface-raised);
+  border-color: var(--tg-divider);
+  color: var(--tg-text-muted);
+  clip-path: none;
+}
+
+.tg-r-form-note {
+  font-size: 12px;
+  color: var(--tg-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════
+   INFO STRIP (closer)
+   ════════════════════════════════════════ */
+.tg-rental-info {
+  background: var(--tg-surface);
+  border-top: 1px solid var(--tg-divider);
+  /* Extra bottom padding so the sticky roster bar (step 1) doesn't
+     cover the info cards when scrolled all the way down. */
+  padding: var(--tg-s7) var(--tg-s7) calc(var(--tg-s7) + 120px);
+}
+
+.tg-rental-info-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--tg-s4);
+}
+
+.tg-rental-info-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--tg-s4) var(--tg-s5);
+  background: var(--tg-surface-raised);
+  border-left: 2px solid var(--tg-flame);
+  /* Tiny corner cut */
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+.tg-rental-info-card strong {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--tg-text-primary);
+}
+
+.tg-rental-info-card p {
+  font-size: 13px;
+  color: var(--tg-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Empty state */
+.tg-rental-empty {
+  padding: var(--tg-s7) var(--tg-s5);
+  background: var(--tg-surface);
+  border: 1px dashed var(--tg-divider);
+  text-align: center;
+  color: var(--tg-text-secondary);
+  font-size: 14px;
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .tg-rental-hero-inner { padding: var(--tg-s7) var(--tg-s5); }
+  .tg-rental-build { padding: var(--tg-s6) var(--tg-s5) var(--tg-s7); }
+  .tg-rental-info { padding: var(--tg-s6) var(--tg-s5) calc(var(--tg-s6) + 200px); }
+  .tg-rental-info-grid { grid-template-columns: 1fr; gap: var(--tg-s3); }
+}
+
+@media (max-width: 768px) {
+  .tg-rental-hero { min-height: 56vh; }
+  .tg-rental-hero-inner { padding: var(--tg-s6) var(--tg-s4); }
+  .tg-rental-build { padding: var(--tg-s5) var(--tg-s4) var(--tg-s7); gap: var(--tg-s5); }
+
+  .tg-r-progress-steps {
+    gap: var(--tg-s2);
+  }
+  .tg-r-step-name { display: none; } /* keep just the dots on phones */
+
+  .tg-bike-roster {
+    grid-template-columns: 1fr;
+    gap: var(--tg-s3);
+    padding-bottom: 130px;
+  }
+
+  .tg-bike-card-info {
+    padding: var(--tg-s3) var(--tg-s4) var(--tg-s4);
+  }
+
+  .tg-r-date-grid,
+  .tg-r-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tg-r-slot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Sticky roster on mobile is the primary CTA */
+  .tg-roster-summary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--tg-s2);
+    padding: var(--tg-s3) var(--tg-s4);
+  }
+
+  .tg-roster-summary-text {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .tg-roster-summary-count { font-size: 18px; }
+  .tg-roster-summary-label { margin-top: 0; }
+  .tg-roster-summary-bikes {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .tg-roster-summary .tg-r-btn--next {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tg-r-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: var(--tg-s2);
+  }
+
+  .tg-r-btn,
+  .tg-r-btn--next,
+  .tg-r-btn--submit {
+    justify-content: center;
+  }
+
+  .tg-r-final-list > div {
+    grid-template-columns: 90px 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .tg-bike-card {
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  }
+  .tg-bike-card-name { font-size: 14px; }
+  .tg-bike-card-info { padding: var(--tg-s3); }
+  .tg-rental-info-card { padding: var(--tg-s3) var(--tg-s4); }
+  .tg-r-final-list > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
