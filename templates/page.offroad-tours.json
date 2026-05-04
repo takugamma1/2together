@@ -1,0 +1,120 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "tg_trail": {
+      "type": "2gether-offroad",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": { "number": "150", "unit": "km", "label": "Average Sunday ride" }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": { "number": "85", "unit": "", "label": "Sundays out so far" }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": { "number": "12", "unit": "", "label": "Routes in rotation" }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": { "number": "All", "unit": "", "label": "Weather welcome" }
+        },
+        "photo_1": { "type": "photo", "settings": { "size": "large", "caption": "Avren ridge, October sunrise" } },
+        "photo_2": { "type": "photo", "settings": { "size": "tall", "caption": "Loops above the bay" } },
+        "photo_3": { "type": "photo", "settings": { "size": "s", "caption": "Trailhead breakfast" } },
+        "photo_4": { "type": "photo", "settings": { "size": "s", "caption": "Mud and lessons" } },
+        "photo_5": { "type": "photo", "settings": { "size": "panorama", "caption": "The whole crew on the lookout" } },
+        "photo_6": { "type": "photo", "settings": { "size": "wide", "caption": "Dust and sea" } },
+        "photo_7": { "type": "photo", "settings": { "size": "tall", "caption": "Climbing season opens" } },
+        "photo_8": { "type": "photo", "settings": { "size": "s", "caption": "First out, last back" } },
+        "route_1": {
+          "type": "route",
+          "settings": {
+            "name": "Avren Ridge Loop",
+            "description": "Coastal climbs into the Avren plateau, fast singletrack back to the shop.",
+            "distance": "38 km",
+            "elevation": "650 m",
+            "duration": "3 — 4 h",
+            "level": "Mid"
+          }
+        },
+        "route_2": {
+          "type": "route",
+          "settings": {
+            "name": "Galata Cliffs",
+            "description": "Short, brutal, ocean views. Pack water and a sense of humor.",
+            "distance": "22 km",
+            "elevation": "420 m",
+            "duration": "2 h",
+            "level": "Easy"
+          }
+        },
+        "route_3": {
+          "type": "route",
+          "settings": {
+            "name": "Kamchia River",
+            "description": "Riverside trails through the forest reserve. The big one.",
+            "distance": "62 km",
+            "elevation": "880 m",
+            "duration": "5 — 6 h",
+            "level": "Hard"
+          }
+        },
+        "ride_1": {
+          "type": "ride",
+          "settings": { "day": "12", "month": "MAY", "title": "Avren Ridge Loop", "distance": "38 km", "level": "Mid", "start": "08:00" }
+        },
+        "ride_2": {
+          "type": "ride",
+          "settings": { "day": "19", "month": "MAY", "title": "Galata Cliffs", "distance": "22 km", "level": "Easy", "start": "09:00" }
+        },
+        "ride_3": {
+          "type": "ride",
+          "settings": { "day": "26", "month": "MAY", "title": "Kamchia River", "distance": "62 km", "level": "Hard", "start": "07:30" }
+        }
+      },
+      "block_order": [
+        "stat_1", "stat_2", "stat_3", "stat_4",
+        "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "photo_6", "photo_7", "photo_8",
+        "route_1", "route_2", "route_3",
+        "ride_1", "ride_2", "ride_3"
+      ],
+      "settings": {
+        "hero_location": "VARNA · BLACK SEA COAST",
+        "hero_title": "INTO THE",
+        "hero_title_accent": "WILD",
+        "hero_sub": "Sunday rides into the Balkan dust. Dirt under tires, salt in the air, and a crew that waits at the top.",
+        "hero_cta_text": "See next ride",
+        "hero_cta_link": "#tg-trail-rides",
+        "gallery_eyebrow": "The roll",
+        "gallery_title": "A YEAR OF SUNDAYS",
+        "quote": "Cycling is the closest thing to flying without leaving the ground. Add dust and a sunrise — that is what we do every Sunday.",
+        "quote_author": "Sunday Club",
+        "quote_role": "Since 2019",
+        "routes_eyebrow": "The map",
+        "routes_title": "PICK YOUR LINE",
+        "rides_eyebrow": "On the calendar",
+        "rides_title": "NEXT FEW SUNDAYS",
+        "cta_eyebrow": "Sunday club",
+        "cta_title": "COME GET DUSTY WITH US",
+        "cta_sub": "No fee, no waiver, no fancy bike required. Just show up. We meet at the shop.",
+        "cta_primary_text": "Reserve your spot",
+        "cta_primary_link": "/pages/contact",
+        "cta_secondary_text": "Rent a bike",
+        "cta_secondary_link": "/pages/bike-rental"
+      }
+    }
+  },
+  "order": [
+    "tg_trail"
+  ]
+}

@@ -1,0 +1,569 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-offroad.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-trail-active');</script>
+
+{%- liquid
+  assign photo_count = 0
+  assign stat_count = 0
+  assign route_count = 0
+  assign ride_count = 0
+  for block in section.blocks
+    case block.type
+      when 'photo'
+        assign photo_count = photo_count | plus: 1
+      when 'stat'
+        assign stat_count = stat_count | plus: 1
+      when 'route'
+        assign route_count = route_count | plus: 1
+      when 'ride'
+        assign ride_count = ride_count | plus: 1
+    endcase
+  endfor
+-%}
+
+<div class="tg-trail-page">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="tg-trail-hero">
+    <div class="tg-trail-hero-media">
+      {% if section.settings.hero_image != blank %}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'eager', sizes: '100vw', class: 'tg-trail-hero-img' }}
+      {% else %}
+        <div class="tg-trail-hero-placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <div class="tg-trail-hero-grain" aria-hidden="true"></div>
+      <div class="tg-trail-hero-veil"></div>
+    </div>
+
+    <div class="tg-trail-hero-inner">
+      <div class="tg-trail-hero-marker">
+        <span class="tg-trail-hero-marker-dot"></span>
+        <span>{{ section.settings.hero_location | default: 'VARNA · BLACK SEA COAST' }}</span>
+      </div>
+
+      <h1 class="tg-trail-hero-title">
+        {{ section.settings.hero_title | default: 'INTO THE' }}
+        <span>{{ section.settings.hero_title_accent | default: 'WILD' }}</span>
+      </h1>
+
+      <p class="tg-trail-hero-sub">{{ section.settings.hero_sub | default: 'Sunday rides into the Balkan dust. Dirt under tires, salt in the air, and a crew that waits at the top.' }}</p>
+
+      <div class="tg-trail-hero-foot">
+        {% if section.settings.hero_cta_text != blank %}
+          <a href="{{ section.settings.hero_cta_link | default: '#tg-trail-rides' }}" class="tg-trail-hero-cta">
+            {{ section.settings.hero_cta_text }}
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+          </a>
+        {% endif %}
+        <a href="#tg-trail-gallery" class="tg-trail-hero-scroll" aria-label="Scroll to gallery">
+          <span>SCROLL</span>
+          <svg width="12" height="14" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v18M5 17l7 7 7-7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STATS STRIP ═══ -->
+  {% if stat_count > 0 %}
+    <section class="tg-trail-stats">
+      <div class="tg-trail-stats-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'stat' %}
+            <div class="tg-trail-stat" {{ block.shopify_attributes }}>
+              <strong class="tg-trail-stat-num">
+                {{ block.settings.number }}<small>{{ block.settings.unit }}</small>
+              </strong>
+              <span class="tg-trail-stat-label">{{ block.settings.label }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ═══ BENTO GALLERY ═══ -->
+  <section id="tg-trail-gallery" class="tg-trail-gallery">
+    <header class="tg-trail-section-head">
+      <span class="tg-eyebrow">{{ section.settings.gallery_eyebrow | default: 'The roll' }}</span>
+      <h2 class="tg-trail-section-title">{{ section.settings.gallery_title | default: 'A YEAR OF SUNDAYS' }}</h2>
+    </header>
+
+    {% if photo_count > 0 %}
+      <div class="tg-trail-gallery-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'photo' %}
+            <figure class="tg-trail-tile is-{{ block.settings.size | default: 's' }}" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 50vw', class: 'tg-trail-tile-img', alt: block.settings.caption }}
+              {% else %}
+                <div class="tg-trail-tile-placeholder" aria-hidden="true"></div>
+              {% endif %}
+              {% if block.settings.caption != blank %}
+                <figcaption class="tg-trail-tile-caption">
+                  <span class="tg-trail-tile-caption-num">{{ forloop.index | prepend: '00' | slice: -3, 3 }}</span>
+                  <span>{{ block.settings.caption }}</span>
+                </figcaption>
+              {% endif %}
+            </figure>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="tg-trail-empty">
+        <p>Add Photo blocks in the section settings to fill this gallery.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- ═══ QUOTE SLAB ═══ -->
+  {% if section.settings.quote != blank %}
+    <section class="tg-trail-quote">
+      <blockquote class="tg-trail-quote-text">
+        <span class="tg-trail-quote-mark" aria-hidden="true">"</span>
+        {{ section.settings.quote }}
+      </blockquote>
+      {% if section.settings.quote_author != blank %}
+        <cite class="tg-trail-quote-author">
+          <span>{{ section.settings.quote_author }}</span>
+          {% if section.settings.quote_role != blank %}
+            <small>{{ section.settings.quote_role }}</small>
+          {% endif %}
+        </cite>
+      {% endif %}
+    </section>
+  {% endif %}
+
+  <!-- ═══ ROUTES ═══ -->
+  {% if route_count > 0 %}
+    <section class="tg-trail-routes">
+      <header class="tg-trail-section-head">
+        <span class="tg-eyebrow">{{ section.settings.routes_eyebrow | default: 'The map' }}</span>
+        <h2 class="tg-trail-section-title">{{ section.settings.routes_title | default: 'PICK YOUR LINE' }}</h2>
+      </header>
+      <div class="tg-trail-routes-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'route' %}
+            <article class="tg-route-card" {{ block.shopify_attributes }}>
+              <div class="tg-route-card-media">
+                {% if block.settings.image != blank %}
+                  {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 33vw', alt: block.settings.name }}
+                {% else %}
+                  <div class="tg-route-card-placeholder" aria-hidden="true"></div>
+                {% endif %}
+                <span class="tg-route-card-level tg-route-level--{{ block.settings.level | downcase | default: 'easy' }}">{{ block.settings.level | default: 'Easy' }}</span>
+              </div>
+              <div class="tg-route-card-info">
+                <h3 class="tg-route-card-name">{{ block.settings.name | default: 'Route' }}</h3>
+                {% if block.settings.description != blank %}
+                  <p class="tg-route-card-desc">{{ block.settings.description }}</p>
+                {% endif %}
+                <dl class="tg-route-card-stats">
+                  {% if block.settings.distance != blank %}
+                    <div><dt>Distance</dt><dd>{{ block.settings.distance }}</dd></div>
+                  {% endif %}
+                  {% if block.settings.elevation != blank %}
+                    <div><dt>Elevation</dt><dd>{{ block.settings.elevation }}</dd></div>
+                  {% endif %}
+                  {% if block.settings.duration != blank %}
+                    <div><dt>Duration</dt><dd>{{ block.settings.duration }}</dd></div>
+                  {% endif %}
+                </dl>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ═══ UPCOMING RIDES ═══ -->
+  {% if ride_count > 0 %}
+    <section id="tg-trail-rides" class="tg-trail-rides">
+      <header class="tg-trail-section-head">
+        <span class="tg-eyebrow">{{ section.settings.rides_eyebrow | default: 'On the calendar' }}</span>
+        <h2 class="tg-trail-section-title">{{ section.settings.rides_title | default: 'NEXT FEW SUNDAYS' }}</h2>
+      </header>
+      <ol class="tg-trail-rides-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'ride' %}
+            <li class="tg-trail-ride" {{ block.shopify_attributes }}>
+              <div class="tg-trail-ride-date">
+                <strong>{{ block.settings.day }}</strong>
+                <span>{{ block.settings.month }}</span>
+              </div>
+              <div class="tg-trail-ride-info">
+                <h4>{{ block.settings.title }}</h4>
+                <p>
+                  {% if block.settings.distance != blank %}<span>{{ block.settings.distance }}</span>{% endif %}
+                  {% if block.settings.level != blank %}<span>·</span><span class="tg-trail-ride-level">{{ block.settings.level }}</span>{% endif %}
+                  {% if block.settings.start != blank %}<span>·</span><span>Roll-out {{ block.settings.start }}</span>{% endif %}
+                </p>
+              </div>
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}" class="tg-trail-ride-cta" aria-label="More about {{ block.settings.title }}">
+                  <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+                </a>
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ol>
+    </section>
+  {% endif %}
+
+  <!-- ═══ CLOSER CTA ═══ -->
+  <section class="tg-trail-cta">
+    <div class="tg-trail-cta-inner">
+      <span class="tg-eyebrow">{{ section.settings.cta_eyebrow | default: 'Sunday club' }}</span>
+      <h2 class="tg-trail-cta-title">{{ section.settings.cta_title | default: 'COME GET DUSTY WITH US' }}</h2>
+      <p class="tg-trail-cta-sub">{{ section.settings.cta_sub | default: 'No fee, no waiver, no fancy bike required. Just show up. We meet at the shop.' }}</p>
+      <div class="tg-trail-cta-actions">
+        {% if section.settings.cta_primary_text != blank %}
+          <a href="{{ section.settings.cta_primary_link | default: '#' }}" class="tg-trail-cta-btn tg-trail-cta-btn--primary">
+            {{ section.settings.cta_primary_text }}
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+          </a>
+        {% endif %}
+        {% if section.settings.cta_secondary_text != blank %}
+          <a href="{{ section.settings.cta_secondary_link | default: '#' }}" class="tg-trail-cta-btn tg-trail-cta-btn--ghost">{{ section.settings.cta_secondary_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Offroad Tours",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image (full-bleed)"
+    },
+    {
+      "type": "text",
+      "id": "hero_location",
+      "label": "Location marker",
+      "default": "VARNA · BLACK SEA COAST"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title",
+      "default": "INTO THE"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_accent",
+      "label": "Title (flame accent)",
+      "default": "WILD"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Subtitle",
+      "default": "Sunday rides into the Balkan dust. Dirt under tires, salt in the air, and a crew that waits at the top."
+    },
+    {
+      "type": "text",
+      "id": "hero_cta_text",
+      "label": "Hero CTA text",
+      "default": "See next ride"
+    },
+    {
+      "type": "url",
+      "id": "hero_cta_link",
+      "label": "Hero CTA link"
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "text",
+      "id": "gallery_eyebrow",
+      "label": "Gallery eyebrow",
+      "default": "The roll"
+    },
+    {
+      "type": "text",
+      "id": "gallery_title",
+      "label": "Gallery title",
+      "default": "A YEAR OF SUNDAYS"
+    },
+    {
+      "type": "header",
+      "content": "Quote"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "Cycling is the closest thing to flying without leaving the ground. Add dust and a sunrise — that is what we do every Sunday."
+    },
+    {
+      "type": "text",
+      "id": "quote_author",
+      "label": "Author"
+    },
+    {
+      "type": "text",
+      "id": "quote_role",
+      "label": "Role"
+    },
+    {
+      "type": "header",
+      "content": "Routes"
+    },
+    {
+      "type": "text",
+      "id": "routes_eyebrow",
+      "label": "Routes eyebrow",
+      "default": "The map"
+    },
+    {
+      "type": "text",
+      "id": "routes_title",
+      "label": "Routes title",
+      "default": "PICK YOUR LINE"
+    },
+    {
+      "type": "header",
+      "content": "Upcoming rides"
+    },
+    {
+      "type": "text",
+      "id": "rides_eyebrow",
+      "label": "Rides eyebrow",
+      "default": "On the calendar"
+    },
+    {
+      "type": "text",
+      "id": "rides_title",
+      "label": "Rides title",
+      "default": "NEXT FEW SUNDAYS"
+    },
+    {
+      "type": "header",
+      "content": "Closer CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_eyebrow",
+      "label": "CTA eyebrow",
+      "default": "Sunday club"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "CTA title",
+      "default": "COME GET DUSTY WITH US"
+    },
+    {
+      "type": "textarea",
+      "id": "cta_sub",
+      "label": "CTA subtitle",
+      "default": "No fee, no waiver, no fancy bike required. Just show up. We meet at the shop."
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_text",
+      "label": "Primary CTA",
+      "default": "Reserve your spot"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_link",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_text",
+      "label": "Secondary CTA",
+      "default": "Rent a bike"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_link",
+      "label": "Secondary CTA link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "limit": 16,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption (optional)"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tile size",
+          "options": [
+            { "value": "s", "label": "Small (square)" },
+            { "value": "wide", "label": "Wide (landscape)" },
+            { "value": "tall", "label": "Tall (portrait)" },
+            { "value": "large", "label": "Large (hero square)" },
+            { "value": "panorama", "label": "Panorama (full width)" }
+          ],
+          "default": "s"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "name": "Stat",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "150"
+        },
+        {
+          "type": "text",
+          "id": "unit",
+          "label": "Unit (optional)",
+          "default": "km"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Average ride"
+        }
+      ]
+    },
+    {
+      "type": "route",
+      "name": "Route",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Route image / map"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Route name",
+          "default": "Route"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short description"
+        },
+        {
+          "type": "text",
+          "id": "distance",
+          "label": "Distance",
+          "default": "32 km"
+        },
+        {
+          "type": "text",
+          "id": "elevation",
+          "label": "Elevation gain",
+          "default": "650 m"
+        },
+        {
+          "type": "text",
+          "id": "duration",
+          "label": "Duration",
+          "default": "3 — 4 h"
+        },
+        {
+          "type": "select",
+          "id": "level",
+          "label": "Difficulty",
+          "options": [
+            { "value": "Easy", "label": "Easy" },
+            { "value": "Mid", "label": "Mid" },
+            { "value": "Hard", "label": "Hard" },
+            { "value": "Expert", "label": "Expert" }
+          ],
+          "default": "Mid"
+        }
+      ]
+    },
+    {
+      "type": "ride",
+      "name": "Upcoming ride",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "day",
+          "label": "Day (number)",
+          "default": "12"
+        },
+        {
+          "type": "text",
+          "id": "month",
+          "label": "Month",
+          "default": "MAY"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Ride title",
+          "default": "Avren ridge loop"
+        },
+        {
+          "type": "text",
+          "id": "distance",
+          "label": "Distance",
+          "default": "38 km"
+        },
+        {
+          "type": "text",
+          "id": "level",
+          "label": "Level",
+          "default": "Mid"
+        },
+        {
+          "type": "text",
+          "id": "start",
+          "label": "Roll-out time",
+          "default": "08:00"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Offroad Tours",
+      "category": "Custom"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}
