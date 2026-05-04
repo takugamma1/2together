@@ -1,0 +1,665 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-bike-rental.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-rental-active');</script>
+
+{%- liquid
+  assign rental_collection = collections[section.settings.collection]
+  assign rental_bikes = rental_collection.products
+  assign max_per_bike = section.settings.max_per_bike | default: 4
+-%}
+
+<div class="tg-rental-page" data-tg-rental>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="tg-rental-hero">
+    <div class="tg-rental-hero-media">
+      {% if section.settings.hero_image != blank %}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'eager', sizes: '100vw', class: 'tg-rental-hero-img' }}
+      {% else %}
+        <div class="tg-rental-hero-placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <div class="tg-rental-hero-veil"></div>
+    </div>
+
+    <div class="tg-rental-hero-inner">
+      <span class="tg-eyebrow">{{ section.settings.hero_eyebrow | default: 'Rent a bike' }}</span>
+      <h1 class="tg-rental-hero-title">
+        {{ section.settings.hero_title | default: 'PICK YOUR' }} <span>{{ section.settings.hero_title_accent | default: 'RIDE' }}</span>
+      </h1>
+      <p class="tg-rental-hero-sub">{{ section.settings.hero_sub | default: 'Daily, weekly or by the route. Build your crew, pick the dates, ride out.' }}</p>
+      <a href="#tg-rental-build" class="tg-rental-hero-cta">
+        {{ section.settings.hero_cta | default: 'Build your crew' }}
+        <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ WIZARD ═══ -->
+  <section id="tg-rental-build" class="tg-rental-build">
+    {%- form 'contact', id: 'tg-rental-form', class: 'tg-rental-form', data-tg-rental-wizard: '' -%}
+      <input type="hidden" name="contact[type]" value="Bike rental booking">
+      <input type="hidden" name="contact[bikes]" data-tg-rental-bikes-input>
+      <input type="hidden" name="contact[total_riders]" data-tg-rental-riders-input value="0">
+
+      {% if form.posted_successfully? %}
+        <div class="tg-rental-ok">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          {{ section.settings.form_success | default: 'Thanks — your reservation is in. We will reply within 24h with availability.' }}
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="tg-rental-error">{{ form.errors | default_errors }}</div>
+      {% endif %}
+
+      <!-- Progress -->
+      <div class="tg-r-progress">
+        <div class="tg-r-progress-track">
+          <div class="tg-r-progress-fill" data-tg-r-fill style="width: 33%"></div>
+        </div>
+        <ol class="tg-r-progress-steps">
+          <li class="is-active" data-tg-r-step-label="1"><span class="tg-r-step-dot">1</span><span class="tg-r-step-name">Roster</span></li>
+          <li data-tg-r-step-label="2"><span class="tg-r-step-dot">2</span><span class="tg-r-step-name">Dates</span></li>
+          <li data-tg-r-step-label="3"><span class="tg-r-step-dot">3</span><span class="tg-r-step-name">Contact</span></li>
+        </ol>
+      </div>
+
+      <!-- ── STEP 1: CHARACTER SELECT ── -->
+      <div class="tg-r-step is-active" data-tg-r-step="1">
+        <header class="tg-r-step-head">
+          <span class="tg-r-step-num">01 · The crew</span>
+          <h2 class="tg-r-step-title">Choose your character</h2>
+          <p class="tg-r-step-sub">Tap to add a bike to the crew. Tap again to add another of the same. Up to {{ max_per_bike }} per model.</p>
+        </header>
+
+        {% if rental_bikes.size > 0 %}
+          <div class="tg-bike-roster" data-tg-rental-roster>
+            {% for product in rental_bikes %}
+              {%- liquid
+                assign type_label = product.type | default: 'Bike'
+                assign primary_tag = ''
+                for tag in product.tags
+                  if tag contains 'rental:'
+                    assign primary_tag = tag | remove: 'rental:' | strip
+                    break
+                  endif
+                endfor
+              -%}
+              <article
+                class="tg-bike-card"
+                data-tg-bike
+                data-bike-handle="{{ product.handle }}"
+                data-bike-name="{{ product.title | escape }}"
+                data-bike-price="{{ product.price | divided_by: 100.0 | round: 2 }}"
+                data-bike-max="{{ max_per_bike }}"
+              >
+                <div class="tg-bike-card-media">
+                  {% if product.featured_image != blank %}
+                    {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 33vw', alt: product.title }}
+                  {% else %}
+                    <div class="tg-bike-card-placeholder" aria-hidden="true"></div>
+                  {% endif %}
+                  <div class="tg-bike-card-overlay" aria-hidden="true"></div>
+                  <span class="tg-bike-card-badge">{{ type_label }}</span>
+                  {% if primary_tag != blank %}
+                    <span class="tg-bike-card-tag">{{ primary_tag }}</span>
+                  {% endif %}
+                  <span class="tg-bike-card-selected" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  </span>
+                </div>
+
+                <div class="tg-bike-card-info">
+                  <h3 class="tg-bike-card-name">{{ product.title }}</h3>
+                  {% if product.description != blank %}
+                    <p class="tg-bike-card-desc">{{ product.description | strip_html | truncate: 90 }}</p>
+                  {% endif %}
+                  <div class="tg-bike-card-foot">
+                    <span class="tg-bike-card-price">
+                      {% if product.price > 0 %}
+                        {{ product.price | money }} <small>/ day</small>
+                      {% else %}
+                        Ask for rate
+                      {% endif %}
+                    </span>
+                    <div class="tg-bike-qty" data-tg-bike-qty>
+                      <button type="button" class="tg-bike-qty-btn" data-tg-bike-dec aria-label="Remove one">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      </button>
+                      <span class="tg-bike-qty-num" data-tg-bike-qty-num>0</span>
+                      <button type="button" class="tg-bike-qty-btn" data-tg-bike-inc aria-label="Add one">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="tg-rental-empty">
+            <p>No rental bikes configured yet. Pick a collection in the section settings.</p>
+          </div>
+        {% endif %}
+
+        <!-- Sticky roster summary -->
+        <aside class="tg-roster-summary" data-tg-roster-summary aria-live="polite">
+          <div class="tg-roster-summary-text">
+            <span class="tg-roster-summary-count" data-tg-rental-count>0</span>
+            <span class="tg-roster-summary-label" data-tg-rental-label>riders in the crew</span>
+          </div>
+          <div class="tg-roster-summary-bikes" data-tg-rental-bikes-display></div>
+          <button type="button" class="tg-r-btn tg-r-btn--next" data-tg-r-next disabled>
+            Next: Pick dates
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+          </button>
+        </aside>
+      </div>
+
+      <!-- ── STEP 2: DATES ── -->
+      <div class="tg-r-step" data-tg-r-step="2">
+        <header class="tg-r-step-head">
+          <span class="tg-r-step-num">02 · The window</span>
+          <h2 class="tg-r-step-title">When are you riding?</h2>
+          <p class="tg-r-step-sub">Pickup and drop-off at our shop in Varna. Same-day available before 16:00.</p>
+        </header>
+
+        <div class="tg-r-date-grid">
+          <label class="tg-r-field">
+            <span class="tg-r-field-label">Pickup date</span>
+            <input type="date" name="contact[start_date]" data-tg-r-start required data-tg-r-validate>
+          </label>
+          <label class="tg-r-field">
+            <span class="tg-r-field-label">Drop-off date</span>
+            <input type="date" name="contact[end_date]" data-tg-r-end required data-tg-r-validate>
+          </label>
+        </div>
+
+        <fieldset class="tg-r-field">
+          <legend class="tg-r-field-label">Pickup time</legend>
+          <div class="tg-r-slot-grid">
+            {% assign slots = 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
+            {% for slot in slots %}
+              {%- assign sp = slot | split: '|' -%}
+              <label class="tg-r-slot">
+                <input type="radio" name="contact[pickup_time]" value="{{ sp[0] }} ({{ sp[1] }})" required data-tg-r-validate>
+                <span class="tg-r-slot-name">{{ sp[0] }}</span>
+                <span class="tg-r-slot-hours">{{ sp[1] }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        <div class="tg-r-summary-row" data-tg-r-duration aria-live="polite">
+          <span class="tg-r-summary-label">Duration</span>
+          <span class="tg-r-summary-value">Pick a date range</span>
+        </div>
+
+        <div class="tg-r-actions">
+          <button type="button" class="tg-r-btn tg-r-btn--back" data-tg-r-back>
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
+            Back
+          </button>
+          <button type="button" class="tg-r-btn tg-r-btn--next" data-tg-r-next>
+            Next: Your details
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: CONTACT ── -->
+      <div class="tg-r-step" data-tg-r-step="3">
+        <header class="tg-r-step-head">
+          <span class="tg-r-step-num">03 · The leader</span>
+          <h2 class="tg-r-step-title">Who is leading the crew?</h2>
+          <p class="tg-r-step-sub">One contact for the whole reservation — the lead rider. We will message you about pickup details.</p>
+        </header>
+
+        <div class="tg-r-contact-grid">
+          <label class="tg-r-field">
+            <span class="tg-r-field-label">Lead rider name</span>
+            <input type="text" name="contact[name]" required data-tg-r-validate>
+          </label>
+          <label class="tg-r-field">
+            <span class="tg-r-field-label">Phone</span>
+            <input type="tel" name="contact[phone]" required data-tg-r-validate>
+          </label>
+          <label class="tg-r-field tg-r-field--full">
+            <span class="tg-r-field-label">Email</span>
+            <input type="email" name="contact[email]" required data-tg-r-validate>
+          </label>
+          <label class="tg-r-field">
+            <span class="tg-r-field-label">Group experience</span>
+            <select name="contact[experience]">
+              <option value="">— optional —</option>
+              <option value="First time">First time on a real bike</option>
+              <option value="Casual">Casual riders</option>
+              <option value="Experienced">Experienced — we ride often</option>
+              <option value="Mixed">Mixed levels</option>
+            </select>
+          </label>
+          <label class="tg-r-field">
+            <span class="tg-r-field-label">Heights (cm)</span>
+            <input type="text" name="contact[heights]" placeholder="e.g. 178, 165, 182">
+          </label>
+          <label class="tg-r-field tg-r-field--full">
+            <span class="tg-r-field-label">Anything else?</span>
+            <textarea name="contact[notes]" rows="2" placeholder="Routes you're considering, child seats, helmets, anything else."></textarea>
+          </label>
+        </div>
+
+        <!-- Final summary card -->
+        <div class="tg-r-final-summary" data-tg-r-final-summary>
+          <h4>Review</h4>
+          <div data-tg-r-final-content>
+            <p class="tg-r-final-empty">Fill the form to see your reservation summary.</p>
+          </div>
+        </div>
+
+        <div class="tg-r-actions">
+          <button type="button" class="tg-r-btn tg-r-btn--back" data-tg-r-back>
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
+            Back
+          </button>
+          <button type="submit" class="tg-r-btn tg-r-btn--submit">
+            {{ section.settings.form_submit | default: 'Reserve crew' }}
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+          </button>
+        </div>
+
+        <p class="tg-r-form-note">
+          {{ section.settings.form_note | default: 'We confirm by email within 24h. A €100 deposit is held on pickup and refunded at drop-off.' }}
+        </p>
+      </div>
+    {%- endform -%}
+  </section>
+
+  <!-- ═══ INFO STRIP ═══ -->
+  <section class="tg-rental-info">
+    <div class="tg-rental-info-grid">
+      <div class="tg-rental-info-card">
+        <span class="tg-eyebrow">Daily</span>
+        <strong>{{ section.settings.daily_label | default: 'From €15 / day' }}</strong>
+        <p>{{ section.settings.daily_text | default: 'Same-day pickup if reserved before 14:00.' }}</p>
+      </div>
+      <div class="tg-rental-info-card">
+        <span class="tg-eyebrow">Weekly</span>
+        <strong>{{ section.settings.weekly_label | default: 'From €80 / week' }}</strong>
+        <p>{{ section.settings.weekly_text | default: '20% off any 7-day reservation.' }}</p>
+      </div>
+      <div class="tg-rental-info-card">
+        <span class="tg-eyebrow">Group</span>
+        <strong>{{ section.settings.group_label | default: '5 riders+' }}</strong>
+        <p>{{ section.settings.group_text | default: 'Group discounts available. We deliver to hotels.' }}</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  (function () {
+    const root = document.querySelector('[data-tg-rental]');
+    if (!root) return;
+
+    const wizard = root.querySelector('[data-tg-rental-wizard]');
+    const steps = Array.from(root.querySelectorAll('[data-tg-r-step]'));
+    const labels = Array.from(root.querySelectorAll('[data-tg-r-step-label]'));
+    const fill = root.querySelector('[data-tg-r-fill]');
+    const total = steps.length;
+    let current = 1;
+
+    // ── Bike roster ────────────────────────────────────────
+    const bikeCards = Array.from(root.querySelectorAll('[data-tg-bike]'));
+    const countEl = root.querySelector('[data-tg-rental-count]');
+    const labelEl = root.querySelector('[data-tg-rental-label]');
+    const bikesDisplay = root.querySelector('[data-tg-rental-bikes-display]');
+    const bikesInput = root.querySelector('[data-tg-rental-bikes-input]');
+    const ridersInput = root.querySelector('[data-tg-rental-riders-input]');
+    const summary = root.querySelector('[data-tg-roster-summary]');
+    const stepNextButtons = Array.from(root.querySelectorAll('[data-tg-r-next]'));
+
+    function moneyDisplay(n) {
+      return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function readSelection() {
+      const out = [];
+      let total = 0;
+      bikeCards.forEach(card => {
+        const numEl = card.querySelector('[data-tg-bike-qty-num]');
+        const qty = parseInt(numEl.textContent, 10) || 0;
+        if (qty > 0) {
+          out.push({
+            handle: card.dataset.bikeHandle,
+            name: card.dataset.bikeName,
+            price: parseFloat(card.dataset.bikePrice) || 0,
+            qty
+          });
+          total += qty;
+        }
+      });
+      return { items: out, total };
+    }
+
+    function updateRosterSummary() {
+      const sel = readSelection();
+
+      if (countEl) countEl.textContent = sel.total;
+      if (labelEl) labelEl.textContent = sel.total === 1 ? 'rider in the crew' : 'riders in the crew';
+      if (ridersInput) ridersInput.value = sel.total;
+      if (bikesInput) bikesInput.value = sel.items.map(b => b.qty + '× ' + b.name).join(', ');
+
+      if (bikesDisplay) {
+        if (sel.items.length === 0) {
+          bikesDisplay.innerHTML = '<span class="tg-roster-summary-hint">Tap a card to add</span>';
+        } else {
+          bikesDisplay.innerHTML = sel.items.map(b =>
+            '<span class="tg-roster-pill">' + b.qty + '× ' + escapeHtml(b.name) + '</span>'
+          ).join('');
+        }
+      }
+
+      // Toggle Step 1 next button
+      const step1Next = root.querySelector('[data-tg-r-step="1"] [data-tg-r-next]');
+      if (step1Next) step1Next.disabled = sel.total === 0;
+
+      if (summary) {
+        summary.classList.toggle('has-selection', sel.total > 0);
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+    }
+
+    bikeCards.forEach(card => {
+      const numEl = card.querySelector('[data-tg-bike-qty-num]');
+      const inc = card.querySelector('[data-tg-bike-inc]');
+      const dec = card.querySelector('[data-tg-bike-dec]');
+      const max = parseInt(card.dataset.bikeMax, 10) || 4;
+
+      function setQty(n) {
+        n = Math.max(0, Math.min(max, n));
+        numEl.textContent = n;
+        card.classList.toggle('is-selected', n > 0);
+        card.dataset.bikeQty = n;
+        updateRosterSummary();
+      }
+
+      inc?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setQty((parseInt(numEl.textContent, 10) || 0) + 1);
+      });
+      dec?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setQty((parseInt(numEl.textContent, 10) || 0) - 1);
+      });
+
+      // Tap on card body adds one (skip when clicking the qty controls)
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('[data-tg-bike-qty]')) return;
+        setQty((parseInt(numEl.textContent, 10) || 0) + 1);
+      });
+    });
+
+    // ── Date range duration calc ────────────────────────────
+    const startInput = root.querySelector('[data-tg-r-start]');
+    const endInput = root.querySelector('[data-tg-r-end]');
+    const durationBox = root.querySelector('[data-tg-r-duration]');
+
+    function dayCount() {
+      if (!startInput?.value || !endInput?.value) return 0;
+      const s = new Date(startInput.value);
+      const e = new Date(endInput.value);
+      if (isNaN(s) || isNaN(e) || e < s) return 0;
+      return Math.round((e - s) / 86400000) + 1;
+    }
+
+    function updateDuration() {
+      if (!durationBox) return;
+      const days = dayCount();
+      const value = durationBox.querySelector('.tg-r-summary-value');
+      if (!value) return;
+      if (days === 0) {
+        value.textContent = 'Pick a date range';
+        durationBox.classList.remove('has-value');
+      } else {
+        value.textContent = days + (days === 1 ? ' day' : ' days');
+        durationBox.classList.add('has-value');
+      }
+    }
+
+    [startInput, endInput].forEach(i => i?.addEventListener('change', () => {
+      // If end is before start, sync end to start
+      if (startInput?.value && endInput?.value && endInput.value < startInput.value) {
+        endInput.value = startInput.value;
+      }
+      updateDuration();
+    }));
+
+    // Min date = today
+    const todayIso = new Date().toISOString().slice(0, 10);
+    if (startInput) startInput.min = todayIso;
+    if (endInput) endInput.min = todayIso;
+
+    // ── Final summary ──────────────────────────────────────
+    const finalContent = root.querySelector('[data-tg-r-final-content]');
+    function updateFinalSummary() {
+      if (!finalContent) return;
+      const sel = readSelection();
+      const days = dayCount();
+      const slot = root.querySelector('input[name="contact[pickup_time]"]:checked')?.value || '—';
+      if (sel.total === 0) {
+        finalContent.innerHTML = '<p class="tg-r-final-empty">Pick at least one bike to see your summary.</p>';
+        return;
+      }
+      let html = '<dl class="tg-r-final-list">';
+      html += '<div><dt>Crew</dt><dd>' + sel.total + (sel.total === 1 ? ' rider' : ' riders') + '</dd></div>';
+      html += '<div><dt>Bikes</dt><dd>' + sel.items.map(b => b.qty + '× ' + escapeHtml(b.name)).join(', ') + '</dd></div>';
+      if (days > 0) {
+        html += '<div><dt>Window</dt><dd>' + (startInput?.value || '—') + ' → ' + (endInput?.value || '—') + ' (' + days + (days === 1 ? ' day' : ' days') + ')</dd></div>';
+      }
+      html += '<div><dt>Pickup</dt><dd>' + escapeHtml(slot) + '</dd></div>';
+      html += '</dl>';
+      finalContent.innerHTML = html;
+    }
+
+    // ── Wizard nav ─────────────────────────────────────────
+    function isVisible(el) { return el && el.offsetParent !== null; }
+
+    function validateStep(stepNum) {
+      const step = steps.find(s => s.dataset.tgRStep === String(stepNum));
+      if (!step) return true;
+
+      // Step 1 needs at least one bike
+      if (stepNum === 1) {
+        return readSelection().total > 0;
+      }
+
+      const fields = step.querySelectorAll('[data-tg-r-validate]');
+      let firstInvalid = null;
+      let ok = true;
+      fields.forEach(f => {
+        if (!isVisible(f)) return;
+        if (!f.checkValidity()) {
+          ok = false;
+          if (!firstInvalid) firstInvalid = f;
+          f.classList.add('tg-r-invalid');
+        } else {
+          f.classList.remove('tg-r-invalid');
+        }
+      });
+      if (firstInvalid) {
+        firstInvalid.focus({ preventScroll: false });
+        firstInvalid.reportValidity();
+      }
+      return ok;
+    }
+
+    function goTo(n) {
+      n = Math.max(1, Math.min(total, n));
+      current = n;
+      steps.forEach(s => s.classList.toggle('is-active', s.dataset.tgRStep === String(n)));
+      labels.forEach(l => {
+        const ln = parseInt(l.dataset.tgRStepLabel, 10);
+        l.classList.toggle('is-active', ln === n);
+        l.classList.toggle('is-done', ln < n);
+      });
+      if (fill) fill.style.width = ((n / total) * 100) + '%';
+
+      // Hide sticky roster outside step 1
+      if (summary) summary.classList.toggle('is-visible', n === 1);
+
+      // Refresh summary on step 3
+      if (n === 3) updateFinalSummary();
+
+      // Scroll head into view
+      const head = root.querySelector('.tg-r-progress');
+      if (head) head.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    wizard.addEventListener('click', (e) => {
+      if (e.target.closest('[data-tg-r-next]')) {
+        if (validateStep(current)) goTo(current + 1);
+      } else if (e.target.closest('[data-tg-r-back]')) {
+        goTo(current - 1);
+      }
+    });
+
+    wizard.addEventListener('input', (e) => {
+      if (e.target.classList?.contains('tg-r-invalid')) e.target.classList.remove('tg-r-invalid');
+    });
+
+    wizard.addEventListener('submit', (e) => {
+      if (!validateStep(current)) e.preventDefault();
+    });
+
+    // Server-side error → jump to last step
+    if (root.querySelector('.tg-rental-error')) goTo(total);
+
+    // Init
+    if (summary) summary.classList.add('is-visible');
+    updateRosterSummary();
+    updateDuration();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Bike Rental",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow",
+      "default": "Rent a bike"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title",
+      "default": "PICK YOUR"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_accent",
+      "label": "Title (flame accent)",
+      "default": "RIDE"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Subtitle",
+      "default": "Daily, weekly or by the route. Build your crew, pick the dates, ride out."
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "Hero CTA",
+      "default": "Build your crew"
+    },
+    {
+      "type": "header",
+      "content": "Bike roster"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Rental bikes collection",
+      "info": "Products in this collection are listed as rental options. Use a tag like 'rental:road' on a product to surface a sub-type label."
+    },
+    {
+      "type": "range",
+      "id": "max_per_bike",
+      "label": "Max quantity per bike model",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Booking form"
+    },
+    {
+      "type": "text",
+      "id": "form_submit",
+      "label": "Submit label",
+      "default": "Reserve crew"
+    },
+    {
+      "type": "textarea",
+      "id": "form_note",
+      "label": "Below-form note",
+      "default": "We confirm by email within 24h. A €100 deposit is held on pickup and refunded at drop-off."
+    },
+    {
+      "type": "textarea",
+      "id": "form_success",
+      "label": "Success message",
+      "default": "Thanks — your reservation is in. We will reply within 24h with availability."
+    },
+    {
+      "type": "header",
+      "content": "Info strip — Daily"
+    },
+    { "type": "text", "id": "daily_label", "label": "Headline", "default": "From €15 / day" },
+    { "type": "textarea", "id": "daily_text", "label": "Text", "default": "Same-day pickup if reserved before 14:00." },
+    {
+      "type": "header",
+      "content": "Info strip — Weekly"
+    },
+    { "type": "text", "id": "weekly_label", "label": "Headline", "default": "From €80 / week" },
+    { "type": "textarea", "id": "weekly_text", "label": "Text", "default": "20% off any 7-day reservation." },
+    {
+      "type": "header",
+      "content": "Info strip — Group"
+    },
+    { "type": "text", "id": "group_label", "label": "Headline", "default": "5 riders+" },
+    { "type": "textarea", "id": "group_text", "label": "Text", "default": "Group discounts available. We deliver to hotels." }
+  ],
+  "presets": [
+    {
+      "name": "Bike Rental",
+      "category": "Custom"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}
