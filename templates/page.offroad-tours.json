@@ -14,28 +14,93 @@
       "blocks": {
         "stat_1": {
           "type": "stat",
-          "settings": { "number": "150", "unit": "km", "label": "Average Sunday ride" }
+          "settings": {
+            "number": "150",
+            "unit": "km",
+            "label": "Average Sunday ride"
+          }
         },
         "stat_2": {
           "type": "stat",
-          "settings": { "number": "85", "unit": "", "label": "Sundays out so far" }
+          "settings": {
+            "number": "85",
+            "unit": "",
+            "label": "Sundays out so far"
+          }
         },
         "stat_3": {
           "type": "stat",
-          "settings": { "number": "12", "unit": "", "label": "Routes in rotation" }
+          "settings": {
+            "number": "12",
+            "unit": "",
+            "label": "Routes in rotation"
+          }
         },
         "stat_4": {
           "type": "stat",
-          "settings": { "number": "All", "unit": "", "label": "Weather welcome" }
+          "settings": {
+            "number": "All",
+            "unit": "",
+            "label": "Weather welcome"
+          }
         },
-        "photo_1": { "type": "photo", "settings": { "size": "large", "caption": "Avren ridge, October sunrise" } },
-        "photo_2": { "type": "photo", "settings": { "size": "tall", "caption": "Loops above the bay" } },
-        "photo_3": { "type": "photo", "settings": { "size": "s", "caption": "Trailhead breakfast" } },
-        "photo_4": { "type": "photo", "settings": { "size": "s", "caption": "Mud and lessons" } },
-        "photo_5": { "type": "photo", "settings": { "size": "panorama", "caption": "The whole crew on the lookout" } },
-        "photo_6": { "type": "photo", "settings": { "size": "wide", "caption": "Dust and sea" } },
-        "photo_7": { "type": "photo", "settings": { "size": "tall", "caption": "Climbing season opens" } },
-        "photo_8": { "type": "photo", "settings": { "size": "s", "caption": "First out, last back" } },
+        "photo_1": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/pexels-malcolnphoto-34077919.jpg",
+            "caption": "Avren ridge, October sunrise",
+            "size": "large"
+          }
+        },
+        "photo_2": {
+          "type": "photo",
+          "settings": {
+            "caption": "Loops above the bay",
+            "size": "tall"
+          }
+        },
+        "photo_3": {
+          "type": "photo",
+          "settings": {
+            "caption": "Trailhead breakfast",
+            "size": "s"
+          }
+        },
+        "photo_4": {
+          "type": "photo",
+          "settings": {
+            "caption": "Mud and lessons",
+            "size": "s"
+          }
+        },
+        "photo_5": {
+          "type": "photo",
+          "settings": {
+            "caption": "The whole crew on the lookout",
+            "size": "panorama"
+          }
+        },
+        "photo_6": {
+          "type": "photo",
+          "settings": {
+            "caption": "Dust and sea",
+            "size": "wide"
+          }
+        },
+        "photo_7": {
+          "type": "photo",
+          "settings": {
+            "caption": "Climbing season opens",
+            "size": "tall"
+          }
+        },
+        "photo_8": {
+          "type": "photo",
+          "settings": {
+            "caption": "First out, last back",
+            "size": "s"
+          }
+        },
         "route_1": {
           "type": "route",
           "settings": {
@@ -71,22 +136,60 @@
         },
         "ride_1": {
           "type": "ride",
-          "settings": { "day": "12", "month": "MAY", "title": "Avren Ridge Loop", "distance": "38 km", "level": "Mid", "start": "08:00" }
+          "settings": {
+            "day": "12",
+            "month": "MAY",
+            "title": "Avren Ridge Loop",
+            "distance": "38 km",
+            "level": "Mid",
+            "start": "08:00",
+            "link": ""
+          }
         },
         "ride_2": {
           "type": "ride",
-          "settings": { "day": "19", "month": "MAY", "title": "Galata Cliffs", "distance": "22 km", "level": "Easy", "start": "09:00" }
+          "settings": {
+            "day": "19",
+            "month": "MAY",
+            "title": "Galata Cliffs",
+            "distance": "22 km",
+            "level": "Easy",
+            "start": "09:00",
+            "link": ""
+          }
         },
         "ride_3": {
           "type": "ride",
-          "settings": { "day": "26", "month": "MAY", "title": "Kamchia River", "distance": "62 km", "level": "Hard", "start": "07:30" }
+          "settings": {
+            "day": "26",
+            "month": "MAY",
+            "title": "Kamchia River",
+            "distance": "62 km",
+            "level": "Hard",
+            "start": "07:30",
+            "link": ""
+          }
         }
       },
       "block_order": [
-        "stat_1", "stat_2", "stat_3", "stat_4",
-        "photo_1", "photo_2", "photo_3", "photo_4", "photo_5", "photo_6", "photo_7", "photo_8",
-        "route_1", "route_2", "route_3",
-        "ride_1", "ride_2", "ride_3"
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4",
+        "photo_1",
+        "photo_2",
+        "photo_3",
+        "photo_4",
+        "photo_5",
+        "photo_6",
+        "photo_7",
+        "photo_8",
+        "route_1",
+        "route_2",
+        "route_3",
+        "ride_1",
+        "ride_2",
+        "ride_3"
       ],
       "settings": {
         "hero_location": "VARNA · BLACK SEA COAST",
