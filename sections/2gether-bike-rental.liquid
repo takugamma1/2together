@@ -30,7 +30,7 @@
       <h1 class="tg-rental-hero-title">
         {{ section.settings.hero_title | default: 'PICK YOUR' }} <span>{{ section.settings.hero_title_accent | default: 'RIDE' }}</span>
       </h1>
-      <p class="tg-rental-hero-sub">{{ section.settings.hero_sub | default: 'Daily, weekly or by the route. Build your crew, pick the dates, ride out.' }}</p>
+      <p class="tg-rental-hero-sub">{{ section.settings.hero_sub | default: 'By the hour, day, or 24h. Build your crew, pick a package, ride out.' }}</p>
       <a href="#tg-rental-build" class="tg-rental-hero-cta">
         {{ section.settings.hero_cta | default: 'Build your crew' }}
         <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
@@ -63,7 +63,7 @@
         </div>
         <ol class="tg-r-progress-steps">
           <li class="is-active" data-tg-r-step-label="1"><span class="tg-r-step-dot">1</span><span class="tg-r-step-name">Roster</span></li>
-          <li data-tg-r-step-label="2"><span class="tg-r-step-dot">2</span><span class="tg-r-step-name">Dates</span></li>
+          <li data-tg-r-step-label="2"><span class="tg-r-step-dot">2</span><span class="tg-r-step-name">Plan</span></li>
           <li data-tg-r-step-label="3"><span class="tg-r-step-dot">3</span><span class="tg-r-step-name">Contact</span></li>
         </ol>
       </div>
@@ -120,11 +120,7 @@
                   {% endif %}
                   <div class="tg-bike-card-foot">
                     <span class="tg-bike-card-price">
-                      {% if product.price > 0 %}
-                        {{ product.price | money }} <small>/ day</small>
-                      {% else %}
-                        Ask for rate
-                      {% endif %}
+                      <small>From €3 / 1h</small>
                     </span>
                     <div class="tg-bike-qty" data-tg-bike-qty>
                       <button type="button" class="tg-bike-qty-btn" data-tg-bike-dec aria-label="Remove one">
@@ -160,43 +156,74 @@
         </aside>
       </div>
 
-      <!-- ── STEP 2: DATES ── -->
+      <!-- ── STEP 2: PACKAGE + DATE + DELIVERY ── -->
       <div class="tg-r-step" data-tg-r-step="2">
         <header class="tg-r-step-head">
-          <span class="tg-r-step-num">02 · The window</span>
-          <h2 class="tg-r-step-title">When are you riding?</h2>
-          <p class="tg-r-step-sub">Pickup and drop-off at our shop in Varna. Same-day available before 16:00.</p>
+          <span class="tg-r-step-num">02 · The plan</span>
+          <h2 class="tg-r-step-title">Pick your package</h2>
+          <p class="tg-r-step-sub">Most rentals are by the hour or for the day. Pick the package, the day, and how you would like to get the bike.</p>
         </header>
+
+        <fieldset class="tg-r-field tg-r-field--full">
+          <legend class="tg-r-field-label">Rental package</legend>
+          <div class="tg-r-pkg-grid">
+            {%- liquid
+              assign pkg_data = '1h|1 hour|3|Quick spin around town||1d|1 day|12|9:00 — 19:00 same day||24h|24 hours|20|Full day, return next day' | split: '||'
+            -%}
+            {% for pkg in pkg_data %}
+              {%- assign p = pkg | split: '|' -%}
+              <label class="tg-r-pkg">
+                <input type="radio" name="contact[package]" value="{{ p[1] }} (€{{ p[2] }})" data-tg-r-pkg-key="{{ p[0] }}" data-tg-r-pkg-price="{{ p[2] }}" required data-tg-r-validate>
+                <span class="tg-r-pkg-name">{{ p[1] }}</span>
+                <span class="tg-r-pkg-price">€{{ p[2] }}<small> / bike</small></span>
+                <span class="tg-r-pkg-desc">{{ p[3] }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </fieldset>
 
         <div class="tg-r-date-grid">
           <label class="tg-r-field">
             <span class="tg-r-field-label">Pickup date</span>
-            <input type="date" name="contact[start_date]" data-tg-r-start required data-tg-r-validate>
+            <input type="date" name="contact[pickup_date]" data-tg-r-start required data-tg-r-validate>
           </label>
-          <label class="tg-r-field">
-            <span class="tg-r-field-label">Drop-off date</span>
-            <input type="date" name="contact[end_date]" data-tg-r-end required data-tg-r-validate>
-          </label>
+          <fieldset class="tg-r-field">
+            <legend class="tg-r-field-label">Pickup time</legend>
+            <div class="tg-r-slot-grid">
+              {% assign slots = 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
+              {% for slot in slots %}
+                {%- assign sp = slot | split: '|' -%}
+                <label class="tg-r-slot">
+                  <input type="radio" name="contact[pickup_time]" value="{{ sp[0] }} ({{ sp[1] }})" required data-tg-r-validate>
+                  <span class="tg-r-slot-name">{{ sp[0] }}</span>
+                  <span class="tg-r-slot-hours">{{ sp[1] }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
         </div>
 
-        <fieldset class="tg-r-field">
-          <legend class="tg-r-field-label">Pickup time</legend>
-          <div class="tg-r-slot-grid">
-            {% assign slots = 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
-            {% for slot in slots %}
-              {%- assign sp = slot | split: '|' -%}
-              <label class="tg-r-slot">
-                <input type="radio" name="contact[pickup_time]" value="{{ sp[0] }} ({{ sp[1] }})" required data-tg-r-validate>
-                <span class="tg-r-slot-name">{{ sp[0] }}</span>
-                <span class="tg-r-slot-hours">{{ sp[1] }}</span>
+        <fieldset class="tg-r-field tg-r-field--full">
+          <legend class="tg-r-field-label">Delivery (within Varna — hotels &amp; addresses)</legend>
+          <div class="tg-r-delivery-grid">
+            {%- liquid
+              assign delivery_data = 'pickup|Pickup at shop|0|Drop by at our location||oneway|One-way delivery|5|We bring it to you||roundtrip|Round-trip delivery|10|Drop-off &amp; pickup at your place' | split: '||'
+            -%}
+            {% for d in delivery_data %}
+              {%- assign dp = d | split: '|' -%}
+              <label class="tg-r-delivery">
+                <input type="radio" name="contact[delivery]" value="{{ dp[1] }} (€{{ dp[2] }})" data-tg-r-delivery-key="{{ dp[0] }}" data-tg-r-delivery-price="{{ dp[2] }}" {% if forloop.first %}checked{% endif %} data-tg-r-validate>
+                <span class="tg-r-delivery-name">{{ dp[1] }}</span>
+                <span class="tg-r-delivery-price">{% if dp[2] == '0' %}Free{% else %}€{{ dp[2] }}{% endif %}</span>
+                <span class="tg-r-delivery-desc">{{ dp[3] }}</span>
               </label>
             {% endfor %}
           </div>
         </fieldset>
 
         <div class="tg-r-summary-row" data-tg-r-duration aria-live="polite">
-          <span class="tg-r-summary-label">Duration</span>
-          <span class="tg-r-summary-value">Pick a date range</span>
+          <span class="tg-r-summary-label">Estimated total</span>
+          <span class="tg-r-summary-value">Pick a package</span>
         </div>
 
         <div class="tg-r-actions">
@@ -282,19 +309,24 @@
   <section class="tg-rental-info">
     <div class="tg-rental-info-grid">
       <div class="tg-rental-info-card">
-        <span class="tg-eyebrow">Daily</span>
-        <strong>{{ section.settings.daily_label | default: 'From €15 / day' }}</strong>
-        <p>{{ section.settings.daily_text | default: 'Same-day pickup if reserved before 14:00.' }}</p>
+        <span class="tg-eyebrow">{{ section.settings.hourly_eyebrow | default: '1 hour' }}</span>
+        <strong>{{ section.settings.hourly_label | default: '€3 / hour' }}</strong>
+        <p>{{ section.settings.hourly_text | default: 'Quick spin around town. Most popular package.' }}</p>
       </div>
       <div class="tg-rental-info-card">
-        <span class="tg-eyebrow">Weekly</span>
-        <strong>{{ section.settings.weekly_label | default: 'From €80 / week' }}</strong>
-        <p>{{ section.settings.weekly_text | default: '20% off any 7-day reservation.' }}</p>
+        <span class="tg-eyebrow">{{ section.settings.daily_eyebrow | default: '1 day' }}</span>
+        <strong>{{ section.settings.daily_label | default: '€12 / day' }}</strong>
+        <p>{{ section.settings.daily_text | default: 'Pickup 9:00, drop off by 19:00 same day.' }}</p>
       </div>
       <div class="tg-rental-info-card">
-        <span class="tg-eyebrow">Group</span>
-        <strong>{{ section.settings.group_label | default: '5 riders+' }}</strong>
-        <p>{{ section.settings.group_text | default: 'Group discounts available. We deliver to hotels.' }}</p>
+        <span class="tg-eyebrow">{{ section.settings.full_eyebrow | default: '24 hours' }}</span>
+        <strong>{{ section.settings.full_label | default: '€20 / 24h' }}</strong>
+        <p>{{ section.settings.full_text | default: 'Full 24-hour rental. Return next day.' }}</p>
+      </div>
+      <div class="tg-rental-info-card tg-rental-info-card--delivery">
+        <span class="tg-eyebrow">{{ section.settings.delivery_eyebrow | default: 'Delivery' }}</span>
+        <strong>{{ section.settings.delivery_label | default: 'One-way €5 · Round-trip €10' }}</strong>
+        <p>{{ section.settings.delivery_text | default: 'In Varna — we deliver to hotels and addresses.' }}</p>
       </div>
     </div>
   </section>
@@ -370,6 +402,9 @@
       if (summary) {
         summary.classList.toggle('has-selection', sel.total > 0);
       }
+
+      // Crew size changes affect the total
+      if (typeof updateDuration === 'function') updateDuration();
     }
 
     function escapeHtml(s) {
@@ -406,53 +441,68 @@
       });
     });
 
-    // ── Date range duration calc ────────────────────────────
+    // ── Package + delivery pricing ──────────────────────────
     const startInput = root.querySelector('[data-tg-r-start]');
-    const endInput = root.querySelector('[data-tg-r-end]');
     const durationBox = root.querySelector('[data-tg-r-duration]');
 
-    function dayCount() {
-      if (!startInput?.value || !endInput?.value) return 0;
-      const s = new Date(startInput.value);
-      const e = new Date(endInput.value);
-      if (isNaN(s) || isNaN(e) || e < s) return 0;
-      return Math.round((e - s) / 86400000) + 1;
+    function selectedPackage() {
+      const checked = root.querySelector('input[name="contact[package]"]:checked');
+      if (!checked) return null;
+      return {
+        key: checked.dataset.tgRPkgKey,
+        label: checked.value,
+        price: parseFloat(checked.dataset.tgRPkgPrice) || 0
+      };
+    }
+
+    function selectedDelivery() {
+      const checked = root.querySelector('input[name="contact[delivery]"]:checked');
+      if (!checked) return { key: 'pickup', label: 'Pickup at shop (€0)', price: 0 };
+      return {
+        key: checked.dataset.tgRDeliveryKey,
+        label: checked.value,
+        price: parseFloat(checked.dataset.tgRDeliveryPrice) || 0
+      };
+    }
+
+    function calcTotal() {
+      const pkg = selectedPackage();
+      const del = selectedDelivery();
+      if (!pkg) return null;
+      const crew = readSelection().total || 0;
+      return pkg.price * Math.max(crew, 1) + del.price;
     }
 
     function updateDuration() {
       if (!durationBox) return;
-      const days = dayCount();
       const value = durationBox.querySelector('.tg-r-summary-value');
       if (!value) return;
-      if (days === 0) {
-        value.textContent = 'Pick a date range';
+      const total = calcTotal();
+      if (total === null) {
+        value.textContent = 'Pick a package';
         durationBox.classList.remove('has-value');
       } else {
-        value.textContent = days + (days === 1 ? ' day' : ' days');
+        value.textContent = '€' + total.toFixed(2);
         durationBox.classList.add('has-value');
       }
     }
 
-    [startInput, endInput].forEach(i => i?.addEventListener('change', () => {
-      // If end is before start, sync end to start
-      if (startInput?.value && endInput?.value && endInput.value < startInput.value) {
-        endInput.value = startInput.value;
-      }
-      updateDuration();
-    }));
+    root.querySelectorAll('input[name="contact[package]"], input[name="contact[delivery]"]').forEach(el => {
+      el.addEventListener('change', updateDuration);
+    });
 
     // Min date = today
     const todayIso = new Date().toISOString().slice(0, 10);
     if (startInput) startInput.min = todayIso;
-    if (endInput) endInput.min = todayIso;
 
     // ── Final summary ──────────────────────────────────────
     const finalContent = root.querySelector('[data-tg-r-final-content]');
     function updateFinalSummary() {
       if (!finalContent) return;
       const sel = readSelection();
-      const days = dayCount();
       const slot = root.querySelector('input[name="contact[pickup_time]"]:checked')?.value || '—';
+      const pkg = selectedPackage();
+      const del = selectedDelivery();
       if (sel.total === 0) {
         finalContent.innerHTML = '<p class="tg-r-final-empty">Pick at least one bike to see your summary.</p>';
         return;
@@ -460,10 +510,17 @@
       let html = '<dl class="tg-r-final-list">';
       html += '<div><dt>Crew</dt><dd>' + sel.total + (sel.total === 1 ? ' rider' : ' riders') + '</dd></div>';
       html += '<div><dt>Bikes</dt><dd>' + sel.items.map(b => b.qty + '× ' + escapeHtml(b.name)).join(', ') + '</dd></div>';
-      if (days > 0) {
-        html += '<div><dt>Window</dt><dd>' + (startInput?.value || '—') + ' → ' + (endInput?.value || '—') + ' (' + days + (days === 1 ? ' day' : ' days') + ')</dd></div>';
+      if (pkg) {
+        html += '<div><dt>Package</dt><dd>' + escapeHtml(pkg.label) + '</dd></div>';
       }
-      html += '<div><dt>Pickup</dt><dd>' + escapeHtml(slot) + '</dd></div>';
+      if (startInput?.value) {
+        html += '<div><dt>Pickup</dt><dd>' + escapeHtml(startInput.value) + ' · ' + escapeHtml(slot) + '</dd></div>';
+      }
+      html += '<div><dt>Delivery</dt><dd>' + escapeHtml(del.label) + '</dd></div>';
+      const total = calcTotal();
+      if (total !== null) {
+        html += '<div class="tg-r-final-list__total"><dt>Estimated total</dt><dd>€' + total.toFixed(2) + '</dd></div>';
+      }
       html += '</dl>';
       finalContent.innerHTML = html;
     }
@@ -635,22 +692,32 @@
     },
     {
       "type": "header",
-      "content": "Info strip — Daily"
+      "content": "Info strip — 1 hour"
     },
-    { "type": "text", "id": "daily_label", "label": "Headline", "default": "From €15 / day" },
-    { "type": "textarea", "id": "daily_text", "label": "Text", "default": "Same-day pickup if reserved before 14:00." },
+    { "type": "text", "id": "hourly_eyebrow", "label": "Eyebrow", "default": "1 hour" },
+    { "type": "text", "id": "hourly_label", "label": "Headline", "default": "€3 / hour" },
+    { "type": "textarea", "id": "hourly_text", "label": "Text", "default": "Quick spin around town. Most popular package." },
     {
       "type": "header",
-      "content": "Info strip — Weekly"
+      "content": "Info strip — 1 day"
     },
-    { "type": "text", "id": "weekly_label", "label": "Headline", "default": "From €80 / week" },
-    { "type": "textarea", "id": "weekly_text", "label": "Text", "default": "20% off any 7-day reservation." },
+    { "type": "text", "id": "daily_eyebrow", "label": "Eyebrow", "default": "1 day" },
+    { "type": "text", "id": "daily_label", "label": "Headline", "default": "€12 / day" },
+    { "type": "textarea", "id": "daily_text", "label": "Text", "default": "Pickup 9:00, drop off by 19:00 same day." },
     {
       "type": "header",
-      "content": "Info strip — Group"
+      "content": "Info strip — 24 hours"
     },
-    { "type": "text", "id": "group_label", "label": "Headline", "default": "5 riders+" },
-    { "type": "textarea", "id": "group_text", "label": "Text", "default": "Group discounts available. We deliver to hotels." }
+    { "type": "text", "id": "full_eyebrow", "label": "Eyebrow", "default": "24 hours" },
+    { "type": "text", "id": "full_label", "label": "Headline", "default": "€20 / 24h" },
+    { "type": "textarea", "id": "full_text", "label": "Text", "default": "Full 24-hour rental. Return next day." },
+    {
+      "type": "header",
+      "content": "Info strip — Delivery"
+    },
+    { "type": "text", "id": "delivery_eyebrow", "label": "Eyebrow", "default": "Delivery" },
+    { "type": "text", "id": "delivery_label", "label": "Headline", "default": "One-way €5 · Round-trip €10" },
+    { "type": "textarea", "id": "delivery_text", "label": "Text", "default": "In Varna — we deliver to hotels and addresses." }
   ],
   "presets": [
     {

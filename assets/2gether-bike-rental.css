@@ -740,7 +740,126 @@ body.tg-rental-active {
   letter-spacing: 0.04em;
 }
 
-/* Duration display */
+/* Package cards */
+.tg-r-pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--tg-s3);
+}
+
+.tg-r-pkg {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--tg-s4) var(--tg-s4) var(--tg-s5);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+}
+
+.tg-r-pkg input { display: none; }
+.tg-r-pkg:hover { border-color: var(--tg-text-muted); transform: translateY(-2px); }
+
+.tg-r-pkg:has(input:checked) {
+  border-color: var(--tg-flame);
+  background: rgba(232, 96, 28, 0.08);
+}
+
+.tg-r-pkg:has(input:checked)::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 22px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--tg-flame);
+}
+
+.tg-r-pkg-name {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+}
+
+.tg-r-pkg-price {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--tg-text-primary);
+  line-height: 1.1;
+}
+
+.tg-r-pkg-price small {
+  font-size: 11px;
+  color: var(--tg-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.tg-r-pkg-desc {
+  font-size: 12px;
+  color: var(--tg-text-secondary);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+/* Delivery cards */
+.tg-r-delivery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--tg-s2);
+}
+
+.tg-r-delivery {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--tg-s3) var(--tg-s4);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.tg-r-delivery input { display: none; }
+.tg-r-delivery:hover { border-color: var(--tg-text-muted); }
+
+.tg-r-delivery:has(input:checked) {
+  border-color: var(--tg-flame);
+  background: rgba(232, 96, 28, 0.08);
+}
+
+.tg-r-delivery-name {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+}
+
+.tg-r-delivery-price {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--tg-flame);
+}
+
+.tg-r-delivery-desc {
+  font-size: 11px;
+  color: var(--tg-text-muted);
+  line-height: 1.4;
+}
+
+/* Total display */
 .tg-r-summary-row {
   display: flex;
   justify-content: space-between;
@@ -837,6 +956,23 @@ body.tg-rental-active {
   margin: 0;
 }
 
+.tg-r-final-list__total {
+  border-top: 1px solid var(--tg-divider);
+  padding-top: var(--tg-s2);
+  margin-top: var(--tg-s2);
+}
+
+.tg-r-final-list__total dt {
+  color: var(--tg-flame) !important;
+}
+
+.tg-r-final-list__total dd {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 16px !important;
+  color: var(--tg-text-primary);
+}
+
 /* ════════════════════════════════════════
    ACTION BUTTONS
    ════════════════════════════════════════ */
@@ -925,8 +1061,12 @@ body.tg-rental-active {
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--tg-s4);
+}
+
+.tg-rental-info-card--delivery {
+  border-left-color: var(--tg-text-muted);
 }
 
 .tg-rental-info-card {
@@ -971,7 +1111,9 @@ body.tg-rental-active {
   .tg-rental-hero-inner { padding: var(--tg-s7) var(--tg-s5); }
   .tg-rental-build { padding: var(--tg-s6) var(--tg-s5) var(--tg-s7); }
   .tg-rental-info { padding: var(--tg-s6) var(--tg-s5) calc(var(--tg-s6) + 200px); }
-  .tg-rental-info-grid { grid-template-columns: 1fr; gap: var(--tg-s3); }
+  .tg-rental-info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--tg-s3); }
+  .tg-r-pkg-grid { grid-template-columns: 1fr; }
+  .tg-r-delivery-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -1000,6 +1142,10 @@ body.tg-rental-active {
   }
 
   .tg-r-slot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tg-rental-info-grid {
     grid-template-columns: 1fr;
   }
 
