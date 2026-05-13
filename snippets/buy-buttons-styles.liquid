@@ -335,4 +335,25 @@
   .shopify-payment-button__more-options[aria-hidden='true'] {
     display: none;
   }
+
+  /* Inquiry-only product CTA (replaces Add to cart for bikes) */
+  a.button--inquiry {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    width: 100%;
+    padding-block: var(--padding-lg);
+  }
+
+  a.button--inquiry .add-to-cart-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  a.button--inquiry:hover {
+    opacity: 0.9;
+  }
 {% endstylesheet %}
