@@ -1,0 +1,61 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "tg_sc": {
+      "type": "2gether-sunday-club",
+      "blocks": {
+        "e_1": { "type": "event", "settings": { "month": "MAY", "day": "12", "title": "Avren Ridge Loop", "description": "Coastal climbs into the Avren plateau, fast singletrack back to the shop.", "distance": "38 km", "level": "mid", "start_time": "08:00", "going_count": 14 } },
+        "e_2": { "type": "event", "settings": { "month": "MAY", "day": "19", "title": "Galata Cliffs", "description": "Short, brutal, ocean views. Pack water and a sense of humor.", "distance": "22 km", "level": "easy", "start_time": "09:00", "going_count": 22 } },
+        "e_3": { "type": "event", "settings": { "month": "MAY", "day": "26", "title": "Kamchia River", "description": "Riverside trails through the forest reserve. The big one.", "distance": "62 km", "level": "hard", "start_time": "07:30", "going_count": 8 } },
+        "b_1": { "type": "benefit", "settings": { "title": "Member discount", "text": "10% off parts and rentals year-round. Stacks with sales." } },
+        "b_2": { "type": "benefit", "settings": { "title": "Heads-up notice", "text": "Email/SMS the day before each Sunday ride with the route and roll-out." } },
+        "b_3": { "type": "benefit", "settings": { "title": "Route voting", "text": "Once a month we poll members on the next route. Majority rules." } },
+        "b_4": { "type": "benefit", "settings": { "title": "Group trips", "text": "First dibs on overnight group rides and away weekends." } }
+      },
+      "block_order": ["e_1","e_2","e_3","b_1","b_2","b_3","b_4"],
+      "settings": {
+        "since": "Since 2019",
+        "hero_title": "SUNDAY",
+        "hero_title_em": "club.",
+        "hero_sub": "A loose crew of riders who meet at the shop every Sunday morning. No fee, no waiver, no fancy bike required. Just show up.",
+        "hero_cta": "Join the club",
+        "meta_1_value": "85+",
+        "meta_1_label": "Sundays out",
+        "meta_2_value": "120",
+        "meta_2_label": "Active members",
+        "meta_3_value": "12",
+        "meta_3_label": "Routes in rotation",
+        "events_eyebrow": "On the calendar",
+        "events_title": "NEXT FEW SUNDAYS",
+        "events_intro": "Tap \"I'm going\" to RSVP. We email a heads-up the day before with roll-out time and route file.",
+        "benefits_eyebrow": "Why join",
+        "benefits_title": "WHAT YOU GET",
+        "photos_eyebrow": "The roll",
+        "photos_title": "A YEAR OF SUNDAYS",
+        "join_eyebrow": "Become a member",
+        "join_title": "JOIN THE CREW",
+        "join_text": "Fill the form below. We approve members manually — usually within a couple of days. Once you are in, you get member rates in the shop and a heads-up the day before each ride.",
+        "bullet_1": "Member discounts on parts & rentals",
+        "bullet_2": "Heads-up day before each Sunday",
+        "bullet_3": "Vote on next route",
+        "bullet_4": "First dibs on group trips",
+        "form_submit": "Send my request",
+        "form_note": "We approve members manually. Usually within 48 hours.",
+        "form_success": "You are in the queue. We will email you with the next Sunday ride once we approve.",
+        "consent_label": "I understand Sunday rides happen rain or shine, and I ride at my own risk.",
+        "quote": "Cycling is the closest thing to flying without leaving the ground. Add dust and a sunrise — that is what we do every Sunday.",
+        "quote_author": "Sunday Club",
+        "quote_role": "Varna · since 2019"
+      }
+    }
+  },
+  "order": ["tg_sc"]
+}
