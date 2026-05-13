@@ -1,0 +1,490 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-ramps.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-ramps-active');</script>
+
+{%- liquid
+  assign ramps_collection = collections[section.settings.collection]
+  assign ramps = ramps_collection.products
+
+  assign feature_count = 0
+  assign spec_count = 0
+  assign faq_count = 0
+  for block in section.blocks
+    case block.type
+      when 'feature'
+        assign feature_count = feature_count | plus: 1
+      when 'spec'
+        assign spec_count = spec_count | plus: 1
+      when 'faq'
+        assign faq_count = faq_count | plus: 1
+    endcase
+  endfor
+-%}
+
+<div class="tg-ramps-page">
+
+  <!-- ═══ HERO ═══ -->
+  <section class="tg-ramps-hero">
+    <div class="tg-ramps-hero-media">
+      {% if section.settings.hero_image != blank %}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'eager', sizes: '100vw', class: 'tg-ramps-hero-img' }}
+      {% else %}
+        <div class="tg-ramps-hero-placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <div class="tg-ramps-hero-veil"></div>
+    </div>
+
+    <div class="tg-ramps-hero-inner">
+      <span class="tg-ramps-origin">
+        <span class="tg-ramps-origin-dot"></span>
+        <span>{{ section.settings.hero_origin | default: 'MADE IN BOTEVGRAD · BULGARIA' }}</span>
+      </span>
+
+      <h1 class="tg-ramps-hero-title">
+        {{ section.settings.hero_title | default: 'PORTABLE' }}
+        <span>{{ section.settings.hero_title_accent | default: 'RAMPS' }}</span>
+      </h1>
+
+      <p class="tg-ramps-hero-sub">{{ section.settings.hero_sub | default: 'Take your line anywhere. Welded steel, anti-slip skin, stackable in seconds. Built by hand in Botevgrad — tested in the dirt every weekend.' }}</p>
+
+      <div class="tg-ramps-hero-actions">
+        <a href="#tg-ramps-lineup" class="tg-ramps-hero-cta">
+          {{ section.settings.hero_cta | default: 'Shop the lineup' }}
+          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+        </a>
+        {% if section.settings.hero_secondary_text != blank %}
+          <a href="{{ section.settings.hero_secondary_link | default: '#tg-ramps-story' }}" class="tg-ramps-hero-secondary">{{ section.settings.hero_secondary_text }}</a>
+        {% endif %}
+      </div>
+
+      <!-- Hero quick stats — 3 small KPIs across the bottom of the hero -->
+      <div class="tg-ramps-hero-kpis">
+        <div class="tg-ramps-kpi">
+          <strong>{{ section.settings.kpi_1_value | default: '12kg' }}</strong>
+          <span>{{ section.settings.kpi_1_label | default: 'Per ramp' }}</span>
+        </div>
+        <div class="tg-ramps-kpi">
+          <strong>{{ section.settings.kpi_2_value | default: '120kg' }}</strong>
+          <span>{{ section.settings.kpi_2_label | default: 'Load rating' }}</span>
+        </div>
+        <div class="tg-ramps-kpi">
+          <strong>{{ section.settings.kpi_3_value | default: '2 yr' }}</strong>
+          <span>{{ section.settings.kpi_3_label | default: 'Warranty' }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LINEUP ═══ -->
+  <section id="tg-ramps-lineup" class="tg-ramps-lineup">
+    <header class="tg-ramps-section-head">
+      <span class="tg-eyebrow">{{ section.settings.lineup_eyebrow | default: 'The lineup' }}</span>
+      <h2 class="tg-ramps-section-title">{{ section.settings.lineup_title | default: 'PICK YOUR LINE' }}</h2>
+      {% if section.settings.lineup_intro != blank %}
+        <p class="tg-ramps-section-intro">{{ section.settings.lineup_intro }}</p>
+      {% endif %}
+    </header>
+
+    {% if ramps.size > 0 %}
+      <div class="tg-ramps-grid">
+        {% for product in ramps %}
+          {%- liquid
+            assign variant = product.selected_or_first_available_variant
+            assign on_sale = false
+            if variant.compare_at_price > variant.price
+              assign on_sale = true
+            endif
+          -%}
+          <article class="tg-ramp-card" data-ramp-handle="{{ product.handle }}">
+            <a href="{{ product.url }}" class="tg-ramp-card-media-link" aria-label="View {{ product.title }}">
+              <div class="tg-ramp-card-media">
+                {% if product.featured_image != blank %}
+                  {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 33vw', alt: product.title }}
+                {% else %}
+                  <div class="tg-ramp-card-placeholder" aria-hidden="true"></div>
+                {% endif %}
+                {% if on_sale %}
+                  <span class="tg-ramp-card-badge tg-ramp-badge--sale">Sale</span>
+                {% endif %}
+                {%- for tag in product.tags -%}
+                  {%- if tag contains 'badge:' -%}
+                    <span class="tg-ramp-card-badge tg-ramp-badge--tag">{{ tag | remove: 'badge:' | strip }}</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </a>
+
+            <div class="tg-ramp-card-info">
+              <a href="{{ product.url }}" class="tg-ramp-card-title-link">
+                <h3 class="tg-ramp-card-name">{{ product.title }}</h3>
+              </a>
+              {% if product.description != blank %}
+                <p class="tg-ramp-card-desc">{{ product.description | strip_html | truncate: 110 }}</p>
+              {% endif %}
+
+              <!-- Product micro-specs pulled from tags like "spec:Length 240cm" -->
+              {%- assign has_specs = false -%}
+              {%- for tag in product.tags -%}
+                {%- if tag contains 'spec:' -%}{%- assign has_specs = true -%}{%- break -%}{%- endif -%}
+              {%- endfor -%}
+              {% if has_specs %}
+                <ul class="tg-ramp-card-specs">
+                  {%- for tag in product.tags -%}
+                    {%- if tag contains 'spec:' -%}
+                      {%- assign spec = tag | remove: 'spec:' | strip | split: ' ' -%}
+                      <li><span>{{ spec | first }}</span><strong>{{ spec | shift | join: ' ' }}</strong></li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {% endif %}
+
+              <div class="tg-ramp-card-foot">
+                <div class="tg-ramp-card-price-block">
+                  <span class="tg-ramp-card-price">{{ variant.price | money }}</span>
+                  {% if on_sale %}
+                    <span class="tg-ramp-card-compare">{{ variant.compare_at_price | money }}</span>
+                  {% endif %}
+                </div>
+
+                {%- form 'product', product, data-tg-ramp-form: '' -%}
+                  <input type="hidden" name="id" value="{{ variant.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button
+                    type="submit"
+                    class="tg-ramp-card-buy"
+                    {% unless product.available %}disabled{% endunless %}
+                  >
+                    {% if product.available %}
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                      Add to cart
+                    {% else %}
+                      Sold out
+                    {% endif %}
+                  </button>
+                {%- endform -%}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="tg-ramps-empty">
+        <p>Pick a collection in the section settings to populate the lineup.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- ═══ FEATURES STRIP ═══ -->
+  {% if feature_count > 0 %}
+    <section class="tg-ramps-features">
+      <header class="tg-ramps-section-head">
+        <span class="tg-eyebrow">{{ section.settings.features_eyebrow | default: 'Built right' }}</span>
+        <h2 class="tg-ramps-section-title">{{ section.settings.features_title | default: 'WHY OURS' }}</h2>
+      </header>
+
+      <div class="tg-ramps-features-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'feature' %}
+            <article class="tg-ramp-feature" {{ block.shopify_attributes }}>
+              <span class="tg-ramp-feature-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              {% if block.settings.icon != blank %}
+                <div class="tg-ramp-feature-icon">{{ block.settings.icon }}</div>
+              {% endif %}
+              <h3 class="tg-ramp-feature-title">{{ block.settings.title }}</h3>
+              {% if block.settings.text != blank %}
+                <p class="tg-ramp-feature-text">{{ block.settings.text }}</p>
+              {% endif %}
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ═══ MANUFACTURING STORY ═══ -->
+  <section id="tg-ramps-story" class="tg-ramps-story">
+    <div class="tg-ramps-story-grid">
+      <div class="tg-ramps-story-media">
+        {% if section.settings.story_image != blank %}
+          {{ section.settings.story_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 50vw', class: 'tg-ramps-story-img' }}
+        {% else %}
+          <div class="tg-ramps-story-placeholder" aria-hidden="true"></div>
+        {% endif %}
+        <div class="tg-ramps-story-stamp">
+          <span>Hand-built</span>
+          <strong>Botevgrad</strong>
+          <small>Bulgaria · EST. {{ section.settings.story_year | default: '2024' }}</small>
+        </div>
+      </div>
+
+      <div class="tg-ramps-story-info">
+        <span class="tg-eyebrow">{{ section.settings.story_eyebrow | default: 'The shop' }}</span>
+        <h2 class="tg-ramps-story-title">
+          {{ section.settings.story_title | default: 'WELDED BY HAND.' }}<br>
+          <em>{{ section.settings.story_title_em | default: 'Tested by us.' }}</em>
+        </h2>
+        <p class="tg-ramps-story-text">{{ section.settings.story_text | default: 'Each ramp is welded in a workshop in Botevgrad, then powder-coated and finished with an anti-slip skin. Before any unit ships, we ride it ourselves — at the shop, in the trails, on the Sunday rides. If a weld feels off, it goes back. Simple as that.' }}</p>
+
+        {% if spec_count > 0 %}
+          <dl class="tg-ramps-story-specs">
+            {% for block in section.blocks %}
+              {% if block.type == 'spec' %}
+                <div {{ block.shopify_attributes }}>
+                  <dt>{{ block.settings.label }}</dt>
+                  <dd>{{ block.settings.value }}</dd>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </dl>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ ═══ -->
+  {% if faq_count > 0 %}
+    <section class="tg-ramps-faq">
+      <header class="tg-ramps-section-head">
+        <span class="tg-eyebrow">{{ section.settings.faq_eyebrow | default: 'Before you ride' }}</span>
+        <h2 class="tg-ramps-section-title">{{ section.settings.faq_title | default: 'QUESTIONS, ANSWERED' }}</h2>
+      </header>
+
+      <div class="tg-ramps-faq-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq' %}
+            <details class="tg-ramps-faq-row" {{ block.shopify_attributes }}>
+              <summary>
+                <span class="tg-ramps-faq-q">{{ block.settings.question }}</span>
+                <span class="tg-ramps-faq-toggle" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </span>
+              </summary>
+              <div class="tg-ramps-faq-a">{{ block.settings.answer }}</div>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ═══ CTA STRIP ═══ -->
+  <section class="tg-ramps-cta">
+    <div class="tg-ramps-cta-inner">
+      <h2 class="tg-ramps-cta-title">{{ section.settings.cta_title | default: 'BUILD YOUR LINE TODAY' }}</h2>
+      <p class="tg-ramps-cta-sub">{{ section.settings.cta_sub | default: 'In stock. Free shipping in Bulgaria. 2-year warranty on every unit.' }}</p>
+      <div class="tg-ramps-cta-actions">
+        <a href="#tg-ramps-lineup" class="tg-ramps-cta-btn tg-ramps-cta-btn--primary">
+          {{ section.settings.cta_primary_text | default: 'Shop ramps' }}
+          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+        </a>
+        {% if section.settings.cta_secondary_text != blank %}
+          <a href="{{ section.settings.cta_secondary_link | default: '/pages/contact' }}" class="tg-ramps-cta-btn tg-ramps-cta-btn--ghost">{{ section.settings.cta_secondary_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Portable Ramps",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_origin",
+      "label": "Origin label",
+      "default": "MADE IN BOTEVGRAD · BULGARIA"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title",
+      "default": "PORTABLE"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_accent",
+      "label": "Title (flame accent)",
+      "default": "RAMPS"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Subtitle",
+      "default": "Take your line anywhere. Welded steel, anti-slip skin, stackable in seconds. Built by hand in Botevgrad — tested in the dirt every weekend."
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "Hero primary CTA",
+      "default": "Shop the lineup"
+    },
+    {
+      "type": "text",
+      "id": "hero_secondary_text",
+      "label": "Hero secondary CTA",
+      "default": "See how we build them"
+    },
+    {
+      "type": "url",
+      "id": "hero_secondary_link",
+      "label": "Hero secondary link"
+    },
+    {
+      "type": "header",
+      "content": "Hero KPIs (3 stats overlay)"
+    },
+    { "type": "text", "id": "kpi_1_value", "label": "KPI 1 value", "default": "12kg" },
+    { "type": "text", "id": "kpi_1_label", "label": "KPI 1 label", "default": "Per ramp" },
+    { "type": "text", "id": "kpi_2_value", "label": "KPI 2 value", "default": "120kg" },
+    { "type": "text", "id": "kpi_2_label", "label": "KPI 2 label", "default": "Load rating" },
+    { "type": "text", "id": "kpi_3_value", "label": "KPI 3 value", "default": "2 yr" },
+    { "type": "text", "id": "kpi_3_label", "label": "KPI 3 label", "default": "Warranty" },
+    {
+      "type": "header",
+      "content": "Lineup"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Ramps collection",
+      "info": "Products in this collection are listed in the lineup grid. Use tags like 'spec:Length 240cm' on a product to surface a stat. Use 'badge:Best seller' for a tag pill."
+    },
+    {
+      "type": "text",
+      "id": "lineup_eyebrow",
+      "label": "Eyebrow",
+      "default": "The lineup"
+    },
+    {
+      "type": "text",
+      "id": "lineup_title",
+      "label": "Title",
+      "default": "PICK YOUR LINE"
+    },
+    {
+      "type": "textarea",
+      "id": "lineup_intro",
+      "label": "Intro paragraph"
+    },
+    {
+      "type": "header",
+      "content": "Features (block-driven)"
+    },
+    { "type": "text", "id": "features_eyebrow", "label": "Eyebrow", "default": "Built right" },
+    { "type": "text", "id": "features_title", "label": "Title", "default": "WHY OURS" },
+    {
+      "type": "header",
+      "content": "Manufacturing story"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story image (workshop)"
+    },
+    { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "The shop" },
+    { "type": "text", "id": "story_title", "label": "Title", "default": "WELDED BY HAND." },
+    { "type": "text", "id": "story_title_em", "label": "Title (italic line)", "default": "Tested by us." },
+    {
+      "type": "textarea",
+      "id": "story_text",
+      "label": "Story body",
+      "default": "Each ramp is welded in a workshop in Botevgrad, then powder-coated and finished with an anti-slip skin. Before any unit ships, we ride it ourselves — at the shop, in the trails, on the Sunday rides. If a weld feels off, it goes back. Simple as that."
+    },
+    {
+      "type": "text",
+      "id": "story_year",
+      "label": "Stamp year",
+      "default": "2024"
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Before you ride" },
+    { "type": "text", "id": "faq_title", "label": "Title", "default": "QUESTIONS, ANSWERED" },
+    {
+      "type": "header",
+      "content": "Closing CTA"
+    },
+    { "type": "text", "id": "cta_title", "label": "Title", "default": "BUILD YOUR LINE TODAY" },
+    { "type": "textarea", "id": "cta_sub", "label": "Subtitle", "default": "In stock. Free shipping in Bulgaria. 2-year warranty on every unit." },
+    { "type": "text", "id": "cta_primary_text", "label": "Primary CTA", "default": "Shop ramps" },
+    { "type": "text", "id": "cta_secondary_text", "label": "Secondary CTA", "default": "Talk to us" },
+    { "type": "url", "id": "cta_secondary_link", "label": "Secondary CTA link" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (single char/emoji)",
+          "info": "e.g. an emoji or symbol like ◣ ◆ ▲ • used as a graphic tile",
+          "default": "◣"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "Stackable" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Slot together in seconds. Pack the whole kit in the trunk." }
+      ]
+    },
+    {
+      "type": "spec",
+      "name": "Spec row",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Frame" },
+        { "type": "text", "id": "value", "label": "Value", "default": "12mm welded steel" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "limit": 10,
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How do they ship?" },
+        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Flat-pack to your door anywhere in Bulgaria, free over €100. Outside BG by request." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Portable Ramps",
+      "category": "Custom",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "◣", "title": "Stackable", "text": "Slot together in seconds. Pack the whole kit in the trunk." } },
+        { "type": "feature", "settings": { "icon": "◆", "title": "Anti-slip skin", "text": "Marine-grade textured surface. Grips in rain, mud, and powder." } },
+        { "type": "feature", "settings": { "icon": "▲", "title": "Two-person setup", "text": "Lifted, set, ridden in under a minute. No tools." } },
+        { "type": "feature", "settings": { "icon": "●", "title": "Steel-built", "text": "12mm welded frame. 120kg load rating. Won't flex under a sprint." } },
+        { "type": "spec", "settings": { "label": "Frame", "value": "12mm welded steel" } },
+        { "type": "spec", "settings": { "label": "Surface", "value": "Anti-slip composite" } },
+        { "type": "spec", "settings": { "label": "Load rating", "value": "120 kg" } },
+        { "type": "spec", "settings": { "label": "Weight (per ramp)", "value": "12 kg" } },
+        { "type": "faq", "settings": { "question": "How do they ship?", "answer": "Flat-pack to your door anywhere in Bulgaria — free over €100 of ramps. Outside BG by request, we'll quote." } },
+        { "type": "faq", "settings": { "question": "Can I mix and match ramps and stands?", "answer": "Yes. All our ramps fit any of our stands. Build the kit you need, scale later." } },
+        { "type": "faq", "settings": { "question": "What's the warranty?", "answer": "2 years on welds, frame, and skin. If a part fails from normal use, we replace it." } },
+        { "type": "faq", "settings": { "question": "Where do you make them?", "answer": "Welded and finished in Botevgrad, Bulgaria. We visit the workshop every month." } }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}

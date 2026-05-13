@@ -1,0 +1,64 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "tg_ramps": {
+      "type": "2gether-ramps",
+      "blocks": {
+        "f_1": { "type": "feature", "settings": { "icon": "◣", "title": "Stackable", "text": "Slot together in seconds. Pack the whole kit in the trunk." } },
+        "f_2": { "type": "feature", "settings": { "icon": "◆", "title": "Anti-slip skin", "text": "Marine-grade textured surface. Grips in rain, mud, and powder." } },
+        "f_3": { "type": "feature", "settings": { "icon": "▲", "title": "Two-person setup", "text": "Lifted, set, ridden in under a minute. No tools." } },
+        "f_4": { "type": "feature", "settings": { "icon": "●", "title": "Steel-built", "text": "12mm welded frame. 120kg load rating. Won't flex under a sprint." } },
+        "s_1": { "type": "spec", "settings": { "label": "Frame", "value": "12mm welded steel" } },
+        "s_2": { "type": "spec", "settings": { "label": "Surface", "value": "Anti-slip composite" } },
+        "s_3": { "type": "spec", "settings": { "label": "Load rating", "value": "120 kg" } },
+        "s_4": { "type": "spec", "settings": { "label": "Weight (per ramp)", "value": "12 kg" } },
+        "q_1": { "type": "faq", "settings": { "question": "How do they ship?", "answer": "Flat-pack to your door anywhere in Bulgaria — free over €100 of ramps. Outside BG by request, we'll quote." } },
+        "q_2": { "type": "faq", "settings": { "question": "Can I mix and match ramps and stands?", "answer": "Yes. All our ramps fit any of our stands. Build the kit you need, scale later." } },
+        "q_3": { "type": "faq", "settings": { "question": "What's the warranty?", "answer": "2 years on welds, frame, and skin. If a part fails from normal use, we replace it." } },
+        "q_4": { "type": "faq", "settings": { "question": "Where do you make them?", "answer": "Welded and finished in Botevgrad, Bulgaria. We visit the workshop every month." } }
+      },
+      "block_order": ["f_1","f_2","f_3","f_4","s_1","s_2","s_3","s_4","q_1","q_2","q_3","q_4"],
+      "settings": {
+        "hero_origin": "MADE IN BOTEVGRAD · BULGARIA",
+        "hero_title": "PORTABLE",
+        "hero_title_accent": "RAMPS",
+        "hero_sub": "Take your line anywhere. Welded steel, anti-slip skin, stackable in seconds. Built by hand in Botevgrad — tested in the dirt every weekend.",
+        "hero_cta": "Shop the lineup",
+        "hero_secondary_text": "See how we build them",
+        "hero_secondary_link": "#tg-ramps-story",
+        "kpi_1_value": "12kg",
+        "kpi_1_label": "Per ramp",
+        "kpi_2_value": "120kg",
+        "kpi_2_label": "Load rating",
+        "kpi_3_value": "2 yr",
+        "kpi_3_label": "Warranty",
+        "lineup_eyebrow": "The lineup",
+        "lineup_title": "PICK YOUR LINE",
+        "lineup_intro": "Three ramps and a stand, today. More on the way as the season opens up.",
+        "features_eyebrow": "Built right",
+        "features_title": "WHY OURS",
+        "story_eyebrow": "The shop",
+        "story_title": "WELDED BY HAND.",
+        "story_title_em": "Tested by us.",
+        "story_text": "Each ramp is welded in a workshop in Botevgrad, then powder-coated and finished with an anti-slip skin. Before any unit ships, we ride it ourselves — at the shop, in the trails, on the Sunday rides. If a weld feels off, it goes back. Simple as that.",
+        "story_year": "2024",
+        "faq_eyebrow": "Before you ride",
+        "faq_title": "QUESTIONS, ANSWERED",
+        "cta_title": "BUILD YOUR LINE TODAY",
+        "cta_sub": "In stock. Free shipping in Bulgaria. 2-year warranty on every unit.",
+        "cta_primary_text": "Shop ramps",
+        "cta_secondary_text": "Talk to us",
+        "cta_secondary_link": "/pages/contact"
+      }
+    }
+  },
+  "order": ["tg_ramps"]
+}
