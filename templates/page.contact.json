@@ -24,7 +24,9 @@
         },
         "img_3": {
           "type": "gallery_image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/DSP06391-2.jpg"
+          }
         }
       },
       "block_order": [
