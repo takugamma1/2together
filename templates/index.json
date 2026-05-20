@@ -259,9 +259,9 @@
         "svc_1": {
           "type": "service_card",
           "settings": {
-            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
+            "title": "ВЕЛОСИПЕДИ",
             "image": "shopify://shop_images/DSP06362.jpg",
-            "link": ""
+            "link": "shopify://collections/velosipedi-c59"
           }
         },
         "svc_2": {
