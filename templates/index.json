@@ -283,7 +283,7 @@
         "svc_4": {
           "type": "service_card",
           "settings": {
-            "title": "Допълни оборудването",
+            "title": "Премиум аксесоари",
             "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "link": ""
           }
@@ -291,7 +291,7 @@
         "svc_5": {
           "type": "service_card",
           "settings": {
-            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
+            "title": "Компоненти и гуми",
             "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
             "link": ""
           }
