@@ -64,12 +64,13 @@
         "mosaic_3"
       ],
       "settings": {
-        "hero_image": "shopify://shop_images/Screenshot_898_5B1_5D.png",
+        "hero_image": "shopify://shop_images/DSP06248-2.jpg",
         "hero_line1": "ENGINEERED",
         "hero_line2": "FOR THE",
         "hero_line3": "NIGHT",
         "hero_subtitle": "",
         "vision_label": "The Vision",
+        "vision_image": "shopify://shop_images/Screenshot_898_5B1_5D.png",
         "vision_quote": "",
         "vision_body": "",
         "vision_signature": "Founders, 2Gether",
