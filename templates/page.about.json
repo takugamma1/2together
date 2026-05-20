@@ -39,18 +39,21 @@
         "mosaic_1": {
           "type": "mosaic_image",
           "settings": {
+            "image": "shopify://shop_images/DSP06391-2.jpg",
             "tall": true
           }
         },
         "mosaic_2": {
           "type": "mosaic_image",
           "settings": {
+            "image": "shopify://shop_images/DSP06437-2.jpg",
             "tall": false
           }
         },
         "mosaic_3": {
           "type": "mosaic_image",
           "settings": {
+            "image": "shopify://shop_images/2026-04-09.webp",
             "tall": false
           }
         }
@@ -65,16 +68,17 @@
       ],
       "settings": {
         "hero_image": "shopify://shop_images/DSP06248-2.jpg",
-        "hero_line1": "кои",
-        "hero_line2": "сме",
-        "hero_line3": "ние",
+        "hero_line1": "",
+        "hero_line2": "",
+        "hero_line3": "",
         "hero_subtitle": "",
         "vision_label": "The Vision",
-        "vision_image": "shopify://shop_images/Screenshot_898_5B1_5D.png",
+        "vision_image": "shopify://shop_images/DSP06466.jpg",
         "vision_quote": "",
         "vision_body": "",
         "vision_signature": "Founders, 2Gether",
         "process_label": "The Process",
+        "community_image": "shopify://shop_images/Screensho6854t_1.png",
         "community_label": "Community",
         "community_title": "SUNDAY CLUB",
         "community_desc": "",
