@@ -206,7 +206,7 @@
         "poll_1": {
           "type": "poll_option",
           "settings": {
-            "destination": "ПЛАНИНСКО КОЛОЕЗДЕНЕ",
+            "destination": "ПЛАНИНСКИ МАРШРУТИ",
             "percentage": 72,
             "leading": true
           }
@@ -214,7 +214,7 @@
         "poll_2": {
           "type": "poll_option",
           "settings": {
-            "destination": "Consectetur Adipiscing",
+            "destination": "ШОСЕЙНО КОЛОЕЗДЕНЕ",
             "percentage": 18,
             "leading": false
           }
