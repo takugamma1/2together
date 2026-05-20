@@ -137,19 +137,19 @@
         "img_1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg"
+            "image": "shopify://shop_images/DSP06231.jpg"
           }
         },
         "img_2": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/pexels-lebele-17593893.jpg"
+            "image": "shopify://shop_images/DSP06150.jpg"
           }
         },
         "img_3": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg"
+            "image": "shopify://shop_images/DSP06121.jpg"
           }
         }
       },
