@@ -206,7 +206,7 @@
         "poll_1": {
           "type": "poll_option",
           "settings": {
-            "destination": "Lorem Ipsum Dolor",
+            "destination": "ПЛАНИНСКО КОЛОЕЗДЕНЕ",
             "percentage": 72,
             "leading": true
           }
