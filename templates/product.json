@@ -38,6 +38,7 @@
         "story_title": "PURPOSEFUL",
         "story_title_accent": "CRAFT",
         "story_description": "",
+        "story_image": "{{ product.featured_image }}",
         "features_label": "Други снимки",
         "features_title": "BUILT IN",
         "included_label": "In The Box",
