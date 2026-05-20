@@ -14,7 +14,9 @@
       "blocks": {
         "img_1": {
           "type": "gallery_image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/DSP06287-2.jpg"
+          }
         },
         "img_2": {
           "type": "gallery_image",
