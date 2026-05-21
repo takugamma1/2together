@@ -16,24 +16,24 @@
           "type": "process_step",
           "settings": {
             "number": "01",
-            "title": "Design",
-            "description": "Every concept begins with aerodynamic simulation and computational geometry, refined through thousands of virtual wind tunnel iterations."
+            "title": "ПРИЕМАНЕ",
+            "description": "Донасяш колелото, ние го преглеждаме. Даваме ти диагностика и какво трябва да се направи."
           }
         },
         "step_2": {
           "type": "process_step",
           "settings": {
             "number": "02",
-            "title": "Fabrication",
-            "description": "Aerospace-grade carbon fiber is hand-laid by master craftsmen, each layer precisely oriented for optimal stiffness-to-weight ratio."
+            "title": "СЕРВИЗ",
+            "description": "Всяка поправка се прави внимателно и с правилните части. Бързо, но без компромис с качеството."
           }
         },
         "step_3": {
           "type": "process_step",
           "settings": {
             "number": "03",
-            "title": "Assembly",
-            "description": "Final assembly is a 40-point inspection process. Every bike is individually tuned, test-ridden, and certified before shipping."
+            "title": "ПРЕДАВАНЕ",
+            "description": "Взимаш колелото готово за пътя."
           }
         },
         "mosaic_1": {
