@@ -39,13 +39,13 @@
       "settings": {
         "hero_image": "shopify://shop_images/DSP06150.jpg",
         "hero_line1": "Свържи се",
-        "hero_line2": "/ с нас",
-        "hero_subtitle": "",
+        "hero_line2": "С НАС",
+        "hero_subtitle": "Пишете ни, ще се радваме да отговорим на всичките ви въпроси.",
         "address": "",
         "phone": "+359 2 000 0000",
         "email": "signal@2gether.cc",
         "hours": "",
-        "support_text": "",
+        "support_text": "За гаранционни рекламации, проблеми с компоненти или механични въпроси, нашият екип ще ви отговари в рамките на 12 часа.",
         "support_email": "support@2gether.cc",
         "quote": ""
       }
