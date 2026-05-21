@@ -35,8 +35,8 @@
       ],
       "settings": {
         "story_label": "за вас",
-        "story_title": "направено със",
-        "story_title_accent": "смисъл",
+        "story_title": "повече от",
+        "story_title_accent": "магазин",
         "story_description": "",
         "story_image": "{{ product.featured_image }}",
         "features_label": "Други снимки",
