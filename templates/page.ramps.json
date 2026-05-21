@@ -89,8 +89,8 @@
         "q_3": {
           "type": "faq",
           "settings": {
-            "question": "What's the warranty?",
-            "answer": "2 years on welds, frame, and skin. If a part fails from normal use, we replace it."
+            "question": "Има ли гаранция?",
+            "answer": "2 години на всяка единица. Ако нещо се счупи при нормална употреба, оправяме го."
           }
         },
         "q_4": {
