@@ -60,7 +60,6 @@
         },
         "nav_tile_bRNc8c": {
           "type": "nav_tile",
-          "disabled": true,
           "settings": {
             "link_handle": "OFF-ROAD TOUR",
             "image": "shopify://shop_images/pexels-malcolnphoto-34077919.jpg",
