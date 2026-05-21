@@ -34,9 +34,9 @@
         "feature_card_UYHYHb"
       ],
       "settings": {
-        "story_label": "Built For",
-        "story_title": "PURPOSEFUL",
-        "story_title_accent": "CRAFT",
+        "story_label": "за вас",
+        "story_title": "направено със",
+        "story_title_accent": "смисъл",
         "story_description": "",
         "story_image": "{{ product.featured_image }}",
         "features_label": "Други снимки",
