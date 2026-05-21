@@ -75,15 +75,15 @@
         "q_1": {
           "type": "faq",
           "settings": {
-            "question": "How do they ship?",
-            "answer": "Flat-pack to your door anywhere in Bulgaria — free over €100 of ramps. Outside BG by request, we'll quote."
+            "question": "Как се доставят?",
+            "answer": "С куриер до адрес или лично взимане от магазина в Ботевград, избираш ти."
           }
         },
         "q_2": {
           "type": "faq",
           "settings": {
-            "question": "Can I mix and match ramps and stands?",
-            "answer": "Yes. All our ramps fit any of our stands. Build the kit you need, scale later."
+            "question": "Мога ли да комбинирам различни рампи и стойки?",
+            "answer": "Да, всички продукти от линията са съвместими помежду си. Строй комплекта който ти трябва."
           }
         },
         "q_3": {
@@ -140,8 +140,8 @@
         "story_title_em": "Тествани от нас.",
         "story_text": "Всяка рампа се завари в работилница в Ботевград, после се прахово боядисва и финишира с антиплъзгащо покритие. Преди да стигне до теб, я возим ние. В магазина, по пътеките, на груповите излизания. Ако нещо не е наред, се връща за преработка.",
         "story_year": "2024",
-        "faq_eyebrow": "Before you ride",
-        "faq_title": "QUESTIONS, ANSWERED",
+        "faq_eyebrow": "Преди да тръгнеш",
+        "faq_title": "ЧЕСТО ЗАДАВАНИ ВЪПРОСИ.",
         "cta_title": "BUILD YOUR LINE TODAY",
         "cta_sub": "In stock. Free shipping in Bulgaria. 2-year warranty on every unit.",
         "cta_primary_text": "Shop ramps",
