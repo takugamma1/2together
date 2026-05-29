@@ -31,7 +31,12 @@
   <div class="tg-hero-bento">
     {% for block in section.blocks %}
       {% if block.type == 'bento_cell' %}
-        <a class="tg-bento-cell" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+        <a class="tg-bento-cell{% if block.settings.image != blank %} has-image{% endif %}" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <span class="tg-bento-cell-img" aria-hidden="true">
+              {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 40vw' }}
+            </span>
+          {% endif %}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             {% case block.settings.icon %}
               {% when 'clock' %}
@@ -109,6 +114,12 @@
       "name": "Bento Cell",
       "limit": 5,
       "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Tile image (optional)",
+          "info": "Leave empty to show just the icon."
+        },
         {
           "type": "text",
           "id": "number",
