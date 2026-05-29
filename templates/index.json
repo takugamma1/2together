@@ -51,24 +51,13 @@
             "link": "",
             "icon": "tool"
           }
-        },
-        "bento_5": {
-          "type": "bento_cell",
-          "settings": {
-            "number": "05",
-            "title": "OFF-ROAD",
-            "description": "",
-            "link": "",
-            "icon": "users"
-          }
         }
       },
       "block_order": [
         "bento_1",
         "bento_2",
         "bento_3",
-        "bento_4",
-        "bento_5"
+        "bento_4"
       ],
       "settings": {
         "hero_image": "shopify://shop_images/pexels-malcolnphoto-34077919.jpg",

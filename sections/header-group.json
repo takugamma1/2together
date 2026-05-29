@@ -57,25 +57,13 @@
             "title": "MERCHANDISE",
             "link": ""
           }
-        },
-        "nav_tile_bRNc8c": {
-          "type": "nav_tile",
-          "settings": {
-            "link_handle": "OFF-ROAD TOUR",
-            "image": "shopify://shop_images/pexels-malcolnphoto-34077919.jpg",
-            "descriptor": "5",
-            "number": "5",
-            "title": "OFF-ROAD TOURS",
-            "link": "shopify://pages/offroad-tours"
-          }
         }
       },
       "block_order": [
         "nav_tile_LJHd78",
         "nav_tile_igVqRq",
         "nav_tile_gygNUN",
-        "nav_tile_PKGhED",
-        "nav_tile_bRNc8c"
+        "nav_tile_PKGhED"
       ],
       "settings": {
         "logo": "shopify://shop_images/image0.png",

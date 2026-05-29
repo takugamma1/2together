@@ -177,7 +177,7 @@
           {% endfor %}
         {% else %}
           {%- comment -%} Fallback so the menu works before the merchant configures anything {%- endcomment -%}
-          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups|/pages/bike-service||Rent A Bike|Daily, weekly, by the route|/pages/rent-a-bike||Bicycles|Road, MTB, gravel, e-bike|/collections/all||Merchandise|Apparel, parts, accessories|/collections/merchandise||Price List|Service rates & rental tariffs|/pages/bike-service#tg-service-prices||Offroad Tours|Group rides into the wild|/pages/offroad-tours' | split: '||' -%}
+          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups|/pages/bike-service||Rent A Bike|Daily, weekly, by the route|/pages/rent-a-bike||Bicycles|Road, MTB, gravel, e-bike|/collections/all||Merchandise|Apparel, parts, accessories|/collections/merchandise||Price List|Service rates & rental tariffs|/pages/bike-service#tg-service-prices' | split: '||' -%}
           {% for entry in default_tiles %}
             {%- assign parts = entry | split: '|' -%}
             {%- assign t_num = forloop.index | prepend: '0' | slice: -2, 2 -%}
@@ -397,14 +397,6 @@
             "title": "Price List",
             "descriptor": "Service rates & rental tariffs",
             "number": "05"
-          }
-        },
-        {
-          "type": "nav_tile",
-          "settings": {
-            "title": "Offroad Tours",
-            "descriptor": "Group rides into the wild",
-            "number": "06"
           }
         }
       ]

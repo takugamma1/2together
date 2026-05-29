@@ -20,9 +20,9 @@ body.tg-collection-active .content-for-layout {
   margin: 0;
 }
 
-body.tg-collection-active {
-  overflow-x: clip;
-}
+/* NOTE: horizontal overflow is clipped on .tg-collection-page (the wrapper),
+   NOT on <body>. Clipping on <body> breaks the sticky site header
+   (#header-group is a direct child of body). */
 
 /* ══════════════════════════════════════
    TOP NAVIGATION (inside section)

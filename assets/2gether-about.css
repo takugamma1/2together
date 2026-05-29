@@ -147,10 +147,14 @@ body.tg-about-active .content-for-layout {
 .tg-about-hero-title {
   font-family: 'Technor', sans-serif;
   font-weight: 700;
-  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-size: clamp(2.4rem, 11vw, 7rem);
   letter-spacing: -0.04em;
   line-height: 0.9;
   color: var(--tg-text-primary);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+  max-width: 100%;
 }
 
 .tg-about-hero-title span {

@@ -1325,8 +1325,9 @@
    (which itself is the same height as the header), put sticky here. */
 #header-group {
   position: sticky;
+  position: -webkit-sticky;
   top: 0;
-  z-index: 50;
+  z-index: 500;
   isolation: isolate;
 }
 

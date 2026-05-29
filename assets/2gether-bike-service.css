@@ -6,9 +6,9 @@ body.tg-service-active .content-for-layout {
   margin: 0;
 }
 
-body.tg-service-active {
-  overflow-x: clip;
-}
+/* NOTE: horizontal overflow is clipped on .tg-service-page (the wrapper),
+   NOT on <body>. Clipping on <body> breaks the sticky site header
+   (#header-group is a direct child of body). */
 
 .tg-service-page {
   background: var(--tg-ink);
