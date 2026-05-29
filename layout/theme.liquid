@@ -112,6 +112,27 @@
           headerComponent.dataset.menuStyle = isTouchDevice || hasReachedMinimum ? 'drawer' : 'menu';
         }
       })();
+
+      // This theme uses a custom <tg-header>, not <header-component>, so the
+      // calculation above never sets --header-height. Measure the real sticky
+      // header group and keep --header-height in sync (used by base.css offset
+      // and the collection filter bar). Re-measure on resize, load and fonts.
+      (function setTgHeaderHeight() {
+        const headerGroup = document.querySelector('#header-group');
+        if (!headerGroup || document.querySelector('header-component')) return;
+        function apply() {
+          const h = headerGroup.offsetHeight;
+          if (h) {
+            document.body.style.setProperty('--header-height', h + 'px');
+            document.body.style.setProperty('--header-group-height', h + 'px');
+          }
+        }
+        apply();
+        window.addEventListener('resize', apply, { passive: true });
+        window.addEventListener('orientationchange', apply);
+        window.addEventListener('load', apply);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(apply);
+      })();
     </script>
 
     <main

@@ -62,18 +62,18 @@
           <div class="tg-r-progress-fill" data-tg-r-fill style="width: 33%"></div>
         </div>
         <ol class="tg-r-progress-steps">
-          <li class="is-active" data-tg-r-step-label="1"><span class="tg-r-step-dot">1</span><span class="tg-r-step-name">Roster</span></li>
-          <li data-tg-r-step-label="2"><span class="tg-r-step-dot">2</span><span class="tg-r-step-name">Plan</span></li>
-          <li data-tg-r-step-label="3"><span class="tg-r-step-dot">3</span><span class="tg-r-step-name">Contact</span></li>
+          <li class="is-active" data-tg-r-step-label="1"><span class="tg-r-step-dot">1</span><span class="tg-r-step-name">{{ section.settings.step1_tab | default: 'Roster' }}</span></li>
+          <li data-tg-r-step-label="2"><span class="tg-r-step-dot">2</span><span class="tg-r-step-name">{{ section.settings.step2_tab | default: 'Plan' }}</span></li>
+          <li data-tg-r-step-label="3"><span class="tg-r-step-dot">3</span><span class="tg-r-step-name">{{ section.settings.step3_tab | default: 'Contact' }}</span></li>
         </ol>
       </div>
 
       <!-- ── STEP 1: CHARACTER SELECT ── -->
       <div class="tg-r-step is-active" data-tg-r-step="1">
         <header class="tg-r-step-head">
-          <span class="tg-r-step-num">01 · The crew</span>
-          <h2 class="tg-r-step-title">Choose your character</h2>
-          <p class="tg-r-step-sub">Tap to add a bike to the crew. Tap again to add another of the same. Up to {{ max_per_bike }} per model.</p>
+          <span class="tg-r-step-num">{{ section.settings.step1_eyebrow | default: '01 · The crew' }}</span>
+          <h2 class="tg-r-step-title">{{ section.settings.step1_title | default: 'Choose your character' }}</h2>
+          <p class="tg-r-step-sub">{{ section.settings.step1_sub | default: 'Tap to add a bike to the crew. Tap again to add another of the same.' }} {{ 'Up to' }} {{ max_per_bike }} {{ 'per model.' }}</p>
         </header>
 
         {% if rental_bikes.size > 0 %}
@@ -120,7 +120,7 @@
                   {% endif %}
                   <div class="tg-bike-card-foot">
                     <span class="tg-bike-card-price">
-                      <small>From €3 / 1h</small>
+                      <small>{{ section.settings.bike_price_hint | default: 'From €3 / 1h' }}</small>
                     </span>
                     <div class="tg-bike-qty" data-tg-bike-qty>
                       <button type="button" class="tg-bike-qty-btn" data-tg-bike-dec aria-label="Remove one">
@@ -138,7 +138,7 @@
           </div>
         {% else %}
           <div class="tg-rental-empty">
-            <p>No rental bikes configured yet. Pick a collection in the section settings.</p>
+            <p>{{ section.settings.empty_text | default: 'No rental bikes configured yet. Pick a collection in the section settings.' }}</p>
           </div>
         {% endif %}
 
@@ -146,11 +146,11 @@
         <aside class="tg-roster-summary" data-tg-roster-summary aria-live="polite">
           <div class="tg-roster-summary-text">
             <span class="tg-roster-summary-count" data-tg-rental-count>0</span>
-            <span class="tg-roster-summary-label" data-tg-rental-label>riders in the crew</span>
+            <span class="tg-roster-summary-label" data-tg-rental-label>{{ section.settings.riders_label_plural | default: 'riders in the crew' }}</span>
           </div>
           <div class="tg-roster-summary-bikes" data-tg-rental-bikes-display></div>
           <button type="button" class="tg-r-btn tg-r-btn--next" data-tg-r-next disabled>
-            Next: Pick dates
+            {{ section.settings.step1_next | default: 'Next: Pick dates' }}
             <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
           </button>
         </aside>
@@ -159,24 +159,25 @@
       <!-- ── STEP 2: PACKAGE + DATE + DELIVERY ── -->
       <div class="tg-r-step" data-tg-r-step="2">
         <header class="tg-r-step-head">
-          <span class="tg-r-step-num">02 · The plan</span>
-          <h2 class="tg-r-step-title">Pick your package</h2>
-          <p class="tg-r-step-sub">Most rentals are by the hour or for the day. Pick the package, the day, and how you would like to get the bike.</p>
+          <span class="tg-r-step-num">{{ section.settings.step2_eyebrow | default: '02 · The plan' }}</span>
+          <h2 class="tg-r-step-title">{{ section.settings.step2_title | default: 'Pick your package' }}</h2>
+          <p class="tg-r-step-sub">{{ section.settings.step2_sub | default: 'Most rentals are by the hour or for the day. Pick the package, the day, and how you would like to get the bike.' }}</p>
         </header>
 
         <fieldset class="tg-r-field tg-r-field--full">
-          <legend class="tg-r-field-label">Rental package</legend>
+          <legend class="tg-r-field-label">{{ section.settings.package_label | default: 'Rental package' }}</legend>
           <div class="tg-r-pkg-grid">
-            {%- liquid
-              assign pkg_data = '1h|1 hour|3|Quick spin around town||1d|1 day|12|9:00 — 19:00 same day||24h|24 hours|20|Full day, return next day' | split: '||'
-            -%}
-            {% for pkg in pkg_data %}
-              {%- assign p = pkg | split: '|' -%}
+            {%- assign pkg_lines = section.settings.packages | default: '1 hour|3|Quick spin around town
+1 day|12|9:00 — 19:00 same day
+24 hours|20|Full day, return next day' | newline_to_br | split: '<br />' -%}
+            {% for pkg in pkg_lines %}
+              {%- assign p = pkg | strip_newlines | strip | split: '|' -%}
+              {%- if p[0] == blank %}{% continue %}{% endif -%}
               <label class="tg-r-pkg">
-                <input type="radio" name="contact[package]" value="{{ p[1] }} (€{{ p[2] }})" data-tg-r-pkg-key="{{ p[0] }}" data-tg-r-pkg-price="{{ p[2] }}" required data-tg-r-validate>
-                <span class="tg-r-pkg-name">{{ p[1] }}</span>
-                <span class="tg-r-pkg-price">€{{ p[2] }}<small> / bike</small></span>
-                <span class="tg-r-pkg-desc">{{ p[3] }}</span>
+                <input type="radio" name="contact[package]" value="{{ p[0] | strip }} (€{{ p[1] | strip }})" data-tg-r-pkg-price="{{ p[1] | strip }}" required data-tg-r-validate>
+                <span class="tg-r-pkg-name">{{ p[0] | strip }}</span>
+                <span class="tg-r-pkg-price">€{{ p[1] | strip }}<small> {{ section.settings.package_unit | default: '/ bike' }}</small></span>
+                <span class="tg-r-pkg-desc">{{ p[2] | strip }}</span>
               </label>
             {% endfor %}
           </div>
@@ -184,19 +185,19 @@
 
         <div class="tg-r-date-grid">
           <label class="tg-r-field">
-            <span class="tg-r-field-label">Pickup date</span>
+            <span class="tg-r-field-label">{{ section.settings.pickup_date_label | default: 'Pickup date' }}</span>
             <input type="date" name="contact[pickup_date]" data-tg-r-start required data-tg-r-validate>
           </label>
           <fieldset class="tg-r-field">
-            <legend class="tg-r-field-label">Pickup time</legend>
+            <legend class="tg-r-field-label">{{ section.settings.pickup_time_label | default: 'Pickup time' }}</legend>
             <div class="tg-r-slot-grid">
-              {% assign slots = 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
+              {% assign slots = section.settings.time_slots | default: 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
               {% for slot in slots %}
                 {%- assign sp = slot | split: '|' -%}
                 <label class="tg-r-slot">
-                  <input type="radio" name="contact[pickup_time]" value="{{ sp[0] }} ({{ sp[1] }})" required data-tg-r-validate>
-                  <span class="tg-r-slot-name">{{ sp[0] }}</span>
-                  <span class="tg-r-slot-hours">{{ sp[1] }}</span>
+                  <input type="radio" name="contact[pickup_time]" value="{{ sp[0] | strip }} ({{ sp[1] | strip }})" required data-tg-r-validate>
+                  <span class="tg-r-slot-name">{{ sp[0] | strip }}</span>
+                  <span class="tg-r-slot-hours">{{ sp[1] | strip }}</span>
                 </label>
               {% endfor %}
             </div>
@@ -204,35 +205,36 @@
         </div>
 
         <fieldset class="tg-r-field tg-r-field--full">
-          <legend class="tg-r-field-label">Delivery (within Varna — hotels &amp; addresses)</legend>
+          <legend class="tg-r-field-label">{{ section.settings.delivery_field_label | default: 'Delivery (within Varna — hotels & addresses)' }}</legend>
           <div class="tg-r-delivery-grid">
-            {%- liquid
-              assign delivery_data = 'pickup|Pickup at shop|0|Drop by at our location||oneway|One-way delivery|5|We bring it to you||roundtrip|Round-trip delivery|10|Drop-off &amp; pickup at your place' | split: '||'
-            -%}
-            {% for d in delivery_data %}
-              {%- assign dp = d | split: '|' -%}
+            {%- assign delivery_lines = section.settings.delivery_options | default: 'Pickup at shop|0|Drop by at our location
+One-way delivery|5|We bring it to you
+Round-trip delivery|10|Drop-off & pickup at your place' | newline_to_br | split: '<br />' -%}
+            {% for d in delivery_lines %}
+              {%- assign dp = d | strip_newlines | strip | split: '|' -%}
+              {%- if dp[0] == blank %}{% continue %}{% endif -%}
               <label class="tg-r-delivery">
-                <input type="radio" name="contact[delivery]" value="{{ dp[1] }} (€{{ dp[2] }})" data-tg-r-delivery-key="{{ dp[0] }}" data-tg-r-delivery-price="{{ dp[2] }}" {% if forloop.first %}checked{% endif %} data-tg-r-validate>
-                <span class="tg-r-delivery-name">{{ dp[1] }}</span>
-                <span class="tg-r-delivery-price">{% if dp[2] == '0' %}Free{% else %}€{{ dp[2] }}{% endif %}</span>
-                <span class="tg-r-delivery-desc">{{ dp[3] }}</span>
+                <input type="radio" name="contact[delivery]" value="{{ dp[0] | strip }} (€{{ dp[1] | strip }})" data-tg-r-delivery-price="{{ dp[1] | strip }}" {% if forloop.first %}checked{% endif %} data-tg-r-validate>
+                <span class="tg-r-delivery-name">{{ dp[0] | strip }}</span>
+                <span class="tg-r-delivery-price">{% if dp[1] | strip == '0' %}{{ section.settings.free_label | default: 'Free' }}{% else %}€{{ dp[1] | strip }}{% endif %}</span>
+                <span class="tg-r-delivery-desc">{{ dp[2] | strip }}</span>
               </label>
             {% endfor %}
           </div>
         </fieldset>
 
         <div class="tg-r-summary-row" data-tg-r-duration aria-live="polite">
-          <span class="tg-r-summary-label">Estimated total</span>
-          <span class="tg-r-summary-value">Pick a package</span>
+          <span class="tg-r-summary-label">{{ section.settings.total_label | default: 'Estimated total' }}</span>
+          <span class="tg-r-summary-value">{{ section.settings.total_empty | default: 'Pick a package' }}</span>
         </div>
 
         <div class="tg-r-actions">
           <button type="button" class="tg-r-btn tg-r-btn--back" data-tg-r-back>
             <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
-            Back
+            {{ section.settings.back_label | default: 'Back' }}
           </button>
           <button type="button" class="tg-r-btn tg-r-btn--next" data-tg-r-next>
-            Next: Your details
+            {{ section.settings.step2_next | default: 'Next: Your details' }}
             <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
           </button>
         </div>
@@ -241,56 +243,62 @@
       <!-- ── STEP 3: CONTACT ── -->
       <div class="tg-r-step" data-tg-r-step="3">
         <header class="tg-r-step-head">
-          <span class="tg-r-step-num">03 · The leader</span>
-          <h2 class="tg-r-step-title">Who is leading the crew?</h2>
-          <p class="tg-r-step-sub">One contact for the whole reservation — the lead rider. We will message you about pickup details.</p>
+          <span class="tg-r-step-num">{{ section.settings.step3_eyebrow | default: '03 · The leader' }}</span>
+          <h2 class="tg-r-step-title">{{ section.settings.step3_title | default: 'Who is leading the crew?' }}</h2>
+          <p class="tg-r-step-sub">{{ section.settings.step3_sub | default: 'One contact for the whole reservation — the lead rider. We will message you about pickup details.' }}</p>
         </header>
 
         <div class="tg-r-contact-grid">
           <label class="tg-r-field">
-            <span class="tg-r-field-label">Lead rider name</span>
+            <span class="tg-r-field-label">{{ section.settings.name_label | default: 'Lead rider name' }}</span>
             <input type="text" name="contact[name]" required data-tg-r-validate>
           </label>
           <label class="tg-r-field">
-            <span class="tg-r-field-label">Phone</span>
+            <span class="tg-r-field-label">{{ section.settings.phone_label | default: 'Phone' }}</span>
             <input type="tel" name="contact[phone]" required data-tg-r-validate>
           </label>
           <label class="tg-r-field tg-r-field--full">
-            <span class="tg-r-field-label">Email</span>
+            <span class="tg-r-field-label">{{ section.settings.email_label | default: 'Email' }}</span>
             <input type="email" name="contact[email]" required data-tg-r-validate>
           </label>
           <label class="tg-r-field">
-            <span class="tg-r-field-label">Group experience</span>
+            <span class="tg-r-field-label">{{ section.settings.experience_label | default: 'Group experience' }}</span>
             <select name="contact[experience]">
-              <option value="">— optional —</option>
-              <option value="First time">First time on a real bike</option>
-              <option value="Casual">Casual riders</option>
-              <option value="Experienced">Experienced — we ride often</option>
-              <option value="Mixed">Mixed levels</option>
+              {%- assign exp_opts = section.settings.experience_options | default: '— optional —
+First time on a real bike
+Casual riders
+Experienced — we ride often
+Mixed levels' | newline_to_br | split: '<br />' -%}
+              {%- for opt in exp_opts -%}
+                {%- assign opt_clean = opt | strip_newlines | strip -%}
+                {%- if opt_clean != blank -%}
+                  <option value="{{ opt_clean | escape }}">{{ opt_clean }}</option>
+                {%- endif -%}
+              {%- endfor -%}
             </select>
           </label>
           <label class="tg-r-field">
-            <span class="tg-r-field-label">Heights (cm)</span>
-            <input type="text" name="contact[heights]" placeholder="e.g. 178, 165, 182">
+            <span class="tg-r-field-label">{{ section.settings.heights_label | default: 'Heights (cm)' }}</span>
+            <input type="text" name="contact[heights]" placeholder="{{ section.settings.heights_placeholder | default: 'e.g. 178, 165, 182' }}">
           </label>
           <label class="tg-r-field tg-r-field--full">
-            <span class="tg-r-field-label">Anything else?</span>
-            <textarea name="contact[notes]" rows="2" placeholder="Routes you're considering, child seats, helmets, anything else."></textarea>
+            <span class="tg-r-field-label">{{ section.settings.notes_label | default: 'Anything else?' }}</span>
+            <textarea name="contact[notes]" rows="2" placeholder="{{ section.settings.notes_placeholder | default: "Routes you're considering, child seats, helmets, anything else." }}"></textarea>
           </label>
         </div>
 
         <!-- Final summary card -->
         <div class="tg-r-final-summary" data-tg-r-final-summary>
-          <h4>Review</h4>
+          <h4>{{ section.settings.review_label | default: 'Review' }}</h4>
           <div data-tg-r-final-content>
-            <p class="tg-r-final-empty">Fill the form to see your reservation summary.</p>
+            <p class="tg-r-final-empty">{{ section.settings.review_empty | default: 'Fill the form to see your reservation summary.' }}</p>
           </div>
         </div>
 
         <div class="tg-r-actions">
           <button type="button" class="tg-r-btn tg-r-btn--back" data-tg-r-back>
             <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
-            Back
+            {{ section.settings.back_label | default: 'Back' }}
           </button>
           <button type="submit" class="tg-r-btn tg-r-btn--submit">
             {{ section.settings.form_submit | default: 'Reserve crew' }}
@@ -337,6 +345,10 @@
     const root = document.querySelector('[data-tg-rental]');
     if (!root) return;
 
+    const TG_RIDER_SINGULAR = {{ section.settings.riders_label_singular | default: 'rider in the crew' | json }};
+    const TG_RIDER_PLURAL = {{ section.settings.riders_label_plural | default: 'riders in the crew' | json }};
+    const TG_TAP_HINT = {{ section.settings.tap_hint | default: 'Tap a card to add' | json }};
+
     const wizard = root.querySelector('[data-tg-rental-wizard]');
     const steps = Array.from(root.querySelectorAll('[data-tg-r-step]'));
     const labels = Array.from(root.querySelectorAll('[data-tg-r-step-label]'));
@@ -381,13 +393,13 @@
       const sel = readSelection();
 
       if (countEl) countEl.textContent = sel.total;
-      if (labelEl) labelEl.textContent = sel.total === 1 ? 'rider in the crew' : 'riders in the crew';
+      if (labelEl) labelEl.textContent = sel.total === 1 ? TG_RIDER_SINGULAR : TG_RIDER_PLURAL;
       if (ridersInput) ridersInput.value = sel.total;
       if (bikesInput) bikesInput.value = sel.items.map(b => b.qty + '× ' + b.name).join(', ');
 
       if (bikesDisplay) {
         if (sel.items.length === 0) {
-          bikesDisplay.innerHTML = '<span class="tg-roster-summary-hint">Tap a card to add</span>';
+          bikesDisplay.innerHTML = '<span class="tg-roster-summary-hint">' + TG_TAP_HINT + '</span>';
         } else {
           bikesDisplay.innerHTML = sel.items.map(b =>
             '<span class="tg-roster-pill">' + b.qty + '× ' + escapeHtml(b.name) + '</span>'
@@ -690,6 +702,64 @@
       "label": "Success message",
       "default": "Thanks — your reservation is in. We will reply within 24h with availability."
     },
+    {
+      "type": "header",
+      "content": "Wizard — step tabs & shared"
+    },
+    { "type": "text", "id": "step1_tab", "label": "Step 1 tab", "default": "Roster" },
+    { "type": "text", "id": "step2_tab", "label": "Step 2 tab", "default": "Plan" },
+    { "type": "text", "id": "step3_tab", "label": "Step 3 tab", "default": "Contact" },
+    { "type": "text", "id": "back_label", "label": "Back button", "default": "Back" },
+    {
+      "type": "header",
+      "content": "Wizard — step 1 (bikes)"
+    },
+    { "type": "text", "id": "step1_eyebrow", "label": "Eyebrow", "default": "01 · The crew" },
+    { "type": "text", "id": "step1_title", "label": "Title", "default": "Choose your character" },
+    { "type": "textarea", "id": "step1_sub", "label": "Subtitle", "default": "Tap to add a bike to the crew. Tap again to add another of the same." },
+    { "type": "text", "id": "bike_price_hint", "label": "Bike card price hint", "default": "From €3 / 1h" },
+    { "type": "text", "id": "riders_label_singular", "label": "Riders label (1)", "default": "rider in the crew" },
+    { "type": "text", "id": "riders_label_plural", "label": "Riders label (many)", "default": "riders in the crew" },
+    { "type": "text", "id": "tap_hint", "label": "Empty roster hint", "default": "Tap a card to add" },
+    { "type": "text", "id": "step1_next", "label": "Next button", "default": "Next: Pick dates" },
+    { "type": "textarea", "id": "empty_text", "label": "No-bikes message", "default": "No rental bikes configured yet. Pick a collection in the section settings." },
+    {
+      "type": "header",
+      "content": "Wizard — step 2 (package)"
+    },
+    { "type": "text", "id": "step2_eyebrow", "label": "Eyebrow", "default": "02 · The plan" },
+    { "type": "text", "id": "step2_title", "label": "Title", "default": "Pick your package" },
+    { "type": "textarea", "id": "step2_sub", "label": "Subtitle", "default": "Most rentals are by the hour or for the day. Pick the package, the day, and how you would like to get the bike." },
+    { "type": "text", "id": "package_label", "label": "Package field label", "default": "Rental package" },
+    { "type": "text", "id": "package_unit", "label": "Package price unit", "default": "/ bike" },
+    { "type": "textarea", "id": "packages", "label": "Packages", "info": "One per line. Format: Name | Price (number) | Description", "default": "1 hour|3|Quick spin around town\n1 day|12|9:00 — 19:00 same day\n24 hours|20|Full day, return next day" },
+    { "type": "text", "id": "pickup_date_label", "label": "Pickup date label", "default": "Pickup date" },
+    { "type": "text", "id": "pickup_time_label", "label": "Pickup time label", "default": "Pickup time" },
+    { "type": "textarea", "id": "time_slots", "label": "Pickup time slots", "info": "Separate slots with || and name/hours with |. Example: Morning|9:00 — 12:00||Afternoon|12:00 — 16:00", "default": "Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00" },
+    { "type": "text", "id": "delivery_field_label", "label": "Delivery field label", "default": "Delivery (within Varna — hotels & addresses)" },
+    { "type": "textarea", "id": "delivery_options", "label": "Delivery options", "info": "One per line. Format: Name | Price (number) | Description. Use 0 for free.", "default": "Pickup at shop|0|Drop by at our location\nOne-way delivery|5|We bring it to you\nRound-trip delivery|10|Drop-off & pickup at your place" },
+    { "type": "text", "id": "free_label", "label": "Free price word", "default": "Free" },
+    { "type": "text", "id": "total_label", "label": "Total label", "default": "Estimated total" },
+    { "type": "text", "id": "total_empty", "label": "Total placeholder", "default": "Pick a package" },
+    { "type": "text", "id": "step2_next", "label": "Next button", "default": "Next: Your details" },
+    {
+      "type": "header",
+      "content": "Wizard — step 3 (contact)"
+    },
+    { "type": "text", "id": "step3_eyebrow", "label": "Eyebrow", "default": "03 · The leader" },
+    { "type": "text", "id": "step3_title", "label": "Title", "default": "Who is leading the crew?" },
+    { "type": "textarea", "id": "step3_sub", "label": "Subtitle", "default": "One contact for the whole reservation — the lead rider. We will message you about pickup details." },
+    { "type": "text", "id": "name_label", "label": "Name label", "default": "Lead rider name" },
+    { "type": "text", "id": "phone_label", "label": "Phone label", "default": "Phone" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "experience_label", "label": "Experience label", "default": "Group experience" },
+    { "type": "textarea", "id": "experience_options", "label": "Experience options", "info": "One per line.", "default": "— optional —\nFirst time on a real bike\nCasual riders\nExperienced — we ride often\nMixed levels" },
+    { "type": "text", "id": "heights_label", "label": "Heights label", "default": "Heights (cm)" },
+    { "type": "text", "id": "heights_placeholder", "label": "Heights placeholder", "default": "e.g. 178, 165, 182" },
+    { "type": "text", "id": "notes_label", "label": "Notes label", "default": "Anything else?" },
+    { "type": "text", "id": "notes_placeholder", "label": "Notes placeholder", "default": "Routes you're considering, child seats, helmets, anything else." },
+    { "type": "text", "id": "review_label", "label": "Review heading", "default": "Review" },
+    { "type": "text", "id": "review_empty", "label": "Review placeholder", "default": "Fill the form to see your reservation summary." },
     {
       "type": "header",
       "content": "Info strip — 1 hour"

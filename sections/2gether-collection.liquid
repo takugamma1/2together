@@ -103,6 +103,33 @@
   <!-- ═══ MAIN CONTENT ═══ -->
   <div class="tg-coll-main">
 
+    <!-- Category navigation — jump between collections (shown on every collection page) -->
+    {%- liquid
+      assign cat_menu = linklists[section.settings.category_menu]
+    -%}
+    <nav class="tg-coll-cats" aria-label="Product categories">
+      <div class="tg-coll-cats-track">
+        {% if cat_menu != blank and cat_menu.links.size > 0 %}
+          {% for link in cat_menu.links %}
+            <a
+              href="{{ link.url }}"
+              class="tg-coll-cat{% if link.active or link.current or link.url == collection.url %} is-active{% endif %}"
+            >{{ link.title }}</a>
+          {% endfor %}
+        {% else %}
+          <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'All' }}</a>
+          {% for c in collections %}
+            {%- unless c.handle == 'frontpage' or c.products_count == 0 -%}
+              <a
+                href="{{ c.url }}"
+                class="tg-coll-cat{% if c.id == collection.id %} is-active{% endif %}"
+              >{{ c.title }}</a>
+            {%- endunless -%}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </nav>
+
     <!-- Hero Banner -->
     <div class="tg-coll-hero">
       <div class="tg-coll-hero-left">
@@ -357,7 +384,7 @@
     window.location = url.toString();
   }
 
-  // Quick add to cart via AJAX
+  // Quick add to cart via AJAX → refresh the header cart count and open the drawer
   document.querySelectorAll('.tg-coll-card-form').forEach(function(form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -373,11 +400,11 @@
       })
       .then(function(res) { return res.json(); })
       .then(function() {
-        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Added!';
-        setTimeout(function() {
-          btn.innerHTML = origText;
-          btn.disabled = false;
-        }, 1500);
+        btn.innerHTML = origText;
+        btn.disabled = false;
+        // Refresh the header cart badge and slide the drawer open.
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+        document.dispatchEvent(new CustomEvent('cart:open'));
       })
       .catch(function() {
         btn.innerHTML = origText;
@@ -397,6 +424,18 @@
       "id": "hero_title",
       "label": "Hero title override",
       "info": "Leave blank to auto-generate from collection title"
+    },
+    {
+      "type": "link_list",
+      "id": "category_menu",
+      "label": "Category bar menu",
+      "info": "Pick a menu of collections to show as a category bar at the top. Leave empty to auto-list your collections."
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "Category bar — 'All' label",
+      "default": "All"
     },
     {
       "type": "range",

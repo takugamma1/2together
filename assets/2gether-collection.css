@@ -20,9 +20,9 @@ body.tg-collection-active .content-for-layout {
   margin: 0;
 }
 
-body.tg-collection-active {
-  overflow-x: clip;
-}
+/* NOTE: horizontal overflow is clipped on .tg-collection-page (the wrapper),
+   NOT on <body>. Clipping on <body> breaks the sticky site header
+   (#header-group is a direct child of body). */
 
 /* ══════════════════════════════════════
    TOP NAVIGATION (inside section)
@@ -424,19 +424,67 @@ body.tg-collection-active {
   max-width: 520px;
 }
 
-/* ── Toolbar: Filters · Count · Sort ── */
+/* ── Category bar — jump between collections (top of every collection page) ── */
+.tg-coll-cats {
+  padding: var(--tg-s3) var(--tg-s6);
+  background: var(--tg-surface);
+  border-bottom: 1px solid var(--tg-divider);
+}
+
+.tg-coll-cats-track {
+  display: flex;
+  gap: var(--tg-s2);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: var(--tg-s2);
+  scroll-snap-type: x proximity;
+}
+
+.tg-coll-cats-track::-webkit-scrollbar { display: none; }
+
+.tg-coll-cat {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  padding: var(--tg-s2) var(--tg-s4);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  color: var(--tg-text-secondary);
+  font-family: 'Technor', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out),
+              border-color var(--tg-dur-fast) var(--tg-ease-out),
+              background var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-coll-cat:hover {
+  color: var(--tg-text-primary);
+  border-color: var(--tg-text-muted);
+}
+
+.tg-coll-cat.is-active {
+  color: var(--tg-ink);
+  background: var(--tg-flame);
+  border-color: var(--tg-flame);
+}
+
+/* ── Toolbar: Filters · Count · Sort ──
+   Non-sticky: it flows in the page right under the category bar. A second
+   sticky bar under the (tall, custom) site header caused offset/overlap
+   issues, so it scrolls normally instead. */
 .tg-coll-toolbar {
-  position: sticky;
-  top: 88px; /* tg-header height */
-  z-index: 10;
+  position: static;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--tg-s4);
   padding: var(--tg-s3) var(--tg-s6);
-  background: rgba(11, 18, 32, 0.92);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--tg-ink);
   border-top: 1px solid var(--tg-divider);
   border-bottom: 1px solid var(--tg-divider);
 }
@@ -912,7 +960,6 @@ body.tg-collection-active {
 
 @media (max-width: 1024px) {
   .tg-coll-toolbar {
-    top: 88px;
     padding: var(--tg-s3) var(--tg-s5);
   }
 
@@ -928,6 +975,17 @@ body.tg-collection-active {
 }
 
 @media (max-width: 768px) {
+  /* Disable the full-height grain overlay and card hover transforms on
+     phones — they add paint cost that shows up as scroll stutter. */
+  .tg-coll-grid::before { display: none; }
+
+  .tg-coll-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .tg-coll-cats { padding: var(--tg-s3) var(--tg-s4); }
+
   .tg-coll-toolbar {
     flex-wrap: wrap;
     padding: var(--tg-s2) var(--tg-s4);

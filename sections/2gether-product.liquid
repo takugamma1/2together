@@ -282,16 +282,6 @@
       </div>
     </div>
 
-    <!-- Footer -->
-    <div class="tg-product-footer">
-      <div class="tg-product-footer-brand">2GETHER</div>
-      <div class="tg-product-footer-links">
-        <a href="/pages/about">About</a>
-        <a href="/collections">Shop</a>
-        <a href="/pages/contact">Contact</a>
-      </div>
-      <div class="tg-product-footer-copy">&copy; {{ 'now' | date: '%Y' }} 2Gether Bikes</div>
-    </div>
   </div>
 
   <!-- ═══ RIGHT COLUMN: Purchase Panel ═══ -->
@@ -384,27 +374,29 @@
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             {% if current_variant.available %}
-              Add to Cart
+              {{ section.settings.add_to_cart_text | default: 'Add to Cart' }}
             {% else %}
-              Sold Out
+              {{ section.settings.sold_out_text | default: 'Sold Out' }}
             {% endif %}
           </button>
 
           {% if section.settings.show_dynamic_checkout %}
             {{ form | payment_button }}
-          {% else %}
-            <button type="button" class="tg-btn-buy-now" onclick="window.location='/checkout'">
-              Buy Now
+          {% elsif current_variant.available %}
+            <button type="button" class="tg-btn-buy-now" data-tg-buy-now>
+              {{ section.settings.buy_now_text | default: 'Buy Now' }}
             </button>
           {% endif %}
         </div>
       {%- endform -%}
 
       <!-- Compact reassurance line — full trust pills live in the support strip below -->
-      <div class="tg-product-reassure">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-        <span>Lifetime warranty · Free shipping · 30-day returns</span>
-      </div>
+      {% if section.settings.reassure_text != blank %}
+        <div class="tg-product-reassure">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <span>{{ section.settings.reassure_text }}</span>
+        </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -598,6 +590,26 @@
   const form = document.getElementById('tg-product-form');
   const variantInput = document.getElementById('tg-variant-id');
   const productData = {{ product.variants | json }};
+  const TG_ADD_TEXT = {{ section.settings.add_to_cart_text | default: 'Add to Cart' | json }};
+  const TG_SOLD_TEXT = {{ section.settings.sold_out_text | default: 'Sold Out' | json }};
+  const TG_CART_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> ';
+
+  // "Buy Now": add the selected variant, then go straight to checkout.
+  const buyNowBtn = document.querySelector('[data-tg-buy-now]');
+  if (buyNowBtn) {
+    buyNowBtn.addEventListener('click', function() {
+      const id = variantInput ? variantInput.value : null;
+      if (!id) return;
+      buyNowBtn.disabled = true;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id, quantity: 1 })
+      })
+        .then(function() { window.location = '/checkout'; })
+        .catch(function() { window.location = '/cart'; });
+    });
+  }
 
   // Handle swatch clicks
   document.querySelectorAll('.tg-color-swatch, .tg-size-swatch').forEach(function(btn) {
@@ -645,8 +657,8 @@
           if (addBtn) {
             addBtn.disabled = !variant.available;
             addBtn.innerHTML = variant.available
-              ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Add to Cart'
-              : 'Sold Out';
+              ? TG_CART_ICON + TG_ADD_TEXT
+              : TG_SOLD_TEXT;
           }
           // Update URL
           var url = new URL(window.location);
@@ -665,6 +677,35 @@
   "name": "2Gether Product",
   "tag": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "Buy box (cart & buttons)"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to cart button",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "buy_now_text",
+      "label": "Buy now button",
+      "default": "Buy Now"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Sold out label",
+      "default": "Sold Out"
+    },
+    {
+      "type": "text",
+      "id": "reassure_text",
+      "label": "Reassurance line (small text under buttons)",
+      "info": "Leave blank to hide.",
+      "default": "Lifetime warranty · Free shipping · 30-day returns"
+    },
     {
       "type": "header",
       "content": "Story Block"

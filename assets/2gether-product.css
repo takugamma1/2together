@@ -38,8 +38,17 @@ body.tg-product-active {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
+  /* Cap the height so a tall/portrait photo (e.g. a small bottle or part)
+     doesn't blow up to fill a huge frame — it stays a sensible size. */
+  max-height: 70vh;
   overflow: hidden;
-  background: var(--tg-surface);
+  /* Light, uniform backdrop so every product — a whole bike or a small
+     part — sits in the same frame regardless of its photo. */
+  background: #F3F4F6;
+  padding: clamp(20px, 5%, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
 }
 
@@ -47,7 +56,10 @@ body.tg-product-active {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* `contain` shows the full product without cropping, so sizing stays
+     consistent across bikes, accessories and parts (no zoom/crop). */
+  object-fit: contain;
+  object-position: center;
   transition: opacity 180ms var(--tg-ease-out);
 }
 
@@ -151,9 +163,9 @@ body.tg-product-active {
   flex: 0 0 auto;
   width: 76px;
   height: 76px;
-  padding: 0;
+  padding: 6px;
   border: 2px solid transparent;
-  background: var(--tg-surface-raised);
+  background: #F3F4F6;
   cursor: pointer;
   overflow: hidden;
   scroll-snap-align: start;
@@ -166,7 +178,7 @@ body.tg-product-active {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: opacity var(--tg-dur-fast) var(--tg-ease-out);
   opacity: 0.65;
 }
@@ -591,13 +603,15 @@ body.tg-product-active {
 .tg-related-card-image {
   aspect-ratio: 1;
   overflow: hidden;
+  background: #F3F4F6;
+  padding: 8px;
 }
 
 .tg-related-card-image img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.6s var(--tg-ease-out);
 }
 

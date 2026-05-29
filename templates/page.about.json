@@ -81,13 +81,9 @@
         "community_image": "shopify://shop_images/Screensho6854t_1.png",
         "community_label": "НАШАТА ОБЩНОСТ",
         "community_title": "SUNDAY CLUB",
-        "community_desc": "Редовно излизаме заедно, различни маршрути, едно усещане. Няма значение дали си ветеран или тепърва започваш. Sunday Club е отворен за всеки, който иска да караме заедно.",
-        "community_cta_text": "КАРАЙ С НАС",
-        "community_cta_link": "",
-        "cta_title": "ГОТОВ ЛИ СИ ДА",
-        "cta_title_accent": "КАРАШ С НАС?",
-        "cta_btn_text": "ЗАПИШИ СЕ",
-        "cta_link": ""
+        "community_desc": "",
+        "community_cta_text": "Join the Ride",
+        "community_cta_link": ""
       }
     }
   },

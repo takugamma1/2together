@@ -75,15 +75,15 @@
           <div class="tg-wizard-progress-steps">
             <span class="tg-wizard-step-label is-active" data-tg-step-label="1">
               <span class="tg-wizard-step-dot">1</span>
-              <span>Date &amp; time</span>
+              <span>{{ section.settings.step1_label | default: 'Date & time' }}</span>
             </span>
             <span class="tg-wizard-step-label" data-tg-step-label="2">
               <span class="tg-wizard-step-dot">2</span>
-              <span>The problem</span>
+              <span>{{ section.settings.step2_label | default: 'The problem' }}</span>
             </span>
             <span class="tg-wizard-step-label" data-tg-step-label="3">
               <span class="tg-wizard-step-dot">3</span>
-              <span>Your details</span>
+              <span>{{ section.settings.step3_label | default: 'Your details' }}</span>
             </span>
           </div>
         </div>
@@ -91,14 +91,14 @@
         <!-- ── STEP 1: DATE & TIME ── -->
         <div class="tg-wizard-step is-active" data-tg-step="1">
           <header class="tg-wizard-step-head">
-            <span class="tg-wizard-step-num">01 · Booking</span>
-            <h3 class="tg-wizard-step-title">When can you bring it in?</h3>
-            <p class="tg-wizard-step-sub">Pick a day and a time slot. We will confirm by email within 24h.</p>
+            <span class="tg-wizard-step-num">{{ section.settings.step1_eyebrow | default: '01 · Booking' }}</span>
+            <h3 class="tg-wizard-step-title">{{ section.settings.step1_title | default: 'When can you bring it in?' }}</h3>
+            <p class="tg-wizard-step-sub">{{ section.settings.step1_sub | default: 'Pick a day and a time slot. We will confirm by email within 24h.' }}</p>
           </header>
 
           <div class="tg-booking-grid">
             <div class="tg-service-field tg-service-field--full">
-              <span class="tg-service-field-label">Date</span>
+              <span class="tg-service-field-label">{{ section.settings.date_label | default: 'Date' }}</span>
 
               <!-- Custom calendar picker -->
               <div class="tg-cal" data-tg-cal>
@@ -127,32 +127,32 @@
             </div>
 
             <fieldset class="tg-service-field tg-service-field--full">
-              <legend class="tg-service-field-label">Time slot</legend>
+              <legend class="tg-service-field-label">{{ section.settings.timeslot_label | default: 'Time slot' }}</legend>
               <div class="tg-slot-grid">
-                {% assign slots = 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
+                {% assign slots = section.settings.time_slots | default: 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
                 {% for slot in slots %}
                   {%- assign sp = slot | split: '|' -%}
                   <label class="tg-slot">
-                    <input type="radio" name="contact[preferred_time]" value="{{ sp[0] }} ({{ sp[1] }})" required data-tg-validate>
-                    <span class="tg-slot-name">{{ sp[0] }}</span>
-                    <span class="tg-slot-hours">{{ sp[1] }}</span>
+                    <input type="radio" name="contact[preferred_time]" value="{{ sp[0] | strip }} ({{ sp[1] | strip }})" required data-tg-validate>
+                    <span class="tg-slot-name">{{ sp[0] | strip }}</span>
+                    <span class="tg-slot-hours">{{ sp[1] | strip }}</span>
                   </label>
                 {% endfor %}
               </div>
             </fieldset>
 
             <label class="tg-service-field tg-service-field--full">
-              <span class="tg-service-field-label">How flexible are you?</span>
+              <span class="tg-service-field-label">{{ section.settings.flexibility_label | default: 'How flexible are you?' }}</span>
               <div class="tg-radio-grid tg-radio-grid--inline">
                 <label class="tg-radio">
-                  <input type="radio" name="contact[flexibility]" value="Yes — pick the soonest free slot" checked>
+                  <input type="radio" name="contact[flexibility]" value="{{ section.settings.flex_yes | default: 'Soonest free slot is fine' }}" checked>
                   <span class="tg-radio-dot"></span>
-                  <span class="tg-radio-label">Soonest free slot is fine</span>
+                  <span class="tg-radio-label">{{ section.settings.flex_yes | default: 'Soonest free slot is fine' }}</span>
                 </label>
                 <label class="tg-radio">
-                  <input type="radio" name="contact[flexibility]" value="No — needs to be the slot above">
+                  <input type="radio" name="contact[flexibility]" value="{{ section.settings.flex_no | default: 'Only the slot above' }}">
                   <span class="tg-radio-dot"></span>
-                  <span class="tg-radio-label">Only the slot above</span>
+                  <span class="tg-radio-label">{{ section.settings.flex_no | default: 'Only the slot above' }}</span>
                 </label>
               </div>
             </label>
@@ -161,7 +161,7 @@
           <div class="tg-wizard-actions">
             <span></span>
             <button type="button" class="tg-wizard-btn tg-wizard-btn--next" data-tg-next>
-              Next: The problem
+              {{ section.settings.step1_next | default: 'Next: The problem' }}
               <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
             </button>
           </div>
@@ -170,64 +170,87 @@
         <!-- ── STEP 2: THE PROBLEM ── -->
         <div class="tg-wizard-step" data-tg-step="2">
           <header class="tg-wizard-step-head">
-            <span class="tg-wizard-step-num">02 · Diagnostics</span>
-            <h3 class="tg-wizard-step-title">What is wrong with the bike?</h3>
-            <p class="tg-wizard-step-sub">The more we know up front, the faster we get you back on the road.</p>
+            <span class="tg-wizard-step-num">{{ section.settings.step2_eyebrow | default: '02 · Diagnostics' }}</span>
+            <h3 class="tg-wizard-step-title">{{ section.settings.step2_title | default: 'What is wrong with the bike?' }}</h3>
+            <p class="tg-wizard-step-sub">{{ section.settings.step2_sub | default: 'The more we know up front, the faster we get you back on the road.' }}</p>
           </header>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Problem area</span>
+            <span class="tg-service-field-label">{{ section.settings.problem_area_label | default: 'Problem area' }}</span>
             <select name="contact[problem_area]" required data-tg-validate>
-              <option value="" disabled selected>Pick the part of the bike</option>
-              <option value="Brakes">Brakes / Спирачки</option>
-              <option value="Drivetrain (gears, chain)">Drivetrain — gears, chain / Трансмисия</option>
-              <option value="Wheels and tires">Wheels &amp; tires / Капли и гуми</option>
-              <option value="Suspension (fork/shock)">Suspension — fork or shock / Окачване</option>
-              <option value="Frame / bearings">Frame &amp; bearings / Рамка и лагери</option>
-              <option value="Electric system">Electric system (e-bike) / Електрика</option>
-              <option value="Full service package">Full service package / Пакетно обслужване</option>
-              <option value="Other / I'm not sure">Other / I'm not sure / Друго</option>
+              <option value="" disabled selected>{{ section.settings.problem_area_placeholder | default: 'Pick the part of the bike' }}</option>
+              {%- assign area_opts = section.settings.problem_area_options | default: 'Brakes / Спирачки
+Drivetrain — gears, chain / Трансмисия
+Wheels & tires / Капли и гуми
+Suspension — fork or shock / Окачване
+Frame & bearings / Рамка и лагери
+Electric system (e-bike) / Електрика
+Full service package / Пакетно обслужване
+Other / I am not sure / Друго' | newline_to_br | split: '<br />' -%}
+              {%- for opt in area_opts -%}
+                {%- assign opt_clean = opt | strip_newlines | strip -%}
+                {%- if opt_clean != blank -%}
+                  <option value="{{ opt_clean | escape }}">{{ opt_clean }}</option>
+                {%- endif -%}
+              {%- endfor -%}
             </select>
           </label>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Symptoms (pick all that apply)</span>
+            <span class="tg-service-field-label">{{ section.settings.symptoms_label | default: 'Symptoms (pick all that apply)' }}</span>
             <div class="tg-checkbox-grid">
-              {% assign symptoms = "Strange noise|Brakes feel weak|Skips gears or won't shift|Tire flat or slow leak|Wheel wobble / out of true|Loose / play in a part|Crash damage|Won't turn on (e-bike)|Annual tune-up" | split: '|' %}
+              {%- assign symptoms = section.settings.symptoms_list | default: "Strange noise
+Brakes feel weak
+Skips gears or won't shift
+Tire flat or slow leak
+Wheel wobble / out of true
+Loose / play in a part
+Crash damage
+Won't turn on (e-bike)
+Annual tune-up" | newline_to_br | split: '<br />' -%}
               {% for symptom in symptoms %}
-                <label class="tg-check">
-                  <input type="checkbox" name="contact[symptoms][]" value="{{ symptom }}">
-                  <span class="tg-check-box"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
-                  <span class="tg-check-label">{{ symptom }}</span>
-                </label>
+                {%- assign symptom_clean = symptom | strip_newlines | strip -%}
+                {%- if symptom_clean != blank -%}
+                  <label class="tg-check">
+                    <input type="checkbox" name="contact[symptoms][]" value="{{ symptom_clean | escape }}">
+                    <span class="tg-check-box"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                    <span class="tg-check-label">{{ symptom_clean }}</span>
+                  </label>
+                {%- endif -%}
               {% endfor %}
             </div>
           </label>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">When did the issue start?</span>
+            <span class="tg-service-field-label">{{ section.settings.issue_started_label | default: 'When did the issue start?' }}</span>
             <select name="contact[issue_started]">
-              <option value="" disabled selected>Pick one</option>
-              <option value="Today">Today</option>
-              <option value="This week">This week</option>
-              <option value="This month">This month</option>
-              <option value="Months ago">Months ago — got worse over time</option>
-              <option value="Don't remember">Don't remember</option>
+              <option value="" disabled selected>{{ section.settings.issue_started_placeholder | default: 'Pick one' }}</option>
+              {%- assign issue_opts = section.settings.issue_options | default: 'Today
+This week
+This month
+Months ago — got worse over time
+Don''t remember' | newline_to_br | split: '<br />' -%}
+              {%- for opt in issue_opts -%}
+                {%- assign opt_clean = opt | strip_newlines | strip -%}
+                {%- if opt_clean != blank -%}
+                  <option value="{{ opt_clean | escape }}">{{ opt_clean }}</option>
+                {%- endif -%}
+              {%- endfor -%}
             </select>
           </label>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Describe it in your own words</span>
-            <textarea name="contact[problem_description]" rows="3" placeholder="When did it start? Anything else that helps us prepare?" required data-tg-validate></textarea>
+            <span class="tg-service-field-label">{{ section.settings.describe_label | default: 'Describe it in your own words' }}</span>
+            <textarea name="contact[problem_description]" rows="3" placeholder="{{ section.settings.describe_placeholder | default: 'When did it start? Anything else that helps us prepare?' }}" required data-tg-validate></textarea>
           </label>
 
           <div class="tg-wizard-actions">
             <button type="button" class="tg-wizard-btn tg-wizard-btn--back" data-tg-back>
               <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
-              Back
+              {{ section.settings.back_label | default: 'Back' }}
             </button>
             <button type="button" class="tg-wizard-btn tg-wizard-btn--next" data-tg-next>
-              Next: Your details
+              {{ section.settings.step2_next | default: 'Next: Your details' }}
               <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
             </button>
           </div>
@@ -236,40 +259,40 @@
         <!-- ── STEP 3: YOUR DETAILS ── -->
         <div class="tg-wizard-step" data-tg-step="3">
           <header class="tg-wizard-step-head">
-            <span class="tg-wizard-step-num">03 · Contact</span>
-            <h3 class="tg-wizard-step-title">How do we reach you?</h3>
-            <p class="tg-wizard-step-sub">We will email a confirmation and call only if we need extra info.</p>
+            <span class="tg-wizard-step-num">{{ section.settings.step3_eyebrow | default: '03 · Contact' }}</span>
+            <h3 class="tg-wizard-step-title">{{ section.settings.step3_title | default: 'How do we reach you?' }}</h3>
+            <p class="tg-wizard-step-sub">{{ section.settings.step3_sub | default: 'We will email a confirmation and call only if we need extra info.' }}</p>
           </header>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Bike (make / model)</span>
-            <input type="text" name="contact[bike]" placeholder="e.g. hardtail MTB, 2022">
+            <span class="tg-service-field-label">{{ section.settings.bike_label | default: 'Bike (make / model)' }}</span>
+            <input type="text" name="contact[bike]" placeholder="{{ section.settings.bike_placeholder | default: 'e.g. hardtail MTB, 2022' }}">
           </label>
 
           <label class="tg-service-field">
-            <span class="tg-service-field-label">Your name</span>
+            <span class="tg-service-field-label">{{ section.settings.name_label | default: 'Your name' }}</span>
             <input type="text" name="contact[name]" required data-tg-validate>
           </label>
 
           <label class="tg-service-field">
-            <span class="tg-service-field-label">Phone</span>
+            <span class="tg-service-field-label">{{ section.settings.phone_label | default: 'Phone' }}</span>
             <input type="tel" name="contact[phone]" required data-tg-validate>
           </label>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Email</span>
+            <span class="tg-service-field-label">{{ section.settings.email_label | default: 'Email' }}</span>
             <input type="email" name="contact[email]" required data-tg-validate>
           </label>
 
           <label class="tg-service-field tg-service-field--full">
-            <span class="tg-service-field-label">Anything else?</span>
-            <textarea name="contact[notes]" rows="2" placeholder="Optional — anything you would like us to know."></textarea>
+            <span class="tg-service-field-label">{{ section.settings.notes_label | default: 'Anything else?' }}</span>
+            <textarea name="contact[notes]" rows="2" placeholder="{{ section.settings.notes_placeholder | default: 'Optional — anything you would like us to know.' }}"></textarea>
           </label>
 
           <div class="tg-wizard-actions">
             <button type="button" class="tg-wizard-btn tg-wizard-btn--back" data-tg-back>
               <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1L2 5l4 4"/></svg>
-              Back
+              {{ section.settings.back_label | default: 'Back' }}
             </button>
             <button type="submit" class="tg-service-form-submit">
               {{ section.settings.form_submit | default: 'Book service' }}
@@ -655,6 +678,60 @@
       "label": "Success message",
       "default": "Thanks — we got your booking. We will reply within 24h to confirm."
     },
+    {
+      "type": "header",
+      "content": "Form — step tabs"
+    },
+    { "type": "text", "id": "step1_label", "label": "Step 1 tab", "default": "Date & time" },
+    { "type": "text", "id": "step2_label", "label": "Step 2 tab", "default": "The problem" },
+    { "type": "text", "id": "step3_label", "label": "Step 3 tab", "default": "Your details" },
+    { "type": "text", "id": "back_label", "label": "Back button", "default": "Back" },
+    {
+      "type": "header",
+      "content": "Form — step 1 (date & time)"
+    },
+    { "type": "text", "id": "step1_eyebrow", "label": "Eyebrow", "default": "01 · Booking" },
+    { "type": "text", "id": "step1_title", "label": "Title", "default": "When can you bring it in?" },
+    { "type": "textarea", "id": "step1_sub", "label": "Subtitle", "default": "Pick a day and a time slot. We will confirm by email within 24h." },
+    { "type": "text", "id": "date_label", "label": "Date label", "default": "Date" },
+    { "type": "text", "id": "timeslot_label", "label": "Time slot label", "default": "Time slot" },
+    { "type": "textarea", "id": "time_slots", "label": "Time slots", "info": "One per line is NOT used here — separate slots with || and name/hours with |. Example: Morning|9:00 — 12:00||Afternoon|12:00 — 16:00", "default": "Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00" },
+    { "type": "text", "id": "flexibility_label", "label": "Flexibility question", "default": "How flexible are you?" },
+    { "type": "text", "id": "flex_yes", "label": "Flexible option", "default": "Soonest free slot is fine" },
+    { "type": "text", "id": "flex_no", "label": "Not flexible option", "default": "Only the slot above" },
+    { "type": "text", "id": "step1_next", "label": "Next button", "default": "Next: The problem" },
+    {
+      "type": "header",
+      "content": "Form — step 2 (the problem)"
+    },
+    { "type": "text", "id": "step2_eyebrow", "label": "Eyebrow", "default": "02 · Diagnostics" },
+    { "type": "text", "id": "step2_title", "label": "Title", "default": "What is wrong with the bike?" },
+    { "type": "textarea", "id": "step2_sub", "label": "Subtitle", "default": "The more we know up front, the faster we get you back on the road." },
+    { "type": "text", "id": "problem_area_label", "label": "Problem area label", "default": "Problem area" },
+    { "type": "text", "id": "problem_area_placeholder", "label": "Problem area placeholder", "default": "Pick the part of the bike" },
+    { "type": "textarea", "id": "problem_area_options", "label": "Problem area options", "info": "One per line.", "default": "Brakes / Спирачки\nDrivetrain — gears, chain / Трансмисия\nWheels & tires / Капли и гуми\nSuspension — fork or shock / Окачване\nFrame & bearings / Рамка и лагери\nElectric system (e-bike) / Електрика\nFull service package / Пакетно обслужване\nOther / I am not sure / Друго" },
+    { "type": "text", "id": "symptoms_label", "label": "Symptoms label", "default": "Symptoms (pick all that apply)" },
+    { "type": "textarea", "id": "symptoms_list", "label": "Symptoms", "info": "One per line.", "default": "Strange noise\nBrakes feel weak\nSkips gears or won't shift\nTire flat or slow leak\nWheel wobble / out of true\nLoose / play in a part\nCrash damage\nWon't turn on (e-bike)\nAnnual tune-up" },
+    { "type": "text", "id": "issue_started_label", "label": "Issue-started label", "default": "When did the issue start?" },
+    { "type": "text", "id": "issue_started_placeholder", "label": "Issue-started placeholder", "default": "Pick one" },
+    { "type": "textarea", "id": "issue_options", "label": "Issue-started options", "info": "One per line.", "default": "Today\nThis week\nThis month\nMonths ago — got worse over time\nDon't remember" },
+    { "type": "text", "id": "describe_label", "label": "Description label", "default": "Describe it in your own words" },
+    { "type": "text", "id": "describe_placeholder", "label": "Description placeholder", "default": "When did it start? Anything else that helps us prepare?" },
+    { "type": "text", "id": "step2_next", "label": "Next button", "default": "Next: Your details" },
+    {
+      "type": "header",
+      "content": "Form — step 3 (your details)"
+    },
+    { "type": "text", "id": "step3_eyebrow", "label": "Eyebrow", "default": "03 · Contact" },
+    { "type": "text", "id": "step3_title", "label": "Title", "default": "How do we reach you?" },
+    { "type": "textarea", "id": "step3_sub", "label": "Subtitle", "default": "We will email a confirmation and call only if we need extra info." },
+    { "type": "text", "id": "bike_label", "label": "Bike label", "default": "Bike (make / model)" },
+    { "type": "text", "id": "bike_placeholder", "label": "Bike placeholder", "default": "e.g. hardtail MTB, 2022" },
+    { "type": "text", "id": "name_label", "label": "Name label", "default": "Your name" },
+    { "type": "text", "id": "phone_label", "label": "Phone label", "default": "Phone" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "notes_label", "label": "Notes label", "default": "Anything else?" },
+    { "type": "text", "id": "notes_placeholder", "label": "Notes placeholder", "default": "Optional — anything you would like us to know." },
     {
       "type": "header",
       "content": "Pricing accordion"

@@ -151,16 +151,6 @@
     </div>
   </section>
 
-  <!-- ═══ CTA BANNER ═══ -->
-  <section class="tg-about-cta">
-    <h2 class="tg-about-cta-title">
-      {{ section.settings.cta_title | default: 'READY FOR THE' }} <span>{{ section.settings.cta_title_accent | default: 'DARK?' }}</span>
-    </h2>
-    <a href="{{ section.settings.cta_link | default: '/collections/all' }}" class="tg-about-cta-btn">
-      {{ section.settings.cta_btn_text | default: 'Explore Our Machines' }}
-    </a>
-  </section>
-
   <!-- ═══ FOOTER ═══ -->
   <div class="tg-about-footer">
     <div class="tg-about-footer-brand">2GETHER</div>
@@ -289,33 +279,6 @@
       "type": "url",
       "id": "community_cta_link",
       "label": "Community CTA link"
-    },
-    {
-      "type": "header",
-      "content": "CTA Banner"
-    },
-    {
-      "type": "text",
-      "id": "cta_title",
-      "label": "CTA title",
-      "default": "READY FOR THE"
-    },
-    {
-      "type": "text",
-      "id": "cta_title_accent",
-      "label": "CTA title accent",
-      "default": "DARK?"
-    },
-    {
-      "type": "text",
-      "id": "cta_btn_text",
-      "label": "CTA button text",
-      "default": "Explore Our Machines"
-    },
-    {
-      "type": "url",
-      "id": "cta_link",
-      "label": "CTA button link"
     }
   ],
   "blocks": [

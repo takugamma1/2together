@@ -6,9 +6,9 @@ body.tg-rental-active .content-for-layout {
   margin: 0;
 }
 
-body.tg-rental-active {
-  overflow-x: clip;
-}
+/* NOTE: horizontal overflow is clipped on .tg-rental-page (the wrapper),
+   NOT on <body>. Clipping on <body> breaks the sticky site header
+   (#header-group is a direct child of body). */
 
 .tg-rental-page {
   background: var(--tg-ink);
