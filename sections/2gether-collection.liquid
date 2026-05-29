@@ -109,17 +109,44 @@
       assign cat_limit = section.settings.max_categories | default: 8
     -%}
     {% if cat_menu != blank and cat_menu.links.size > 0 %}
-      {%- comment -%} Curated menu: show exactly the categories the merchant picked, in their order. {%- endcomment -%}
-      <nav class="tg-coll-cats" aria-label="Product categories">
+      {%- comment -%} Curated menu: top-level items are chips; an item with sub-items
+        becomes a "Title ▾" dropdown listing its child collections (e.g. group all
+        the separate Parts collections under one "Parts" parent). {%- endcomment -%}
+      <nav class="tg-coll-cats" aria-label="Product categories" data-tg-cats>
         <div class="tg-coll-cats-track">
           {% if section.settings.show_all_chip %}
             <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'All' }}</a>
           {% endif %}
           {% for link in cat_menu.links %}
-            <a
-              href="{{ link.url }}"
-              class="tg-coll-cat{% if link.active or link.current or link.url == collection.url %} is-active{% endif %}"
-            >{{ link.title }}</a>
+            {% if link.links.size > 0 %}
+              <div class="tg-coll-cat-group" data-tg-cat-group>
+                <button
+                  type="button"
+                  class="tg-coll-cat tg-coll-cat--parent{% if link.active or link.child_active %} is-active{% endif %}"
+                  data-tg-cat-toggle
+                  aria-expanded="false"
+                >
+                  {{ link.title }}
+                  <svg class="tg-coll-cat-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="tg-coll-cat-panel" data-tg-cat-panel>
+                  {% if link.url != blank and link.url != '#' %}
+                    <a href="{{ link.url }}" class="tg-coll-cat-sub tg-coll-cat-sub--all{% if link.current or link.url == collection.url %} is-active{% endif %}">{{ link.title }}</a>
+                  {% endif %}
+                  {% for child in link.links %}
+                    <a
+                      href="{{ child.url }}"
+                      class="tg-coll-cat-sub{% if child.current or child.url == collection.url %} is-active{% endif %}"
+                    >{{ child.title }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            {% else %}
+              <a
+                href="{{ link.url }}"
+                class="tg-coll-cat{% if link.current or link.url == collection.url %} is-active{% endif %}"
+              >{{ link.title }}</a>
+            {% endif %}
           {% endfor %}
         </div>
       </nav>
@@ -362,6 +389,46 @@
     });
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && sidebar.classList.contains('open')) close();
+    });
+  })();
+
+  // Category dropdowns (grouped collections, e.g. "Parts ▾")
+  (function() {
+    var groups = Array.prototype.slice.call(document.querySelectorAll('[data-tg-cat-group]'));
+    if (!groups.length) return;
+
+    function closeAll(except) {
+      groups.forEach(function(g) {
+        if (g !== except) {
+          g.removeAttribute('data-open');
+          var t = g.querySelector('[data-tg-cat-toggle]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    groups.forEach(function(group) {
+      var toggle = group.querySelector('[data-tg-cat-toggle]');
+      if (!toggle) return;
+      toggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var isOpen = group.hasAttribute('data-open');
+        closeAll(group);
+        if (isOpen) {
+          group.removeAttribute('data-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        } else {
+          group.setAttribute('data-open', '');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('[data-tg-cat-group]')) closeAll(null);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeAll(null);
     });
   })();
 
