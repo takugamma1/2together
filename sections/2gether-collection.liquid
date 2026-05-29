@@ -106,29 +106,43 @@
     <!-- Category navigation — jump between collections (shown on every collection page) -->
     {%- liquid
       assign cat_menu = linklists[section.settings.category_menu]
+      assign cat_limit = section.settings.max_categories | default: 8
     -%}
-    <nav class="tg-coll-cats" aria-label="Product categories">
-      <div class="tg-coll-cats-track">
-        {% if cat_menu != blank and cat_menu.links.size > 0 %}
+    {% if cat_menu != blank and cat_menu.links.size > 0 %}
+      {%- comment -%} Curated menu: show exactly the categories the merchant picked, in their order. {%- endcomment -%}
+      <nav class="tg-coll-cats" aria-label="Product categories">
+        <div class="tg-coll-cats-track">
+          {% if section.settings.show_all_chip %}
+            <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'All' }}</a>
+          {% endif %}
           {% for link in cat_menu.links %}
             <a
               href="{{ link.url }}"
               class="tg-coll-cat{% if link.active or link.current or link.url == collection.url %} is-active{% endif %}"
             >{{ link.title }}</a>
           {% endfor %}
-        {% else %}
+        </div>
+      </nav>
+    {% else %}
+      {%- comment -%} No menu set yet: show a BOUNDED fallback (never the full list) so it can't become an infinity bar. {%- endcomment -%}
+      <nav class="tg-coll-cats" aria-label="Product categories">
+        <div class="tg-coll-cats-track">
           <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'All' }}</a>
+          {%- assign shown = 0 -%}
           {% for c in collections %}
+            {%- if shown >= cat_limit %}{% break %}{% endif -%}
             {%- unless c.handle == 'frontpage' or c.products_count == 0 -%}
               <a
                 href="{{ c.url }}"
                 class="tg-coll-cat{% if c.id == collection.id %} is-active{% endif %}"
               >{{ c.title }}</a>
+              {%- assign shown = shown | plus: 1 -%}
             {%- endunless -%}
           {% endfor %}
-        {% endif %}
-      </div>
-    </nav>
+          <a href="{{ routes.collections_url }}" class="tg-coll-cat tg-coll-cat--more">{{ section.settings.more_label | default: 'All categories →' }}</a>
+        </div>
+      </nav>
+    {% endif %}
 
     <!-- Hero Banner -->
     <div class="tg-coll-hero">
@@ -426,16 +440,45 @@
       "info": "Leave blank to auto-generate from collection title"
     },
     {
+      "type": "header",
+      "content": "Category bar"
+    },
+    {
+      "type": "paragraph",
+      "content": "Best UX: create a short menu in Online Store → Navigation with your main categories (e.g. Bikes, E-bikes, Accessories, Parts, Apparel) and select it below. Only those show, in your order — keeping the bar clean. Until you set one, a short auto list is shown."
+    },
+    {
       "type": "link_list",
       "id": "category_menu",
-      "label": "Category bar menu",
-      "info": "Pick a menu of collections to show as a category bar at the top. Leave empty to auto-list your collections."
+      "label": "Categories menu (curated)",
+      "info": "Pick your hand-made categories menu. Recommended."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_all_chip",
+      "label": "Show an 'All' chip first",
+      "default": true
     },
     {
       "type": "text",
       "id": "all_label",
-      "label": "Category bar — 'All' label",
+      "label": "'All' chip label",
       "default": "All"
+    },
+    {
+      "type": "text",
+      "id": "more_label",
+      "label": "Fallback 'more' link label",
+      "default": "All categories →"
+    },
+    {
+      "type": "range",
+      "id": "max_categories",
+      "label": "Max auto categories (fallback only)",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 8
     },
     {
       "type": "range",
