@@ -33,13 +33,13 @@
 
     <!-- Left: Contact Form -->
     <div class="tg-contact-form-section">
-      <div class="tg-contact-form-label">Send Message</div>
+      <div class="tg-contact-form-label">{{ section.settings.form_label | default: 'Send Message' }}</div>
 
       {%- form 'contact', id: 'tg-contact-form' -%}
         {% if form.posted_successfully? %}
           <div style="padding:var(--tg-s5);background:var(--tg-flame-glow);border-left:2px solid var(--tg-flame);margin-bottom:var(--tg-s4);">
-            <p style="color:var(--tg-flame);font-weight:600;font-size:14px;">Message transmitted successfully.</p>
-            <p style="color:var(--tg-text-secondary);font-size:13px;margin-top:4px;">We'll respond within 24 hours.</p>
+            <p style="color:var(--tg-flame);font-weight:600;font-size:14px;">{{ section.settings.success_title | default: 'Message transmitted successfully.' }}</p>
+            <p style="color:var(--tg-text-secondary);font-size:13px;margin-top:4px;">{{ section.settings.success_text | default: "We'll respond within 24 hours." }}</p>
           </div>
         {% endif %}
 
@@ -52,41 +52,47 @@
         <div class="tg-contact-form">
           <div class="tg-contact-form-row">
             <div class="tg-contact-field">
-              <label for="tg-first-name">First Name</label>
-              <input type="text" id="tg-first-name" name="contact[first_name]" placeholder="First name" required autocomplete="given-name">
+              <label for="tg-first-name">{{ section.settings.first_name_label | default: 'First Name' }}</label>
+              <input type="text" id="tg-first-name" name="contact[first_name]" placeholder="{{ section.settings.first_name_label | default: 'First name' }}" required autocomplete="given-name">
             </div>
             <div class="tg-contact-field">
-              <label for="tg-last-name">Last Name</label>
-              <input type="text" id="tg-last-name" name="contact[last_name]" placeholder="Last name" required autocomplete="family-name">
+              <label for="tg-last-name">{{ section.settings.last_name_label | default: 'Last Name' }}</label>
+              <input type="text" id="tg-last-name" name="contact[last_name]" placeholder="{{ section.settings.last_name_label | default: 'Last name' }}" required autocomplete="family-name">
             </div>
           </div>
 
           <div class="tg-contact-form-row">
             <div class="tg-contact-field">
-              <label for="tg-email">Email</label>
+              <label for="tg-email">{{ section.settings.email_label | default: 'Email' }}</label>
               <input type="email" id="tg-email" name="contact[email]" placeholder="your@email.com" required autocomplete="email">
             </div>
             <div class="tg-contact-field">
-              <label for="tg-subject">Subject</label>
+              <label for="tg-subject">{{ section.settings.subject_label | default: 'Subject' }}</label>
               <select id="tg-subject" name="contact[subject]">
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Custom Build">Custom Build</option>
-                <option value="Technical Support">Technical Support</option>
-                <option value="Partnership">Partnership</option>
-                <option value="Press / Media">Press / Media</option>
-                <option value="Warranty">Warranty</option>
+                {%- assign subject_opts = section.settings.subject_options | default: 'General Inquiry
+Custom Build
+Technical Support
+Partnership
+Press / Media
+Warranty' | newline_to_br | split: '<br />' -%}
+                {%- for opt in subject_opts -%}
+                  {%- assign opt_clean = opt | strip_newlines | strip -%}
+                  {%- if opt_clean != blank -%}
+                    <option value="{{ opt_clean | escape }}">{{ opt_clean }}</option>
+                  {%- endif -%}
+                {%- endfor -%}
               </select>
             </div>
           </div>
 
           <div class="tg-contact-field">
-            <label for="tg-message">Message</label>
-            <textarea id="tg-message" name="contact[body]" placeholder="Describe your inquiry in detail..." required></textarea>
+            <label for="tg-message">{{ section.settings.message_label | default: 'Message' }}</label>
+            <textarea id="tg-message" name="contact[body]" placeholder="{{ section.settings.message_placeholder | default: 'Describe your inquiry in detail...' }}" required></textarea>
           </div>
 
           <button type="submit" class="tg-contact-submit">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-            Transmit Message
+            {{ section.settings.submit_text | default: 'Transmit Message' }}
           </button>
         </div>
       {%- endform -%}
@@ -97,12 +103,12 @@
 
       <!-- The Studio -->
       <div class="tg-contact-info-block">
-        <div class="tg-contact-info-title">The Studio</div>
+        <div class="tg-contact-info-title">{{ section.settings.info_title | default: 'The Studio' }}</div>
 
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <div class="tg-contact-info-text">
-            <strong>Address</strong>
+            <strong>{{ section.settings.address_label | default: 'Address' }}</strong>
             {{ section.settings.address | default: '42 Trakiya Centre St.<br>Sofia 1172, Bulgaria' }}
           </div>
         </div>
@@ -110,7 +116,7 @@
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
           <div class="tg-contact-info-text">
-            <strong>Phone</strong>
+            <strong>{{ section.settings.phone_label | default: 'Phone' }}</strong>
             <a href="tel:{{ section.settings.phone | default: '+359 2 000 0000' | remove: ' ' }}">{{ section.settings.phone | default: '+359 2 000 0000' }}</a>
           </div>
         </div>
@@ -118,7 +124,7 @@
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <div class="tg-contact-info-text">
-            <strong>Email</strong>
+            <strong>{{ section.settings.email_label_text | default: 'Email' }}</strong>
             <a href="mailto:{{ section.settings.email | default: 'signal@2gether.cc' }}">{{ section.settings.email | default: 'signal@2gether.cc' }}</a>
           </div>
         </div>
@@ -126,7 +132,7 @@
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <div class="tg-contact-info-text">
-            <strong>Hours</strong>
+            <strong>{{ section.settings.hours_label | default: 'Hours' }}</strong>
             {{ section.settings.hours | default: 'Mon – Fri: 09:00 – 18:00<br>Sat: 10:00 – 15:00' }}
           </div>
         </div>
@@ -134,7 +140,7 @@
 
       <!-- Technical Support -->
       <div class="tg-contact-support">
-        <div class="tg-contact-support-title">Technical Support</div>
+        <div class="tg-contact-support-title">{{ section.settings.support_title | default: 'Technical Support' }}</div>
         <p class="tg-contact-support-desc">
           {{ section.settings.support_text | default: 'For warranty claims, component issues, or mechanical questions — our dedicated engineering support team responds within 12 hours.' }}
         </p>
@@ -197,17 +203,6 @@
     {% endif %}
   </div>
 
-  <!-- ═══ FOOTER ═══ -->
-  <div class="tg-contact-footer">
-    <div class="tg-contact-footer-brand">2GETHER</div>
-    <div class="tg-contact-footer-links">
-      <a href="/policies/privacy-policy">Privacy Policy</a>
-      <a href="/policies/shipping-policy">Shipping</a>
-      <a href="/policies/refund-policy">Returns</a>
-      <a href="/pages/about">About</a>
-    </div>
-    <div class="tg-contact-footer-copy">&copy; {{ 'now' | date: '%Y' }} 2Gether Bikes. All rights reserved.</div>
-  </div>
 
 </div>
 
@@ -244,7 +239,108 @@
     },
     {
       "type": "header",
+      "content": "Form labels & text"
+    },
+    {
+      "type": "text",
+      "id": "form_label",
+      "label": "Form heading",
+      "default": "Send Message"
+    },
+    {
+      "type": "text",
+      "id": "first_name_label",
+      "label": "First name label",
+      "default": "First Name"
+    },
+    {
+      "type": "text",
+      "id": "last_name_label",
+      "label": "Last name label",
+      "default": "Last Name"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "subject_label",
+      "label": "Subject label",
+      "default": "Subject"
+    },
+    {
+      "type": "textarea",
+      "id": "subject_options",
+      "label": "Subject dropdown options",
+      "info": "One per line.",
+      "default": "General Inquiry\nCustom Build\nTechnical Support\nPartnership\nPress / Media\nWarranty"
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message label",
+      "default": "Message"
+    },
+    {
+      "type": "text",
+      "id": "message_placeholder",
+      "label": "Message placeholder",
+      "default": "Describe your inquiry in detail..."
+    },
+    {
+      "type": "text",
+      "id": "submit_text",
+      "label": "Submit button",
+      "default": "Transmit Message"
+    },
+    {
+      "type": "text",
+      "id": "success_title",
+      "label": "Success title",
+      "default": "Message transmitted successfully."
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Success subtext",
+      "default": "We'll respond within 24 hours."
+    },
+    {
+      "type": "header",
       "content": "Contact Info"
+    },
+    {
+      "type": "text",
+      "id": "info_title",
+      "label": "Info block heading",
+      "default": "The Studio"
+    },
+    {
+      "type": "text",
+      "id": "address_label",
+      "label": "Address row label",
+      "default": "Address"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone row label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "email_label_text",
+      "label": "Email row label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "hours_label",
+      "label": "Hours row label",
+      "default": "Hours"
     },
     {
       "type": "html",
@@ -271,6 +367,12 @@
     {
       "type": "header",
       "content": "Technical Support"
+    },
+    {
+      "type": "text",
+      "id": "support_title",
+      "label": "Support heading",
+      "default": "Technical Support"
     },
     {
       "type": "textarea",
