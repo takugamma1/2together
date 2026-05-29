@@ -474,9 +474,9 @@ body.tg-collection-active .content-for-layout {
 /* ── Toolbar: Filters · Count · Sort ── */
 .tg-coll-toolbar {
   position: sticky;
-  /* Sit directly under the real site header on every viewport.
-     --header-height is set on <body> by the theme; 64px fallback. */
-  top: var(--header-height, 64px);
+  /* Sit directly under the real site header. --header-height is measured
+     and set on <body> in theme.liquid (this theme uses <tg-header>). */
+  top: var(--header-height, 88px);
   z-index: 10;
   display: flex;
   justify-content: space-between;
@@ -987,7 +987,12 @@ body.tg-collection-active .content-for-layout {
 
   .tg-coll-cats { padding: var(--tg-s2) var(--tg-s4) 0; }
 
+  /* On phones the site header is tall; a second sticky bar under it eats the
+     screen and is fiddly to align. Let the filter/sort bar scroll normally
+     instead — no overlap, no stacked-sticky jank. */
   .tg-coll-toolbar {
+    position: static;
+    top: auto;
     flex-wrap: wrap;
     padding: var(--tg-s2) var(--tg-s4);
     gap: var(--tg-s2) var(--tg-s3);
