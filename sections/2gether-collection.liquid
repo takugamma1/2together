@@ -119,6 +119,37 @@
       </div>
     </div>
 
+    <!-- Category navigation — jump between collections -->
+    {%- liquid
+      assign cat_menu = linklists[section.settings.category_menu]
+    -%}
+    {% if cat_menu != blank and cat_menu.links.size > 0 %}
+      <nav class="tg-coll-cats" aria-label="Product categories">
+        <div class="tg-coll-cats-track">
+          {% for link in cat_menu.links %}
+            <a
+              href="{{ link.url }}"
+              class="tg-coll-cat{% if link.active or link.current or link.url == collection.url %} is-active{% endif %}"
+            >{{ link.title }}</a>
+          {% endfor %}
+        </div>
+      </nav>
+    {% elsif collections.size > 1 %}
+      <nav class="tg-coll-cats" aria-label="Product categories">
+        <div class="tg-coll-cats-track">
+          <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">All</a>
+          {% for c in collections %}
+            {%- unless c.handle == 'frontpage' or c.products_count == 0 -%}
+              <a
+                href="{{ c.url }}"
+                class="tg-coll-cat{% if c.id == collection.id %} is-active{% endif %}"
+              >{{ c.title }}</a>
+            {%- endunless -%}
+          {% endfor %}
+        </div>
+      </nav>
+    {% endif %}
+
     <!-- Toolbar: Filters · Sort · Count -->
     <div class="tg-coll-toolbar">
       <div class="tg-coll-toolbar-left">
@@ -397,6 +428,12 @@
       "id": "hero_title",
       "label": "Hero title override",
       "info": "Leave blank to auto-generate from collection title"
+    },
+    {
+      "type": "link_list",
+      "id": "category_menu",
+      "label": "Category bar menu",
+      "info": "Pick a menu of collections to show as a category bar at the top. Leave empty to auto-list your collections."
     },
     {
       "type": "range",
