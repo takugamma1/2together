@@ -473,6 +473,20 @@ body.tg-collection-active .content-for-layout {
   border-color: var(--tg-flame);
 }
 
+/* The fallback "All categories →" link reads as a quiet link, not a chip */
+.tg-coll-cat--more {
+  background: transparent;
+  border-color: transparent;
+  color: var(--tg-text-muted);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.tg-coll-cat--more:hover {
+  color: var(--tg-flame);
+  border-color: transparent;
+}
+
 /* ── Toolbar: Filters · Count · Sort ──
    Non-sticky: it flows in the page right under the category bar. A second
    sticky bar under the (tall, custom) site header caused offset/overlap
