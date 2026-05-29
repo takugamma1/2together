@@ -16,41 +16,44 @@
           "type": "process_step",
           "settings": {
             "number": "01",
-            "title": "Design",
-            "description": "Every concept begins with aerodynamic simulation and computational geometry, refined through thousands of virtual wind tunnel iterations."
+            "title": "ПРИЕМАНЕ",
+            "description": "Донасяш колелото, ние го преглеждаме. Даваме ти диагностика и какво трябва да се направи."
           }
         },
         "step_2": {
           "type": "process_step",
           "settings": {
             "number": "02",
-            "title": "Fabrication",
-            "description": "Aerospace-grade carbon fiber is hand-laid by master craftsmen, each layer precisely oriented for optimal stiffness-to-weight ratio."
+            "title": "СЕРВИЗ",
+            "description": "Всяка поправка се прави внимателно и с правилните части. Бързо, но без компромис с качеството."
           }
         },
         "step_3": {
           "type": "process_step",
           "settings": {
             "number": "03",
-            "title": "Assembly",
-            "description": "Final assembly is a 40-point inspection process. Every bike is individually tuned, test-ridden, and certified before shipping."
+            "title": "ПРЕДАВАНЕ",
+            "description": "Взимаш колелото готово за пътя."
           }
         },
         "mosaic_1": {
           "type": "mosaic_image",
           "settings": {
+            "image": "shopify://shop_images/DSP06391-2.jpg",
             "tall": true
           }
         },
         "mosaic_2": {
           "type": "mosaic_image",
           "settings": {
+            "image": "shopify://shop_images/DSP06437-2.jpg",
             "tall": false
           }
         },
         "mosaic_3": {
           "type": "mosaic_image",
           "settings": {
+            "image": "shopify://shop_images/2026-04-09.webp",
             "tall": false
           }
         }
@@ -64,17 +67,19 @@
         "mosaic_3"
       ],
       "settings": {
-        "hero_image": "shopify://shop_images/Screenshot_898_5B1_5D.png",
-        "hero_line1": "ENGINEERED",
-        "hero_line2": "FOR THE",
-        "hero_line3": "NIGHT",
+        "hero_image": "shopify://shop_images/DSP06248-2.jpg",
+        "hero_line1": "КОИ СМЕ",
+        "hero_line2": "НИЕ?",
+        "hero_line3": "2GETHERBIKES",
         "hero_subtitle": "",
-        "vision_label": "The Vision",
-        "vision_quote": "",
-        "vision_body": "",
-        "vision_signature": "Founders, 2Gether",
-        "process_label": "The Process",
-        "community_label": "Community",
+        "vision_label": "НАШАТА ВИЗИЯ",
+        "vision_image": "shopify://shop_images/DSP06466.jpg",
+        "vision_quote": "Не правим колела за всеки. Правим ги за тези, за които карането не е хоби, а  <em>начин на живот.</em>",
+        "vision_body": "2gether bikes се роди от една проста идея, че около колелото се събират правилните хора. Започнахме като магазин, станахме общност. Днес сме място където можеш да купиш, да оправиш, да наемеш и най-важното, да намериш с кого да покараш.",
+        "vision_signature": "2Gether",
+        "process_label": "НАШИЯТ ПРОЦЕС",
+        "community_image": "shopify://shop_images/Screensho6854t_1.png",
+        "community_label": "НАШАТА ОБЩНОСТ",
         "community_title": "SUNDAY CLUB",
         "community_desc": "",
         "community_cta_text": "Join the Ride",

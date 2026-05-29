@@ -14,15 +14,21 @@
       "blocks": {
         "img_1": {
           "type": "gallery_image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/DSP06437-2.jpg"
+          }
         },
         "img_2": {
           "type": "gallery_image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/DSP06287-2.jpg"
+          }
         },
         "img_3": {
           "type": "gallery_image",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/DSP06391-2.jpg"
+          }
         }
       },
       "block_order": [
@@ -31,16 +37,17 @@
         "img_3"
       ],
       "settings": {
+        "hero_image": "shopify://shop_images/DSP06150.jpg",
         "hero_line1": "Свържи се",
-        "hero_line2": "/ с нас",
-        "hero_subtitle": "",
+        "hero_line2": "С НАС",
+        "hero_subtitle": "Пишете ни, ще се радваме да отговорим на всичките ви въпроси.",
         "address": "",
         "phone": "+359 2 000 0000",
         "email": "signal@2gether.cc",
         "hours": "",
-        "support_text": "",
+        "support_text": "За гаранционни рекламации, проблеми с компоненти или механични въпроси, нашият екип ще ви отговари в рамките на 12 часа.",
         "support_email": "support@2gether.cc",
-        "quote": ""
+        "quote": "„Карай колело. Карай колело. <em>Карай още малко колело.“</em>"
       }
     }
   },

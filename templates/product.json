@@ -16,16 +16,16 @@
           "type": "feature_card",
           "settings": {
             "icon_svg": "",
-            "title": "Feature",
-            "description": ""
+            "title": "СЕРВИЗ",
+            "description": "От смяна на гума до пълна профилактика, грижим се за твоето колело като за свое."
           }
         },
         "feature_card_UYHYHb": {
           "type": "feature_card",
           "settings": {
             "icon_svg": "",
-            "title": "Feature",
-            "description": ""
+            "title": "НАЕМ И ПРОДАЖБА",
+            "description": "Искаш да пробваш преди да купиш? Или просто ти трябва колело за ден? Имаме решение."
           }
         }
       },
@@ -34,25 +34,26 @@
         "feature_card_UYHYHb"
       ],
       "settings": {
-        "story_label": "Built For",
-        "story_title": "PURPOSEFUL",
-        "story_title_accent": "CRAFT",
+        "story_label": "2gether",
+        "story_title": "повече от",
+        "story_title_accent": "магазин",
         "story_description": "",
-        "features_label": "Други снимки",
-        "features_title": "BUILT IN",
+        "story_image": "{{ product.featured_image }}",
+        "features_label": "2GETHER",
+        "features_title": "ОЩЕ ОТ НАС",
         "included_label": "In The Box",
         "included_title": "WHAT YOU GET",
-        "support_1_title": "Lifetime Warranty",
-        "support_1_desc": "On every frame",
-        "support_2_title": "Free Shipping",
-        "support_2_desc": "Orders over €500",
-        "support_3_title": "30-Day Returns",
-        "support_3_desc": "No questions asked",
-        "support_4_title": "Expert Assembly",
-        "support_4_desc": "Pro fitting included",
-        "brand_label": "Our Process",
-        "brand_title": "PURE FIBER",
-        "brand_description": "Every frame is handcrafted with aerospace-grade carbon fiber, engineered for the perfect balance of stiffness and compliance.",
+        "support_1_title": "КЛУБ",
+        "support_1_desc": "Караме заедно",
+        "support_2_title": "ПРОДАЖБА",
+        "support_2_desc": "Нещо за всеки",
+        "support_3_title": "НАЕМ",
+        "support_3_desc": "Гъвкави условия",
+        "support_4_title": "СЕРВИЗ",
+        "support_4_desc": "Бързо и надеждно",
+        "brand_label": "НАШИЯТ НАЧИН",
+        "brand_title": "RIDE 2GETHER",
+        "brand_description": "Всяка седмица излизаме заедно. Различни темпа, различни маршрути, едно усещане. Клубът на 2gether е отворен за всеки, без значение дали си ветеран или тепърва се качваш на колело.",
         "brand_image": "shopify://shop_images/Screenshot_2026-05-06_at_20.12.17.png",
         "show_dynamic_checkout": false
       }

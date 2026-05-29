@@ -17,7 +17,7 @@
           "settings": {
             "number": "01",
             "title": "СЕРВИЗ НА КОЛЕЛА",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "description": "Експертна диагностика и ремонт. Връщаме колелото ти в перфектна форма.",
             "link": "",
             "icon": "clock"
           }
@@ -26,8 +26,8 @@
           "type": "bento_cell",
           "settings": {
             "number": "02",
-            "title": "НАЕМ НА КОЛЕЛА",
-            "description": "",
+            "title": "НАЕМ НА велосипеди",
+            "description": "Градски, планински и електрически, избери своето приключение по час, ден или седмица.",
             "link": "",
             "icon": "layers"
           }
@@ -36,8 +36,8 @@
           "type": "bento_cell",
           "settings": {
             "number": "03",
-            "title": "КОЛЕЛА",
-            "description": "",
+            "title": "E-SHOP",
+            "description": "Колела, компоненти и аксесоари от водещите световни марки.",
             "link": "",
             "icon": "star"
           }
@@ -47,7 +47,7 @@
           "settings": {
             "number": "04",
             "title": "МЪРЧ",
-            "description": "",
+            "description": "Облечи стила на 2GETHER. Тениски, шапки и аксесоари за пътя.",
             "link": "",
             "icon": "tool"
           }
@@ -60,10 +60,10 @@
         "bento_4"
       ],
       "settings": {
-        "hero_image": "shopify://shop_images/pexels-malcolnphoto-34077919.jpg",
+        "hero_image": "shopify://shop_images/DSP06287-2.jpg",
         "top_label": "2GETHER BIKES / VARNA",
-        "subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor.",
-        "cta_text": "Lorem ipsum",
+        "subtitle": "Сервиз, наем, магазин и клуб на едно място. От 2017 г. поддържаме колоезденето във Варна живо, за всяко колело, всеки сезон, всеки ездач.",
+        "cta_text": "разбери повече",
         "cta_link": "",
         "title_line1": "2GETHER",
         "title_line2": "BIKES"
@@ -77,8 +77,8 @@
           "settings": {
             "number": "01",
             "icon": "clock",
-            "word": "Lorem ipsum",
-            "note": "Dolor sit amet consectetur"
+            "word": "ОПИТ",
+            "note": "9+ ГОДИНИ В БРАНША"
           }
         },
         "pillar_2": {
@@ -86,8 +86,8 @@
           "settings": {
             "number": "02",
             "icon": "layers",
-            "word": "Dolor amet",
-            "note": "Adipiscing elit sed eiusmod"
+            "word": "КАЧЕСТВО",
+            "note": "САМО ПРОВЕРЕНИ МАРКИ И КОМПОНЕНТИ"
           }
         },
         "pillar_3": {
@@ -95,8 +95,8 @@
           "settings": {
             "number": "03",
             "icon": "users",
-            "word": "Consectetur",
-            "note": "Tempor incididunt labore"
+            "word": "ОБЩНОСТ",
+            "note": "КЛУБ ОТ НАД 200 АКТИВНИ КОЛОЕЗДАЧИ"
           }
         },
         "pillar_4": {
@@ -104,8 +104,8 @@
           "settings": {
             "number": "04",
             "icon": "star",
-            "word": "Adipiscing",
-            "note": "Ut enim ad minim veniam"
+            "word": "СТАНДАРТ",
+            "note": "СЕРВИЗ И ГАРАНЦИЯ С ИНДИВИДУАЛЕН ПОДХОД"
           }
         }
       },
@@ -116,7 +116,7 @@
         "pillar_4"
       ],
       "settings": {
-        "quote": "<p>Lorem ipsum dolor sit amet, consectetur <em>adipiscing elit</em>, sed do eiusmod tempor incididunt.</p>",
+        "quote": "<p>Не продаваме велосипеди, изграждаме поколение колоездачи. Това е нашата <em>страст</em>, от 2017г.  насам.</p>",
         "pillars_label": "Какво ни движи"
       }
     },
@@ -126,19 +126,19 @@
         "img_1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg"
+            "image": "shopify://shop_images/DSP06231.jpg"
           }
         },
         "img_2": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/pexels-lebele-17593893.jpg"
+            "image": "shopify://shop_images/DSP06150.jpg"
           }
         },
         "img_3": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg"
+            "image": "shopify://shop_images/DSP06121.jpg"
           }
         }
       },
@@ -195,7 +195,7 @@
         "poll_1": {
           "type": "poll_option",
           "settings": {
-            "destination": "Lorem Ipsum Dolor",
+            "destination": "ПЛАНИНСКИ МАРШРУТИ",
             "percentage": 72,
             "leading": true
           }
@@ -203,7 +203,7 @@
         "poll_2": {
           "type": "poll_option",
           "settings": {
-            "destination": "Consectetur Adipiscing",
+            "destination": "ШОСЕЙНО КОЛОЕЗДЕНЕ",
             "percentage": 18,
             "leading": false
           }
@@ -211,7 +211,7 @@
         "poll_3": {
           "type": "poll_option",
           "settings": {
-            "destination": "Sed Eiusmod Tempor",
+            "destination": "ГРАДКО КАРАНЕ",
             "percentage": 10,
             "leading": false
           }
@@ -228,15 +228,15 @@
         "poll_3"
       ],
       "settings": {
-        "background_image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg",
+        "background_image": "shopify://shop_images/DSP06311.jpg",
         "label_text": "Sunday Club",
-        "title": "<p>RIDE <strong>TOGETHER</strong><br/>EVERY SUNDAY</p>",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "cta_text": "Lorem ipsum",
+        "title": "<p><strong>КАРАЙ С НАС НАВСЯКЪДЕ</strong></p>",
+        "description": "Присъедини се към колоездачния клуб на 2GETHER. Всяка седмица избираме различни маршрути. Всеки е добре дошъл, без значение от нивото му. Има място за всички.",
+        "cta_text": "ЗАПИШИ СЕ В КЛУБА",
         "cta_link": "",
-        "poll_label": "Lorem ipsum dolor",
+        "poll_label": "ГЛАСУВАЙ СЛЕДВАЩИЯ МАРШРУТ",
         "extra_voters": "+47",
-        "voter_count": "52 lorem ipsum",
+        "voter_count": "52 участници",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
         "yt_views": "128K"
@@ -248,40 +248,40 @@
         "svc_1": {
           "type": "service_card",
           "settings": {
-            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
-            "link": ""
+            "title": "ПЛАНИНСКИ ВЕЛОСИПЕДИ",
+            "image": "shopify://shop_images/pexels-fr3nks-10883501.jpg",
+            "link": "shopify://collections/planinski-velosipedi-c97"
           }
         },
         "svc_2": {
           "type": "service_card",
           "settings": {
-            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
+            "title": "ЕЛЕКТРИЧЕСКИ ВЕЛОСИПЕДИ",
+            "image": "shopify://shop_images/pexels-markusspiske-6502400.jpg",
             "link": ""
           }
         },
         "svc_3": {
           "type": "service_card",
           "settings": {
-            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
+            "title": "Градска серия",
+            "image": "shopify://shop_images/DSP06239.jpg",
             "link": ""
           }
         },
         "svc_4": {
           "type": "service_card",
           "settings": {
-            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
+            "title": "Премиум аксесоари",
+            "image": "shopify://shop_images/DSP06417.jpg",
             "link": ""
           }
         },
         "svc_5": {
           "type": "service_card",
           "settings": {
-            "title": "ЕЛЕКТРИЧЕСКИ КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
+            "title": "Компоненти и гуми",
+            "image": "shopify://shop_images/DSP06449-2.jpg",
             "link": ""
           }
         }
@@ -295,8 +295,8 @@
       ],
       "settings": {
         "label_text": "КАТЕГОРИИ ПРОДУКТИ",
-        "heading": "<p>Lorem ipsum<br/><strong>dolor sit</strong></p>",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore."
+        "heading": "<p><strong>КОЛЕЛА ЗА ВСЕКИ ТЕРЕН И СТИЛ</strong></p>",
+        "description": "От сериозни планински спускания до ежедневни разходки по морето, намери колелото, което пасва на твоя начин на каране."
       }
     },
     "tg_footer": {
@@ -338,10 +338,11 @@
         "locale_en"
       ],
       "settings": {
-        "newsletter_title": "Lorem ipsum dolor sit amet",
-        "newsletter_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt.",
+        "newsletter_bg_image": "shopify://shop_images/DSP06269-2.jpg",
+        "newsletter_title": "ЗАПИШИ СЕ ЗА НАШИЯТ ИМЕЙЛ ЛИСТ",
+        "newsletter_text": "Бъди от първите които разбират за нашите промоционални оферти, следващи събития и всичко останало свързано с нас.",
         "newsletter_placeholder": "your@email.com",
-        "newsletter_button": "Subscribe",
+        "newsletter_button": "ЗАПИШИ СЕ",
         "map_embed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2907.5!2d27.9147!3d43.2141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDEyJzUwLjgiTiAyN8KwNTQnNTMuMCJF!5e0!3m2!1sbg!2sbg!4v1",
         "store_name": "2GETHER BIKES",
         "address": "Варна, България\n+359 XX XXX XXXX",

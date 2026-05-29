@@ -18,7 +18,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "СЕРВИЗ НА КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-lebele-17593893.jpg",
+            "image": "shopify://shop_images/DSP06402-2.jpg",
             "descriptor": "1",
             "number": "1",
             "title": "BIKESHOP & BIKE SERVICE",
@@ -29,7 +29,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "НАЕМ НА КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-shawn-44400728-7483081.jpg",
+            "image": "shopify://shop_images/DSP06229-2.jpg",
             "descriptor": "2",
             "number": "2",
             "title": "RENT A BIKE",
@@ -40,7 +40,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "КОЛЕЛА",
-            "image": "shopify://shop_images/pexels-brunocervera-18491459.jpg",
+            "image": "shopify://shop_images/DSP06264.jpg",
             "descriptor": "3",
             "number": "3",
             "title": "BICYCLE",
