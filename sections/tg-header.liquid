@@ -1563,11 +1563,12 @@
   });
 
   // Intercept Add to Cart forms — AJAX add and auto-open the drawer.
-  // Targets our custom product form by id, plus any form with data-tg-ajax.
+  // (The custom product page handles its own form and dispatches cart:open,
+  // so we only catch generic forms flagged with data-tg-ajax here.)
   document.addEventListener('submit', (e) => {
     const form = e.target;
     if (!form || form.tagName !== 'FORM') return;
-    const isProductForm = form.id === 'tg-product-form' || form.hasAttribute('data-tg-ajax');
+    const isProductForm = form.hasAttribute('data-tg-ajax');
     if (!isProductForm) return;
     e.preventDefault();
     const submitBtn = form.querySelector('[type="submit"]');

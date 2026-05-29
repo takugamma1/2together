@@ -113,30 +113,6 @@
       </div>
     {% endif %}
 
-    <!-- ═══ STORY — bold brand statement + image ═══ -->
-    <div class="tg-story">
-      <div class="tg-story-text">
-        <div class="tg-eyebrow">{{ section.settings.story_label | default: 'Built For' }}</div>
-        <h2 class="tg-story-title">
-          {{ section.settings.story_title | default: 'PURPOSEFUL' }}<span class="tg-story-title-accent">{{ section.settings.story_title_accent | default: 'CRAFT' }}</span>
-        </h2>
-        <p class="tg-story-desc">
-          {%- if section.settings.story_description != blank -%}
-            {{ section.settings.story_description }}
-          {%- else -%}
-            {{ product.description | strip_html | truncate: 240 }}
-          {%- endif -%}
-        </p>
-      </div>
-      <div class="tg-story-media">
-        {% if section.settings.story_image != blank %}
-          {{ section.settings.story_image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'tg-story-img' }}
-        {% elsif gallery_media.size > 1 %}
-          {%- assign story_preview = gallery_media[1].preview_image | default: gallery_media[1] -%}
-          <img class="tg-story-img" src="{{ story_preview | image_url: width: 900 }}" alt="" loading="lazy">
-        {% endif %}
-      </div>
-    </div>
 
     <!-- ═══ FEATURE HIGHLIGHTS — 3 sliced cards with icons ═══ -->
     {% if feature_count > 0 %}
@@ -594,6 +570,30 @@
   const TG_SOLD_TEXT = {{ section.settings.sold_out_text | default: 'Sold Out' | json }};
   const TG_CART_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> ';
 
+  // Add to cart: handle it here (don't let the form navigate to /cart).
+  // AJAX-add, then ask the header to open the cart drawer.
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = variantInput ? variantInput.value : null;
+      if (!id) return;
+      const addBtn = form.querySelector('.tg-btn-add-cart');
+      if (addBtn) addBtn.disabled = true;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ id: id, quantity: 1 })
+      })
+        .then(function(r) { return r.json(); })
+        .then(function() {
+          document.dispatchEvent(new CustomEvent('cart:refresh'));
+          document.dispatchEvent(new CustomEvent('cart:open'));
+        })
+        .catch(function() {})
+        .finally(function() { if (addBtn) addBtn.disabled = false; });
+    });
+  }
+
   // "Buy Now": add the selected variant, then go straight to checkout.
   const buyNowBtn = document.querySelector('[data-tg-buy-now]');
   if (buyNowBtn) {
@@ -705,40 +705,6 @@
       "label": "Reassurance line (small text under buttons)",
       "info": "Leave blank to hide.",
       "default": "Lifetime warranty · Free shipping · 30-day returns"
-    },
-    {
-      "type": "header",
-      "content": "Story Block"
-    },
-    {
-      "type": "text",
-      "id": "story_label",
-      "label": "Story eyebrow",
-      "default": "Built For"
-    },
-    {
-      "type": "text",
-      "id": "story_title",
-      "label": "Story title",
-      "default": "PURPOSEFUL"
-    },
-    {
-      "type": "text",
-      "id": "story_title_accent",
-      "label": "Story title (flame accent)",
-      "default": "CRAFT"
-    },
-    {
-      "type": "textarea",
-      "id": "story_description",
-      "label": "Story description",
-      "info": "Leave blank to use product description"
-    },
-    {
-      "type": "image_picker",
-      "id": "story_image",
-      "label": "Story image",
-      "info": "Falls back to second product image"
     },
     {
       "type": "header",
