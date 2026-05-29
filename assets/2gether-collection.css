@@ -487,6 +487,94 @@ body.tg-collection-active .content-for-layout {
   border-color: transparent;
 }
 
+/* Curated bar can contain dropdowns — it must NOT clip them, so it wraps
+   instead of horizontally scrolling (a curated menu is short anyway). */
+.tg-coll-cats[data-tg-cats] .tg-coll-cats-track {
+  overflow: visible;
+  flex-wrap: wrap;
+  row-gap: var(--tg-s2);
+}
+
+/* ── Grouped category dropdown (e.g. "Parts ▾" → all part collections) ── */
+.tg-coll-cat-group {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.tg-coll-cat--parent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.tg-coll-cat-chevron {
+  transition: transform var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-coll-cat-group[data-open] .tg-coll-cat-chevron {
+  transform: rotate(180deg);
+}
+
+.tg-coll-cat-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 220px;
+  max-width: min(92vw, 360px);
+  max-height: min(60vh, 420px);
+  overflow-y: auto;
+  display: none;
+  flex-direction: column;
+  padding: var(--tg-s2);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  scrollbar-width: thin;
+}
+
+/* Open on hover (desktop, fine-pointer) and when JS toggles it (touch/click) */
+@media (hover: hover) and (pointer: fine) {
+  .tg-coll-cat-group:hover .tg-coll-cat-panel { display: flex; }
+}
+
+.tg-coll-cat-group[data-open] .tg-coll-cat-panel { display: flex; }
+
+.tg-coll-cat-sub {
+  display: block;
+  padding: 10px var(--tg-s3);
+  color: var(--tg-text-secondary);
+  font-family: 'General Sans', sans-serif;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 2px solid transparent;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out),
+              background var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-coll-cat-sub:hover {
+  color: var(--tg-text-primary);
+  background: rgba(255, 255, 255, 0.04);
+  border-left-color: var(--tg-text-muted);
+}
+
+.tg-coll-cat-sub.is-active {
+  color: var(--tg-flame);
+  border-left-color: var(--tg-flame);
+}
+
+.tg-coll-cat-sub--all {
+  font-weight: 600;
+  color: var(--tg-text-primary);
+  border-bottom: 1px solid var(--tg-divider);
+  margin-bottom: 4px;
+}
+
 /* ── Toolbar: Filters · Count · Sort ──
    Non-sticky: it flows in the page right under the category bar. A second
    sticky bar under the (tall, custom) site header caused offset/overlap
