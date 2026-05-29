@@ -1325,7 +1325,9 @@
 
   const burger = header.querySelector('[data-tg-burger]');
   const takeover = header.querySelector('[data-tg-takeover]');
-  if (!burger || !takeover) return;
+  // NOTE: do NOT early-return if the burger menu is missing — the cart
+  // drawer and the add-to-cart interceptor live in this same IIFE and must
+  // always run. The menu listeners are guarded individually below instead.
 
   const closers = header.querySelectorAll('[data-tg-takeover-close]');
 
@@ -1367,26 +1369,30 @@
   }
 
   function toggle() {
+    if (!takeover) return;
     if (takeover.getAttribute('data-open') === 'true') close();
     else open();
   }
 
-  burger.addEventListener('click', toggle);
-  closers.forEach((el) => el.addEventListener('click', close));
+  // Only wire the burger menu if its elements exist — cart code below runs regardless.
+  if (burger && takeover) {
+    burger.addEventListener('click', toggle);
+    closers.forEach((el) => el.addEventListener('click', close));
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && takeover.getAttribute('data-open') === 'true') {
-      close();
-    }
-  });
-
-  // Close after a tile click — gives the page transition time to start
-  takeover.querySelectorAll('.tg-takeover-tile').forEach((tile) => {
-    tile.addEventListener('click', () => {
-      // Don't await — let the link navigate naturally
-      setTimeout(close, 0);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && takeover.getAttribute('data-open') === 'true') {
+        close();
+      }
     });
-  });
+
+    // Close after a tile click — gives the page transition time to start
+    takeover.querySelectorAll('.tg-takeover-tile').forEach((tile) => {
+      tile.addEventListener('click', () => {
+        // Don't await — let the link navigate naturally
+        setTimeout(close, 0);
+      });
+    });
+  }
 
   // ── Cart drawer ─────────────────────────────────────────────────
   const cartDrawer = header.querySelector('[data-tg-cart-drawer]');
@@ -1546,9 +1552,11 @@
     });
   }
 
-  // Cart count badge refresh + opt-in event
+  // Cart count badge refresh + opt-in events
   function refreshCart() { fetchCart(); }
   document.addEventListener('cart:refresh', refreshCart);
+  // Any script can open the drawer after adding to cart by dispatching this.
+  document.addEventListener('cart:open', openCart);
   document.addEventListener('cart:updated', (e) => {
     if (e.detail) updateCartCounts(e.detail.item_count);
     else fetchCart();

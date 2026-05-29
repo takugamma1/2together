@@ -424,9 +424,11 @@ body.tg-collection-active .content-for-layout {
   max-width: 520px;
 }
 
-/* ── Category bar — jump between collections ── */
+/* ── Category bar — jump between collections (top of every collection page) ── */
 .tg-coll-cats {
-  padding: var(--tg-s2) var(--tg-s6) 0;
+  padding: var(--tg-s3) var(--tg-s6);
+  background: var(--tg-surface);
+  border-bottom: 1px solid var(--tg-divider);
 }
 
 .tg-coll-cats-track {
@@ -471,20 +473,17 @@ body.tg-collection-active .content-for-layout {
   border-color: var(--tg-flame);
 }
 
-/* ── Toolbar: Filters · Count · Sort ── */
+/* ── Toolbar: Filters · Count · Sort ──
+   Non-sticky: it flows in the page right under the category bar. A second
+   sticky bar under the (tall, custom) site header caused offset/overlap
+   issues, so it scrolls normally instead. */
 .tg-coll-toolbar {
-  position: sticky;
-  /* Sit directly under the real site header. --header-height is measured
-     and set on <body> in theme.liquid (this theme uses <tg-header>). */
-  top: var(--header-height, 88px);
-  z-index: 10;
+  position: static;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--tg-s4);
   padding: var(--tg-s3) var(--tg-s6);
-  /* Solid (near-opaque) background instead of backdrop-filter blur:
-     blur on a sticky bar flickers/janks badly while scrolling on mobile. */
   background: var(--tg-ink);
   border-top: 1px solid var(--tg-divider);
   border-bottom: 1px solid var(--tg-divider);
@@ -985,14 +984,9 @@ body.tg-collection-active .content-for-layout {
     box-shadow: none;
   }
 
-  .tg-coll-cats { padding: var(--tg-s2) var(--tg-s4) 0; }
+  .tg-coll-cats { padding: var(--tg-s3) var(--tg-s4); }
 
-  /* On phones the site header is tall; a second sticky bar under it eats the
-     screen and is fiddly to align. Let the filter/sort bar scroll normally
-     instead — no overlap, no stacked-sticky jank. */
   .tg-coll-toolbar {
-    position: static;
-    top: auto;
     flex-wrap: wrap;
     padding: var(--tg-s2) var(--tg-s4);
     gap: var(--tg-s2) var(--tg-s3);

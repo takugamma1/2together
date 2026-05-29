@@ -38,11 +38,17 @@ body.tg-product-active {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
+  /* Cap the height so a tall/portrait photo (e.g. a small bottle or part)
+     doesn't blow up to fill a huge frame — it stays a sensible size. */
+  max-height: 70vh;
   overflow: hidden;
   /* Light, uniform backdrop so every product — a whole bike or a small
      part — sits in the same frame regardless of its photo. */
   background: #F3F4F6;
-  padding: clamp(16px, 4%, 40px);
+  padding: clamp(20px, 5%, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
 }
 
@@ -53,6 +59,7 @@ body.tg-product-active {
   /* `contain` shows the full product without cropping, so sizing stays
      consistent across bikes, accessories and parts (no zoom/crop). */
   object-fit: contain;
+  object-position: center;
   transition: opacity 180ms var(--tg-ease-out);
 }
 
