@@ -1056,9 +1056,8 @@ body.tg-service-active .content-for-layout {
   list-style: none;
   margin: 0;
   padding: 0 var(--tg-s6) var(--tg-s5);
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 var(--tg-s7);
+  display: flex;
+  flex-direction: column;
   border-top: 1px solid var(--tg-divider);
 }
 
@@ -1100,6 +1099,65 @@ body.tg-service-active .content-for-layout {
 
 .tg-price-row-eur {
   font-size: 11px;
+  color: var(--tg-text-muted);
+}
+
+/* Per-service expandable row (matches the category accordion, one level down) */
+.tg-price-svc {
+  border-bottom: 1px dashed rgba(138, 155, 181, 0.1);
+}
+
+.tg-price-svc:last-child { border-bottom: none; }
+
+.tg-price-svc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--tg-s4);
+  padding: var(--tg-s3) 0;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  min-width: 0;
+}
+
+.tg-price-svc-head::-webkit-details-marker { display: none; }
+
+/* Rows without a description don't expand */
+.tg-price-svc--static .tg-price-svc-head { cursor: default; }
+
+.tg-price-svc-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 1px solid var(--tg-divider);
+  color: var(--tg-text-muted);
+  transition: transform 260ms var(--tg-ease-out),
+              border-color 180ms var(--tg-ease-out),
+              color 180ms var(--tg-ease-out);
+}
+
+.tg-price-svc[open] .tg-price-svc-toggle {
+  transform: rotate(180deg);
+  border-color: var(--tg-flame);
+  color: var(--tg-flame);
+}
+
+.tg-price-svc-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--tg-s2) 0 var(--tg-s4) var(--tg-s4);
+  margin-bottom: var(--tg-s3);
+  border-left: 2px solid var(--tg-flame);
+}
+
+.tg-price-svc-line {
+  font-size: 12.5px;
+  line-height: 1.55;
   color: var(--tg-text-muted);
 }
 
@@ -1188,8 +1246,6 @@ body.tg-service-active .content-for-layout {
 
   .tg-price-cat-body {
     padding: 0 var(--tg-s5) var(--tg-s5);
-    grid-template-columns: 1fr;
-    gap: 0;
   }
 
   .tg-service-cta {
@@ -1264,7 +1320,7 @@ body.tg-service-active .content-for-layout {
     padding: 0 var(--tg-s4) var(--tg-s4);
   }
 
-  .tg-price-row {
+  .tg-price-svc-head {
     padding: var(--tg-s2) 0;
     gap: var(--tg-s3);
   }
