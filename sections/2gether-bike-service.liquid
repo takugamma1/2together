@@ -331,7 +331,7 @@ Don''t remember' | newline_to_br | split: '<br />' -%}
       <div class="tg-service-prices-list">
         {% for block in section.blocks %}
           {% if block.type == 'pricing_category' %}
-            <details class="tg-price-cat" {{ block.shopify_attributes }} {% if forloop.first %}open{% endif %}>
+            <details class="tg-price-cat" {{ block.shopify_attributes }}>
               <summary class="tg-price-cat-head">
                 <span class="tg-price-cat-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
                 <span class="tg-price-cat-name">{{ block.settings.name }}</span>
@@ -357,19 +357,21 @@ Don''t remember' | newline_to_br | split: '<br />' -%}
                   {%- endcapture -%}
                   {%- assign has_desc = svc_desc | strip -%}
                   {%- if has_desc != '' -%}
-                    <details class="tg-price-svc">
-                      <summary class="tg-price-svc-head">
+                    <div class="tg-price-svc">
+                      <button type="button" class="tg-price-svc-head" aria-expanded="false">
                         <span class="tg-price-row-name">{{ parts[0] | strip }}</span>
                         <span class="tg-price-row-prices">
                           {% if parts.size > 1 %}<span class="tg-price-row-bgn">{{ parts[1] | strip }} лв.</span>{% endif %}
                           {% if parts.size > 2 %}<span class="tg-price-row-eur">{{ parts[2] | strip }}€</span>{% endif %}
                         </span>
-                        <span class="tg-price-svc-toggle" aria-hidden="true">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                        </span>
-                      </summary>
-                      <div class="tg-price-svc-desc">{{ svc_desc }}</div>
-                    </details>
+                        <span class="tg-price-svc-plus" aria-hidden="true"></span>
+                      </button>
+                      <div class="tg-price-svc-panel">
+                        <div class="tg-price-svc-panel-inner">
+                          <div class="tg-price-svc-desc">{{ svc_desc }}</div>
+                        </div>
+                      </div>
+                    </div>
                   {%- else -%}
                     <div class="tg-price-svc tg-price-svc--static">
                       <div class="tg-price-svc-head">
@@ -378,6 +380,7 @@ Don''t remember' | newline_to_br | split: '<br />' -%}
                           {% if parts.size > 1 %}<span class="tg-price-row-bgn">{{ parts[1] | strip }} лв.</span>{% endif %}
                           {% if parts.size > 2 %}<span class="tg-price-row-eur">{{ parts[2] | strip }}€</span>{% endif %}
                         </span>
+                        <span class="tg-price-svc-plus" aria-hidden="true"></span>
                       </div>
                     </div>
                   {%- endif -%}
@@ -609,6 +612,25 @@ Don''t remember' | newline_to_br | split: '<br />' -%}
     // If form has a server-side error after submit, jump to the last step
     const errorBox = wizard.querySelector('.tg-service-form-error');
     if (errorBox) goTo(total);
+  })();
+
+  // ── Price list: per-service reveal (one open per category) ─────
+  (function () {
+    document.querySelectorAll('.tg-price-cat-body').forEach(function (body) {
+      body.addEventListener('click', function (e) {
+        const head = e.target.closest('button.tg-price-svc-head');
+        if (!head) return;
+        const svc = head.closest('.tg-price-svc');
+        const wasOpen = svc.classList.contains('is-open');
+        body.querySelectorAll('.tg-price-svc.is-open').forEach(function (other) {
+          other.classList.remove('is-open');
+          const h = other.querySelector('button.tg-price-svc-head');
+          if (h) h.setAttribute('aria-expanded', 'false');
+        });
+        svc.classList.toggle('is-open', !wasOpen);
+        head.setAttribute('aria-expanded', String(!wasOpen));
+      });
+    });
   })();
 </script>
 
