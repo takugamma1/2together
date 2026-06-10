@@ -213,10 +213,11 @@ Round-trip delivery|10|Drop-off & pickup at your place' | newline_to_br | split:
             {% for d in delivery_lines %}
               {%- assign dp = d | strip_newlines | strip | split: '|' -%}
               {%- if dp[0] == blank %}{% continue %}{% endif -%}
+              {%- assign dp_price = dp[1] | strip -%}
               <label class="tg-r-delivery">
-                <input type="radio" name="contact[delivery]" value="{{ dp[0] | strip }} (€{{ dp[1] | strip }})" data-tg-r-delivery-price="{{ dp[1] | strip }}" {% if forloop.first %}checked{% endif %} data-tg-r-validate>
+                <input type="radio" name="contact[delivery]" value="{{ dp[0] | strip }} (€{{ dp_price }})" data-tg-r-delivery-price="{{ dp_price }}" {% if forloop.first %}checked{% endif %} data-tg-r-validate>
                 <span class="tg-r-delivery-name">{{ dp[0] | strip }}</span>
-                <span class="tg-r-delivery-price">{% if dp[1] | strip == '0' %}{{ section.settings.free_label | default: 'Free' }}{% else %}€{{ dp[1] | strip }}{% endif %}</span>
+                <span class="tg-r-delivery-price">{% if dp_price == '0' %}{{ section.settings.free_label | default: 'Free' }}{% else %}€{{ dp_price }}{% endif %}</span>
                 <span class="tg-r-delivery-desc">{{ dp[2] | strip }}</span>
               </label>
             {% endfor %}
