@@ -1102,7 +1102,7 @@ body.tg-service-active .content-for-layout {
   color: var(--tg-text-muted);
 }
 
-/* Per-service expandable row (matches the category accordion, one level down) */
+/* Per-service row — compact line; click reveals what's included */
 .tg-price-svc {
   border-bottom: 1px dashed rgba(138, 155, 181, 0.1);
 }
@@ -1111,48 +1111,95 @@ body.tg-service-active .content-for-layout {
 
 .tg-price-svc-head {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   gap: var(--tg-s4);
   padding: var(--tg-s3) 0;
+  margin: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
   cursor: pointer;
-  list-style: none;
   user-select: none;
   min-width: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.tg-price-svc-head::-webkit-details-marker { display: none; }
+.tg-price-svc-head:hover .tg-price-row-name { color: var(--tg-text-primary); }
+.tg-price-svc-head:hover .tg-price-svc-plus { color: var(--tg-flame); }
+
+button.tg-price-svc-head:focus-visible {
+  outline: 1px solid var(--tg-flame);
+  outline-offset: 2px;
+}
 
 /* Rows without a description don't expand */
 .tg-price-svc--static .tg-price-svc-head { cursor: default; }
+.tg-price-svc--static .tg-price-svc-head:hover .tg-price-row-name { color: var(--tg-text-secondary); }
+.tg-price-svc--static .tg-price-svc-plus { visibility: hidden; }
 
-.tg-price-svc-toggle {
+/* The little "+" that invites the click */
+.tg-price-svc-plus {
+  position: relative;
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
-  border: 1px solid var(--tg-divider);
   color: var(--tg-text-muted);
-  transition: transform 260ms var(--tg-ease-out),
-              border-color 180ms var(--tg-ease-out),
-              color 180ms var(--tg-ease-out);
+  transition: transform 260ms var(--tg-ease-out), color 180ms var(--tg-ease-out);
 }
 
-.tg-price-svc[open] .tg-price-svc-toggle {
-  transform: rotate(180deg);
-  border-color: var(--tg-flame);
+.tg-price-svc-plus::before,
+.tg-price-svc-plus::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: currentColor;
+}
+
+.tg-price-svc-plus::before { width: 10px; height: 1.5px; transform: translate(-50%, -50%); }
+.tg-price-svc-plus::after  { width: 1.5px; height: 10px; transform: translate(-50%, -50%); }
+
+.tg-price-svc.is-open .tg-price-svc-plus {
+  transform: rotate(45deg);
   color: var(--tg-flame);
+}
+
+/* Collapsible panel — grid-rows trick gives a smooth height animation */
+.tg-price-svc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms var(--tg-ease-out);
+}
+
+.tg-price-svc.is-open .tg-price-svc-panel { grid-template-rows: 1fr; }
+
+.tg-price-svc-panel-inner {
+  overflow: hidden;
+  min-height: 0;
 }
 
 .tg-price-svc-desc {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: var(--tg-s2) 0 var(--tg-s4) var(--tg-s4);
-  margin-bottom: var(--tg-s3);
+  gap: 4px;
+  max-width: 70ch;
+  padding: 2px 0 var(--tg-s4) var(--tg-s4);
+  margin-bottom: var(--tg-s2);
   border-left: 2px solid var(--tg-flame);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 240ms var(--tg-ease-out) 80ms,
+              transform 240ms var(--tg-ease-out) 80ms;
+}
+
+.tg-price-svc.is-open .tg-price-svc-desc {
+  opacity: 1;
+  transform: none;
 }
 
 .tg-price-svc-line {
