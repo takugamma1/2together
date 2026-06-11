@@ -92,7 +92,7 @@
         "logo": "shopify://shop_images/image0.png",
         "logo_text": "2GETHER",
         "sticky": true,
-        "show_search": true,
+        "show_search": false,
         "show_account": true,
         "menu": "main-menu",
         "takeover_footer_text": "",
