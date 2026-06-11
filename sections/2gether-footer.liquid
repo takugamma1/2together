@@ -1,67 +1,185 @@
-<footer class="tg-footer tg-section">
-  {%- comment -%}Row 1: Newsletter{%- endcomment -%}
-  <div class="tg-footer-newsletter">
-    <div class="tg-footer-newsletter-bg">
-      {% if section.settings.newsletter_bg_image != blank %}
-        {{ section.settings.newsletter_bg_image | image_url: width: 1920 | image_tag: loading: 'lazy', sizes: '100vw' }}
-      {% endif %}
-    </div>
-    <div class="tg-footer-newsletter-info">
-      <span class="tg-footer-newsletter-title">{{ section.settings.newsletter_title }}</span>
-      <p class="tg-footer-newsletter-text">{{ section.settings.newsletter_text }}</p>
-    </div>
-    {% form 'customer', class: 'tg-footer-newsletter-form' %}
-      <input type="hidden" name="contact[tags]" value="newsletter">
-      <input type="email" name="contact[email]" class="tg-footer-newsletter-input" placeholder="{{ section.settings.newsletter_placeholder }}" required>
-      <button type="submit" class="tg-footer-newsletter-btn">{{ section.settings.newsletter_button }}</button>
-    {% endform %}
-  </div>
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-footer.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
 
-  {%- comment -%}Row 2: Map + Links{%- endcomment -%}
-  <div class="tg-footer-middle">
-    <div class="tg-footer-map">
-      {% if section.settings.map_embed != blank %}
-        <iframe class="tg-footer-map-frame" src="{{ section.settings.map_embed }}" allowfullscreen="" loading="lazy"></iframe>
-      {% endif %}
-      <div class="tg-footer-map-address">
-        <strong>{{ section.settings.store_name }}</strong><br>
-        {{ section.settings.address }}
+<footer class="tg-footer tg-section">
+
+  {%- comment -%} Row 1: Newsletter {%- endcomment -%}
+  {%- if section.settings.show_newsletter -%}
+    <div class="tg-footer-newsletter">
+      <div class="tg-footer-newsletter-bg">
+        {% if section.settings.newsletter_bg_image != blank %}
+          {{ section.settings.newsletter_bg_image | image_url: width: 1920 | image_tag: loading: 'lazy', sizes: '100vw' }}
+        {% endif %}
       </div>
+      <div class="tg-footer-newsletter-info">
+        <span class="tg-footer-newsletter-title">{{ section.settings.newsletter_title }}</span>
+        <p class="tg-footer-newsletter-text">{{ section.settings.newsletter_text }}</p>
+      </div>
+      {% form 'customer', class: 'tg-footer-newsletter-form' %}
+        {% if form.posted_successfully? %}
+          <p class="tg-footer-newsletter-success">{{ section.settings.newsletter_success }}</p>
+        {% else %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input
+            type="email"
+            name="contact[email]"
+            class="tg-footer-newsletter-input"
+            placeholder="{{ section.settings.newsletter_placeholder }}"
+            aria-label="{{ section.settings.newsletter_placeholder }}"
+            autocomplete="email"
+            required
+          >
+          <button type="submit" class="tg-footer-newsletter-btn">{{ section.settings.newsletter_button }}</button>
+          {% if form.errors %}
+            <p class="tg-footer-newsletter-error">{{ form.errors | default_errors }}</p>
+          {% endif %}
+        {% endif %}
+      {% endform %}
     </div>
-    <div class="tg-footer-links-grid">
-      {% for block in section.blocks %}
-        {% if block.type == 'link_column' %}
-          <div {{ block.shopify_attributes }}>
-            <div class="tg-footer-heading">{{ block.settings.heading }}</div>
-            {% if block.settings.menu != blank %}
-              <ul class="tg-footer-links">
-                {% for link in block.settings.menu.links %}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+  {%- endif -%}
+
+  {%- comment -%} Row 2: Brand / Menu columns / Contact {%- endcomment -%}
+  <div class="tg-footer-main">
+
+    <div class="tg-footer-brandcol">
+      {%- assign brand_words = section.settings.store_name | split: ' ' -%}
+      <a href="{{ routes.root_url }}" class="tg-footer-wordmark" aria-label="{{ section.settings.store_name | escape }}">
+        {{- brand_words | first -}}
+        {%- if brand_words.size > 1 %}
+          <span>{{ brand_words | slice: 1, 9 | join: ' ' }}</span>
+        {%- endif -%}
+      </a>
+      {% if section.settings.tagline != blank %}
+        <p class="tg-footer-tagline">{{ section.settings.tagline }}</p>
+      {% endif %}
+
+      {%- assign has_social = false -%}
+      {%- if section.settings.social_instagram != blank
+        or section.settings.social_facebook != blank
+        or section.settings.social_youtube != blank
+        or section.settings.social_tiktok != blank
+        or section.settings.social_strava != blank
+      -%}
+        {%- assign has_social = true -%}
+      {%- endif -%}
+
+      {% if has_social %}
+        <div class="tg-footer-social">
+          {% if section.settings.social_instagram != blank %}
+            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_facebook != blank %}
+            <a href="{{ section.settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_youtube != blank %}
+            <a href="{{ section.settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_tiktok != blank %}
+            <a href="{{ section.settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_strava != blank %}
+            <a href="{{ section.settings.social_strava }}" target="_blank" rel="noopener" aria-label="Strava">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'link_column' -%}
+        <div class="tg-footer-col" {{ block.shopify_attributes }}>
+          <div class="tg-footer-heading">{{ block.settings.heading }}</div>
+          {%- if block.settings.menu != blank -%}
+            <ul class="tg-footer-links">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="tg-footer-contactcol">
+      <div class="tg-footer-heading">{{ section.settings.contact_heading }}</div>
+      <div class="tg-footer-contact-list">
+        {% if section.settings.address != blank %}
+          <div class="tg-footer-contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>{{ section.settings.address | newline_to_br }}</span>
           </div>
         {% endif %}
-      {% endfor %}
+        {% if section.settings.phone != blank %}
+          <div class="tg-footer-contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            <a href="tel:{{ section.settings.phone | remove: ' ' }}">{{ section.settings.phone }}</a>
+          </div>
+        {% endif %}
+        {% if section.settings.email != blank %}
+          <div class="tg-footer-contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+          </div>
+        {% endif %}
+        {% if section.settings.hours != blank %}
+          <div class="tg-footer-contact-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span><strong>{{ section.settings.hours_heading }}</strong><br>{{ section.settings.hours | newline_to_br }}</span>
+          </div>
+        {% endif %}
+      </div>
+      {% if section.settings.map_embed != blank %}
+        <iframe
+          class="tg-footer-map-frame"
+          src="{{ section.settings.map_embed | escape }}"
+          loading="lazy"
+          title="{{ section.settings.store_name | escape }}"
+          allowfullscreen
+        ></iframe>
+      {% endif %}
     </div>
   </div>
 
-  {%- comment -%}Row 3: Jumbo brand{%- endcomment -%}
+  {%- comment -%} Row 3: Jumbo brand {%- endcomment -%}
   <div class="tg-footer-brand-strip">
     <div class="tg-footer-jumbo">{{ section.settings.jumbo_text }}</div>
     <div class="tg-footer-jumbo-sub">{{ section.settings.jumbo_subtitle }}</div>
   </div>
 
-  {%- comment -%}Bottom bar{%- endcomment -%}
+  {%- comment -%} Bottom bar {%- endcomment -%}
   <div class="tg-footer-bottom">
-    <span class="tg-footer-copy">&copy; {{ 'now' | date: '%Y' }} {{ section.settings.store_name }}</span>
-    <div class="tg-footer-locale">
-      {% for block in section.blocks %}
-        {% if block.type == 'locale_link' %}
+    <span class="tg-footer-copy">
+      &copy; {{ 'now' | date: '%Y' }} {{ section.settings.store_name }}{% if section.settings.copyright_note != blank %}. {{ section.settings.copyright_note }}{% endif %}
+    </span>
+
+    {% if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 %}
+      <ul class="tg-footer-payments" role="list">
+        {% for type in shop.enabled_payment_types %}
+          <li>{{ type | payment_type_svg_tag: class: 'tg-footer-payment-icon' }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {%- assign locale_blocks = section.blocks | where: 'type', 'locale_link' -%}
+    {% if locale_blocks.size > 0 %}
+      <div class="tg-footer-locale">
+        {% for block in locale_blocks %}
           <a href="{{ block.settings.link }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
-        {% endif %}
-      {% endfor %}
-    </div>
+        {% endfor %}
+      </div>
+    {% endif %}
   </div>
 </footer>
 
@@ -71,112 +189,214 @@
 {
   "name": "2Gether Footer",
   "tag": "section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
   "settings": [
     {
       "type": "header",
-      "content": "Newsletter"
+      "content": "Бюлетин"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Покажи лентата за бюлетин",
+      "default": true
     },
     {
       "type": "image_picker",
       "id": "newsletter_bg_image",
-      "label": "Newsletter background image"
+      "label": "Фоново изображение"
     },
     {
       "type": "text",
       "id": "newsletter_title",
-      "label": "Newsletter title",
-      "default": "Lorem ipsum dolor sit amet"
+      "label": "Заглавие",
+      "default": "ЗАПИШИ СЕ ЗА НАШИЯ ИМЕЙЛ ЛИСТ"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "newsletter_text",
-      "label": "Newsletter text",
-      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt."
+      "label": "Текст",
+      "default": "Бъди от първите, които разбират за нашите промоционални оферти, следващи събития и всичко останало, свързано с нас."
     },
     {
       "type": "text",
       "id": "newsletter_placeholder",
-      "label": "Email placeholder",
+      "label": "Плейсхолдър за имейл",
       "default": "your@email.com"
     },
     {
       "type": "text",
       "id": "newsletter_button",
-      "label": "Button text",
-      "default": "Subscribe"
-    },
-    {
-      "type": "header",
-      "content": "Map & Address"
+      "label": "Текст на бутона",
+      "default": "ЗАПИШИ СЕ"
     },
     {
       "type": "text",
-      "id": "map_embed",
-      "label": "Google Maps embed URL"
+      "id": "newsletter_success",
+      "label": "Съобщение при успех",
+      "default": "Благодарим! Вече си в списъка."
+    },
+    {
+      "type": "header",
+      "content": "Бранд"
     },
     {
       "type": "text",
       "id": "store_name",
-      "label": "Store name",
+      "label": "Име на магазина",
       "default": "2GETHER BIKES"
     },
     {
       "type": "textarea",
-      "id": "address",
-      "label": "Address",
-      "default": "Варна, България\n+359 XX XXX XXXX"
+      "id": "tagline",
+      "label": "Кратко описание (таглайн)",
+      "default": "Магазин, сервиз, наем и клуб за всички, които карат колело — във Варна."
     },
     {
       "type": "header",
-      "content": "Brand Strip"
+      "content": "Контакти"
+    },
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "Заглавие на колоната",
+      "default": "Контакти"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Адрес",
+      "default": "Варна, България"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Телефон",
+      "default": "+359 2 000 0000"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Имейл",
+      "default": "signal@2gether.cc"
+    },
+    {
+      "type": "text",
+      "id": "hours_heading",
+      "label": "Етикет за работно време",
+      "default": "Работно време"
+    },
+    {
+      "type": "textarea",
+      "id": "hours",
+      "label": "Работно време",
+      "default": "Пон – Пет: 09:00 – 18:00\nСъб: 10:00 – 15:00"
+    },
+    {
+      "type": "text",
+      "id": "map_embed",
+      "label": "Google Maps embed URL",
+      "info": "Малка карта под контактите. Остави празно, за да я скриеш."
+    },
+    {
+      "type": "header",
+      "content": "Социални мрежи"
+    },
+    {
+      "type": "text",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "text",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "text",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "text",
+      "id": "social_strava",
+      "label": "Strava URL"
+    },
+    {
+      "type": "header",
+      "content": "Долна лента"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Покажи икони за плащане",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_note",
+      "label": "Текст след годината",
+      "default": "Всички права запазени."
+    },
+    {
+      "type": "header",
+      "content": "Бранд лента"
     },
     {
       "type": "text",
       "id": "jumbo_text",
-      "label": "Jumbo text",
+      "label": "Голям текст",
       "default": "2GETHER BIKES"
     },
     {
       "type": "text",
       "id": "jumbo_subtitle",
-      "label": "Jumbo subtitle",
+      "label": "Подзаглавие",
       "default": "Варна, България"
     }
   ],
   "blocks": [
     {
       "type": "link_column",
-      "name": "Link Column",
+      "name": "Колона с меню",
       "limit": 4,
       "settings": [
         {
           "type": "text",
           "id": "heading",
-          "label": "Column heading",
-          "default": "Links"
+          "label": "Заглавие на колоната",
+          "default": "Меню"
         },
         {
           "type": "link_list",
           "id": "menu",
-          "label": "Menu"
+          "label": "Меню",
+          "default": "footer"
         }
       ]
     },
     {
       "type": "locale_link",
-      "name": "Locale Link",
+      "name": "Език / локал",
       "limit": 4,
       "settings": [
         {
           "type": "text",
           "id": "label",
-          "label": "Label",
+          "label": "Етикет",
           "default": "BG"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Линк"
         }
       ]
     }
@@ -185,10 +405,14 @@
     {
       "name": "2Gether Footer",
       "blocks": [
-        { "type": "link_column", "settings": { "heading": "Магазин" } },
-        { "type": "link_column", "settings": { "heading": "Компания" } },
-        { "type": "locale_link", "settings": { "label": "BG" } },
-        { "type": "locale_link", "settings": { "label": "EN" } }
+        {
+          "type": "link_column",
+          "settings": { "heading": "Навигация", "menu": "footer" }
+        },
+        {
+          "type": "link_column",
+          "settings": { "heading": "Е-магазин", "menu": "main-menu" }
+        }
       ]
     }
   ]

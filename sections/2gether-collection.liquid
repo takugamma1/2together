@@ -34,8 +34,8 @@
   <!-- ═══ FILTER DRAWER (overlay on all viewports) ═══ -->
   <aside class="tg-coll-sidebar" id="tg-filter-sidebar" aria-hidden="true">
     <div class="tg-coll-sidebar-head">
-      <span class="tg-coll-sidebar-title">Filters</span>
-      <button class="tg-filter-close" type="button" data-tg-filter-close aria-label="Close filters">
+      <span class="tg-coll-sidebar-title">Филтри</span>
+      <button class="tg-filter-close" type="button" data-tg-filter-close aria-label="Затвори филтрите">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
@@ -93,9 +93,9 @@
     {% if collection.filters.size > 0 %}
       <div class="tg-filter-actions">
         {% if active_filter_count > 0 %}
-          <a href="{{ collection.url }}" class="tg-filter-clear">Clear all</a>
+          <a href="{{ collection.url }}" class="tg-filter-clear">Изчисти всички</a>
         {% endif %}
-        <button class="tg-filter-apply" type="button" onclick="tgApplyFilters()">Apply Filters</button>
+        <button class="tg-filter-apply" type="button" onclick="tgApplyFilters()">Приложи филтрите</button>
       </div>
     {% endif %}
   </aside>
@@ -112,10 +112,10 @@
       {%- comment -%} Curated menu: top-level items are chips; an item with sub-items
         becomes a "Title ▾" dropdown listing its child collections (e.g. group all
         the separate Parts collections under one "Parts" parent). {%- endcomment -%}
-      <nav class="tg-coll-cats" aria-label="Product categories" data-tg-cats>
+      <nav class="tg-coll-cats" aria-label="Категории" data-tg-cats>
         <div class="tg-coll-cats-track">
           {% if section.settings.show_all_chip %}
-            <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'All' }}</a>
+            <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'Всички' }}</a>
           {% endif %}
           {% for link in cat_menu.links %}
             {% if link.links.size > 0 %}
@@ -152,9 +152,9 @@
       </nav>
     {% else %}
       {%- comment -%} No menu set yet: show a BOUNDED fallback (never the full list) so it can't become an infinity bar. {%- endcomment -%}
-      <nav class="tg-coll-cats" aria-label="Product categories">
+      <nav class="tg-coll-cats" aria-label="Категории">
         <div class="tg-coll-cats-track">
-          <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'All' }}</a>
+          <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'Всички' }}</a>
           {%- assign shown = 0 -%}
           {% for c in collections %}
             {%- if shown >= cat_limit %}{% break %}{% endif -%}
@@ -166,7 +166,7 @@
               {%- assign shown = shown | plus: 1 -%}
             {%- endunless -%}
           {% endfor %}
-          <a href="{{ routes.collections_url }}" class="tg-coll-cat tg-coll-cat--more">{{ section.settings.more_label | default: 'All categories →' }}</a>
+          <a href="{{ routes.collections_url }}" class="tg-coll-cat tg-coll-cat--more">{{ section.settings.more_label | default: 'Всички категории →' }}</a>
         </div>
       </nav>
     {% endif %}
@@ -178,7 +178,7 @@
           {% if section.settings.hero_title != blank %}
             {{ section.settings.hero_title }}
           {% else %}
-            THE {{ collection.title | upcase }}<span>.</span>
+            {{ collection.title | upcase }}<span>.</span>
           {% endif %}
         </h1>
         {% if collection.description != blank %}
@@ -193,26 +193,26 @@
         {% if collection.filters.size > 0 %}
           <button type="button" class="tg-filter-toggle" data-tg-filter-open aria-expanded="false" aria-controls="tg-filter-sidebar">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6M9 8h6M17 16h6"/></svg>
-            <span>Filters</span>
+            <span>Филтри</span>
             {% if active_filter_count > 0 %}
               <span class="tg-filter-toggle-count">{{ active_filter_count }}</span>
             {% endif %}
           </button>
         {% endif %}
-        <div class="tg-coll-count">{{ products_count }} {{ products_count | pluralize: 'product', 'products' }}</div>
+        <div class="tg-coll-count">{{ products_count }} {{ products_count | pluralize: 'продукт', 'продукта' }}</div>
       </div>
       <div class="tg-coll-toolbar-right">
         <div class="tg-coll-sort">
-          <label for="tg-sort-select">Sort:</label>
+          <label for="tg-sort-select">Подреди:</label>
           <select id="tg-sort-select" onchange="tgApplySort(this.value)">
-            <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>Featured</option>
-            <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
-            <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>A–Z</option>
-            <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Z–A</option>
-            <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Price: Low → High</option>
-            <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Price: High → Low</option>
-            <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected{% endif %}>Oldest</option>
-            <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+            <option value="manual" {% if sort_by == 'manual' %}selected{% endif %}>Препоръчани</option>
+            <option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}>Най-продавани</option>
+            <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected{% endif %}>А–Я</option>
+            <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Я–А</option>
+            <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Цена: ниска → висока</option>
+            <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Цена: висока → ниска</option>
+            <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected{% endif %}>Най-стари</option>
+            <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Най-нови</option>
           </select>
         </div>
       </div>
@@ -305,9 +305,9 @@
               >
                 {% if product.available %}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                  Add to Cart
+                  Добави в количката
                 {% else %}
-                  Sold Out
+                  Изчерпан
                 {% endif %}
               </button>
             {%- endform -%}
@@ -318,16 +318,16 @@
         {% if paginate.pages > 1 %}
           <div class="tg-coll-pagination" style="grid-column: 1 / -1;">
             <div class="tg-coll-showing">
-              Showing <strong>{{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: products_count }}</strong> of <strong>{{ products_count }}</strong> high-performance machines
+              Показани <strong>{{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: products_count }}</strong> от <strong>{{ products_count }}</strong> продукта
             </div>
 
             {% if paginate.next %}
-              <a href="{{ paginate.next.url }}" class="tg-coll-load-more">Load More Machines</a>
+              <a href="{{ paginate.next.url }}" class="tg-coll-load-more">Зареди още</a>
             {% endif %}
 
             <div class="tg-coll-pages">
               {% if paginate.previous %}
-                <a href="{{ paginate.previous.url }}" aria-label="Previous">&larr;</a>
+                <a href="{{ paginate.previous.url }}" aria-label="Предишна страница">&larr;</a>
               {% endif %}
               {% for part in paginate.parts %}
                 {% if part.is_link %}
@@ -337,7 +337,7 @@
                 {% endif %}
               {% endfor %}
               {% if paginate.next %}
-                <a href="{{ paginate.next.url }}" aria-label="Next">&rarr;</a>
+                <a href="{{ paginate.next.url }}" aria-label="Следваща страница">&rarr;</a>
               {% endif %}
             </div>
           </div>
@@ -345,16 +345,6 @@
       {% endpaginate %}
     </div>
 
-    <!-- Footer -->
-    <div class="tg-coll-footer">
-      <div class="tg-coll-footer-brand">2GETHER</div>
-      <div class="tg-coll-footer-links">
-        <a href="/policies/privacy-policy">Privacy Policy</a>
-        <a href="/policies/shipping-policy">Shipping</a>
-        <a href="/policies/refund-policy">Returns</a>
-        <a href="/pages/contact">Contact</a>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -471,7 +461,7 @@
       e.preventDefault();
       var btn = form.querySelector('.tg-coll-card-add');
       var origText = btn.innerHTML;
-      btn.innerHTML = 'Adding...';
+      btn.innerHTML = 'Добавяне...';
       btn.disabled = true;
 
       fetch('/cart/add.js', {
@@ -530,13 +520,13 @@
       "type": "text",
       "id": "all_label",
       "label": "'All' chip label",
-      "default": "All"
+      "default": "Всички"
     },
     {
       "type": "text",
       "id": "more_label",
       "label": "Fallback 'more' link label",
-      "default": "All categories →"
+      "default": "Всички категории →"
     },
     {
       "type": "range",

@@ -136,7 +136,7 @@
                   {%- for tag in product.tags -%}
                     {%- if tag contains 'spec:' -%}
                       {%- assign spec = tag | remove: 'spec:' | strip | split: ' ' -%}
-                      <li><span>{{ spec | first }}</span><strong>{{ spec | shift | join: ' ' }}</strong></li>
+                      <li><span>{{ spec | first }}</span><strong>{{ spec | slice: 1, 99 | join: ' ' }}</strong></li>
                     {%- endif -%}
                   {%- endfor -%}
                 </ul>

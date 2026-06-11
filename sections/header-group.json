@@ -14,14 +14,25 @@
     "tg_header": {
       "type": "tg-header",
       "blocks": {
+        "nav_tile_gygNUN": {
+          "type": "nav_tile",
+          "settings": {
+            "link_handle": "Е-МАГАЗИН",
+            "image": "shopify://shop_images/DSP06264.jpg",
+            "descriptor": "Велосипеди, аксесоари и мърч",
+            "number": "",
+            "title": "Е-МАГАЗИН",
+            "link": "/collections"
+          }
+        },
         "nav_tile_LJHd78": {
           "type": "nav_tile",
           "settings": {
-            "link_handle": "СЕРВИЗ НА КОЛЕЛА",
+            "link_handle": "СЕРВИЗ",
             "image": "shopify://shop_images/DSP06402-2.jpg",
-            "descriptor": "1",
-            "number": "1",
-            "title": "BIKESHOP & BIKE SERVICE",
+            "descriptor": "Ремонт, профилактика, настройка",
+            "number": "",
+            "title": "СЕРВИЗ",
             "link": "shopify://pages/bike-service"
           }
         },
@@ -30,21 +41,10 @@
           "settings": {
             "link_handle": "НАЕМ НА КОЛЕЛА",
             "image": "shopify://shop_images/DSP06229-2.jpg",
-            "descriptor": "2",
-            "number": "2",
-            "title": "RENT A BIKE",
+            "descriptor": "Дневен и седмичен наем",
+            "number": "",
+            "title": "НАЕМ НА КОЛЕЛА",
             "link": "shopify://pages/bike-rental"
-          }
-        },
-        "nav_tile_gygNUN": {
-          "type": "nav_tile",
-          "settings": {
-            "link_handle": "КОЛЕЛА",
-            "image": "shopify://shop_images/DSP06264.jpg",
-            "descriptor": "3",
-            "number": "3",
-            "title": "BICYCLE",
-            "link": "shopify://collections/velosipedi-c59"
           }
         },
         "nav_tile_PKGhED": {
@@ -52,24 +52,46 @@
           "settings": {
             "link_handle": "МЪРЧ",
             "image": "shopify://shop_images/Screenshot_4_5B1_5D.png",
-            "descriptor": "4",
-            "number": "4",
-            "title": "MERCHANDISE",
-            "link": ""
+            "descriptor": "Тениски, джърсита, аксесоари",
+            "number": "",
+            "title": "МЪРЧ",
+            "link": "shopify://collections/march-c199"
+          }
+        },
+        "nav_tile_rampi": {
+          "type": "nav_tile",
+          "settings": {
+            "link_handle": "РАМПИ",
+            "descriptor": "Преносими рампи 2GETHER",
+            "number": "",
+            "title": "РАМПИ",
+            "link": "shopify://pages/portable-ramps"
+          }
+        },
+        "nav_tile_sunday": {
+          "type": "nav_tile",
+          "settings": {
+            "link_handle": "SUNDAY CLUB",
+            "descriptor": "Неделни групови карания",
+            "number": "",
+            "title": "SUNDAY CLUB",
+            "link": "shopify://pages/sunday-club"
           }
         }
       },
       "block_order": [
+        "nav_tile_gygNUN",
         "nav_tile_LJHd78",
         "nav_tile_igVqRq",
-        "nav_tile_gygNUN",
-        "nav_tile_PKGhED"
+        "nav_tile_PKGhED",
+        "nav_tile_rampi",
+        "nav_tile_sunday"
       ],
       "settings": {
         "logo": "shopify://shop_images/image0.png",
         "logo_text": "2GETHER",
         "sticky": true,
-        "show_search": false,
+        "show_search": true,
         "show_account": true,
         "menu": "main-menu",
         "takeover_footer_text": ""

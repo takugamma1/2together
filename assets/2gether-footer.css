@@ -1,0 +1,218 @@
+/* === 2GETHER BIKES — FOOTER (per-section styles) ===
+   Base .tg-footer-* styles (newsletter, jumbo, bottom bar, link lists)
+   live in 2gether-custom.css. This file adds the brand / menus / contact
+   grid, social icons, payment icons and responsive rules. */
+
+/* --- Newsletter: allow stacked success / error messages --- */
+.tg-footer-newsletter-form {
+  flex-wrap: wrap;
+  row-gap: var(--tg-s2);
+}
+
+.tg-footer-newsletter-success,
+.tg-footer-newsletter-error {
+  flex-basis: 100%;
+  margin: 0;
+  font-family: 'General Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tg-footer-newsletter-success {
+  color: #fff;
+  background: rgba(11, 18, 32, 0.45);
+  border-left: 2px solid var(--tg-flame);
+  padding: var(--tg-s3) var(--tg-s4);
+}
+
+.tg-footer-newsletter-error {
+  color: #ffd9c4;
+}
+
+/* --- Main row: brand / menu columns / contact --- */
+.tg-footer-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--tg-s7);
+  padding: var(--tg-s8) var(--tg-s9);
+  border-bottom: 1px solid var(--tg-divider);
+}
+
+.tg-footer-brandcol {
+  flex: 1.6 1 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--tg-s4);
+}
+
+.tg-footer-wordmark {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--tg-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tg-footer-wordmark span {
+  color: var(--tg-flame);
+  margin-left: 0.3em;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-footer-wordmark:hover span {
+  color: var(--tg-flame-light);
+}
+
+.tg-footer-tagline {
+  margin: 0;
+  font-size: 14px;
+  color: var(--tg-text-secondary);
+  line-height: 1.7;
+  max-width: 320px;
+}
+
+/* --- Social icons --- */
+.tg-footer-social {
+  display: flex;
+  gap: var(--tg-s2);
+  margin-top: var(--tg-s2);
+}
+
+.tg-footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--tg-divider);
+  color: var(--tg-text-secondary);
+  transition: all var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-footer-social a:hover {
+  color: var(--tg-flame);
+  border-color: var(--tg-flame);
+  background: var(--tg-flame-glow);
+  transform: translateY(-2px);
+}
+
+.tg-footer-social svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+/* --- Menu columns --- */
+.tg-footer-col {
+  flex: 1 1 150px;
+}
+
+/* --- Contact column --- */
+.tg-footer-contactcol {
+  flex: 1.4 1 240px;
+}
+
+.tg-footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s3);
+}
+
+.tg-footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--tg-s3);
+  font-size: 13px;
+  color: var(--tg-text-secondary);
+  line-height: 1.6;
+}
+
+.tg-footer-contact-item svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--tg-flame);
+}
+
+.tg-footer-contact-item a {
+  color: var(--tg-text-secondary);
+  text-decoration: none;
+  transition: color var(--tg-dur-fast) var(--tg-ease-out);
+}
+
+.tg-footer-contact-item a:hover {
+  color: var(--tg-flame);
+}
+
+.tg-footer-contact-item strong {
+  color: var(--tg-text-primary);
+  font-weight: 600;
+}
+
+.tg-footer-contactcol .tg-footer-map-frame {
+  margin-top: var(--tg-s4);
+  height: 120px;
+}
+
+/* --- Bottom bar additions --- */
+.tg-footer-bottom {
+  flex-wrap: wrap;
+  gap: var(--tg-s4);
+  border-top: 1px solid var(--tg-divider);
+}
+
+.tg-footer-payments {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--tg-s2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tg-footer-payments li {
+  display: flex;
+}
+
+.tg-footer-payment-icon {
+  display: block;
+  width: 38px;
+  height: 24px;
+  opacity: 0.85;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .tg-footer-main {
+    gap: var(--tg-s6);
+    padding: var(--tg-s6) var(--tg-s5);
+  }
+}
+
+@media (max-width: 768px) {
+  .tg-footer-main {
+    flex-direction: column;
+    padding-left: var(--tg-s4);
+    padding-right: var(--tg-s4);
+  }
+
+  .tg-footer-brandcol,
+  .tg-footer-col,
+  .tg-footer-contactcol {
+    flex: 0 0 auto;
+  }
+
+  .tg-footer-bottom {
+    justify-content: center;
+  }
+
+  .tg-footer-payments {
+    justify-content: center;
+  }
+}

@@ -2,7 +2,8 @@
 
 {% liquid
   assign section_collections = collections
-  assign max_items = 20
+  # Raised from Horizon's default of 20 so every store category renders on /collections (the store has 31+ collections).
+  assign max_items = 48
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>

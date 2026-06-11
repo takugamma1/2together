@@ -25,33 +25,34 @@
 
     <div class="tg-header-actions">
       {% if section.settings.show_search %}
-        <a href="{{ routes.search_url }}" class="tg-header-icon" aria-label="{{ 'general.search.search' | t | default: 'Search' }}">
+        <a href="{{ routes.search_url }}" class="tg-header-icon" aria-label="Търсене">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
         </a>
       {% endif %}
       {% if section.settings.show_account %}
-        <a href="{{ routes.account_url }}" class="tg-header-icon" aria-label="{{ 'customer.account.title' | t | default: 'Account' }}">
+        <a href="{{ routes.account_url }}" class="tg-header-icon" aria-label="Профил">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
       {% endif %}
-      <button type="button" class="tg-header-icon tg-header-cart" aria-label="{{ 'sections.cart.title' | t | default: 'Cart' }}" aria-controls="tg-cart-drawer" data-tg-cart-open>
+      {%- comment -%} Real link so the cart stays reachable without JS — the click handler upgrades it to the drawer. {%- endcomment -%}
+      <a href="{{ routes.cart_url }}" class="tg-header-icon tg-header-cart" aria-label="Количка" aria-controls="tg-cart-drawer" data-tg-cart-open>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span class="tg-header-cart-count" data-tg-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
-      </button>
-      <button type="button" class="tg-header-burger" aria-label="Open menu" aria-expanded="false" aria-controls="tg-takeover" data-tg-burger>
+      </a>
+      <button type="button" class="tg-header-burger" aria-label="Отвори менюто" aria-expanded="false" aria-controls="tg-takeover" data-tg-burger>
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 
   <!-- Full-screen navigation takeover -->
-  <div id="tg-takeover" class="tg-takeover" data-tg-takeover hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Main navigation">
+  <div id="tg-takeover" class="tg-takeover" data-tg-takeover hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Основна навигация">
     <div class="tg-takeover-backdrop" data-tg-takeover-close></div>
 
     <div class="tg-takeover-inner">
       <div class="tg-takeover-head">
-        <button type="button" class="tg-takeover-close" data-tg-takeover-close aria-label="Close menu">
-          <span>Close</span>
+        <button type="button" class="tg-takeover-close" data-tg-takeover-close aria-label="Затвори менюто">
+          <span>{{ section.settings.close_label | default: 'Затвори' }}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -75,7 +76,6 @@
               assign nav_tile_position = 0
 
               assign link_handle_norm = link.handle | downcase | strip
-              assign link_title_norm = link.title | downcase | strip | replace: ' ', '-'
               assign link_title_plain = link.title | downcase | strip
 
               for block in section.blocks
@@ -87,8 +87,10 @@
                 comment
                   Track the block at this menu link's position as a fallback,
                   so blocks added in the same order as the menu Just Work.
+                  NB: inside this inner loop `forloop` is the BLOCK loop —
+                  the menu link's position lives on forloop.parentloop.
                 endcomment
-                if nav_tile_position == forloop.index and positional_block == null
+                if nav_tile_position == forloop.parentloop.index and positional_block == null
                   assign positional_block = block
                 endif
 
@@ -111,11 +113,13 @@
               assign tile_image = matched_block.settings.image
 
               assign is_active = false
-              if current_path != '/' and link.url contains current_path
+              if link.active
+                assign is_active = true
+              elsif current_path != '/' and link.url == current_path
                 assign is_active = true
               endif
             -%}
-            <a href="{{ link.url }}" class="tg-takeover-tile{% if is_active %} is-active{% endif %}{% if link.active %} is-active{% endif %}" style="--tg-tile-i: {{ forloop.index0 }};">
+            <a href="{{ link.url }}" class="tg-takeover-tile{% if is_active %} is-active{% endif %}" {% if matched_block %}{{ matched_block.shopify_attributes }}{% endif %} style="--tg-tile-i: {{ forloop.index0 }};">
               <div class="tg-takeover-tile-media">
                 {% if tile_image != blank %}
                   {{ tile_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: link.title, sizes: '(max-width: 768px) 100vw, 33vw' }}
@@ -146,7 +150,7 @@
               {%- liquid
                 assign tile_link = block.settings.link | default: '#'
                 assign is_active = false
-                if current_path != '/' and tile_link contains current_path
+                if current_path != '/' and tile_link == current_path
                   assign is_active = true
                 endif
                 assign auto_num = forloop.index | prepend: '0' | slice: -2, 2
@@ -177,7 +181,7 @@
           {% endfor %}
         {% else %}
           {%- comment -%} Fallback so the menu works before the merchant configures anything {%- endcomment -%}
-          {%- assign default_tiles = 'Bikeshop & Bike Service|Pro fitting, repairs, tune-ups|/pages/bike-service||Rent A Bike|Daily, weekly, by the route|/pages/rent-a-bike||Bicycles|Road, MTB, gravel, e-bike|/collections/all||Merchandise|Apparel, parts, accessories|/collections/merchandise||Price List|Service rates & rental tariffs|/pages/bike-service#tg-service-prices' | split: '||' -%}
+          {%- assign default_tiles = 'Е-МАГАЗИН|Велосипеди, аксесоари и мърч|/collections||СЕРВИЗ|Ремонт, профилактика, настройка|/pages/bike-service||НАЕМ НА КОЛЕЛА|Дневен и седмичен наем|/pages/bike-rental||МЪРЧ|Тениски, джърсита, аксесоари|/collections/march-c199||РАМПИ|Преносими рампи 2GETHER|/pages/portable-ramps||SUNDAY CLUB|Неделни групови карания|/pages/sunday-club' | split: '||' -%}
           {% for entry in default_tiles %}
             {%- assign parts = entry | split: '|' -%}
             {%- assign t_num = forloop.index | prepend: '0' | slice: -2, 2 -%}
@@ -211,15 +215,15 @@
   </div>
 
   <!-- ── Cart drawer (sliced) ── -->
-  <div id="tg-cart-drawer" class="tg-cart-drawer" data-tg-cart-drawer hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div id="tg-cart-drawer" class="tg-cart-drawer" data-tg-cart-drawer data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-collections-url="{{ routes.collections_url }}" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ section.settings.cart_title | default: 'Количка' }}">
     <div class="tg-cart-drawer-backdrop" data-tg-cart-close></div>
     <aside class="tg-cart-drawer-panel">
       <header class="tg-cart-drawer-head">
         <div class="tg-cart-drawer-head-text">
-          <span class="tg-cart-drawer-eyebrow">Cart</span>
-          <span class="tg-cart-drawer-count"><span data-tg-cart-drawer-count>{{ cart.item_count }}</span> {{ cart.item_count | pluralize: 'item', 'items' }}</span>
+          <span class="tg-cart-drawer-eyebrow">{{ section.settings.cart_title | default: 'Количка' }}</span>
+          <span class="tg-cart-drawer-count"><span data-tg-cart-drawer-count>{{ cart.item_count }}</span> {{ cart.item_count | pluralize: 'артикул', 'артикула' }}</span>
         </div>
-        <button type="button" class="tg-cart-drawer-close" data-tg-cart-close aria-label="Close cart">
+        <button type="button" class="tg-cart-drawer-close" data-tg-cart-close aria-label="Затвори количката">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </header>
@@ -232,14 +236,14 @@
 
       <footer class="tg-cart-drawer-foot" data-tg-cart-foot>
         <div class="tg-cart-drawer-subtotal">
-          <span>Subtotal</span>
+          <span>{{ section.settings.cart_subtotal_label | default: 'Междинна сума' }}</span>
           <strong data-tg-cart-subtotal>{{ cart.total_price | money }}</strong>
         </div>
-        <a href="/checkout" class="tg-cart-drawer-checkout" data-tg-cart-checkout>
-          Checkout
+        <a href="{{ routes.cart_url }}/checkout" class="tg-cart-drawer-checkout" data-tg-cart-checkout>
+          {{ section.settings.cart_checkout_label | default: 'Към плащане' }}
           <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
         </a>
-        <a href="{{ routes.cart_url }}" class="tg-cart-drawer-view">View full cart</a>
+        <a href="{{ routes.cart_url }}" class="tg-cart-drawer-view">{{ section.settings.cart_view_label | default: 'Виж цялата количка' }}</a>
       </footer>
     </aside>
   </div>
@@ -303,6 +307,40 @@
       "type": "text",
       "id": "takeover_footer_text",
       "label": "Footer line (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "close_label",
+      "label": "Menu close button",
+      "default": "Затвори"
+    },
+    {
+      "type": "text",
+      "id": "cart_title",
+      "label": "Cart drawer title",
+      "default": "Количка"
+    },
+    {
+      "type": "text",
+      "id": "cart_subtotal_label",
+      "label": "Cart subtotal label",
+      "default": "Междинна сума"
+    },
+    {
+      "type": "text",
+      "id": "cart_checkout_label",
+      "label": "Checkout button",
+      "default": "Към плащане"
+    },
+    {
+      "type": "text",
+      "id": "cart_view_label",
+      "label": "View full cart link",
+      "default": "Виж цялата количка"
     }
   ],
   "blocks": [
@@ -362,41 +400,55 @@
         {
           "type": "nav_tile",
           "settings": {
-            "title": "Bikeshop & Bike Service",
-            "descriptor": "Pro fitting, repairs, tune-ups",
-            "number": "01"
+            "link_handle": "Е-МАГАЗИН",
+            "title": "Е-МАГАЗИН",
+            "descriptor": "Велосипеди, аксесоари и мърч",
+            "link": "/collections"
           }
         },
         {
           "type": "nav_tile",
           "settings": {
-            "title": "Rent A Bike",
-            "descriptor": "Daily, weekly, by the route",
-            "number": "02"
+            "link_handle": "СЕРВИЗ",
+            "title": "СЕРВИЗ",
+            "descriptor": "Ремонт, профилактика, настройка",
+            "link": "/pages/bike-service"
           }
         },
         {
           "type": "nav_tile",
           "settings": {
-            "title": "Bicycles",
-            "descriptor": "Road, MTB, gravel, e-bike",
-            "number": "03"
+            "link_handle": "НАЕМ НА КОЛЕЛА",
+            "title": "НАЕМ НА КОЛЕЛА",
+            "descriptor": "Дневен и седмичен наем",
+            "link": "/pages/bike-rental"
           }
         },
         {
           "type": "nav_tile",
           "settings": {
-            "title": "Merchandise",
-            "descriptor": "Apparel, parts, accessories",
-            "number": "04"
+            "link_handle": "МЪРЧ",
+            "title": "МЪРЧ",
+            "descriptor": "Тениски, джърсита, аксесоари",
+            "link": "/collections/march-c199"
           }
         },
         {
           "type": "nav_tile",
           "settings": {
-            "title": "Price List",
-            "descriptor": "Service rates & rental tariffs",
-            "number": "05"
+            "link_handle": "РАМПИ",
+            "title": "РАМПИ",
+            "descriptor": "Преносими рампи 2GETHER",
+            "link": "/pages/portable-ramps"
+          }
+        },
+        {
+          "type": "nav_tile",
+          "settings": {
+            "link_handle": "SUNDAY CLUB",
+            "title": "SUNDAY CLUB",
+            "descriptor": "Неделни групови карания",
+            "link": "/pages/sunday-club"
           }
         }
       ]
@@ -586,6 +638,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   /* Head: just the close button on the right */
@@ -1038,6 +1091,7 @@
   .tg-cart-drawer-body {
     flex: 1 1 auto;
     overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 18px 28px;
     scrollbar-width: thin;
     scrollbar-color: rgba(138, 155, 181, 0.2) transparent;
@@ -1332,18 +1386,23 @@
   const closers = header.querySelectorAll('[data-tg-takeover-close]');
 
   let lastFocus = null;
+  let hideTimer = null;
 
   function open() {
     lastFocus = document.activeElement;
+    // A close() may have queued `hidden = true` — cancel it or the menu
+    // would vanish mid-open when reopened within the fade-out window.
+    clearTimeout(hideTimer);
     takeover.hidden = false;
-    // Force a reflow so the transition fires
+    // Force a reflow so the fade-in transition fires, then set state
+    // SYNCHRONOUSLY. (This used to happen inside requestAnimationFrame,
+    // which made toggle() read stale state on quick taps — the burger
+    // needed multiple presses and could strand the menu invisible.)
     void takeover.offsetWidth;
-    requestAnimationFrame(() => {
-      takeover.setAttribute('data-open', 'true');
-      takeover.setAttribute('aria-hidden', 'false');
-    });
+    takeover.setAttribute('data-open', 'true');
+    takeover.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
-    burger.setAttribute('aria-label', 'Close menu');
+    burger.setAttribute('aria-label', 'Затвори менюто');
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     // Focus the close button for keyboard nav
@@ -1355,11 +1414,14 @@
     takeover.removeAttribute('data-open');
     takeover.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Open menu');
+    burger.setAttribute('aria-label', 'Отвори менюто');
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
-    setTimeout(() => {
-      if (burger.getAttribute('aria-expanded') === 'false') {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      // Re-check the real open state — not the burger's aria attribute —
+      // so a reopen during the fade-out never gets display:none'd away.
+      if (takeover.getAttribute('data-open') !== 'true') {
         takeover.hidden = true;
       }
     }, 320);
@@ -1369,7 +1431,6 @@
   }
 
   function toggle() {
-    if (!takeover) return;
     if (takeover.getAttribute('data-open') === 'true') close();
     else open();
   }
@@ -1381,6 +1442,22 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && takeover.getAttribute('data-open') === 'true') {
+        close();
+      }
+    });
+
+    // Backdrop click-to-close: .tg-takeover-inner fully covers the backdrop,
+    // so its own [data-tg-takeover-close] listener can never receive a click.
+    // Treat clicks on the empty chrome (inner padding / grid gaps) as "outside".
+    takeover.addEventListener('click', (e) => {
+      const t = e.target;
+      if (
+        t === takeover ||
+        (t.classList &&
+          (t.classList.contains('tg-takeover-inner') ||
+            t.classList.contains('tg-takeover-grid') ||
+            t.classList.contains('tg-takeover-backdrop')))
+      ) {
         close();
       }
     });
@@ -1404,10 +1481,15 @@
   const cartDrawerCount = cartDrawer ? cartDrawer.querySelector('[data-tg-cart-drawer-count]') : null;
   const cartSubtotal = cartDrawer ? cartDrawer.querySelector('[data-tg-cart-subtotal]') : null;
   const cartRoot = window.Shopify?.routes?.root || '/';
+  const cartCurrency = (cartDrawer && cartDrawer.getAttribute('data-currency')) || 'EUR';
+  const collectionsUrl = (cartDrawer && cartDrawer.getAttribute('data-collections-url')) || '/collections';
 
   function moneyFormat(cents) {
-    const n = (cents / 100).toFixed(2);
-    return n + ' лв';
+    try {
+      return new Intl.NumberFormat('bg-BG', { style: 'currency', currency: cartCurrency }).format(cents / 100);
+    } catch (err) {
+      return (cents / 100).toFixed(2) + ' ' + cartCurrency;
+    }
   }
 
   function pluralize(n, one, many) {
@@ -1424,12 +1506,15 @@
     const countLine = cartDrawer ? cartDrawer.querySelector('.tg-cart-drawer-count') : null;
     if (countLine) {
       const n = itemCount;
-      countLine.innerHTML = '<span data-tg-cart-drawer-count>' + n + '</span> ' + pluralize(n, 'item', 'items');
+      countLine.innerHTML = '<span data-tg-cart-drawer-count>' + n + '</span> ' + pluralize(n, 'артикул', 'артикула');
     }
   }
 
   function renderCart(cart) {
     if (!cartBody) return;
+    // Guard against error payloads ({status, message, description}) being
+    // rendered as if they were a cart.
+    if (!cart || typeof cart.item_count !== 'number') return;
     updateCartCounts(cart.item_count || 0);
 
     if (!cart.items || cart.items.length === 0) {
@@ -1440,8 +1525,8 @@
             '<line x1="3" y1="6" x2="21" y2="6"/>' +
             '<path d="M16 10a4 4 0 0 1-8 0"/>' +
           '</svg>' +
-          '<p>Your cart is empty</p>' +
-          '<a href="/collections/all">Browse</a>' +
+          '<p>Количката е празна</p>' +
+          '<a href="' + collectionsUrl + '">Към магазина</a>' +
         '</div>';
       if (cartFoot) cartFoot.hidden = true;
       return;
@@ -1466,11 +1551,11 @@
             variant +
             '<div class="tg-cart-item-controls">' +
               '<div class="tg-cart-item-qty">' +
-                '<button type="button" data-tg-qty-dec aria-label="Decrease">−</button>' +
+                '<button type="button" data-tg-qty-dec aria-label="Намали количеството">−</button>' +
                 '<span>' + item.quantity + '</span>' +
-                '<button type="button" data-tg-qty-inc aria-label="Increase">+</button>' +
+                '<button type="button" data-tg-qty-inc aria-label="Увеличи количеството">+</button>' +
               '</div>' +
-              '<button type="button" class="tg-cart-item-remove" data-tg-remove>Remove</button>' +
+              '<button type="button" class="tg-cart-item-remove" data-tg-remove>Премахни</button>' +
             '</div>' +
           '</div>' +
           '<span class="tg-cart-item-price">' + moneyFormat(item.final_line_price) + '</span>' +
@@ -1500,9 +1585,19 @@
       credentials: 'same-origin',
       body: JSON.stringify({ id: key, quantity: qty }),
     })
-      .then((r) => r.json())
-      .then((cart) => { renderCart(cart); cartBody.style.opacity = ''; document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart })); })
-      .catch(() => { cartBody.style.opacity = ''; });
+      .then((r) => r.json().then((data) => ({ ok: r.ok, data })))
+      .then(({ ok, data }) => {
+        if (ok && data && data.items) {
+          renderCart(data);
+          document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+        } else {
+          // 422 (e.g. qty above stock) returns an error body, not a cart —
+          // re-fetch the real cart so the drawer keeps showing true state.
+          fetchCart();
+        }
+        cartBody.style.opacity = '';
+      })
+      .catch(() => { fetchCart(); cartBody.style.opacity = ''; });
   }
 
   function openCart() {
@@ -1530,11 +1625,44 @@
     if (cartOpenBtn) cartOpenBtn.focus({ preventScroll: true });
   }
 
-  if (cartOpenBtn) cartOpenBtn.addEventListener('click', openCart);
+  if (cartOpenBtn) {
+    cartOpenBtn.addEventListener('click', (e) => {
+      // The trigger is a real link to the cart page; JS upgrades it to the drawer.
+      e.preventDefault();
+      openCart();
+    });
+  }
   cartClosers.forEach((el) => el.addEventListener('click', closeCart));
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && cartDrawer && cartDrawer.getAttribute('data-open') === 'true') closeCart();
+  });
+
+  // Focus trap — both overlays declare aria-modal, so Tab must not escape
+  // into the page behind them. One shared handler covers whichever is open.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    let dialog = null;
+    if (cartDrawer && cartDrawer.getAttribute('data-open') === 'true') dialog = cartDrawer;
+    else if (takeover && takeover.getAttribute('data-open') === 'true') dialog = takeover;
+    if (!dialog) return;
+    const focusables = Array.prototype.filter.call(
+      dialog.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      (el) => el.offsetParent !== null
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey) {
+      if (active === first || !dialog.contains(active)) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else if (active === last || !dialog.contains(active)) {
+      e.preventDefault();
+      first.focus();
+    }
   });
 
   // Delegate qty + remove inside the drawer

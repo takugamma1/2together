@@ -53,7 +53,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<h1>Collections</h1>",
+                "text": "<h1>Е-МАГАЗИН</h1>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -104,7 +104,7 @@
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
+                "type_preset": "h6",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -127,7 +127,7 @@
               "name": "t:names.collection_card_image",
               "static": true,
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "square",
                 "toggle_overlay": false,
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
@@ -148,15 +148,15 @@
       "block_order": [
         "group_4FtiAg"
       ],
-      "name": "Collection list",
+      "name": "Категории",
       "settings": {
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "columns": 3,
+        "columns": 4,
         "mobile_columns": "2",
-        "columns_gap": 12,
+        "columns_gap": 16,
         "bento_gap": 8,
-        "rows_gap": 24,
+        "rows_gap": 32,
         "max_collections": 4,
         "icons_style": "arrow",
         "icons_shape": "none",
