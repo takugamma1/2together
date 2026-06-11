@@ -72,6 +72,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "SUNDAY CLUB",
+            "image": "shopify://shop_images/DSP06315-2.jpg",
             "descriptor": "Неделни групови карания",
             "number": "",
             "title": "SUNDAY CLUB",
@@ -94,7 +95,12 @@
         "show_search": true,
         "show_account": true,
         "menu": "main-menu",
-        "takeover_footer_text": ""
+        "takeover_footer_text": "",
+        "close_label": "Затвори",
+        "cart_title": "Количка",
+        "cart_subtotal_label": "Междинна сума",
+        "cart_checkout_label": "Към плащане",
+        "cart_view_label": "Виж цялата количка"
       }
     }
   },
