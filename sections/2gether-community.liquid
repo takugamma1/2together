@@ -28,7 +28,25 @@
       </div>
     </div>
 
-    {%- assign poll = section.settings.poll -%}
+    {%- liquid
+      comment
+        Use the poll picked in the editor; otherwise fall back to the first
+        ACTIVE destination_poll metaobject (the editor tends to reset the
+        picker value on save, so the section must work without it).
+      endcomment
+      assign poll = section.settings.poll
+      if poll == blank
+        assign tg_all_polls = metaobjects['destination_poll'].values
+        for tg_p in tg_all_polls
+          if poll == blank and tg_p.status.value == 'active'
+            assign poll = tg_p
+          endif
+        endfor
+        if poll == blank
+          assign poll = tg_all_polls | first
+        endif
+      endif
+    -%}
     {% if poll != blank %}
       {% comment %}
         '2gether-member' determines membership for the current customer
@@ -62,6 +80,7 @@
           <div class="tg-pool-header">
             <span class="tg-label">{{ section.settings.poll_label }}</span>
           </div>
+          {% if customer %}
           {% if poll.question.value != blank %}
             <p class="tg-pool-question" style="margin:0;font-family:'Technor',sans-serif;font-weight:600;font-size:16px;color:var(--tg-text-primary);">{{ poll.question.value }}</p>
           {% endif %}
@@ -109,6 +128,14 @@
               style="align-self:flex-start;font-size:12px;font-weight:600;color:var(--tg-flame);text-decoration:none;border-bottom:1px solid var(--tg-flame);padding-bottom:2px;"
             >{{ section.settings.member_cta_text }}</a>
           {% endif %}
+          {% else %}
+            <p class="tg-pool-guest" style="margin:0;font-size:13px;line-height:1.55;color:var(--tg-text-secondary);">{{ section.settings.guest_text }}</p>
+            <a
+              class="tg-pool-join"
+              href="{{ section.settings.member_cta_url | default: '/pages/sunday-club#tg-sc-join' }}"
+              style="align-self:flex-start;font-size:12px;font-weight:600;color:var(--tg-flame);text-decoration:none;border-bottom:1px solid var(--tg-flame);padding-bottom:2px;"
+            >{{ section.settings.member_cta_text }}</a>
+          {% endif %}
         </div>
       </div>
     {% endif %}
@@ -131,7 +158,7 @@
   {% endif %}
 </section>
 
-{% if section.settings.poll != blank %}
+{% if poll != blank and customer %}
   <script type="module" src="{{ '2gether-club.js' | asset_url }}" defer></script>
 {% endif %}
 
@@ -207,6 +234,12 @@
       "id": "member_cta_text",
       "label": "CTA за нечленове",
       "default": "Стани член, за да гласуваш →"
+    },
+    {
+      "type": "textarea",
+      "id": "guest_text",
+      "label": "Текст за нелогнати посетители",
+      "default": "Членовете на клуба гласуват къде караме всяка неделя. Влез в профила си или се запиши, за да участваш."
     },
     {
       "type": "text",
