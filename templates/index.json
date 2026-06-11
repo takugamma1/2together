@@ -191,30 +191,6 @@
           "settings": {
             "initials": "ТН"
           }
-        },
-        "poll_1": {
-          "type": "poll_option",
-          "settings": {
-            "destination": "ПЛАНИНСКИ МАРШРУТИ",
-            "percentage": 72,
-            "leading": true
-          }
-        },
-        "poll_2": {
-          "type": "poll_option",
-          "settings": {
-            "destination": "ШОСЕЙНО КОЛОЕЗДЕНЕ",
-            "percentage": 18,
-            "leading": false
-          }
-        },
-        "poll_3": {
-          "type": "poll_option",
-          "settings": {
-            "destination": "ГРАДКО КАРАНЕ",
-            "percentage": 10,
-            "leading": false
-          }
         }
       },
       "block_order": [
@@ -222,10 +198,7 @@
         "avatar_2",
         "avatar_3",
         "avatar_4",
-        "avatar_5",
-        "poll_1",
-        "poll_2",
-        "poll_3"
+        "avatar_5"
       ],
       "settings": {
         "background_image": "shopify://shop_images/DSP06311.jpg",
@@ -235,8 +208,11 @@
         "cta_text": "ЗАПИШИ СЕ В КЛУБА",
         "cta_link": "",
         "poll_label": "ГЛАСУВАЙ СЛЕДВАЩИЯ МАРШРУТ",
-        "extra_voters": "+47",
-        "voter_count": "52 участници",
+        "poll": "gid://shopify/Metaobject/467348455809",
+        "votes_text": "гласа",
+        "voters_text": "гласували",
+        "member_cta_text": "Стани член, за да гласуваш →",
+        "member_cta_url": "/pages/sunday-club#tg-sc-join",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
         "yt_views": "128K"

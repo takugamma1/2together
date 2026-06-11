@@ -1,4 +1,11 @@
-<section class="tg-community tg-section" id="community">
+<section
+  class="tg-community tg-section"
+  id="community"
+  data-club-section
+  data-msg-error="{{ section.settings.msg_error | escape }}"
+  data-msg-login="{{ section.settings.msg_login | escape }}"
+  data-msg-members="{{ section.settings.msg_members | escape }}"
+>
   <div class="tg-community-image">
     {% if section.settings.background_image != blank %}
       {{ section.settings.background_image | image_url: width: 1920 | image_tag: loading: 'lazy', sizes: '100vw' }}
@@ -21,39 +28,90 @@
       </div>
     </div>
 
-    <div class="tg-community-pool">
-      <div class="tg-community-pool-left"></div>
-      <div class="tg-community-pool-right">
-        <div class="tg-pool-header">
-          <span class="tg-label">{{ section.settings.poll_label }}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:var(--tg-s3);">
-          <div class="tg-pool-avatars">
-            {% for block in section.blocks %}
-              {% if block.type == 'avatar' %}
-                <div class="tg-pool-avatar" {{ block.shopify_attributes }}>{{ block.settings.initials }}</div>
-              {% endif %}
-            {% endfor %}
-            {% if section.settings.extra_voters != blank %}
-              <div class="tg-pool-avatar tg-pool-avatar--more">{{ section.settings.extra_voters }}</div>
-            {% endif %}
+    {%- assign poll = section.settings.poll -%}
+    {% if poll != blank %}
+      {% comment %}
+        '2gether-member' determines membership for the current customer
+        and echoes the boolean (render isolates assigns, so we capture).
+      {% endcomment %}
+      {%- capture tg_member_flag -%}{%- render '2gether-member' -%}{%- endcapture -%}
+      {%- liquid
+        assign tg_poll_closed = false
+        if poll.status.value == 'closed'
+          assign tg_poll_closed = true
+        endif
+
+        assign tg_can_vote = false
+        if tg_member_flag contains 'true' and tg_poll_closed == false
+          assign tg_can_vote = true
+        endif
+
+        assign tg_total_votes = 0
+        assign tg_max_votes = 0
+        for tg_opt in poll.options.value
+          assign tg_opt_votes = tg_opt.vote_count.value | default: 0
+          assign tg_total_votes = tg_total_votes | plus: tg_opt_votes
+          if tg_opt_votes > tg_max_votes
+            assign tg_max_votes = tg_opt_votes
+          endif
+        endfor
+      -%}
+      <div class="tg-community-pool">
+        <div class="tg-community-pool-left"></div>
+        <div class="tg-community-pool-right">
+          <div class="tg-pool-header">
+            <span class="tg-label">{{ section.settings.poll_label }}</span>
           </div>
-          <span class="tg-pool-count">{{ section.settings.voter_count }}</span>
-        </div>
-        <div class="tg-pool-options">
-          {% for block in section.blocks %}
-            {% if block.type == 'poll_option' %}
-              <div class="tg-pool-option{% if block.settings.leading %} leading{% endif %}" {{ block.shopify_attributes }}>
-                <div class="tg-pool-bar" style="width:{{ block.settings.percentage }}%;"></div>
+          {% if poll.question.value != blank %}
+            <p class="tg-pool-question" style="margin:0;font-family:'Technor',sans-serif;font-weight:600;font-size:16px;color:var(--tg-text-primary);">{{ poll.question.value }}</p>
+          {% endif %}
+          <div style="display:flex;align-items:center;gap:var(--tg-s3);">
+            <div class="tg-pool-avatars">
+              {% for block in section.blocks %}
+                {% if block.type == 'avatar' %}
+                  <div class="tg-pool-avatar" {{ block.shopify_attributes }}>{{ block.settings.initials }}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <span class="tg-pool-count">{{ tg_total_votes }} {{ section.settings.voters_text }}</span>
+          </div>
+          <div
+            class="tg-pool-options"
+            data-poll-id="{{ poll.system.id }}"
+            data-can-vote="{% if tg_can_vote %}true{% else %}false{% endif %}"
+          >
+            {% for tg_opt in poll.options.value %}
+              {%- liquid
+                assign tg_opt_votes = tg_opt.vote_count.value | default: 0
+                if tg_total_votes > 0
+                  assign tg_opt_pct = tg_opt_votes | times: 100.0 | divided_by: tg_total_votes | round
+                else
+                  assign tg_opt_pct = 0
+                endif
+              -%}
+              <div
+                class="tg-pool-option{% if tg_max_votes > 0 and tg_opt_votes == tg_max_votes %} leading{% endif %}"
+                data-option-id="{{ tg_opt.system.id }}"
+              >
+                <div class="tg-pool-bar" style="width:{{ tg_opt_pct }}%;"></div>
                 <div class="tg-pool-check"><div class="tg-pool-check-dot"></div></div>
-                <span class="tg-pool-destination">{{ block.settings.destination }}</span>
-                <span class="tg-pool-votes">{{ block.settings.percentage }}%</span>
+                <span class="tg-pool-destination">{{ tg_opt.label.value }}</span>
+                <span class="tg-pool-votes"><span data-votes>{{ tg_opt_votes }}</span> {{ section.settings.votes_text }}</span>
               </div>
-            {% endif %}
-          {% endfor %}
+            {% endfor %}
+          </div>
+          {% if tg_poll_closed %}
+            <span class="tg-pool-closed" style="align-self:flex-start;font-size:12px;font-weight:600;color:var(--tg-text-secondary);">{{ section.settings.closed_text }}</span>
+          {% elsif tg_can_vote == false %}
+            <a
+              class="tg-pool-join"
+              href="{{ section.settings.member_cta_url | default: '/pages/sunday-club#tg-sc-join' }}"
+              style="align-self:flex-start;font-size:12px;font-weight:600;color:var(--tg-flame);text-decoration:none;border-bottom:1px solid var(--tg-flame);padding-bottom:2px;"
+            >{{ section.settings.member_cta_text }}</a>
+          {% endif %}
         </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 
   {% if section.settings.youtube_url != blank %}
@@ -72,6 +130,10 @@
     </a>
   {% endif %}
 </section>
+
+{% if section.settings.poll != blank %}
+  <script type="module" src="{{ '2gether-club.js' | asset_url }}" defer></script>
+{% endif %}
 
 {% schema %}
 {
@@ -117,22 +179,64 @@
       "content": "Poll"
     },
     {
+      "type": "metaobject",
+      "id": "poll",
+      "metaobject_type": "destination_poll",
+      "label": "Анкета (метаобект)"
+    },
+    {
       "type": "text",
       "id": "poll_label",
-      "label": "Poll label",
-      "default": "Lorem ipsum dolor"
+      "label": "Заглавие на анкетата",
+      "default": "Гласувай за следващата дестинация"
     },
     {
       "type": "text",
-      "id": "extra_voters",
-      "label": "Extra voters badge",
-      "default": "+47"
+      "id": "votes_text",
+      "label": "Текст след броя гласове",
+      "default": "гласа"
     },
     {
       "type": "text",
-      "id": "voter_count",
-      "label": "Voter count text",
-      "default": "52 lorem ipsum"
+      "id": "voters_text",
+      "label": "Текст след общия брой гласували",
+      "default": "гласували"
+    },
+    {
+      "type": "text",
+      "id": "member_cta_text",
+      "label": "CTA за нечленове",
+      "default": "Стани член, за да гласуваш →"
+    },
+    {
+      "type": "text",
+      "id": "member_cta_url",
+      "label": "CTA линк за нечленове",
+      "default": "/pages/sunday-club#tg-sc-join"
+    },
+    {
+      "type": "text",
+      "id": "closed_text",
+      "label": "Текст при затворена анкета",
+      "default": "Гласуването е затворено"
+    },
+    {
+      "type": "text",
+      "id": "msg_error",
+      "label": "Съобщение: грешка",
+      "default": "Възникна грешка, опитайте отново"
+    },
+    {
+      "type": "text",
+      "id": "msg_login",
+      "label": "Съобщение: нужен е вход",
+      "default": "Влезте, за да гласувате"
+    },
+    {
+      "type": "text",
+      "id": "msg_members",
+      "label": "Съобщение: само за членове",
+      "default": "Само за членове"
     },
     {
       "type": "header",
@@ -169,34 +273,6 @@
           "default": "АБ"
         }
       ]
-    },
-    {
-      "type": "poll_option",
-      "name": "Poll Option",
-      "limit": 5,
-      "settings": [
-        {
-          "type": "text",
-          "id": "destination",
-          "label": "Destination name",
-          "default": "Lorem Ipsum Dolor"
-        },
-        {
-          "type": "range",
-          "id": "percentage",
-          "label": "Percentage",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "default": 50
-        },
-        {
-          "type": "checkbox",
-          "id": "leading",
-          "label": "Leading option",
-          "default": false
-        }
-      ]
     }
   ],
   "presets": [
@@ -207,10 +283,7 @@
         { "type": "avatar", "settings": { "initials": "МД" } },
         { "type": "avatar", "settings": { "initials": "ИП" } },
         { "type": "avatar", "settings": { "initials": "АС" } },
-        { "type": "avatar", "settings": { "initials": "ТН" } },
-        { "type": "poll_option", "settings": { "destination": "Lorem Ipsum Dolor", "percentage": 72, "leading": true } },
-        { "type": "poll_option", "settings": { "destination": "Consectetur Adipiscing", "percentage": 18, "leading": false } },
-        { "type": "poll_option", "settings": { "destination": "Sed Eiusmod Tempor", "percentage": 10, "leading": false } }
+        { "type": "avatar", "settings": { "initials": "ТН" } }
       ]
     }
   ]

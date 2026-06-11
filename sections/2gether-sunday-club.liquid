@@ -1,0 +1,688 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-sunday-club.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+<script type="module" src="{{ '2gether-club.js' | asset_url }}" defer></script>
+
+<script>document.body.classList.add('tg-sc-active');</script>
+
+{%- capture tg_member_flag -%}{%- render '2gether-member' -%}{%- endcapture -%}
+{%- liquid
+  assign tg_is_member = false
+  if tg_member_flag contains 'true'
+    assign tg_is_member = true
+  endif
+
+  assign benefit_count = 0
+  assign photo_count = 0
+  for block in section.blocks
+    case block.type
+      when 'benefit'
+        assign benefit_count = benefit_count | plus: 1
+      when 'photo'
+        assign photo_count = photo_count | plus: 1
+    endcase
+  endfor
+
+  assign today = 'now' | date: '%Y-%m-%d'
+  assign rides = metaobjects['sunday_ride'].values
+  assign ride_count = rides | size
+
+  comment
+    Liquid sort by date: build "YYYY-MM-DD::handle" keys, string-sort them
+    (ISO dates sort chronologically), then look each ride up by handle.
+    Avoids sort-filter errors on metaobject field drops. A client-side
+    re-sort below covers anything this misses (and CDN-cached HTML).
+  endcomment
+  assign ride_keys = ''
+  for ride in rides
+    assign ride_key = ride.date.value | date: '%Y-%m-%d' | append: '::' | append: ride.system.handle
+    assign ride_keys = ride_keys | append: ride_key
+    unless forloop.last
+      assign ride_keys = ride_keys | append: ','
+    endunless
+  endfor
+  assign sorted_ride_keys = ride_keys | split: ',' | sort
+
+  assign tg_months = 'ЯНУ,ФЕВ,МАР,АПР,МАЙ,ЮНИ,ЮЛИ,АВГ,СЕП,ОКТ,НОЕ,ДЕК' | split: ','
+  assign tg_weekdays = 'НЕД,ПОН,ВТО,СРЯ,ЧЕТ,ПЕТ,СЪБ' | split: ','
+-%}
+
+<section
+  class="tg-sc tg-sc-page"
+  data-club-section
+  data-logged-in="{% if customer %}true{% else %}false{% endif %}"
+  data-msg-full="{{ section.settings.msg_full | escape }}"
+  data-msg-error="{{ section.settings.msg_error | escape }}"
+  data-msg-login="{{ section.settings.msg_login | escape }}"
+  data-msg-members="{{ section.settings.msg_members | escape }}"
+>
+
+  <!-- ═══ HERO ═══ -->
+  <div class="tg-sc-hero">
+    <div class="tg-sc-hero-media">
+      {% if section.settings.hero_image != blank %}
+        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'eager', sizes: '100vw', class: 'tg-sc-hero-img' }}
+      {% else %}
+        <div class="tg-sc-hero-placeholder" aria-hidden="true"></div>
+      {% endif %}
+      <div class="tg-sc-hero-grain" aria-hidden="true"></div>
+      <div class="tg-sc-hero-veil"></div>
+    </div>
+
+    <div class="tg-sc-hero-inner">
+      <div class="tg-sc-hero-stack">
+        <span class="tg-sc-since">{{ section.settings.since }}</span>
+        <h1 class="tg-sc-hero-title">
+          {{ section.settings.hero_title }}<br>
+          <em>{{ section.settings.hero_title_em }}</em>
+        </h1>
+        <p class="tg-sc-hero-sub">{{ section.settings.hero_sub }}</p>
+
+        <div class="tg-sc-hero-actions">
+          <a href="#tg-sc-join" class="tg-sc-hero-cta">
+            {{ section.settings.hero_cta }}
+            <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+          </a>
+          <a href="#tg-sc-events" class="tg-sc-hero-secondary">
+            {{ section.settings.hero_secondary }}
+          </a>
+        </div>
+      </div>
+
+      <div class="tg-sc-hero-meta">
+        <div class="tg-sc-meta-item">
+          <strong>{{ section.settings.meta_1_value }}</strong>
+          <span>{{ section.settings.meta_1_label }}</span>
+        </div>
+        <div class="tg-sc-meta-item">
+          <strong>{{ section.settings.meta_2_value }}</strong>
+          <span>{{ section.settings.meta_2_label }}</span>
+        </div>
+        <div class="tg-sc-meta-item">
+          <strong>{{ section.settings.meta_3_value }}</strong>
+          <span>{{ section.settings.meta_3_label }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RIDES (sunday_ride metaobjects) ═══ -->
+  <div id="tg-sc-events" class="tg-sc-events">
+    <header class="tg-sc-section-head">
+      <span class="tg-eyebrow">{{ section.settings.events_eyebrow }}</span>
+      <h2 class="tg-sc-section-title">{{ section.settings.events_title }}</h2>
+      {% if section.settings.events_intro != blank %}
+        <p class="tg-sc-section-intro">{{ section.settings.events_intro }}</p>
+      {% endif %}
+    </header>
+
+    {% if ride_count > 0 %}
+      <div class="tg-sc-events-list" data-tg-sc-events>
+        {% for key in sorted_ride_keys %}
+          {%- assign target_handle = key | split: '::' | last -%}
+          {% for ride in rides %}
+            {% if ride.system.handle == target_handle %}
+              {%- liquid
+                assign ride_date = ride.date.value | date: '%Y-%m-%d'
+                assign is_past = false
+                if ride_date != blank and ride_date < today
+                  assign is_past = true
+                endif
+                assign ride_capacity = ride.capacity.value | default: 0
+                assign ride_going = ride.going_count.value | default: 0
+                assign ride_diff = ride.difficulty.value | default: 'medium'
+                case ride_diff
+                  when 'easy'
+                    assign diff_label = section.settings.diff_easy
+                  when 'hard'
+                    assign diff_label = section.settings.diff_hard
+                  else
+                    assign diff_label = section.settings.diff_medium
+                endcase
+                assign month_idx = ride.date.value | date: '%m' | times: 1 | minus: 1
+                assign weekday_idx = ride.date.value | date: '%w' | times: 1
+              -%}
+              <article
+                class="tg-sc-event{% if is_past %} is-past{% endif %}"
+                data-ride-id="{{ ride.system.id }}"
+                data-ride-date="{{ ride_date }}"
+                data-capacity="{{ ride_capacity }}"
+              >
+                <!-- Date stamp -->
+                <div class="tg-sc-event-date" aria-hidden="true">
+                  {% if ride_date != blank %}
+                    <span class="tg-sc-event-month">{{ tg_months[month_idx] }}</span>
+                    <strong class="tg-sc-event-day">{{ ride.date.value | date: '%d' }}</strong>
+                    <span class="tg-sc-event-weekday">{{ tg_weekdays[weekday_idx] }}</span>
+                  {% else %}
+                    <strong class="tg-sc-event-day">—</strong>
+                  {% endif %}
+                </div>
+
+                <!-- Body -->
+                <div class="tg-sc-event-body">
+                  <div class="tg-sc-event-meta">
+                    <span class="tg-sc-event-level tg-sc-level--{{ ride_diff }}">{{ diff_label }}</span>
+                    {% if ride.distance.value != blank %}
+                      <span class="tg-sc-event-distance">{{ ride.distance.value }}</span>
+                    {% endif %}
+                    {% if ride.start_time.value != blank %}
+                      <span class="tg-sc-event-time">{{ section.settings.start_label }} {{ ride.start_time.value }}</span>
+                    {% endif %}
+                  </div>
+                  <h3 class="tg-sc-event-title">{{ ride.title.value }}</h3>
+                  {% if ride.location.value != blank %}
+                    <p class="tg-sc-event-loc">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 7 8 12 8 12s8-5 8-12a8 8 0 0 0-8-8z"/></svg>
+                      <span>{{ ride.location.value }}</span>
+                    </p>
+                  {% endif %}
+
+                  {% if is_past %}
+                    <div class="tg-sc-past">
+                      <span class="tg-sc-past-label">{{ section.settings.past_label }}</span>
+                    </div>
+                  {% else %}
+                    <!-- RSVP — buttons start disabled; 2gether-club.js hydrates + enables -->
+                    <div class="tg-sc-rsvp" data-rsvp>
+                      <button type="button" class="tg-sc-rsvp-btn" data-status="going" aria-pressed="false" disabled>{{ section.settings.rsvp_going_label }}</button>
+                      <button type="button" class="tg-sc-rsvp-btn" data-status="not_going" aria-pressed="false" disabled>{{ section.settings.rsvp_not_going_label }}</button>
+                      <span class="tg-sc-count-wrap">
+                        <span class="tg-sc-count" data-count>{{ ride.going_count.value | default: 0 }}</span>
+                        {{ section.settings.count_label }}
+                        {%- if ride_capacity > 0 %}
+                          <span class="tg-sc-capacity">{{ section.settings.capacity_label | replace: '[N]', ride_capacity }}</span>
+                        {%- endif %}
+                      </span>
+                      {% unless customer %}
+                        <a class="tg-sc-login" data-login-cta href="{{ routes.account_login_url }}">{{ section.settings.login_cta_label }}</a>
+                      {% endunless %}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <!-- Aside: more info + optional route link -->
+                <div class="tg-sc-event-aside">
+                  <button type="button" class="tg-sc-more" data-dialog-open="tg-sc-dialog-{{ ride.system.handle }}">
+                    {{ section.settings.more_label }}
+                    <svg width="12" height="9" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+                  </button>
+                  {% if ride.route_link.value != blank %}
+                    <a href="{{ ride.route_link.value }}" class="tg-sc-event-route" target="_blank" rel="noopener">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 7 8 12 8 12s8-5 8-12a8 8 0 0 0-8-8z"/></svg>
+                      <span>{{ section.settings.route_label }}</span>
+                    </a>
+                  {% endif %}
+                </div>
+              </article>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+
+      <!-- Per-ride detail dialogs (native <dialog>, Esc closes natively) -->
+      {% for ride in rides %}
+        {%- liquid
+          assign ride_capacity = ride.capacity.value | default: 0
+          assign ride_going = ride.going_count.value | default: 0
+          assign ride_diff = ride.difficulty.value | default: 'medium'
+          case ride_diff
+            when 'easy'
+              assign diff_label = section.settings.diff_easy
+            when 'hard'
+              assign diff_label = section.settings.diff_hard
+            else
+              assign diff_label = section.settings.diff_medium
+          endcase
+        -%}
+        <dialog
+          class="tg-sc-dialog"
+          id="tg-sc-dialog-{{ ride.system.handle }}"
+          aria-labelledby="tg-sc-dialog-title-{{ ride.system.handle }}"
+        >
+          <button
+            type="button"
+            class="tg-sc-dialog-close"
+            data-dialog-close
+            aria-label="{{ section.settings.dialog_close_label | escape }}"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+
+          <div class="tg-sc-dialog-media{% unless ride.photo.value %} tg-sc-dialog-media--empty{% endunless %}">
+            {% if ride.photo.value %}
+              {{ ride.photo.value | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 640px', class: 'tg-sc-dialog-img', alt: ride.title.value }}
+            {% endif %}
+          </div>
+
+          <div class="tg-sc-dialog-body">
+            <div class="tg-sc-event-meta">
+              <span class="tg-sc-event-level tg-sc-level--{{ ride_diff }}">{{ diff_label }}</span>
+              {% if ride.distance.value != blank %}
+                <span class="tg-sc-event-distance">{{ ride.distance.value }}</span>
+              {% endif %}
+              {% if ride.date.value != blank %}
+                <span class="tg-sc-event-time">{{ ride.date.value | date: '%d.%m.%Y' }}</span>
+              {% endif %}
+            </div>
+
+            <h3 class="tg-sc-dialog-title" id="tg-sc-dialog-title-{{ ride.system.handle }}">{{ ride.title.value }}</h3>
+
+            {% if ride.description.value != blank %}
+              <p class="tg-sc-dialog-desc">{{ ride.description.value | newline_to_br }}</p>
+            {% endif %}
+
+            <dl class="tg-sc-dialog-facts">
+              {% if ride.location.value != blank %}
+                <div>
+                  <dt>{{ section.settings.dialog_location_label }}</dt>
+                  <dd>
+                    {{ ride.location.value }}
+                    {% if ride.location_url.value != blank %}
+                      <a class="tg-sc-map-link" href="{{ ride.location_url.value }}" target="_blank" rel="noopener">{{ section.settings.dialog_map_label }} ↗</a>
+                    {% endif %}
+                  </dd>
+                </div>
+              {% endif %}
+              {% if ride.distance.value != blank %}
+                <div>
+                  <dt>{{ section.settings.dialog_distance_label }}</dt>
+                  <dd>{{ ride.distance.value }}</dd>
+                </div>
+              {% endif %}
+              {% if ride.start_time.value != blank %}
+                <div>
+                  <dt>{{ section.settings.dialog_start_label }}</dt>
+                  <dd>{{ ride.start_time.value }}</dd>
+                </div>
+              {% endif %}
+              <div>
+                <dt>{{ section.settings.dialog_count_label }}</dt>
+                <dd>
+                  {{ ride_going }} {{ section.settings.count_label }}
+                  {%- if ride_capacity > 0 %}
+                    {{ section.settings.capacity_label | replace: '[N]', ride_capacity }}
+                  {%- endif %}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </dialog>
+      {% endfor %}
+    {% else %}
+      <div class="tg-sc-events-empty">
+        <p>{{ section.settings.events_empty }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- ═══ BENEFITS ═══ -->
+  {% if benefit_count > 0 %}
+    <div class="tg-sc-benefits">
+      <header class="tg-sc-section-head">
+        <span class="tg-eyebrow">{{ section.settings.benefits_eyebrow }}</span>
+        <h2 class="tg-sc-section-title">{{ section.settings.benefits_title }}</h2>
+      </header>
+
+      <div class="tg-sc-benefits-grid">
+        {% assign benefit_i = 0 %}
+        {% for block in section.blocks %}
+          {% if block.type == 'benefit' %}
+            {% assign benefit_i = benefit_i | plus: 1 %}
+            <article class="tg-sc-benefit" {{ block.shopify_attributes }}>
+              <span class="tg-sc-benefit-num">{{ benefit_i | prepend: '0' | slice: -2, 2 }}</span>
+              <h3 class="tg-sc-benefit-title">{{ block.settings.title }}</h3>
+              {% if block.settings.text != blank %}
+                <p class="tg-sc-benefit-text">{{ block.settings.text }}</p>
+              {% endif %}
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- ═══ PHOTO STRIP ═══ -->
+  {% if photo_count > 0 %}
+    <div class="tg-sc-photos">
+      <header class="tg-sc-section-head">
+        <span class="tg-eyebrow">{{ section.settings.photos_eyebrow }}</span>
+        <h2 class="tg-sc-section-title">{{ section.settings.photos_title }}</h2>
+      </header>
+
+      <div class="tg-sc-photos-strip" data-tg-sc-strip>
+        {% for block in section.blocks %}
+          {% if block.type == 'photo' %}
+            <figure class="tg-sc-photo" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 80vw, 30vw', alt: block.settings.caption | default: 'Sunday ride' }}
+              {% else %}
+                <div class="tg-sc-photo-placeholder" aria-hidden="true"></div>
+              {% endif %}
+              {% if block.settings.caption != blank %}
+                <figcaption>{{ block.settings.caption }}</figcaption>
+              {% endif %}
+            </figure>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- ═══ JOIN ═══ -->
+  <div class="tg-sc-join">
+    <div class="tg-sc-join-grid">
+      <aside class="tg-sc-join-aside">
+        <span class="tg-eyebrow">{{ section.settings.join_eyebrow }}</span>
+        <h2 class="tg-sc-join-title">{{ section.settings.join_title }}</h2>
+        <p class="tg-sc-join-text">{{ section.settings.join_text }}</p>
+
+        <ul class="tg-sc-join-bullets">
+          <li><span>01</span><span>{{ section.settings.bullet_1 }}</span></li>
+          <li><span>02</span><span>{{ section.settings.bullet_2 }}</span></li>
+          <li><span>03</span><span>{{ section.settings.bullet_3 }}</span></li>
+          <li><span>04</span><span>{{ section.settings.bullet_4 }}</span></li>
+        </ul>
+      </aside>
+
+      <div class="tg-sc-join-form-wrap" id="tg-sc-join">
+        {% if tg_is_member %}
+          <!-- Member card replaces the form -->
+          <div class="tg-sc-member-card">
+            <h3 class="tg-sc-member-title">{{ section.settings.member_title }}</h3>
+            <p class="tg-sc-member-text">{{ section.settings.member_text }}</p>
+          </div>
+        {% else %}
+          {% unless customer %}
+            <div class="tg-sc-login-hint">
+              <p>
+                {{ section.settings.login_hint }} —
+                <a href="{{ routes.account_login_url }}">{{ section.settings.login_hint_link }}</a>
+              </p>
+            </div>
+          {% endunless %}
+
+          {%- form 'contact', id: 'tg-sc-form', class: 'tg-sc-form' -%}
+            <input type="hidden" name="contact[type]" value="Заявка за членство в Sunday Club">
+
+            {% if form.posted_successfully? %}
+              <div class="tg-sc-form-ok">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                {{ section.settings.form_success }}
+              </div>
+            {% endif %}
+
+            {% if form.errors %}
+              <div class="tg-sc-form-error">{{ form.errors | default_errors }}</div>
+            {% endif %}
+
+            <div class="tg-sc-form-grid">
+              <label class="tg-sc-field">
+                <span class="tg-sc-field-label">{{ section.settings.label_name }}</span>
+                <input type="text" name="contact[name]" {% if customer %}value="{{ customer.name | escape }}"{% endif %} required>
+              </label>
+              <label class="tg-sc-field">
+                <span class="tg-sc-field-label">{{ section.settings.label_phone }}</span>
+                <input type="tel" name="contact[phone]" required>
+              </label>
+              <label class="tg-sc-field tg-sc-field--full">
+                <span class="tg-sc-field-label">{{ section.settings.label_email }}</span>
+                <input type="email" name="contact[email]" {% if customer %}value="{{ customer.email | escape }}"{% endif %} required>
+              </label>
+              <label class="tg-sc-field">
+                <span class="tg-sc-field-label">{{ section.settings.label_level }}</span>
+                <select name="contact[ниво]" required>
+                  <option value="" disabled selected>{{ section.settings.level_placeholder }}</option>
+                  <option value="{{ section.settings.level_1 | escape }}">{{ section.settings.level_1 }}</option>
+                  <option value="{{ section.settings.level_2 | escape }}">{{ section.settings.level_2 }}</option>
+                  <option value="{{ section.settings.level_3 | escape }}">{{ section.settings.level_3 }}</option>
+                  <option value="{{ section.settings.level_4 | escape }}">{{ section.settings.level_4 }}</option>
+                </select>
+              </label>
+              <label class="tg-sc-field">
+                <span class="tg-sc-field-label">{{ section.settings.label_bike }}</span>
+                <input type="text" name="contact[велосипед]" placeholder="{{ section.settings.bike_placeholder | escape }}" required>
+              </label>
+              <label class="tg-sc-field tg-sc-field--full">
+                <span class="tg-sc-field-label">{{ section.settings.label_strava }}</span>
+                <input type="text" name="contact[Strava профил]" placeholder="{{ section.settings.strava_placeholder | escape }}">
+              </label>
+              <label class="tg-sc-field tg-sc-field--full">
+                <span class="tg-sc-field-label">{{ section.settings.label_notes }}</span>
+                <textarea name="contact[бележки]" rows="3" placeholder="{{ section.settings.notes_placeholder | escape }}"></textarea>
+              </label>
+
+              <label class="tg-sc-checkbox tg-sc-field--full">
+                <input type="checkbox" name="contact[съгласие]" required>
+                <span class="tg-sc-checkbox-box"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="tg-sc-checkbox-text">{{ section.settings.consent_label }}</span>
+              </label>
+            </div>
+
+            <button type="submit" class="tg-sc-form-submit">
+              {{ section.settings.form_submit }}
+              <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+            </button>
+
+            <p class="tg-sc-form-note">{{ section.settings.form_note }}</p>
+          {%- endform -%}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CLOSER (quote) ═══ -->
+  {% if section.settings.quote != blank %}
+    <div class="tg-sc-quote">
+      <blockquote class="tg-sc-quote-text">
+        <span class="tg-sc-quote-mark" aria-hidden="true">"</span>
+        {{ section.settings.quote }}
+      </blockquote>
+      {% if section.settings.quote_author != blank %}
+        <cite class="tg-sc-quote-cite">
+          <span>{{ section.settings.quote_author }}</span>
+          {% if section.settings.quote_role != blank %}
+            <small>{{ section.settings.quote_role }}</small>
+          {% endif %}
+        </cite>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+
+<script>
+  // Self-contained UI glue: client-side re-sort of ride cards + past re-check
+  // (covers unsortable metaobject drops and CDN-cached HTML), plus native
+  // <dialog> open/close wiring. RSVP/network logic lives in 2gether-club.js.
+  (function () {
+    var list = document.querySelector('[data-tg-sc-events]');
+    if (list) {
+      var cards = Array.prototype.slice.call(list.querySelectorAll('.tg-sc-event[data-ride-date]'));
+
+      // Sort by data-ride-date ascending (ISO strings sort chronologically).
+      if (cards.length > 1) {
+        cards
+          .slice()
+          .sort(function (a, b) {
+            var da = a.getAttribute('data-ride-date') || '';
+            var db = b.getAttribute('data-ride-date') || '';
+            if (da < db) return -1;
+            if (da > db) return 1;
+            return 0;
+          })
+          .forEach(function (card) { list.appendChild(card); });
+      }
+
+      // Re-apply is-past based on the visitor's clock.
+      var now = new Date();
+      var todayIso = now.getFullYear() + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2);
+      cards.forEach(function (card) {
+        var d = card.getAttribute('data-ride-date');
+        if (d && d < todayIso) card.classList.add('is-past');
+      });
+    }
+
+    // Dialog open/close (Esc handled natively by <dialog>).
+    document.addEventListener('click', function (e) {
+      if (!(e.target instanceof Element)) return;
+
+      var opener = e.target.closest('[data-dialog-open]');
+      if (opener) {
+        var dlg = document.getElementById(opener.getAttribute('data-dialog-open'));
+        if (dlg) {
+          if (typeof dlg.showModal === 'function') dlg.showModal();
+          else dlg.setAttribute('open', '');
+        }
+        return;
+      }
+
+      var closer = e.target.closest('[data-dialog-close]');
+      if (closer) {
+        var openDlg = closer.closest('dialog');
+        if (openDlg) {
+          if (typeof openDlg.close === 'function') openDlg.close();
+          else openDlg.removeAttribute('open');
+        }
+        return;
+      }
+
+      // Click on the backdrop (outside the dialog box) closes it.
+      if (e.target.matches('dialog.tg-sc-dialog[open]')) {
+        var rect = e.target.getBoundingClientRect();
+        var inside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+        if (!inside && typeof e.target.close === 'function') e.target.close();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sunday Club",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Герой (hero)" },
+    { "type": "image_picker", "id": "hero_image", "label": "Снимка" },
+    { "type": "text", "id": "since", "label": "Етикет „от …“", "default": "От 2019" },
+    { "type": "text", "id": "hero_title", "label": "Заглавие", "default": "SUNDAY" },
+    { "type": "text", "id": "hero_title_em", "label": "Заглавие (курсивен ред)", "default": "club." },
+    { "type": "textarea", "id": "hero_sub", "label": "Подзаглавие", "default": "Свободна група колоездачи, които се събират пред магазина всяка неделя сутрин. Без такса, без формалности, без нужда от скъп велосипед. Просто елате." },
+    { "type": "text", "id": "hero_cta", "label": "Основен бутон", "default": "Включи се в клуба" },
+    { "type": "text", "id": "hero_secondary", "label": "Втори бутон", "default": "Виж следващото каране" },
+    { "type": "header", "content": "Статистики (3 броя)" },
+    { "type": "text", "id": "meta_1_value", "label": "Стойност 1", "default": "85+" },
+    { "type": "text", "id": "meta_1_label", "label": "Етикет 1", "default": "Недели навън" },
+    { "type": "text", "id": "meta_2_value", "label": "Стойност 2", "default": "120" },
+    { "type": "text", "id": "meta_2_label", "label": "Етикет 2", "default": "Активни членове" },
+    { "type": "text", "id": "meta_3_value", "label": "Стойност 3", "default": "12" },
+    { "type": "text", "id": "meta_3_label", "label": "Етикет 3", "default": "Маршрути в ротация" },
+    { "type": "header", "content": "Карания (от metaobjects)" },
+    { "type": "text", "id": "events_eyebrow", "label": "Надзаглавие", "default": "В календара" },
+    { "type": "text", "id": "events_title", "label": "Заглавие", "default": "СЛЕДВАЩИТЕ НЕДЕЛИ" },
+    { "type": "textarea", "id": "events_intro", "label": "Уводен текст", "default": "Натиснете „Идвам“, за да се запишете. Ден преди карането изпращаме имейл с маршрута и часа на тръгване." },
+    { "type": "textarea", "id": "events_empty", "label": "Текст при липса на карания", "default": "Скоро обявяваме следващите карания. Запишете се по-долу, за да получите известие." },
+    { "type": "text", "id": "start_label", "label": "Етикет за начален час", "default": "Старт" },
+    { "type": "text", "id": "past_label", "label": "Етикет за минало каране", "default": "Минало" },
+    { "type": "text", "id": "more_label", "label": "Бутон за повече информация", "default": "Повече инфо" },
+    { "type": "text", "id": "route_label", "label": "Етикет за маршрут", "default": "Маршрут" },
+    { "type": "text", "id": "diff_easy", "label": "Трудност: лесно", "default": "Лесно" },
+    { "type": "text", "id": "diff_medium", "label": "Трудност: средно", "default": "Средно" },
+    { "type": "text", "id": "diff_hard", "label": "Трудност: трудно", "default": "Трудно" },
+    { "type": "header", "content": "RSVP" },
+    { "type": "text", "id": "rsvp_going_label", "label": "Бутон „идвам“", "default": "Идвам" },
+    { "type": "text", "id": "rsvp_not_going_label", "label": "Бутон „няма да дойда“", "default": "Няма да дойда" },
+    { "type": "text", "id": "count_label", "label": "Дума след броя записани", "default": "записани" },
+    { "type": "text", "id": "capacity_label", "label": "Капацитет ([N] = брой места)", "default": "от [N] места" },
+    { "type": "text", "id": "login_cta_label", "label": "Линк за вход (в картата)", "default": "Влезте, за да се запишете" },
+    { "type": "text", "id": "msg_full", "label": "Съобщение: запълнени места", "default": "Местата са запълнени" },
+    { "type": "text", "id": "msg_error", "label": "Съобщение: грешка", "default": "Възникна грешка, опитайте отново" },
+    { "type": "text", "id": "msg_login", "label": "Съобщение: нужен е вход", "default": "Влезте, за да се запишете" },
+    { "type": "text", "id": "msg_members", "label": "Съобщение: само за членове", "default": "Само за членове" },
+    { "type": "header", "content": "Диалог „Повече инфо“" },
+    { "type": "text", "id": "dialog_location_label", "label": "Етикет: място", "default": "Място" },
+    { "type": "text", "id": "dialog_map_label", "label": "Линк към картата", "default": "Виж картата" },
+    { "type": "text", "id": "dialog_distance_label", "label": "Етикет: разстояние", "default": "Разстояние" },
+    { "type": "text", "id": "dialog_start_label", "label": "Етикет: начален час", "default": "Начален час" },
+    { "type": "text", "id": "dialog_count_label", "label": "Етикет: записани", "default": "Записани" },
+    { "type": "text", "id": "dialog_close_label", "label": "Бутон затваряне (aria)", "default": "Затвори" },
+    { "type": "header", "content": "Предимства" },
+    { "type": "text", "id": "benefits_eyebrow", "label": "Надзаглавие", "default": "Защо да се включите" },
+    { "type": "text", "id": "benefits_title", "label": "Заглавие", "default": "КАКВО ПОЛУЧАВАТЕ" },
+    { "type": "header", "content": "Снимки" },
+    { "type": "text", "id": "photos_eyebrow", "label": "Надзаглавие", "default": "Лентата" },
+    { "type": "text", "id": "photos_title", "label": "Заглавие", "default": "ЕДНА ГОДИНА НЕДЕЛИ" },
+    { "type": "header", "content": "Форма за членство" },
+    { "type": "text", "id": "join_eyebrow", "label": "Надзаглавие", "default": "Станете член" },
+    { "type": "text", "id": "join_title", "label": "Заглавие", "default": "ВЛЕЗ В ОТБОРА" },
+    { "type": "textarea", "id": "join_text", "label": "Текст", "default": "Попълнете формата по-долу. Одобряваме членовете ръчно — обикновено до няколко дни. Щом сте вътре, получавате членски цени в магазина и напомняне ден преди всяко каране." },
+    { "type": "text", "id": "bullet_1", "label": "Точка 1", "default": "Членски отстъпки за части и наеми" },
+    { "type": "text", "id": "bullet_2", "label": "Точка 2", "default": "Напомняне ден преди всяка неделя" },
+    { "type": "text", "id": "bullet_3", "label": "Точка 3", "default": "Гласуване за следващия маршрут" },
+    { "type": "text", "id": "bullet_4", "label": "Точка 4", "default": "Предимство за груповите пътувания" },
+    { "type": "text", "id": "member_title", "label": "Заглавие за членове", "default": "Вие сте член на Sunday Club ✓" },
+    { "type": "textarea", "id": "member_text", "label": "Текст за членове", "default": "Записвайте се за каранията направо от календара по-горе. Ще ви пишем ден преди всяко каране." },
+    { "type": "text", "id": "login_hint", "label": "Подсказка преди формата (за гости)", "default": "Първо влезте с имейла си, после изпратете заявката" },
+    { "type": "text", "id": "login_hint_link", "label": "Текст на линка за вход", "default": "Вход" },
+    { "type": "text", "id": "label_name", "label": "Поле: име", "default": "Име" },
+    { "type": "text", "id": "label_phone", "label": "Поле: телефон", "default": "Телефон" },
+    { "type": "text", "id": "label_email", "label": "Поле: имейл", "default": "Имейл" },
+    { "type": "text", "id": "label_level", "label": "Поле: ниво", "default": "Ниво на каране" },
+    { "type": "text", "id": "level_placeholder", "label": "Ниво: placeholder", "default": "Изберете" },
+    { "type": "text", "id": "level_1", "label": "Ниво 1", "default": "Първо каране / начинаещ" },
+    { "type": "text", "id": "level_2", "label": "Ниво 2", "default": "Карам за удоволствие" },
+    { "type": "text", "id": "level_3", "label": "Ниво 3", "default": "Опитен" },
+    { "type": "text", "id": "level_4", "label": "Ниво 4", "default": "Състезания / клуб" },
+    { "type": "text", "id": "label_bike", "label": "Поле: велосипед", "default": "Вашият велосипед" },
+    { "type": "text", "id": "bike_placeholder", "label": "Велосипед: placeholder", "default": "Марка / тип" },
+    { "type": "text", "id": "label_strava", "label": "Поле: Strava", "default": "Strava профил" },
+    { "type": "text", "id": "strava_placeholder", "label": "Strava: placeholder", "default": "Strava URL" },
+    { "type": "text", "id": "label_notes", "label": "Поле: бележки", "default": "Нещо друго?" },
+    { "type": "textarea", "id": "notes_placeholder", "label": "Бележки: placeholder", "default": "Как научихте за нас? Има ли нещо, което трябва да знаем?" },
+    { "type": "textarea", "id": "consent_label", "label": "Текст на съгласието", "default": "Разбирам, че неделните карания се провеждат при всякакво време и карам на собствена отговорност." },
+    { "type": "text", "id": "form_submit", "label": "Бутон за изпращане", "default": "Изпрати заявка" },
+    { "type": "textarea", "id": "form_note", "label": "Бележка под формата", "default": "Одобряваме членовете ръчно. Обикновено до 48 часа." },
+    { "type": "textarea", "id": "form_success", "label": "Съобщение при успех", "default": "Заявката е приета. Ще ви пишем на имейл, щом я одобрим — преди следващото неделно каране." },
+    { "type": "header", "content": "Завършващ цитат" },
+    { "type": "textarea", "id": "quote", "label": "Цитат", "default": "Колоезденето е най-близкото до летене, без да напускаш земята. Добави прах и изгрев — това правим всяка неделя." },
+    { "type": "text", "id": "quote_author", "label": "Автор", "default": "Sunday Club" },
+    { "type": "text", "id": "quote_role", "label": "Роля", "default": "Варна · от 2019" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Предимство",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Заглавие", "default": "Членска отстъпка" },
+        { "type": "textarea", "id": "text", "label": "Текст", "default": "10% отстъпка за части и наеми целогодишно. Комбинира се с намаления." }
+      ]
+    },
+    {
+      "type": "photo",
+      "name": "Снимка",
+      "limit": 12,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Снимка" },
+        { "type": "text", "id": "caption", "label": "Надпис" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sunday Club",
+      "category": "Custom",
+      "blocks": [
+        { "type": "benefit", "settings": { "title": "Членска отстъпка", "text": "10% отстъпка за части и наеми целогодишно. Комбинира се с намаления." } },
+        { "type": "benefit", "settings": { "title": "Напомняне", "text": "Имейл ден преди всяко неделно каране с маршрута и часа на тръгване." } },
+        { "type": "benefit", "settings": { "title": "Гласуване за маршрут", "text": "Веднъж месечно членовете гласуват за следващата дестинация. Мнозинството решава." } },
+        { "type": "benefit", "settings": { "title": "Групови пътувания", "text": "Предимство при записване за груповите пътувания и уикендите извън града." } }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["page"]
+  }
+}
+{% endschema %}

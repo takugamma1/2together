@@ -1,0 +1,23 @@
+{%- comment -%}
+  2gether-member — sets tg_is_member (boolean).
+  True when the logged-in customer has the exact tag "member"
+  (case-insensitive). False when not logged in. Must stay in sync with
+  the membership check in worker/src/index.js (exact tag match).
+
+  Because {% render %} isolates variables, this snippet also echoes the
+  boolean so callers can read it:
+
+    {%- capture tg_member_flag -%}{%- render '2gether-member' -%}{%- endcapture -%}
+    {%- assign tg_is_member = false -%}
+    {%- if tg_member_flag contains 'true' -%}{%- assign tg_is_member = true -%}{%- endif -%}
+{%- endcomment -%}
+{%- liquid
+  assign tg_is_member = false
+  if customer
+    assign tg_member_tags = customer.tags | join: '|' | downcase | split: '|'
+    if tg_member_tags contains 'member'
+      assign tg_is_member = true
+    endif
+  endif
+  echo tg_is_member
+-%}

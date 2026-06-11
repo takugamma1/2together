@@ -941,6 +941,29 @@
 
 .tg-pool-option.leading .tg-pool-check-dot { opacity: 1; }
 
+/* Member's own vote (set by 2gether-club.js via aria-pressed) */
+.tg-pool-option[aria-pressed="true"] { border-color: var(--tg-flame); }
+
+.tg-pool-option[aria-pressed="true"] .tg-pool-check {
+  border-color: var(--tg-flame);
+  background: var(--tg-flame);
+}
+
+.tg-pool-option[aria-pressed="true"] .tg-pool-check-dot { opacity: 1; }
+
+[data-poll-id][data-can-vote="true"] .tg-pool-option { cursor: pointer; }
+
+/* Status line injected by 2gether-club.js next to the poll/RSVP */
+.tg-club-msg {
+  flex-basis: 100%;
+  margin: var(--tg-s1) 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--tg-flame-soft);
+}
+
+.tg-club-msg:empty { display: none; }
+
 /* YouTube Widget */
 .tg-yt-widget {
   position: absolute;
