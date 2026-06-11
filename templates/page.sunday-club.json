@@ -39,34 +39,13 @@
             "title": "Групови пътувания",
             "text": "Предимство при записване за груповите пътувания и уикендите извън града."
           }
-        },
-        "p_1": {
-          "type": "photo",
-          "settings": {
-            "caption": "Изгрев над Аврен"
-          }
-        },
-        "p_2": {
-          "type": "photo",
-          "settings": {
-            "caption": "Кафе пауза на Галата"
-          }
-        },
-        "p_3": {
-          "type": "photo",
-          "settings": {
-            "caption": "Камчия, целият отбор"
-          }
         }
       },
       "block_order": [
         "b_1",
         "b_2",
         "b_3",
-        "b_4",
-        "p_1",
-        "p_2",
-        "p_3"
+        "b_4"
       ],
       "settings": {
         "hero_image": "shopify://shop_images/DSP06315-2.jpg",
