@@ -1,0 +1,571 @@
+/* === 2GETHER — COLLECTIONS LANDING PAGE (/collections) === */
+
+body.tg-collections-active .content-for-layout {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* CSS-only fallback for the JS body class — survives theme-editor section
+   re-injection and works for no-JS visitors. Kept as a separate rule so
+   browsers without :has() still get the class-based rule above. */
+body:has(.tg-collections-page) .content-for-layout {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tg-collections-page {
+  background: var(--tg-ink);
+  color: var(--tg-text-primary);
+  font-family: 'General Sans', sans-serif;
+  padding: var(--tg-s9) var(--tg-s7) var(--tg-s8);
+  min-height: 70vh;
+  overflow-x: clip;
+}
+
+/* Capped inner container — matches the other 2gether inner pages while the
+   page background above stays full-bleed */
+.tg-cl-inner {
+  max-width: 1440px;
+  margin-inline: auto;
+}
+
+/* ════════════════════════════════════════
+   PAGE HEAD — eyebrow + jumbo Technor title
+   ════════════════════════════════════════ */
+.tg-cl-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--tg-s4);
+  margin-bottom: var(--tg-s7);
+  max-width: 720px;
+}
+
+.tg-collections-page .tg-eyebrow {
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tg-flame);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s2);
+}
+
+.tg-collections-page .tg-eyebrow::before {
+  content: '';
+  width: 18px;
+  height: 1.5px;
+  background: var(--tg-flame);
+}
+
+.tg-cl-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  margin: 0;
+}
+
+.tg-cl-intro {
+  font-size: 15px;
+  color: var(--tg-text-secondary);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════
+   FEATURED — asymmetric bento grid
+   Pattern repeats every 4 tiles:
+   #1 big 2×2 · #2 wide 2×1 · #3 + #4 small 1×1
+   ════════════════════════════════════════ */
+.tg-cl-featured {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 230px;
+  grid-auto-flow: dense;
+  gap: var(--tg-s4);
+  margin-bottom: var(--tg-s8);
+}
+
+.tg-cl-tile--featured:nth-child(4n + 1) {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.tg-cl-tile--featured:nth-child(4n + 2) {
+  grid-column: span 2;
+}
+
+.tg-cl-tile--featured:nth-child(4n + 3),
+.tg-cl-tile--featured:nth-child(4n + 4) {
+  grid-column: span 1;
+}
+
+/* Graceful endings when the row pattern is incomplete */
+.tg-cl-tile--featured:nth-child(4n + 2):last-child {
+  grid-row: span 2;
+}
+
+.tg-cl-tile--featured:nth-child(4n + 3):last-child {
+  grid-column: span 2;
+}
+
+/* A trailing (or solitary) big tile becomes a full-width banner row instead
+   of leaving a 2x2 hole. Desktop only — below 1024px the bento is flattened
+   by lower-specificity rules this would otherwise override. */
+@media (min-width: 1025px) {
+  .tg-cl-tile--featured:nth-child(4n + 1):last-child {
+    grid-column: span 4;
+    grid-row: span 1;
+  }
+}
+
+/* ════════════════════════════════════════
+   SUBHEAD for the compact grid
+   ════════════════════════════════════════ */
+.tg-cl-rest-head {
+  display: flex;
+  align-items: center;
+  gap: var(--tg-s5);
+  margin-bottom: var(--tg-s6);
+}
+
+.tg-cl-rest-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--tg-divider);
+}
+
+.tg-cl-rest-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s3);
+}
+
+.tg-cl-rest-title::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: var(--tg-flame);
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════
+   COMPACT GRID — the rest of the categories
+   ════════════════════════════════════════ */
+.tg-cl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--tg-s4);
+}
+
+/* ════════════════════════════════════════
+   TILE — shared (whole tile is the link)
+   Sliced top-right corner — brand signature
+   ════════════════════════════════════════ */
+.tg-cl-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: var(--tg-surface-raised);
+  text-decoration: none;
+  color: inherit;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+  transition: transform var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-cl-tile--compact {
+  min-height: 200px;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+}
+
+/* Lift on hover — same convention as .tg-ramp-card */
+.tg-cl-tile:hover {
+  transform: translateY(-4px);
+}
+
+/* Inset flame border — lives inside the clip-path so it follows the cut */
+.tg-cl-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border: 1px solid rgba(138, 155, 181, 0.08);
+  clip-path: inherit;
+  transition: border-color var(--tg-dur-med) var(--tg-ease-out), box-shadow var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-cl-tile:hover::after {
+  border-color: rgba(232, 96, 28, 0.3);
+  box-shadow: inset 0 0 32px rgba(232, 96, 28, 0.07);
+}
+
+/* Tile media */
+.tg-cl-tile-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.tg-cl-tile-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.75);
+  transition: transform 600ms var(--tg-ease-out), filter var(--tg-dur-slow) var(--tg-ease-out);
+}
+
+.tg-cl-tile:hover .tg-cl-tile-media img {
+  transform: scale(1.05);
+  filter: brightness(0.85);
+}
+
+/* Final fallback — dark placeholder with flame letter */
+.tg-cl-tile-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgba(232, 96, 28, 0.08) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, rgba(138, 155, 181, 0.04) 0 12px, transparent 12px 24px),
+    var(--tg-surface-raised);
+}
+
+.tg-cl-tile-placeholder span {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 1;
+  color: var(--tg-flame);
+  opacity: 0.22;
+  user-select: none;
+  transition: opacity var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-cl-tile:hover .tg-cl-tile-placeholder span {
+  opacity: 0.4;
+}
+
+.tg-cl-tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(11, 18, 32, 0.92) 0%,
+    rgba(11, 18, 32, 0.55) 35%,
+    rgba(11, 18, 32, 0.2) 65%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Product count badge — clipped chip, top-left */
+.tg-cl-tile-count {
+  position: absolute;
+  top: var(--tg-s4);
+  left: var(--tg-s4);
+  z-index: 2;
+  padding: var(--tg-s1) var(--tg-s4) var(--tg-s1) var(--tg-s3);
+  background: rgba(11, 18, 32, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--tg-text-primary);
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  transition: background var(--tg-dur-med) var(--tg-ease-out), color var(--tg-dur-med) var(--tg-ease-out);
+}
+
+.tg-cl-tile:hover .tg-cl-tile-count {
+  background: var(--tg-flame);
+  color: var(--tg-ink);
+}
+
+/* Tile info */
+.tg-cl-tile-info {
+  position: relative;
+  z-index: 2;
+  padding: var(--tg-s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--tg-s1);
+}
+
+.tg-cl-tile--featured .tg-cl-tile-info {
+  padding: var(--tg-s6);
+  gap: var(--tg-s2);
+}
+
+.tg-cl-tile-num {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--tg-flame);
+}
+
+.tg-cl-tile-title {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.tg-cl-tile--featured .tg-cl-tile-title {
+  font-size: clamp(20px, 2vw, 28px);
+}
+
+.tg-cl-tile--featured:nth-child(4n + 1) .tg-cl-tile-title {
+  font-size: clamp(24px, 2.6vw, 36px);
+}
+
+/* Flame underline that slides in from the left on hover */
+.tg-cl-tile-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 36px;
+  height: 2px;
+  background: var(--tg-flame);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--tg-dur-slow) var(--tg-ease-out);
+}
+
+.tg-cl-tile:hover .tg-cl-tile-title::after {
+  transform: scaleX(1);
+}
+
+/* Flame arrow — appears on hover */
+.tg-cl-tile-arrow {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 4px;
+  color: var(--tg-flame);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--tg-dur-med) var(--tg-ease-out), transform var(--tg-dur-slow) var(--tg-ease-out);
+}
+
+.tg-cl-tile:hover .tg-cl-tile-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ════════════════════════════════════════
+   EMPTY STATE
+   ════════════════════════════════════════ */
+.tg-cl-empty {
+  font-size: 14px;
+  color: var(--tg-text-secondary);
+  padding: var(--tg-s7);
+  border: 1px dashed rgba(138, 155, 181, 0.3);
+  text-align: center;
+  margin: 0;
+}
+
+/* ════════════════════════════════════════
+   PAGINATION — retint the theme snippet
+   for the dark page (one page today, but
+   stays correct if the catalog grows)
+   ════════════════════════════════════════ */
+.tg-collections-page .pagination {
+  --color-foreground: var(--tg-text-primary);
+  --color-foreground-rgb: 232, 236, 242;
+  --color-background: var(--tg-ink);
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .tg-collections-page {
+    padding: var(--tg-s7) var(--tg-s5) var(--tg-s7);
+  }
+
+  .tg-cl-head {
+    margin-bottom: var(--tg-s6);
+  }
+
+  .tg-cl-featured {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 210px;
+    margin-bottom: var(--tg-s7);
+  }
+
+  /* Flatten the bento: first tile full width, the rest half-and-half */
+  .tg-cl-tile--featured:nth-child(4n + 1),
+  .tg-cl-tile--featured:nth-child(4n + 2),
+  .tg-cl-tile--featured:nth-child(4n + 3),
+  .tg-cl-tile--featured:nth-child(4n + 4) {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .tg-cl-tile--featured:first-child {
+    grid-column: span 2;
+  }
+
+  .tg-cl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--tg-s3);
+  }
+}
+
+@media (max-width: 768px) {
+  .tg-collections-page {
+    padding: var(--tg-s6) var(--tg-s4) var(--tg-s6);
+  }
+
+  .tg-cl-title {
+    font-size: clamp(2.4rem, 12vw, 3.6rem);
+  }
+
+  .tg-cl-intro {
+    font-size: 14px;
+  }
+
+  .tg-cl-featured {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 200px;
+    gap: var(--tg-s3);
+    margin-bottom: var(--tg-s6);
+  }
+
+  .tg-cl-tile--featured:first-child {
+    grid-column: span 1;
+    min-height: 240px;
+  }
+
+  .tg-cl-tile--featured .tg-cl-tile-info {
+    padding: var(--tg-s5);
+  }
+
+  .tg-cl-rest-head {
+    margin-bottom: var(--tg-s5);
+  }
+
+  .tg-cl-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--tg-s3);
+  }
+
+  .tg-cl-tile--compact {
+    min-height: 160px;
+  }
+
+  .tg-cl-tile-info {
+    padding: var(--tg-s4);
+  }
+
+  .tg-cl-tile-title {
+    font-size: 14px;
+  }
+
+  .tg-cl-tile--featured .tg-cl-tile-title {
+    font-size: clamp(18px, 5vw, 24px);
+  }
+
+  .tg-cl-tile--featured:nth-child(4n + 1) .tg-cl-tile-title {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  .tg-cl-tile-count {
+    top: var(--tg-s3);
+    left: var(--tg-s3);
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tg-collections-page {
+    padding: var(--tg-s6) var(--tg-s3) var(--tg-s6);
+  }
+
+  .tg-cl-head {
+    gap: var(--tg-s3);
+  }
+
+  .tg-cl-featured {
+    grid-auto-rows: 170px;
+  }
+
+  .tg-cl-tile--featured:first-child {
+    min-height: 200px;
+  }
+
+  .tg-cl-grid {
+    gap: var(--tg-s2);
+  }
+
+  .tg-cl-tile--compact {
+    min-height: 140px;
+  }
+
+  .tg-cl-tile-info,
+  .tg-cl-tile--featured .tg-cl-tile-info {
+    padding: var(--tg-s3);
+  }
+
+  .tg-cl-tile-title {
+    font-size: 13px;
+  }
+
+  .tg-cl-tile-arrow {
+    display: none;
+  }
+}
+
+/* ════════════════════════════════════════
+   REDUCED MOTION
+   ════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .tg-cl-tile,
+  .tg-cl-tile::after,
+  .tg-cl-tile-media img,
+  .tg-cl-tile-placeholder span,
+  .tg-cl-tile-count,
+  .tg-cl-tile-title::after,
+  .tg-cl-tile-arrow {
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .tg-cl-tile-title::after {
+    transform: scaleX(1) !important;
+    opacity: 0.5;
+  }
+}

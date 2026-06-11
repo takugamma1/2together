@@ -1,0 +1,221 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-collection-list.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+{% comment %} Belt-and-suspenders with the body:has() rule in 2gether-collection-list.css {% endcomment %}
+<script>document.body.classList.add('tg-collections-active');</script>
+
+{%- liquid
+  assign featured_handles = section.settings.featured_handles | default: '' | replace: ' ', '' | split: ','
+-%}
+
+{% paginate collections by 48 %}
+  {%- liquid
+    comment
+      Pre-count both groups so headings/wrappers only render when needed.
+      Featured tiles are looked up by handle (merchant order preserved) and
+      shown on page 1 only; they are excluded from the compact grid on every
+      page so a collection never appears twice.
+    endcomment
+    assign featured_count = 0
+    for handle in featured_handles
+      assign fc = collections[handle]
+      if fc != blank and fc.products_count > 0
+        assign featured_count = featured_count | plus: 1
+      endif
+    endfor
+
+    assign rest_count = 0
+    for c in collections
+      if c.products_count > 0
+        unless featured_handles contains c.handle
+          assign rest_count = rest_count | plus: 1
+        endunless
+      endif
+    endfor
+  -%}
+
+  <div class="tg-collections-page tg-section">
+    <div class="tg-cl-inner">
+      <!-- ═══ PAGE HEAD ═══ -->
+      <header class="tg-cl-head">
+        {% if section.settings.eyebrow != blank %}
+          <span class="tg-eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h1 class="tg-cl-title">{{ section.settings.title }}</h1>
+        {% endif %}
+        {% if section.settings.intro != blank %}
+          <p class="tg-cl-intro">{{ section.settings.intro }}</p>
+        {% endif %}
+      </header>
+
+      <!-- ═══ FEATURED CATEGORIES — bento tiles ═══ -->
+      {% if paginate.current_page == 1 and featured_count > 0 %}
+        <div class="tg-cl-featured">
+          {%- assign featured_i = 0 -%}
+          {% for handle in featured_handles %}
+            {%- assign c = collections[handle] -%}
+            {% if c == blank or c.products_count == 0 %}{% continue %}{% endif %}
+            {%- assign featured_i = featured_i | plus: 1 -%}
+            {%- assign tile_num = featured_i | prepend: '0' | slice: -2, 2 -%}
+            {%- capture count_label -%}
+              {%- if c.products_count == 1 -%}
+                {{ c.products_count }} {{ section.settings.count_singular | default: 'продукт' }}
+              {%- else -%}
+                {{ c.products_count }} {{ section.settings.count_plural | default: 'продукта' }}
+              {%- endif -%}
+            {%- endcapture -%}
+            <a href="{{ c.url }}" class="tg-cl-tile tg-cl-tile--featured">
+              <div class="tg-cl-tile-media">
+                {% if c.image %}
+                  {{ c.image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 100vw, 50vw' }}
+                {% elsif c.products.first.featured_image %}
+                  {{ c.products.first.featured_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 100vw, 50vw' }}
+                {% else %}
+                  <div class="tg-cl-tile-placeholder" aria-hidden="true">
+                    <span>{{ c.title | slice: 0, 1 | upcase }}</span>
+                  </div>
+                {% endif %}
+                <div class="tg-cl-tile-overlay"></div>
+              </div>
+              <span class="tg-cl-tile-count">{{ count_label }}</span>
+              <div class="tg-cl-tile-info">
+                <span class="tg-cl-tile-num">{{ tile_num }}</span>
+                <span class="tg-cl-tile-title">{{ c.title | escape }}</span>
+                <span class="tg-cl-tile-arrow" aria-hidden="true">
+                  <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- ═══ ALL OTHER CATEGORIES — compact grid ═══ -->
+      {% if rest_count > 0 %}
+        {% if featured_count > 0 and paginate.current_page == 1 and section.settings.rest_heading != blank %}
+          <div class="tg-cl-rest-head">
+            <h2 class="tg-cl-rest-title">{{ section.settings.rest_heading }}</h2>
+          </div>
+        {% endif %}
+        <div class="tg-cl-grid">
+          {% for c in collections %}
+            {% if c.products_count == 0 %}{% continue %}{% endif %}
+            {% if featured_handles contains c.handle %}{% continue %}{% endif %}
+            {%- capture count_label -%}
+              {%- if c.products_count == 1 -%}
+                {{ c.products_count }} {{ section.settings.count_singular | default: 'продукт' }}
+              {%- else -%}
+                {{ c.products_count }} {{ section.settings.count_plural | default: 'продукта' }}
+              {%- endif -%}
+            {%- endcapture -%}
+            <a href="{{ c.url }}" class="tg-cl-tile tg-cl-tile--compact">
+              <div class="tg-cl-tile-media">
+                {% if c.image %}
+                  {{ c.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 50vw, 25vw' }}
+                {% elsif c.products.first.featured_image %}
+                  {{ c.products.first.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 50vw, 25vw' }}
+                {% else %}
+                  <div class="tg-cl-tile-placeholder" aria-hidden="true">
+                    <span>{{ c.title | slice: 0, 1 | upcase }}</span>
+                  </div>
+                {% endif %}
+                <div class="tg-cl-tile-overlay"></div>
+              </div>
+              <span class="tg-cl-tile-count">{{ count_label }}</span>
+              <div class="tg-cl-tile-info">
+                <span class="tg-cl-tile-title">{{ c.title | escape }}</span>
+                <span class="tg-cl-tile-arrow" aria-hidden="true">
+                  <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if paginate.current_page == 1 and featured_count == 0 and rest_count == 0 and section.settings.empty_text != blank %}
+        <p class="tg-cl-empty">{{ section.settings.empty_text }}</p>
+      {% endif %}
+
+      {%- render 'pagination-controls', paginate: paginate -%}
+    </div>
+  </div>
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "2Gether Collection List",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Е-МАГАЗИН"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page title",
+      "default": "КАТЕГОРИИ"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro text (optional)",
+      "default": "Велосипеди, части, екипировка и мърч — всичко за твоето каране, подбрано и тествано от нас."
+    },
+    {
+      "type": "header",
+      "content": "Featured categories"
+    },
+    {
+      "type": "text",
+      "id": "featured_handles",
+      "label": "Featured collection handles",
+      "info": "Comma-separated handles. These render as large bento tiles at the top, in this order. Collections with 0 products are skipped.",
+      "default": "velosipedi-c59,planinski-velosipedi-c97,elektricheski-velosipedi-c212,march-c199"
+    },
+    {
+      "type": "text",
+      "id": "rest_heading",
+      "label": "Subheading above the remaining categories",
+      "default": "Всички категории"
+    },
+    {
+      "type": "header",
+      "content": "Text strings"
+    },
+    {
+      "type": "text",
+      "id": "count_singular",
+      "label": "Product count — singular",
+      "default": "продукт"
+    },
+    {
+      "type": "text",
+      "id": "count_plural",
+      "label": "Product count — plural",
+      "default": "продукта"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Empty state text",
+      "default": "Няма налични категории."
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Collection List"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["list-collections"]
+  }
+}
+{% endschema %}
