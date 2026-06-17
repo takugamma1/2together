@@ -189,20 +189,35 @@
             <input type="date" name="contact[pickup_date]" data-tg-r-start required data-tg-r-validate>
           </label>
           <fieldset class="tg-r-field">
-            <legend class="tg-r-field-label">{{ section.settings.pickup_time_label | default: 'Pickup time' }}</legend>
-            <div class="tg-r-slot-grid">
-              {% assign slots = section.settings.time_slots | default: 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
-              {% for slot in slots %}
-                {%- assign sp = slot | split: '|' -%}
-                <label class="tg-r-slot">
-                  <input type="radio" name="contact[pickup_time]" value="{{ sp[0] | strip }} ({{ sp[1] | strip }})" required data-tg-r-validate>
-                  <span class="tg-r-slot-name">{{ sp[0] | strip }}</span>
-                  <span class="tg-r-slot-hours">{{ sp[1] | strip }}</span>
+            <legend class="tg-r-field-label">{{ section.settings.pickup_time_label | default: 'Час на взимане' }}</legend>
+            {%- assign hour_start = section.settings.hour_start | default: 9 -%}
+            {%- assign hour_end = section.settings.hour_end | default: 18 -%}
+            <div class="tg-r-slot-grid tg-r-slot-grid--hours">
+              {%- for h in (hour_start..hour_end) -%}
+                <label class="tg-r-slot tg-r-slot--hour">
+                  <input type="radio" name="contact[pickup_time]" value="{{ h }}:00" required data-tg-r-validate>
+                  <span class="tg-r-slot-name">{{ h }}:00</span>
                 </label>
-              {% endfor %}
+              {%- endfor -%}
             </div>
           </fieldset>
         </div>
+
+        <fieldset class="tg-r-field tg-r-field--full tg-r-days-field">
+          <legend class="tg-r-field-label">{{ section.settings.days_label | default: 'За колко дни?' }}</legend>
+          <div class="tg-r-days" data-tg-r-days>
+            <button type="button" class="tg-r-days-btn" data-tg-r-days-dec aria-label="По-малко дни">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <span class="tg-r-days-num" data-tg-r-days-num>1</span>
+            <span class="tg-r-days-unit" data-tg-r-days-unit>{{ section.settings.days_unit_singular | default: 'ден' }}</span>
+            <button type="button" class="tg-r-days-btn" data-tg-r-days-inc aria-label="Повече дни">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+          <input type="hidden" name="contact[days]" data-tg-r-days-input value="1">
+          <p class="tg-r-days-hint">{{ section.settings.days_hint | default: 'При наем за повече от един ден дневната тарифа важи за всеки ден.' }}</p>
+        </fieldset>
 
         <fieldset class="tg-r-field tg-r-field--full">
           <legend class="tg-r-field-label">{{ section.settings.delivery_field_label | default: 'Delivery (within Varna — hotels & addresses)' }}</legend>
@@ -458,6 +473,32 @@ Mixed levels' | newline_to_br | split: '<br />' -%}
     const startInput = root.querySelector('[data-tg-r-start]');
     const durationBox = root.querySelector('[data-tg-r-duration]');
 
+    // ── Rental length (days) ────────────────────────────────
+    const daysWrap = root.querySelector('[data-tg-r-days]');
+    const daysNumEl = root.querySelector('[data-tg-r-days-num]');
+    const daysUnitEl = root.querySelector('[data-tg-r-days-unit]');
+    const daysInput = root.querySelector('[data-tg-r-days-input]');
+    const DAYS_MAX = {{ section.settings.days_max | default: 30 }};
+    const DAYS_UNIT_SINGULAR = {{ section.settings.days_unit_singular | default: 'ден' | json }};
+    const DAYS_UNIT_PLURAL = {{ section.settings.days_unit_plural | default: 'дни' | json }};
+
+    function getDays() {
+      return Math.max(1, parseInt((daysInput && daysInput.value) || '1', 10) || 1);
+    }
+    function setDays(n) {
+      n = Math.max(1, Math.min(DAYS_MAX, n));
+      if (daysNumEl) daysNumEl.textContent = n;
+      if (daysUnitEl) daysUnitEl.textContent = n === 1 ? DAYS_UNIT_SINGULAR : DAYS_UNIT_PLURAL;
+      if (daysInput) daysInput.value = n;
+      if (typeof updateDuration === 'function') updateDuration();
+    }
+    if (daysWrap) {
+      const decBtn = daysWrap.querySelector('[data-tg-r-days-dec]');
+      const incBtn = daysWrap.querySelector('[data-tg-r-days-inc]');
+      if (decBtn) decBtn.addEventListener('click', () => setDays(getDays() - 1));
+      if (incBtn) incBtn.addEventListener('click', () => setDays(getDays() + 1));
+    }
+
     function selectedPackage() {
       const checked = root.querySelector('input[name="contact[package]"]:checked');
       if (!checked) return null;
@@ -483,7 +524,7 @@ Mixed levels' | newline_to_br | split: '<br />' -%}
       const del = selectedDelivery();
       if (!pkg) return null;
       const crew = readSelection().total || 0;
-      return pkg.price * Math.max(crew, 1) + del.price;
+      return pkg.price * Math.max(crew, 1) * getDays() + del.price;
     }
 
     function updateDuration() {
@@ -526,6 +567,8 @@ Mixed levels' | newline_to_br | split: '<br />' -%}
       if (pkg) {
         html += '<div><dt>Package</dt><dd>' + escapeHtml(pkg.label) + '</dd></div>';
       }
+      const days = getDays();
+      html += '<div><dt>Days</dt><dd>' + days + ' ' + (days === 1 ? DAYS_UNIT_SINGULAR : DAYS_UNIT_PLURAL) + '</dd></div>';
       if (startInput?.value) {
         html += '<div><dt>Pickup</dt><dd>' + escapeHtml(startInput.value) + ' · ' + escapeHtml(slot) + '</dd></div>';
       }
@@ -735,8 +778,14 @@ Mixed levels' | newline_to_br | split: '<br />' -%}
     { "type": "text", "id": "package_unit", "label": "Package price unit", "default": "/ bike" },
     { "type": "textarea", "id": "packages", "label": "Packages", "info": "One per line. Format: Name | Price (number) | Description", "default": "1 hour|3|Quick spin around town\n1 day|12|9:00 — 19:00 same day\n24 hours|20|Full day, return next day" },
     { "type": "text", "id": "pickup_date_label", "label": "Pickup date label", "default": "Pickup date" },
-    { "type": "text", "id": "pickup_time_label", "label": "Pickup time label", "default": "Pickup time" },
-    { "type": "textarea", "id": "time_slots", "label": "Pickup time slots", "info": "Separate slots with || and name/hours with |. Example: Morning|9:00 — 12:00||Afternoon|12:00 — 16:00", "default": "Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00" },
+    { "type": "text", "id": "pickup_time_label", "label": "Pickup time / hour label", "default": "Час на взимане" },
+    { "type": "number", "id": "hour_start", "label": "First pickup hour (24h)", "default": 9 },
+    { "type": "number", "id": "hour_end", "label": "Last pickup hour (24h)", "default": 18 },
+    { "type": "text", "id": "days_label", "label": "Rental length label", "default": "За колко дни?" },
+    { "type": "text", "id": "days_unit_singular", "label": "Day unit (singular)", "default": "ден" },
+    { "type": "text", "id": "days_unit_plural", "label": "Day unit (plural)", "default": "дни" },
+    { "type": "number", "id": "days_max", "label": "Max rental days", "default": 30 },
+    { "type": "textarea", "id": "days_hint", "label": "Rental length hint", "default": "При наем за повече от един ден дневната тарифа важи за всеки ден." },
     { "type": "text", "id": "delivery_field_label", "label": "Delivery field label", "default": "Delivery (within Varna — hotels & addresses)" },
     { "type": "textarea", "id": "delivery_options", "label": "Delivery options", "info": "One per line. Format: Name | Price (number) | Description. Use 0 for free.", "default": "Pickup at shop|0|Drop by at our location\nOne-way delivery|5|We bring it to you\nRound-trip delivery|10|Drop-off & pickup at your place" },
     { "type": "text", "id": "free_label", "label": "Free price word", "default": "Free" },

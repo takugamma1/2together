@@ -834,39 +834,43 @@
     z-index: 3;
   }
 
-  /* ── SPOTLIGHT HOVER ──
-     When any tile is hovered, dim+desaturate the others, brighten the focused one */
-  .tg-takeover-grid:has(.tg-takeover-tile:hover) .tg-takeover-tile:not(:hover) {
-    opacity: 0.45;
-    filter: grayscale(0.55);
-  }
+  /* ── SPOTLIGHT HOVER (pointer devices only) ──
+     When any tile is hovered, dim+desaturate the others, brighten the focused one.
+     Gated behind hover/pointer so touch scrolling on mobile never triggers the
+     dim+grayscale spotlight — that "sticky hover" was the greyish glitch. */
+  @media (hover: hover) and (pointer: fine) {
+    .tg-takeover-grid:has(.tg-takeover-tile:hover) .tg-takeover-tile:not(:hover) {
+      opacity: 0.45;
+      filter: grayscale(0.55);
+    }
 
-  .tg-takeover-tile:hover .tg-takeover-tile-media img {
-    transform: scale(1.06);
-    filter: brightness(0.85);
-  }
+    .tg-takeover-tile:hover .tg-takeover-tile-media img {
+      transform: scale(1.06);
+      filter: brightness(0.85);
+    }
 
-  .tg-takeover-tile:hover .tg-takeover-tile-overlay {
-    background: linear-gradient(
-      to top,
-      rgba(11, 18, 32, 0.78) 0%,
-      rgba(11, 18, 32, 0.35) 40%,
-      rgba(11, 18, 32, 0.12) 70%,
-      transparent 100%
-    );
-  }
+    .tg-takeover-tile:hover .tg-takeover-tile-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(11, 18, 32, 0.78) 0%,
+        rgba(11, 18, 32, 0.35) 40%,
+        rgba(11, 18, 32, 0.12) 70%,
+        transparent 100%
+      );
+    }
 
-  .tg-takeover-tile:hover .tg-takeover-tile-title::after {
-    transform: scaleX(1);
-  }
+    .tg-takeover-tile:hover .tg-takeover-tile-title::after {
+      transform: scaleX(1);
+    }
 
-  .tg-takeover-tile:hover .tg-takeover-tile-arrow {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    .tg-takeover-tile:hover .tg-takeover-tile-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
 
-  .tg-takeover-tile:hover .tg-takeover-tile-num {
-    transform: translateX(2px);
+    .tg-takeover-tile:hover .tg-takeover-tile-num {
+      transform: translateX(2px);
+    }
   }
 
   /* Keyboard focus = same as hover */
