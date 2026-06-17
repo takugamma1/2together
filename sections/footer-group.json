@@ -14,13 +14,6 @@
     "tg_footer": {
       "type": "2gether-footer",
       "blocks": {
-        "links_nav": {
-          "type": "link_column",
-          "settings": {
-            "heading": "Навигация",
-            "menu": "footer"
-          }
-        },
         "links_shop": {
           "type": "link_column",
           "settings": {
@@ -30,7 +23,6 @@
         }
       },
       "block_order": [
-        "links_nav",
         "links_shop"
       ],
       "settings": {
