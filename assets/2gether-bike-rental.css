@@ -633,6 +633,8 @@ body.tg-rental-active .content-for-layout {
 .tg-r-field select,
 .tg-r-field textarea {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: var(--tg-s3) var(--tg-s4);
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
@@ -649,6 +651,12 @@ body.tg-rental-active .content-for-layout {
 .tg-r-field textarea {
   resize: vertical;
   line-height: 1.5;
+}
+
+/* Native date input — keep it inside the container on mobile (no overflow) */
+.tg-r-field input[type="date"] {
+  color-scheme: dark;
+  min-height: 46px;
 }
 
 .tg-r-field select {
@@ -688,6 +696,11 @@ body.tg-rental-active .content-for-layout {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--tg-s2);
+}
+
+/* Hour pills — single selectable hour per pill (replaces time ranges) */
+.tg-r-slot-grid--hours {
+  grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
 }
 
 .tg-r-slot {
@@ -738,6 +751,61 @@ body.tg-rental-active .content-for-layout {
   font-size: 10px;
   color: var(--tg-text-muted);
   letter-spacing: 0.04em;
+}
+
+/* Rental length (days) stepper */
+.tg-r-days {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s3);
+  padding: var(--tg-s2) var(--tg-s3);
+  background: var(--tg-surface-raised);
+  border: 1px solid var(--tg-divider);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.tg-r-days-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--tg-divider);
+  color: var(--tg-text-primary);
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+
+.tg-r-days-btn:hover {
+  border-color: var(--tg-flame);
+  color: var(--tg-flame);
+}
+
+.tg-r-days-num {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--tg-text-primary);
+  min-width: 28px;
+  text-align: center;
+}
+
+.tg-r-days-unit {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tg-text-muted);
+  min-width: 28px;
+}
+
+.tg-r-days-hint {
+  margin: 8px 0 0;
+  font-size: 11px;
+  color: var(--tg-text-muted);
+  line-height: 1.5;
 }
 
 /* Package cards */
@@ -1142,11 +1210,16 @@ body.tg-rental-active .content-for-layout {
   }
 
   .tg-r-slot-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
   }
 
   .tg-rental-info-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Halve the info strip's top & bottom padding on mobile */
+  .tg-rental-info {
+    padding: var(--tg-s4) var(--tg-s5) calc(var(--tg-s4) + 100px);
   }
 
   /* Sticky roster on mobile is the primary CTA */

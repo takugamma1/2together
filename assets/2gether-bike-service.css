@@ -389,6 +389,23 @@ body.tg-service-active .content-for-layout {
   padding: 0;
 }
 
+/* Hour pills — a single selectable hour per pill (replaces time ranges) */
+.tg-slot-grid--hours {
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+}
+
+.tg-slot--hour {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--tg-s3) var(--tg-s2);
+}
+
+.tg-slot--hour .tg-slot-name {
+  font-size: 14px;
+}
+
 .tg-slot {
   position: relative;
   display: flex;

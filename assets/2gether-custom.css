@@ -145,9 +145,9 @@
   inset: 0;
   z-index: 2;
   background:
-    linear-gradient(160deg, rgba(11,18,32,0.95) 0%, rgba(11,18,32,0.7) 35%, rgba(11,18,32,0.1) 55%, transparent 65%),
-    linear-gradient(to left, rgba(11,18,32,0.92) 0%, rgba(11,18,32,0.82) 22%, rgba(11,18,32,0.5) 42%, rgba(11,18,32,0.15) 58%, transparent 70%),
-    linear-gradient(to top, rgba(11,18,32,0.6) 0%, transparent 25%);
+    linear-gradient(160deg, rgba(11,18,32,0.97) 0%, rgba(11,18,32,0.82) 32%, rgba(11,18,32,0.35) 55%, rgba(11,18,32,0.12) 70%, transparent 80%),
+    linear-gradient(to left, rgba(11,18,32,0.95) 0%, rgba(11,18,32,0.88) 22%, rgba(11,18,32,0.62) 44%, rgba(11,18,32,0.3) 62%, rgba(11,18,32,0.08) 78%, transparent 88%),
+    linear-gradient(to top, rgba(11,18,32,0.9) 0%, rgba(11,18,32,0.5) 22%, rgba(11,18,32,0.12) 45%, transparent 60%);
 }
 
 .tg-hero-diagonal {
@@ -156,7 +156,7 @@
   z-index: 3;
   clip-path: polygon(0 0, 42% 0, 32% 100%, 0 100%);
   background: var(--tg-ink);
-  opacity: 0.35;
+  opacity: 0.45;
 }
 
 .tg-hero-content {

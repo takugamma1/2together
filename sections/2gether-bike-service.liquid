@@ -127,17 +127,16 @@
             </div>
 
             <fieldset class="tg-service-field tg-service-field--full">
-              <legend class="tg-service-field-label">{{ section.settings.timeslot_label | default: 'Time slot' }}</legend>
-              <div class="tg-slot-grid">
-                {% assign slots = section.settings.time_slots | default: 'Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00' | split: '||' %}
-                {% for slot in slots %}
-                  {%- assign sp = slot | split: '|' -%}
-                  <label class="tg-slot">
-                    <input type="radio" name="contact[preferred_time]" value="{{ sp[0] | strip }} ({{ sp[1] | strip }})" required data-tg-validate>
-                    <span class="tg-slot-name">{{ sp[0] | strip }}</span>
-                    <span class="tg-slot-hours">{{ sp[1] | strip }}</span>
+              <legend class="tg-service-field-label">{{ section.settings.timeslot_label | default: 'Час' }}</legend>
+              {%- assign hour_start = section.settings.hour_start | default: 9 -%}
+              {%- assign hour_end = section.settings.hour_end | default: 18 -%}
+              <div class="tg-slot-grid tg-slot-grid--hours">
+                {%- for h in (hour_start..hour_end) -%}
+                  <label class="tg-slot tg-slot--hour">
+                    <input type="radio" name="contact[preferred_time]" value="{{ h }}:00" required data-tg-validate>
+                    <span class="tg-slot-name">{{ h }}:00</span>
                   </label>
-                {% endfor %}
+                {%- endfor -%}
               </div>
             </fieldset>
 
@@ -745,8 +744,9 @@ Don’t remember' | newline_to_br | split: '<br />' -%}
     { "type": "text", "id": "step1_title", "label": "Title", "default": "When can you bring it in?" },
     { "type": "textarea", "id": "step1_sub", "label": "Subtitle", "default": "Pick a day and a time slot. We will confirm by email within 24h." },
     { "type": "text", "id": "date_label", "label": "Date label", "default": "Date" },
-    { "type": "text", "id": "timeslot_label", "label": "Time slot label", "default": "Time slot" },
-    { "type": "textarea", "id": "time_slots", "label": "Time slots", "info": "One per line is NOT used here — separate slots with || and name/hours with |. Example: Morning|9:00 — 12:00||Afternoon|12:00 — 16:00", "default": "Morning|9:00 — 12:00||Afternoon|12:00 — 16:00||Evening|16:00 — 19:00" },
+    { "type": "text", "id": "timeslot_label", "label": "Time / hour label", "default": "Час" },
+    { "type": "number", "id": "hour_start", "label": "First bookable hour (24h)", "default": 9 },
+    { "type": "number", "id": "hour_end", "label": "Last bookable hour (24h)", "default": 18 },
     { "type": "text", "id": "flexibility_label", "label": "Flexibility question", "default": "How flexible are you?" },
     { "type": "text", "id": "flex_yes", "label": "Flexible option", "default": "Soonest free slot is fine" },
     { "type": "text", "id": "flex_no", "label": "Not flexible option", "default": "Only the slot above" },
