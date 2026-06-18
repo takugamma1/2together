@@ -229,7 +229,7 @@
       "settings": {
         "color_scheme": "scheme-4",
         "section_width": "full-width",
-        "thickness": 1,
+        "thickness": 5,
         "corner_radius": "square",
         "width_percent": 100,
         "alignment_horizontal": "center",
