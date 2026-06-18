@@ -1120,9 +1120,9 @@ body.tg-rental-active .content-for-layout {
 .tg-rental-info {
   background: var(--tg-surface);
   border-top: 1px solid var(--tg-divider);
-  /* Extra bottom padding so the sticky roster bar (step 1) doesn't
-     cover the info cards when scrolled all the way down. */
-  padding: var(--tg-s7) var(--tg-s7) calc(var(--tg-s7) + 120px);
+  /* Balanced section padding. The fixed step-1 roster bar is cleared by the
+     footer that follows this section, so no extra bottom padding is needed. */
+  padding: var(--tg-s7) var(--tg-s7);
 }
 
 .tg-rental-info-grid {
@@ -1178,7 +1178,7 @@ body.tg-rental-active .content-for-layout {
 @media (max-width: 1024px) {
   .tg-rental-hero-inner { padding: var(--tg-s7) var(--tg-s5); }
   .tg-rental-build { padding: var(--tg-s6) var(--tg-s5) var(--tg-s7); }
-  .tg-rental-info { padding: var(--tg-s6) var(--tg-s5) calc(var(--tg-s6) + 200px); }
+  .tg-rental-info { padding: var(--tg-s6) var(--tg-s5); }
   .tg-rental-info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--tg-s3); }
   .tg-r-pkg-grid { grid-template-columns: 1fr; }
   .tg-r-delivery-grid { grid-template-columns: 1fr; }
@@ -1217,9 +1217,9 @@ body.tg-rental-active .content-for-layout {
     grid-template-columns: 1fr;
   }
 
-  /* Halve the info strip's top & bottom padding on mobile */
+  /* Compact, balanced padding on mobile */
   .tg-rental-info {
-    padding: var(--tg-s4) var(--tg-s5) calc(var(--tg-s4) + 100px);
+    padding: var(--tg-s4) var(--tg-s5) var(--tg-s5);
   }
 
   /* Sticky roster on mobile is the primary CTA */
