@@ -223,6 +223,20 @@
         "yt_views": "128K"
       }
     },
+    "divider_qMhyqE": {
+      "type": "divider",
+      "name": "t:names.divider_section",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "section_width": "full-width",
+        "thickness": 1,
+        "corner_radius": "square",
+        "width_percent": 100,
+        "alignment_horizontal": "center",
+        "padding-block-start": 0,
+        "padding-block-end": 16
+      }
+    },
     "tg_services": {
       "type": "2gether-services",
       "blocks": {
@@ -287,6 +301,7 @@
     "tg_image_band",
     "tg_products",
     "tg_community",
+    "divider_qMhyqE",
     "tg_services"
   ]
 }
