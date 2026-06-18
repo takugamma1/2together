@@ -55,7 +55,7 @@ body.tg-rental-active .content-for-layout {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgba(11, 18, 32, 0.94) 0%, rgba(11, 18, 32, 0.55) 35%, rgba(11, 18, 32, 0.15) 70%, transparent 100%);
+    linear-gradient(to top, rgba(11, 18, 32, 0.97) 0%, rgba(11, 18, 32, 0.85) 30%, rgba(11, 18, 32, 0.7) 55%, rgba(11, 18, 32, 0.6) 80%, rgba(11, 18, 32, 0.56) 100%);
 }
 
 .tg-rental-hero-inner {
