@@ -84,8 +84,8 @@ body.tg-sc-active { overflow-x: clip; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to right, rgba(11, 18, 32, 0.92) 0%, rgba(11, 18, 32, 0.5) 45%, rgba(11, 18, 32, 0.1) 75%, transparent 100%),
-    linear-gradient(to top, rgba(11, 18, 32, 0.6) 0%, transparent 50%);
+    linear-gradient(to right, rgba(11, 18, 32, 0.96) 0%, rgba(11, 18, 32, 0.8) 45%, rgba(11, 18, 32, 0.5) 75%, rgba(11, 18, 32, 0.35) 100%),
+    linear-gradient(to top, rgba(11, 18, 32, 0.8) 0%, rgba(11, 18, 32, 0.35) 50%, rgba(11, 18, 32, 0.25) 100%);
 }
 
 .tg-sc-hero-inner {
