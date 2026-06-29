@@ -13,7 +13,7 @@
   endif
 -%}
 
-<tg-header class="tg-header" data-sticky="{{ section.settings.sticky }}">
+<tg-header class="tg-header" data-sticky="{{ section.settings.sticky }}" style="--tg-logo-size: {{ section.settings.logo_size | default: 36 }}px;">
   <div class="tg-header-inner">
     <a href="{{ routes.root_url }}" class="tg-header-brand" aria-label="{{ shop.name }}">
       {% if section.settings.logo != blank %}
@@ -265,6 +265,16 @@
       "label": "Logo image"
     },
     {
+      "type": "range",
+      "id": "logo_size",
+      "label": "Logo height",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
       "type": "text",
       "id": "logo_text",
       "label": "Wordmark (used if no logo image)",
@@ -493,7 +503,7 @@
 
   .tg-header-logo {
     display: block;
-    max-height: 36px;
+    max-height: var(--tg-logo-size, 36px);
     width: auto;
   }
 

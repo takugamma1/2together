@@ -203,15 +203,15 @@
 .tg-hero-title-main {
   font-family: 'Technor', sans-serif;
   font-weight: 700;
-  font-size: clamp(3rem, 6.5vw, 6.5rem);
+  font-size: var(--tg-hero-title-size, 6.5rem);
   letter-spacing: -0.04em;
   line-height: 0.85;
   color: var(--tg-text-primary);
+  white-space: nowrap;
 }
 
 .tg-hero-title-main span {
   color: var(--tg-flame);
-  display: block;
 }
 
 /* Hero Bento Grid */
