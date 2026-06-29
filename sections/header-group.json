@@ -90,6 +90,7 @@
       ],
       "settings": {
         "logo": "shopify://shop_images/image0.png",
+        "logo_size": 56,
         "logo_text": "2GETHER",
         "sticky": true,
         "show_search": false,
