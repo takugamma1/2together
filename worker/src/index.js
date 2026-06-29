@@ -8,18 +8,23 @@
  *   POST /rsvp   {ride, status: 'going'|'not_going'}
  *   GET  /poll?poll=<id>     -> { counts: {<optionGid>: n}, mine: <optionGid>|null }
  *   POST /vote   {poll, option}
+ *   GET  /reviews            -> { name, rating, total, mapsUrl, reviews:[...] } (Google, cached 12h)
  *
  * Secrets (wrangler secret put):
  *   SHOPIFY_API_SECRET  — app proxy app's client secret (signature verification)
  *   SHOPIFY_ADMIN_TOKEN — admin custom app token (shpat_...)
  *   SHOP                — myshopify domain, e.g. my-store.myshopify.com
+ *   GOOGLE_PLACES_KEY   — Google Places API (New) key (for /reviews)
+ *
+ * Vars (wrangler.toml [vars]):
+ *   GOOGLE_PLACE_ID     — Google Place ID of the business (public; for /reviews)
  */
 
 const ADMIN_API_VERSION = '2025-10';
 const TIMESTAMP_TOLERANCE_S = 300;
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     try {
       const url = new URL(request.url);
 
@@ -47,6 +52,9 @@ export default {
         case 'vote':
           if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
           return await handleVote(request, env, customerId);
+        case 'reviews':
+          if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+          return await handleReviews(env, ctx);
         default:
           return json({ error: 'not_found' }, 404);
       }
@@ -260,6 +268,81 @@ async function handleVote(request, env, customerId) {
   }
 
   return json({ counts, mine });
+}
+
+/* ------------------------------------------------------------------ */
+/* Google reviews (Places API New, edge-cached 12h)                    */
+/* ------------------------------------------------------------------ */
+
+// GET /reviews -> slim, theme-friendly payload. Cached in the Worker edge
+// cache for 12h so Google is hit ~twice a day regardless of store traffic.
+async function handleReviews(env, ctx) {
+  const cache = caches.default;
+  const cacheKey = new Request('https://reviews.cache.local/google-reviews');
+
+  const hit = await cache.match(cacheKey);
+  if (hit) return hit;
+
+  const data = await fetchGoogleReviews(env);
+  const resp = new Response(JSON.stringify(data), {
+    headers: {
+      'Content-Type': 'application/json',
+      // Don't cache error payloads — only good responses.
+      'Cache-Control': data.error ? 'no-store' : 'public, max-age=43200',
+    },
+  });
+  if (!data.error && ctx && ctx.waitUntil) {
+    ctx.waitUntil(cache.put(cacheKey, resp.clone()));
+  }
+  return resp;
+}
+
+async function fetchGoogleReviews(env) {
+  const placeId = env.GOOGLE_PLACE_ID;
+  if (!placeId || !env.GOOGLE_PLACES_KEY) {
+    return { rating: null, total: 0, reviews: [], error: 'not_configured' };
+  }
+  let res;
+  try {
+    res = await fetch(
+      `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`,
+      {
+        headers: {
+          'X-Goog-Api-Key': env.GOOGLE_PLACES_KEY,
+          'X-Goog-FieldMask':
+            'id,displayName,rating,userRatingCount,googleMapsUri,reviews',
+        },
+      }
+    );
+  } catch (e) {
+    return { rating: null, total: 0, reviews: [], error: 'fetch_failed' };
+  }
+  if (!res.ok) {
+    return { rating: null, total: 0, reviews: [], error: `google_${res.status}` };
+  }
+  const p = await res.json();
+  const reviews = (p.reviews || []).map((r) => {
+    const a = r.authorAttribution || {};
+    return {
+      author: a.displayName || '',
+      photo: a.photoUri || '',
+      profile: a.uri || '',
+      rating: r.rating || 0,
+      text:
+        ((r.text && r.text.text) ||
+          (r.originalText && r.originalText.text) ||
+          '').trim(),
+      time: r.relativePublishTimeDescription || '',
+      publishTime: r.publishTime || '',
+    };
+  });
+  return {
+    name: (p.displayName && p.displayName.text) || '',
+    rating: typeof p.rating === 'number' ? p.rating : null,
+    total: p.userRatingCount || 0,
+    mapsUrl: p.googleMapsUri || '',
+    reviews,
+  };
 }
 
 /* ------------------------------------------------------------------ */

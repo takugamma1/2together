@@ -1,0 +1,299 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<section
+  class="tg-reviews tg-section"
+  data-tg-reviews="{{ section.id }}"
+  data-endpoint="{{ section.settings.endpoint | default: '/apps/club/reviews' }}"
+  data-min-rating="{{ section.settings.min_rating | default: 4 }}"
+  data-max-reviews="{{ section.settings.max_reviews | default: 5 }}"
+  data-fallback-maps="{{ section.settings.fallback_maps_url }}"
+  style="--tg-reviews-cols: {{ section.settings.columns | default: 3 }};"
+>
+  <header class="tg-reviews-head">
+    <span class="tg-eyebrow">{{ section.settings.eyebrow | default: 'Отзиви' }}</span>
+    <h2 class="tg-reviews-title">{{ section.settings.title | default: 'КАКВО КАЗВАТ ХОРАТА' }}</h2>
+    {% if section.settings.intro != blank %}
+      <p class="tg-reviews-intro">{{ section.settings.intro }}</p>
+    {% endif %}
+    <a class="tg-reviews-summary" data-tg-reviews-summary href="#" target="_blank" rel="noopener" hidden>
+      <span class="tg-reviews-rating" data-tg-reviews-rating></span>
+      <span class="tg-reviews-stars" data-tg-reviews-stars aria-hidden="true"></span>
+      <span class="tg-reviews-count" data-tg-reviews-count></span>
+      <span class="tg-reviews-g" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-2 3.2-4.9 3.2-7.8z"/><path fill="#34A853" d="M12 23c2.9 0 5.4-1 7.2-2.6l-3.6-2.7c-1 .7-2.3 1-3.6 1-2.8 0-5.1-1.9-6-4.4H2.3v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M6 14.3a6.6 6.6 0 0 1 0-4.2V7.3H2.3a11 11 0 0 0 0 9.8L6 14.3z"/><path fill="#EA4335" d="M12 5.5c1.6 0 3 .5 4.1 1.6l3.1-3.1A11 11 0 0 0 12 1 11 11 0 0 0 2.3 7.3L6 10.1c.9-2.5 3.2-4.6 6-4.6z"/></svg>
+      </span>
+    </a>
+  </header>
+
+  <div class="tg-reviews-grid" data-tg-reviews-grid>
+    {% for i in (1..3) %}
+      <div class="tg-review-card tg-review-skeleton" aria-hidden="true">
+        <div class="tg-review-top"><span class="tg-sk tg-sk-photo"></span><span class="tg-sk tg-sk-line"></span></div>
+        <span class="tg-sk tg-sk-line"></span>
+        <span class="tg-sk tg-sk-line tg-sk-short"></span>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if section.settings.cta_label != blank %}
+    <a class="tg-reviews-cta" data-tg-reviews-cta href="{{ section.settings.fallback_maps_url | default: '#' }}" target="_blank" rel="noopener">
+      {{ section.settings.cta_label }}
+      <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+    </a>
+  {% endif %}
+</section>
+
+<script>
+(function () {
+  var root = document.querySelector('[data-tg-reviews="{{ section.id }}"]');
+  if (!root) return;
+
+  var endpoint = root.getAttribute('data-endpoint');
+  var minRating = parseInt(root.getAttribute('data-min-rating'), 10) || 0;
+  var maxReviews = parseInt(root.getAttribute('data-max-reviews'), 10) || 5;
+  var fallbackMaps = root.getAttribute('data-fallback-maps') || '';
+
+  var grid = root.querySelector('[data-tg-reviews-grid]');
+  var summary = root.querySelector('[data-tg-reviews-summary]');
+  var ratingEl = root.querySelector('[data-tg-reviews-rating]');
+  var starsEl = root.querySelector('[data-tg-reviews-stars]');
+  var countEl = root.querySelector('[data-tg-reviews-count]');
+  var ctaEl = root.querySelector('[data-tg-reviews-cta]');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function stars(n) {
+    n = Math.round(n || 0);
+    var out = '';
+    for (var i = 1; i <= 5; i++) {
+      out += '<span class="' + (i <= n ? '' : 'tg-stars-empty') + '">★</span>';
+    }
+    return out;
+  }
+  function hide() { root.style.display = 'none'; }
+
+  fetch(endpoint, { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (data) {
+      if (!data || data.error) return hide();
+
+      var list = (data.reviews || []).filter(function (rv) {
+        return (rv.rating || 0) >= minRating;
+      }).slice(0, maxReviews);
+
+      if (!list.length) return hide();
+
+      var mapsUrl = data.mapsUrl || fallbackMaps || '#';
+
+      // Summary
+      if (typeof data.rating === 'number') {
+        if (ratingEl) ratingEl.textContent = data.rating.toFixed(1);
+        if (starsEl) starsEl.innerHTML = stars(data.rating);
+        if (countEl) countEl.textContent = data.total ? '(' + data.total + ')' : '';
+        if (summary) { summary.setAttribute('href', mapsUrl); summary.hidden = false; }
+      }
+      if (ctaEl && mapsUrl !== '#') ctaEl.setAttribute('href', mapsUrl);
+
+      // Cards
+      grid.innerHTML = list.map(function (rv) {
+        var photo = rv.photo
+          ? '<img class="tg-review-photo" src="' + esc(rv.photo) + '" alt="" loading="lazy" referrerpolicy="no-referrer">'
+          : '<span class="tg-review-photo"></span>';
+        return (
+          '<article class="tg-review-card">' +
+            '<div class="tg-review-top">' +
+              photo +
+              '<div class="tg-review-meta">' +
+                '<span class="tg-review-author">' + esc(rv.author) + '</span>' +
+                '<span class="tg-review-time">' + esc(rv.time) + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<span class="tg-review-stars" aria-label="' + (rv.rating || 0) + ' / 5">' + stars(rv.rating) + '</span>' +
+            '<p class="tg-review-text">' + esc(rv.text) + '</p>' +
+          '</article>'
+        );
+      }).join('');
+    })
+    .catch(hide);
+})();
+</script>
+
+{% stylesheet %}
+  .tg-reviews {
+    background: var(--tg-ink, #0B1220);
+    color: var(--tg-text-primary, #E8ECF2);
+    padding: var(--tg-s8, 64px) var(--tg-s7, 48px);
+    font-family: 'General Sans', sans-serif;
+  }
+
+  .tg-reviews-head {
+    max-width: 1280px;
+    margin: 0 auto var(--tg-s6, 32px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--tg-s3, 12px);
+  }
+
+  .tg-reviews-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--tg-text-primary, #E8ECF2);
+    margin: 0;
+  }
+
+  .tg-reviews-intro {
+    color: var(--tg-text-secondary, #B7C2D4);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0;
+  }
+
+  .tg-reviews-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tg-s2, 8px);
+    margin-top: var(--tg-s2, 8px);
+    text-decoration: none;
+  }
+  .tg-reviews-summary[hidden] { display: none; }
+
+  .tg-reviews-rating {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--tg-text-primary, #E8ECF2);
+  }
+
+  .tg-reviews-stars { color: var(--tg-flame, #E8601C); font-size: 18px; letter-spacing: 2px; }
+  .tg-reviews-stars .tg-stars-empty,
+  .tg-review-stars .tg-stars-empty { color: rgba(138, 155, 181, 0.32); }
+
+  .tg-reviews-count { font-size: 13px; color: var(--tg-text-muted, #8A9BB5); }
+  .tg-reviews-summary:hover .tg-reviews-count { color: var(--tg-flame, #E8601C); }
+  .tg-reviews-g { display: inline-flex; align-items: center; }
+
+  .tg-reviews-grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(var(--tg-reviews-cols, 3), minmax(0, 1fr));
+    gap: var(--tg-s4, 16px);
+    align-items: start;
+  }
+
+  .tg-review-card {
+    background: var(--tg-surface-raised, #121E34);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.14));
+    border-left: 2px solid var(--tg-flame, #E8601C);
+    padding: var(--tg-s5, 24px);
+    display: flex;
+    flex-direction: column;
+    gap: var(--tg-s3, 12px);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  }
+
+  .tg-review-top { display: flex; align-items: center; gap: var(--tg-s3, 12px); }
+
+  .tg-review-photo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--tg-surface, #0D1526);
+    display: block;
+  }
+
+  .tg-review-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+  .tg-review-author {
+    font-family: 'Technor', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--tg-text-primary, #E8ECF2);
+  }
+
+  .tg-review-time { font-size: 11px; color: var(--tg-text-muted, #8A9BB5); }
+  .tg-review-stars { color: var(--tg-flame, #E8601C); font-size: 14px; letter-spacing: 1px; }
+
+  .tg-review-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--tg-text-secondary, #B7C2D4);
+    margin: 0;
+  }
+
+  .tg-reviews-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    margin: var(--tg-s6, 32px) auto 0;
+    padding: 14px 28px 14px 22px;
+    background: var(--tg-flame, #E8601C);
+    color: #0B1220;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+    transition: background 150ms ease;
+  }
+  .tg-reviews-cta:hover { background: #F47B3E; }
+
+  /* Loading skeletons */
+  .tg-sk { display: block; background: rgba(138, 155, 181, 0.12); border-radius: 4px; }
+  .tg-sk-photo { width: 44px; height: 44px; border-radius: 50%; }
+  .tg-sk-line { height: 12px; width: 100%; }
+  .tg-sk-short { width: 60%; }
+  .tg-review-skeleton { animation: tg-sk-pulse 1.2s ease-in-out infinite; }
+  @keyframes tg-sk-pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  @media (max-width: 1024px) {
+    .tg-reviews { padding: var(--tg-s6, 32px) var(--tg-s5, 24px); }
+    .tg-reviews-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 640px) {
+    .tg-reviews-grid { grid-template-columns: 1fr; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Google Reviews",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Отзиви" },
+    { "type": "text", "id": "title", "label": "Title", "default": "КАКВО КАЗВАТ ХОРАТА" },
+    { "type": "textarea", "id": "intro", "label": "Intro (optional)" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Виж всички отзиви в Google" },
+    { "type": "url", "id": "fallback_maps_url", "label": "Google listing URL (fallback)", "info": "Used for the button/summary link if Google doesn't return one." },
+    { "type": "header", "content": "Source & filtering" },
+    { "type": "text", "id": "endpoint", "label": "Reviews endpoint", "default": "/apps/club/reviews", "info": "Your Worker route behind the Shopify app proxy. Returns cached Google reviews." },
+    { "type": "range", "id": "min_rating", "label": "Minimum stars to show", "min": 1, "max": 5, "step": 1, "default": 4, "info": "Hide reviews below this rating. Set to 1 to show everything." },
+    { "type": "range", "id": "max_reviews", "label": "Max reviews", "min": 1, "max": 5, "step": 1, "default": 5, "info": "Google returns up to 5." },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 }
+  ],
+  "presets": [
+    { "name": "Google Reviews", "category": "Custom" }
+  ],
+  "enabled_on": {
+    "templates": ["index", "page"]
+  }
+}
+{% endschema %}

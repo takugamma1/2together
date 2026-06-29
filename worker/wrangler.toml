@@ -1,3 +1,7 @@
 name = "club-backend"
 main = "src/index.js"
 compatibility_date = "2026-06-01"
+
+[vars]
+# Public Google Place ID for the /reviews endpoint (the API key is a secret).
+GOOGLE_PLACE_ID = "ChIJqfizUnBVpEARaF0yq_Yt1Ws"
