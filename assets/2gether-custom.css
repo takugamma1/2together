@@ -163,13 +163,14 @@
   position: absolute;
   inset: 0;
   z-index: 10;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .tg-hero-top-info {
-  padding: var(--tg-s10) var(--tg-s9) 0;
+  padding: var(--tg-s5) var(--tg-s9) 0;
   display: flex;
   flex-direction: column;
   gap: var(--tg-s5);
@@ -193,23 +194,25 @@
 }
 
 .tg-hero-bottom-title {
-  padding: 0 var(--tg-s7) var(--tg-s6);
+  padding: var(--tg-s9) var(--tg-s9) 0;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: flex-start;
 }
 
 .tg-hero-title-main {
   font-family: 'Technor', sans-serif;
   font-weight: 700;
-  font-size: clamp(4rem, 8vw, 9rem);
+  font-size: clamp(3rem, 6.5vw, 6.5rem);
   letter-spacing: -0.04em;
   line-height: 0.85;
   color: var(--tg-text-primary);
-  white-space: nowrap;
 }
 
-.tg-hero-title-main span { color: var(--tg-flame); }
+.tg-hero-title-main span {
+  color: var(--tg-flame);
+  display: block;
+}
 
 /* Hero Bento Grid */
 .tg-hero-bento {
@@ -1463,8 +1466,12 @@ body header-component {
 
 /* Tablet — collapse decorative columns */
 @media (max-width: 1024px) {
-  .tg-hero-top-info {
+  .tg-hero-bottom-title {
     padding: var(--tg-s7) var(--tg-s5) 0;
+  }
+
+  .tg-hero-top-info {
+    padding: var(--tg-s4) var(--tg-s5) 0;
     max-width: 360px;
   }
 
@@ -1572,12 +1579,12 @@ body header-component {
   }
 
   .tg-hero-top-info {
-    padding: var(--tg-s6) var(--tg-s4) 0;
+    padding: var(--tg-s2) var(--tg-s4) 0;
     max-width: 100%;
   }
 
   .tg-hero-bottom-title {
-    padding: var(--tg-s4) var(--tg-s4) var(--tg-s5);
+    padding: 0 var(--tg-s4) var(--tg-s4);
   }
 
   .tg-hero-title-main {
