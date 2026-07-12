@@ -9,6 +9,7 @@
  *   GET  /poll?poll=<id>     -> { counts: {<optionGid>: n}, mine: <optionGid>|null }
  *   POST /vote   {poll, option}
  *   GET  /reviews            -> { name, rating, total, mapsUrl, reviews:[...] } (Google, cached 12h)
+ *   GET  /youtube            -> { channelTitle, channelUrl, videos:[...] } (YouTube RSS, cached 30m)
  *
  * Secrets (wrangler secret put):
  *   SHOPIFY_API_SECRET  — app proxy app's client secret (signature verification)
@@ -18,6 +19,7 @@
  *
  * Vars (wrangler.toml [vars]):
  *   GOOGLE_PLACE_ID     — Google Place ID of the business (public; for /reviews)
+ *   YOUTUBE_CHANNEL_ID  — channel ID (UC...); public; for /youtube
  */
 
 const ADMIN_API_VERSION = '2025-10';
@@ -55,6 +57,9 @@ export default {
         case 'reviews':
           if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
           return await handleReviews(env, ctx);
+        case 'youtube':
+          if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+          return await handleYoutube(env, ctx);
         default:
           return json({ error: 'not_found' }, 404);
       }
@@ -343,6 +348,94 @@ async function fetchGoogleReviews(env) {
     mapsUrl: p.googleMapsUri || '',
     reviews,
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* YouTube latest videos (public RSS feed, edge-cached 30m)            */
+/* ------------------------------------------------------------------ */
+
+// GET /youtube -> latest uploads with per-video stats. Uses the public
+// channel RSS feed (no API key): title, thumbnail, views and rating count
+// (≈ likes, since dislikes are hidden) come straight from the feed.
+async function handleYoutube(env, ctx) {
+  const cache = caches.default;
+  const cacheKey = new Request('https://youtube.cache.local/latest-videos');
+
+  const hit = await cache.match(cacheKey);
+  if (hit) return hit;
+
+  const data = await fetchYoutubeFeed(env);
+  const resp = new Response(JSON.stringify(data), {
+    headers: {
+      'Content-Type': 'application/json',
+      // Don't cache error payloads — only good responses.
+      'Cache-Control': data.error ? 'no-store' : 'public, max-age=1800',
+    },
+  });
+  if (!data.error && ctx && ctx.waitUntil) {
+    ctx.waitUntil(cache.put(cacheKey, resp.clone()));
+  }
+  return resp;
+}
+
+async function fetchYoutubeFeed(env) {
+  const channelId = env.YOUTUBE_CHANNEL_ID;
+  if (!channelId) {
+    return { channelTitle: '', channelUrl: '', videos: [], error: 'not_configured' };
+  }
+  let res;
+  try {
+    res = await fetch(
+      `https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`,
+      { headers: { Accept: 'application/atom+xml' } }
+    );
+  } catch (e) {
+    return { channelTitle: '', channelUrl: '', videos: [], error: 'fetch_failed' };
+  }
+  if (!res.ok) {
+    return { channelTitle: '', channelUrl: '', videos: [], error: `youtube_${res.status}` };
+  }
+  const xml = await res.text();
+
+  const channelTitle = decodeXml(
+    (xml.split('<entry>')[0].match(/<title>([^<]*)<\/title>/) || [])[1] || ''
+  );
+
+  const videos = xml
+    .split('<entry>')
+    .slice(1)
+    .map((entry) => {
+      const pick = (re) => (entry.match(re) || [])[1] || '';
+      const id = pick(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+      if (!id) return null;
+      return {
+        id,
+        title: decodeXml(pick(/<media:title>([^<]*)<\/media:title>/) || pick(/<title>([^<]*)<\/title>/)),
+        published: pick(/<published>([^<]+)<\/published>/),
+        thumb: pick(/<media:thumbnail url="([^"]+)"/) || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        views: parseInt(pick(/<media:statistics views="(\d+)"/), 10) || 0,
+        likes: parseInt(pick(/<media:starRating count="(\d+)"/), 10) || 0,
+        url: `https://www.youtube.com/watch?v=${id}`,
+      };
+    })
+    .filter(Boolean);
+
+  return {
+    channelTitle,
+    channelUrl: `https://www.youtube.com/channel/${channelId}`,
+    videos,
+  };
+}
+
+function decodeXml(s) {
+  return String(s)
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(parseInt(n, 10)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
 }
 
 /* ------------------------------------------------------------------ */

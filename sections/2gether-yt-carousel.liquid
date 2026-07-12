@@ -1,0 +1,223 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-blog.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<section
+  class="tg-ytc tg-section"
+  data-tg-ytc="{{ section.id }}"
+  data-endpoint="{{ section.settings.endpoint | default: '/apps/club/youtube' }}"
+  data-max="{{ section.settings.max_videos | default: 10 }}"
+  data-channel-url="{{ section.settings.channel_url }}"
+>
+  <div class="tg-ytc-inner">
+    <header class="tg-ytc-head">
+      <div class="tg-ytc-head-left">
+        <span class="tg-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:6px;"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8Z"/><path d="m9.6 15.6 6.3-3.6-6.3-3.6v7.2Z" fill="#0B1220"/></svg>
+          {{- section.settings.eyebrow | default: 'YouTube' -}}
+        </span>
+        <h2 class="tg-ytc-title">{{ section.settings.title | default: 'ПОСЛЕДНИ КЛИПОВЕ' }}</h2>
+      </div>
+      <div class="tg-ytc-head-right">
+        <a class="tg-ytc-channel" data-tg-ytc-channel href="{{ section.settings.channel_url | default: '#' }}" target="_blank" rel="noopener"{% if section.settings.channel_url == blank %} hidden{% endif %}>
+          {{- section.settings.cta_label | default: 'Всички клипове' }} &rarr;</a>
+        <div class="tg-ytc-arrows">
+          <button type="button" class="tg-ytc-arrow" data-tg-ytc-prev aria-label="Назад" disabled>
+            <svg width="16" height="12" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1 2 5l4 4"/></svg>
+          </button>
+          <button type="button" class="tg-ytc-arrow" data-tg-ytc-next aria-label="Напред" disabled>
+            <svg width="16" height="12" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="tg-ytc-track" data-tg-ytc-track tabindex="0" aria-label="{{ section.settings.title | default: 'Последни клипове' | escape }}">
+      {% for i in (1..4) %}
+        <div class="tg-ytc-card tg-ytc-skeleton" aria-hidden="true">
+          <div class="tg-ytc-thumb"></div>
+          <div class="tg-ytc-body">
+            <span class="tg-sk tg-sk-line"></span>
+            <span class="tg-sk tg-sk-line tg-sk-short"></span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.querySelector('[data-tg-ytc="{{ section.id }}"]');
+  if (!root) return;
+
+  var endpoint = root.getAttribute('data-endpoint');
+  var max = parseInt(root.getAttribute('data-max'), 10) || 10;
+  var track = root.querySelector('[data-tg-ytc-track]');
+  var prevBtn = root.querySelector('[data-tg-ytc-prev]');
+  var nextBtn = root.querySelector('[data-tg-ytc-next]');
+  var channelLink = root.querySelector('[data-tg-ytc-channel]');
+
+  var nf;
+  try {
+    nf = new Intl.NumberFormat('bg-BG', { notation: 'compact', maximumFractionDigits: 1 });
+  } catch (e) {
+    nf = { format: function (n) { return String(n); } };
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function fmtDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    try { return d.toLocaleDateString('bg-BG', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
+    catch (e) { return ''; }
+  }
+
+  function hide() { root.style.display = 'none'; }
+
+  var EYE = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+  var THUMB = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 10v11m0-11 4.2-7.4A2 2 0 0 1 14 3.6l-.7 4.9a1 1 0 0 0 1 1.5H19a2 2 0 0 1 2 2.4l-1.5 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3Z"/></svg>';
+  var PLAY = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>';
+
+  fetch(endpoint, { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (data) {
+      if (!data || data.error) return hide();
+      var videos = (data.videos || []).slice(0, max);
+      if (!videos.length) return hide();
+
+      if (channelLink && data.channelUrl && channelLink.getAttribute('href') === '#') {
+        channelLink.setAttribute('href', data.channelUrl);
+        channelLink.hidden = false;
+      }
+
+      track.innerHTML = videos.map(function (v) {
+        var stats = '';
+        if (v.views) {
+          stats += '<span class="tg-ytc-stat" title="{{ section.settings.views_text | default: 'гледания' | escape }}">' + EYE + nf.format(v.views) + '</span>';
+        }
+        if (v.likes) {
+          stats += '<span class="tg-ytc-stat" title="{{ section.settings.likes_text | default: 'харесвания' | escape }}">' + THUMB + nf.format(v.likes) + '</span>';
+        }
+        var date = fmtDate(v.published);
+        if (date) stats += '<span class="tg-ytc-stat tg-ytc-date">' + date + '</span>';
+        return (
+          '<a class="tg-ytc-card" href="' + esc(v.url) + '" target="_blank" rel="noopener">' +
+            '<span class="tg-ytc-thumb">' +
+              '<img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
+              '<span class="tg-ytc-play">' + PLAY + '</span>' +
+            '</span>' +
+            '<span class="tg-ytc-body">' +
+              '<span class="tg-ytc-name">' + esc(v.title) + '</span>' +
+              '<span class="tg-ytc-stats">' + stats + '</span>' +
+            '</span>' +
+          '</a>'
+        );
+      }).join('');
+
+      // --- arrows ---
+      function step() {
+        var card = track.querySelector('.tg-ytc-card');
+        if (!card) return track.clientWidth;
+        var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 16;
+        return card.getBoundingClientRect().width + gap;
+      }
+      function update() {
+        var maxScroll = track.scrollWidth - track.clientWidth - 2;
+        prevBtn.disabled = track.scrollLeft <= 2;
+        nextBtn.disabled = track.scrollLeft >= maxScroll;
+      }
+      function go(dir) {
+        var from = track.scrollLeft;
+        var target = from + dir * step();
+        var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.scrollTo({ left: target, behavior: reduced ? 'auto' : 'smooth' });
+        // Some engines ignore programmatic smooth scrolling — jump instead.
+        // Refresh the arrows here too, in case scroll events are throttled.
+        setTimeout(function () {
+          if (Math.abs(track.scrollLeft - from) < 4) track.scrollLeft = target;
+          update();
+        }, 250);
+        setTimeout(update, 600);
+      }
+      prevBtn.addEventListener('click', function () { go(-1); });
+      nextBtn.addEventListener('click', function () { go(1); });
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    })
+    .catch(hide);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "2Gether YouTube клипове",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Етикет",
+      "default": "YouTube"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Заглавие",
+      "default": "ПОСЛЕДНИ КЛИПОВЕ"
+    },
+    {
+      "type": "text",
+      "id": "endpoint",
+      "label": "Endpoint",
+      "default": "/apps/club/youtube",
+      "info": "Оставете както е — Cloudflare Worker-ът връща последните клипове от канала."
+    },
+    {
+      "type": "range",
+      "id": "max_videos",
+      "label": "Максимален брой клипове",
+      "min": 4,
+      "max": 15,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "url",
+      "id": "channel_url",
+      "label": "Линк към канала (за бутона)"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Текст на бутона",
+      "default": "Всички клипове"
+    },
+    {
+      "type": "text",
+      "id": "views_text",
+      "label": "Подсказка: гледания",
+      "default": "гледания"
+    },
+    {
+      "type": "text",
+      "id": "likes_text",
+      "label": "Подсказка: харесвания",
+      "default": "харесвания"
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether YouTube клипове"
+    }
+  ]
+}
+{% endschema %}

@@ -5,3 +5,6 @@ compatibility_date = "2026-06-01"
 [vars]
 # Public Google Place ID for the /reviews endpoint (the API key is a secret).
 GOOGLE_PLACE_ID = "ChIJqfizUnBVpEARaF0yq_Yt1Ws"
+# Channel ID (UC...) for the /youtube endpoint. Find it at
+# youtube.com → your channel → About → Share channel → Copy channel ID.
+YOUTUBE_CHANNEL_ID = ""

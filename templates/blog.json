@@ -23,9 +23,14 @@
         "read_more_text": "Прочети",
         "empty_text": "Очаквайте скоро първите истории от клуба."
       }
+    },
+    "yt-carousel": {
+      "type": "2gether-yt-carousel",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "yt-carousel"
   ]
 }
