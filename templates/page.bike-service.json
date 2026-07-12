@@ -122,9 +122,22 @@
         "cta_title": "Готов ли си да запазиш?",
         "cta_btn": "избери си час"
       }
+    },
+    "google_reviews": {
+      "type": "2gether-reviews",
+      "settings": {
+        "eyebrow": "Отзиви",
+        "title": "КАКВО КАЗВАТ ХОРАТА",
+        "cta_label": "Виж всички отзиви в Google",
+        "endpoint": "/apps/club/reviews",
+        "min_rating": 4,
+        "max_reviews": 5,
+        "columns": 3
+      }
     }
   },
   "order": [
-    "tg_service"
+    "tg_service",
+    "google_reviews"
   ]
 }
