@@ -7,4 +7,4 @@ compatibility_date = "2026-06-01"
 GOOGLE_PLACE_ID = "ChIJqfizUnBVpEARaF0yq_Yt1Ws"
 # Channel ID (UC...) for the /youtube endpoint. Find it at
 # youtube.com → your channel → About → Share channel → Copy channel ID.
-YOUTUBE_CHANNEL_ID = ""
+YOUTUBE_CHANNEL_ID = "UC9-YryJX2y-nWlLHbb24VWA"
