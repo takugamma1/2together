@@ -1,0 +1,56 @@
+{%- comment -%}
+  Club 2together post card.
+  Params:
+    article        — the article to render
+    featured       — optional, true for the large split-layout card
+    video_label    — optional badge text for posts containing a YouTube clip
+    read_more_text — optional "read more" text
+{%- endcomment -%}
+{%- liquid
+  assign tg_has_video = false
+  if article.content contains 'youtube.com' or article.content contains 'youtu.be'
+    assign tg_has_video = true
+  endif
+
+  assign tg_card_yt_id = ''
+  if tg_has_video
+    capture tg_card_yt_id
+      render '2gether-yt-id', content: article.content
+    endcapture
+    assign tg_card_yt_id = tg_card_yt_id | strip
+  endif
+
+  assign tg_excerpt = article.excerpt_or_content | strip_html | truncate: 160
+-%}
+<article class="tg-bcard{% if featured %} tg-bcard--featured{% endif %}">
+  <a href="{{ article.url }}" class="tg-bcard-media" aria-hidden="true" tabindex="-1">
+    {%- if article.image -%}
+      {{ article.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 720px) 100vw, 50vw', alt: article.image.alt | default: article.title }}
+    {%- elsif tg_card_yt_id != blank -%}
+      {% # theme-check-disable RemoteAsset %}
+      <img src="https://i.ytimg.com/vi/{{ tg_card_yt_id }}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360">
+      {% # theme-check-enable RemoteAsset %}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag }}
+    {%- endif -%}
+    {%- if tg_has_video -%}
+      <span class="tg-bcard-play">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
+        {{ video_label | default: 'Видео' }}
+      </span>
+    {%- endif -%}
+  </a>
+  <div class="tg-bcard-body">
+    <div class="tg-bcard-meta">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d.%m.%Y' }}</time>
+      {%- for tag in article.tags limit: 2 -%}
+        <span class="tg-bcard-tag">{{ tag }}</span>
+      {%- endfor -%}
+    </div>
+    <h3 class="tg-bcard-title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+    {%- if tg_excerpt != blank -%}
+      <p class="tg-bcard-excerpt">{{ tg_excerpt }}</p>
+    {%- endif -%}
+    <span class="tg-bcard-more">{{ read_more_text | default: 'Прочети' }} &rarr;</span>
+  </div>
+</article>

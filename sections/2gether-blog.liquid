@@ -1,0 +1,155 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-blog.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<section class="tg-blog tg-section">
+  <div class="tg-blog-inner">
+    <header class="tg-blog-head">
+      <span class="tg-label">{{ section.settings.eyebrow | default: 'Club 2together' }}</span>
+      <h1 class="tg-blog-title">
+        {%- if section.settings.title != blank -%}
+          {{ section.settings.title }}
+        {%- else -%}
+          {{ blog.title }}
+        {%- endif -%}
+      </h1>
+      {%- if section.settings.intro != blank -%}
+        <p class="tg-blog-intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+        <nav class="tg-blog-tags" aria-label="{{ section.settings.tags_aria | default: 'Категории' }}">
+          <a class="tg-blog-tag{% unless current_tags %} active{% endunless %}" href="{{ blog.url }}">{{ section.settings.all_tag_text | default: 'Всички' }}</a>
+          {%- for tag in blog.all_tags -%}
+            <a
+              class="tg-blog-tag{% if current_tags contains tag %} active{% endif %}"
+              href="{{ blog.url }}/tagged/{{ tag | handle }}"
+            >{{ tag }}</a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    </header>
+
+    {%- paginate blog.articles by section.settings.per_page -%}
+      {%- if blog.articles.size == 0 -%}
+        <div class="tg-blog-empty">
+          <p>{{ section.settings.empty_text | default: 'Очаквайте скоро първите истории от клуба.' }}</p>
+        </div>
+      {%- else -%}
+        {%- liquid
+          assign show_featured = false
+          if section.settings.show_featured and paginate.current_page == 1 and current_tags == blank
+            assign show_featured = true
+          endif
+        -%}
+        <div class="tg-blog-grid">
+          {%- for article in blog.articles -%}
+            {%- if show_featured and forloop.first -%}
+              {%- render '2gether-blog-card', article: article, featured: true, video_label: section.settings.video_label, read_more_text: section.settings.read_more_text -%}
+            {%- else -%}
+              {%- render '2gether-blog-card', article: article, video_label: section.settings.video_label, read_more_text: section.settings.read_more_text -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <nav class="tg-blog-pagination" aria-label="Pagination">
+            {%- if paginate.previous -%}
+              <a href="{{ paginate.previous.url }}" aria-label="Previous page">&larr;</a>
+            {%- endif -%}
+            {%- assign tg_current_page = paginate.current_page | append: '' -%}
+            {%- for part in paginate.parts -%}
+              {%- assign tg_part_title = part.title | append: '' -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}">{{ part.title }}</a>
+              {%- elsif tg_part_title == tg_current_page -%}
+                <span class="current" aria-current="page">{{ part.title }}</span>
+              {%- else -%}
+                <span>{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <a href="{{ paginate.next.url }}" aria-label="Next page">&rarr;</a>
+            {%- endif -%}
+          </nav>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "2Gether Club Blog",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["blog"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Етикет над заглавието",
+      "default": "Club 2together"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Заглавие (празно = името на блога)"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Кратко описание",
+      "default": "Истории от пътя, видео клипове от неделните каранета и всичко около клуба."
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Публикации на страница",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured",
+      "label": "Открояване на най-новата публикация",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Показвай филтър по тагове",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "all_tag_text",
+      "label": "Текст за „всички” таг",
+      "default": "Всички"
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Бадж за публикации с видео",
+      "default": "Видео"
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Текст „прочети още”",
+      "default": "Прочети"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_text",
+      "label": "Текст при празен блог",
+      "default": "Очаквайте скоро първите истории от клуба."
+    }
+  ]
+}
+{% endschema %}

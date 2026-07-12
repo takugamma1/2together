@@ -1,0 +1,24 @@
+{%- comment -%}
+  Echoes the first YouTube video ID found in the given HTML/text, or
+  nothing. Used to derive a thumbnail for club posts that embed a clip
+  but have no featured image.
+
+  Usage:
+    {% capture yt_id %}{% render '2gether-yt-id', content: article.content %}{% endcapture %}
+    {% assign yt_id = yt_id | strip %}
+{%- endcomment -%}
+{%- liquid
+  assign tg_yt_id = ''
+  assign tg_yt_markers = 'youtube.com/embed/,youtube-nocookie.com/embed/,youtube.com/watch?v=,youtube.com/shorts/,youtube.com/live/,youtu.be/' | split: ','
+  for tg_yt_marker in tg_yt_markers
+    if tg_yt_id == '' and content contains tg_yt_marker
+      assign tg_yt_parts = content | split: tg_yt_marker
+      assign tg_yt_tail = tg_yt_parts[1]
+      assign tg_yt_id = tg_yt_tail | split: '"' | first | split: "'" | first | split: '&' | first | split: '?' | first | split: '<' | first | split: ' ' | first | slice: 0, 11
+      if tg_yt_id.size < 11
+        assign tg_yt_id = ''
+      endif
+    endif
+  endfor
+  echo tg_yt_id
+-%}

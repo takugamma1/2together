@@ -1,0 +1,163 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-blog.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+{%- liquid
+  assign tg_has_video = false
+  if article.content contains 'youtube.com' or article.content contains 'youtu.be'
+    assign tg_has_video = true
+  endif
+
+  assign tg_hero_yt_id = ''
+  if article.image == blank and tg_has_video
+    capture tg_hero_yt_id
+      render '2gether-yt-id', content: article.content
+    endcapture
+    assign tg_hero_yt_id = tg_hero_yt_id | strip
+  endif
+
+  assign tg_words = article.content | strip_html | split: ' ' | size
+  assign tg_read_minutes = tg_words | divided_by: 180 | at_least: 1
+-%}
+
+<article class="tg-article tg-section">
+  <header class="tg-article-hero{% if article.image == blank and tg_hero_yt_id == blank %} tg-article-hero--plain{% endif %}">
+    {%- if article.image != blank -%}
+      <div class="tg-article-hero-media">
+        {{ article.image | image_url: width: 2000 | image_tag: loading: 'eager', sizes: '100vw', alt: article.image.alt | default: article.title }}
+      </div>
+    {%- elsif tg_hero_yt_id != blank -%}
+      <div class="tg-article-hero-media">
+        {% # theme-check-disable RemoteAsset %}
+        <img src="https://i.ytimg.com/vi/{{ tg_hero_yt_id }}/maxresdefault.jpg" alt="" width="1280" height="720" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/{{ tg_hero_yt_id }}/hqdefault.jpg';">
+        {% # theme-check-enable RemoteAsset %}
+      </div>
+    {%- endif -%}
+    <div class="tg-article-hero-overlay"></div>
+    <div class="tg-article-hero-diagonal"></div>
+
+    <div class="tg-article-hero-content">
+      <a class="tg-label tg-article-eyebrow" href="{{ blog.url }}">{{ section.settings.eyebrow | default: blog.title }}</a>
+      <h1 class="tg-article-title">{{ article.title }}</h1>
+      <div class="tg-article-meta">
+        <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d.%m.%Y' }}</time>
+        {%- if section.settings.show_author and article.author != blank -%}
+          <span class="dot">&bull;</span>
+          <span>{{ article.author }}</span>
+        {%- endif -%}
+        <span class="dot">&bull;</span>
+        <span>{{ tg_read_minutes }} {{ section.settings.read_time_text | default: 'мин четене' }}</span>
+        {%- if tg_has_video -%}
+          <span class="dot">&bull;</span>
+          <span class="tg-article-video-flag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
+            {{ section.settings.video_label | default: 'Видео' }}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+  </header>
+
+  <div class="tg-article-layout">
+    <div
+      class="tg-article-body"
+      data-tg-article-body
+      data-yt-play-label="{{ section.settings.play_label | default: 'Гледай клипа' | escape }}"
+    >
+      {{ article.content }}
+    </div>
+
+    <footer class="tg-article-foot">
+      {%- if article.tags.size > 0 -%}
+        <div class="tg-article-foot-tags">
+          {%- for tag in article.tags -%}
+            <a class="tg-blog-tag" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <a href="{{ blog.url }}" class="tg-btn-primary" style="align-self:flex-start;">{{ section.settings.back_text | default: 'Всички публикации' }} &rarr;</a>
+    </footer>
+  </div>
+
+  {%- liquid
+    assign tg_more = ''
+    assign tg_more_count = 0
+  -%}
+  {%- capture tg_more -%}
+    {%- for other in blog.articles limit: 4 -%}
+      {%- if other.id != article.id and tg_more_count < 3 -%}
+        {%- assign tg_more_count = tg_more_count | plus: 1 -%}
+        {%- render '2gether-blog-card', article: other, video_label: section.settings.video_label, read_more_text: section.settings.read_more_text -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if tg_more contains 'tg-bcard' -%}
+    <aside class="tg-article-more">
+      <div class="tg-article-more-head">
+        <span class="tg-label">{{ section.settings.eyebrow | default: blog.title }}</span>
+        <h2 class="tg-article-more-title">{{ section.settings.more_title | default: 'Още от клуба' }}</h2>
+      </div>
+      <div class="tg-article-more-grid">
+        {{ tg_more }}
+      </div>
+    </aside>
+  {%- endif -%}
+</article>
+
+<script src="{{ '2gether-blog.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "2Gether Club Article",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["article"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Етикет (празно = името на блога)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Показвай автора",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "read_time_text",
+      "label": "Текст за време за четене",
+      "default": "мин четене"
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Бадж за видео",
+      "default": "Видео"
+    },
+    {
+      "type": "text",
+      "id": "play_label",
+      "label": "Текст върху видео миниатюрата",
+      "default": "Гледай клипа"
+    },
+    {
+      "type": "text",
+      "id": "back_text",
+      "label": "Бутон към блога",
+      "default": "Всички публикации"
+    },
+    {
+      "type": "text",
+      "id": "more_title",
+      "label": "Заглавие „още публикации”",
+      "default": "Още от клуба"
+    }
+  ]
+}
+{% endschema %}
