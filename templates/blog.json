@@ -1,8 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "2gether-blog",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Club 2together",
+        "title": "Колоездачен клуб 2gether",
+        "intro": "Истории от пътя, видео клипове от неделните каранета и всичко около клуба.",
+        "per_page": 24,
+        "show_featured": true,
+        "show_tags": true,
+        "all_tag_text": "Всички",
+        "video_label": "Видео",
+        "read_more_text": "Прочети",
+        "empty_text": "Очаквайте скоро първите истории от клуба."
+      }
     }
   },
   "order": [
