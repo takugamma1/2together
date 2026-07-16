@@ -68,6 +68,16 @@
             "link": "shopify://pages/portable-ramps"
           }
         },
+        "nav_tile_GM8EEe": {
+          "type": "nav_tile",
+          "settings": {
+            "link_handle": "",
+            "descriptor": "",
+            "number": "",
+            "title": "Category",
+            "link": ""
+          }
+        },
         "nav_tile_sunday": {
           "type": "nav_tile",
           "settings": {
@@ -86,6 +96,7 @@
         "nav_tile_igVqRq",
         "nav_tile_PKGhED",
         "nav_tile_rampi",
+        "nav_tile_GM8EEe",
         "nav_tile_sunday"
       ],
       "settings": {
