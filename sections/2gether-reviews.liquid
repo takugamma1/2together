@@ -3,6 +3,15 @@
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
 
+{%- liquid
+  assign manual_count = 0
+  for block in section.blocks
+    if block.type == 'review'
+      assign manual_count = manual_count | plus: 1
+    endif
+  endfor
+-%}
+
 <section
   class="tg-reviews tg-section"
   data-tg-reviews="{{ section.id }}"
@@ -10,7 +19,7 @@
   data-min-rating="{{ section.settings.min_rating | default: 4 }}"
   data-max-reviews="{{ section.settings.max_reviews | default: 5 }}"
   data-fallback-maps="{{ section.settings.fallback_maps_url }}"
-  style="--tg-reviews-cols: {{ section.settings.columns | default: 3 }};"
+  data-manual-count="{{ manual_count }}"
 >
   <header class="tg-reviews-head">
     <span class="tg-eyebrow">{{ section.settings.eyebrow | default: 'Отзиви' }}</span>
@@ -28,14 +37,45 @@
     </a>
   </header>
 
-  <div class="tg-reviews-grid" data-tg-reviews-grid>
+  <div class="tg-reviews-nav">
+    <button type="button" class="tg-reviews-arrow" data-tg-reviews-prev aria-label="Назад" disabled>
+      <svg width="16" height="12" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1 2 5l4 4"/></svg>
+    </button>
+    <button type="button" class="tg-reviews-arrow" data-tg-reviews-next aria-label="Напред" disabled>
+      <svg width="16" height="12" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
+    </button>
+  </div>
+
+  <div class="tg-reviews-track" data-tg-reviews-track tabindex="0" aria-label="{{ section.settings.title | default: 'Отзиви' | escape }}">
     {% for i in (1..3) %}
-      <div class="tg-review-card tg-review-skeleton" aria-hidden="true">
+      <div class="tg-review-card tg-review-skeleton" data-tg-reviews-skeleton aria-hidden="true">
         <div class="tg-review-top"><span class="tg-sk tg-sk-photo"></span><span class="tg-sk tg-sk-line"></span></div>
         <span class="tg-sk tg-sk-line"></span>
         <span class="tg-sk tg-sk-line tg-sk-short"></span>
       </div>
     {% endfor %}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'review' -%}
+        {%- assign b_rating = block.settings.rating | default: 5 -%}
+        <article class="tg-review-card" data-manual {{ block.shopify_attributes }}>
+          <div class="tg-review-top">
+            <span class="tg-review-photo tg-review-photo--initials">{{ block.settings.author | strip | slice: 0, 1 | upcase }}</span>
+            <div class="tg-review-meta">
+              <span class="tg-review-author">{{ block.settings.author }}</span>
+              {%- if block.settings.time != blank -%}
+                <span class="tg-review-time">{{ block.settings.time }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+          <span class="tg-review-stars" aria-label="{{ b_rating }} / 5">
+            {%- for i in (1..5) -%}
+              <span{% if i > b_rating %} class="tg-stars-empty"{% endif %}>★</span>
+            {%- endfor -%}
+          </span>
+          <p class="tg-review-text">{{ block.settings.text }}</p>
+        </article>
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 
   {% if section.settings.cta_label != blank %}
@@ -55,13 +95,16 @@
   var minRating = parseInt(root.getAttribute('data-min-rating'), 10) || 0;
   var maxReviews = parseInt(root.getAttribute('data-max-reviews'), 10) || 5;
   var fallbackMaps = root.getAttribute('data-fallback-maps') || '';
+  var manualCount = parseInt(root.getAttribute('data-manual-count'), 10) || 0;
 
-  var grid = root.querySelector('[data-tg-reviews-grid]');
+  var track = root.querySelector('[data-tg-reviews-track]');
   var summary = root.querySelector('[data-tg-reviews-summary]');
   var ratingEl = root.querySelector('[data-tg-reviews-rating]');
   var starsEl = root.querySelector('[data-tg-reviews-stars]');
   var countEl = root.querySelector('[data-tg-reviews-count]');
   var ctaEl = root.querySelector('[data-tg-reviews-cta]');
+  var prevBtn = root.querySelector('[data-tg-reviews-prev]');
+  var nextBtn = root.querySelector('[data-tg-reviews-next]');
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -76,18 +119,56 @@
     }
     return out;
   }
+  function removeSkeletons() {
+    root.querySelectorAll('[data-tg-reviews-skeleton]').forEach(function (el) { el.remove(); });
+  }
   function hide() { root.style.display = 'none'; }
+  function fail() {
+    // No Google data: keep any manually added reviews, hide otherwise.
+    if (manualCount > 0) { removeSkeletons(); initCarousel(); } else { hide(); }
+  }
+
+  /* --- carousel controls (same pattern as the YouTube carousel) --- */
+  function initCarousel() {
+    function step() {
+      var card = track.querySelector('.tg-review-card');
+      if (!card) return track.clientWidth;
+      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 16;
+      return card.getBoundingClientRect().width + gap;
+    }
+    function update() {
+      var maxScroll = track.scrollWidth - track.clientWidth - 2;
+      prevBtn.disabled = track.scrollLeft <= 2;
+      nextBtn.disabled = track.scrollLeft >= maxScroll;
+    }
+    function go(dir) {
+      var from = track.scrollLeft;
+      var target = from + dir * step();
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      track.scrollTo({ left: target, behavior: reduced ? 'auto' : 'smooth' });
+      setTimeout(function () {
+        if (Math.abs(track.scrollLeft - from) < 4) track.scrollLeft = target;
+        update();
+      }, 250);
+      setTimeout(update, 600);
+    }
+    prevBtn.addEventListener('click', function () { go(-1); });
+    nextBtn.addEventListener('click', function () { go(1); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
 
   fetch(endpoint, { headers: { Accept: 'application/json' }, credentials: 'same-origin' })
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (data) {
-      if (!data || data.error) return hide();
+      if (!data || data.error) return fail();
 
       var list = (data.reviews || []).filter(function (rv) {
         return (rv.rating || 0) >= minRating;
       }).slice(0, maxReviews);
 
-      if (!list.length) return hide();
+      if (!list.length) return fail();
 
       var mapsUrl = data.mapsUrl || fallbackMaps || '#';
 
@@ -100,8 +181,9 @@
       }
       if (ctaEl && mapsUrl !== '#') ctaEl.setAttribute('href', mapsUrl);
 
-      // Cards
-      grid.innerHTML = list.map(function (rv) {
+      // Cards — Google reviews go in front of any manual ones.
+      removeSkeletons();
+      track.insertAdjacentHTML('afterbegin', list.map(function (rv) {
         var photo = rv.photo
           ? '<img class="tg-review-photo" src="' + esc(rv.photo) + '" alt="" loading="lazy" referrerpolicy="no-referrer">'
           : '<span class="tg-review-photo"></span>';
@@ -118,9 +200,11 @@
             '<p class="tg-review-text">' + esc(rv.text) + '</p>' +
           '</article>'
         );
-      }).join('');
+      }).join(''));
+
+      initCarousel();
     })
-    .catch(hide);
+    .catch(fail);
 })();
 </script>
 
@@ -134,7 +218,7 @@
 
   .tg-reviews-head {
     max-width: 1280px;
-    margin: 0 auto var(--tg-s6, 32px);
+    margin: 0 auto var(--tg-s4, 16px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,16 +268,50 @@
   .tg-reviews-summary:hover .tg-reviews-count { color: var(--tg-flame, #E8601C); }
   .tg-reviews-g { display: inline-flex; align-items: center; }
 
-  .tg-reviews-grid {
+  .tg-reviews-nav {
     max-width: 1280px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(var(--tg-reviews-cols, 3), minmax(0, 1fr));
-    gap: var(--tg-s4, 16px);
-    align-items: start;
+    margin: 0 auto var(--tg-s3, 12px);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--tg-s2, 8px);
   }
 
+  .tg-reviews-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: var(--tg-surface-raised, #121E34);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.14));
+    color: var(--tg-text-secondary, #8A9BB5);
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .tg-reviews-arrow:hover:not(:disabled) { color: var(--tg-flame, #E8601C); border-color: var(--tg-flame, #E8601C); }
+  .tg-reviews-arrow:disabled { opacity: 0.35; cursor: default; }
+
+  .tg-reviews-track {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    gap: var(--tg-s4, 16px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    align-items: stretch;
+    padding: 4px 2px 10px;
+  }
+
+  .tg-reviews-track::-webkit-scrollbar { display: none; }
+  .tg-reviews-track:focus-visible { outline: 1px solid var(--tg-flame, #E8601C); outline-offset: 4px; }
+
   .tg-review-card {
+    flex: 0 0 clamp(280px, 30vw, 380px);
+    scroll-snap-align: start;
     background: var(--tg-surface-raised, #121E34);
     border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.14));
     border-left: 2px solid var(--tg-flame, #E8601C);
@@ -214,6 +332,17 @@
     flex-shrink: 0;
     background: var(--tg-surface, #0D1526);
     display: block;
+  }
+
+  .tg-review-photo--initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--tg-flame, #E8601C);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.14));
   }
 
   .tg-review-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -264,10 +393,17 @@
 
   @media (max-width: 1024px) {
     .tg-reviews { padding: var(--tg-s6, 32px) var(--tg-s5, 24px); }
-    .tg-reviews-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tg-review-card { flex-basis: clamp(270px, 42vw, 360px); }
   }
   @media (max-width: 640px) {
-    .tg-reviews-grid { grid-template-columns: 1fr; }
+    .tg-reviews { padding: var(--tg-s6, 32px) var(--tg-s4, 16px); }
+    .tg-reviews-track {
+      margin: 0 calc(-1 * var(--tg-s4, 16px));
+      padding-left: var(--tg-s4, 16px);
+      padding-right: var(--tg-s4, 16px);
+      scroll-padding-left: var(--tg-s4, 16px);
+    }
+    .tg-review-card { flex-basis: 80vw; }
   }
 {% endstylesheet %}
 
@@ -285,10 +421,21 @@
     { "type": "header", "content": "Source & filtering" },
     { "type": "text", "id": "endpoint", "label": "Reviews endpoint", "default": "/apps/club/reviews", "info": "Your Worker route behind the Shopify app proxy. Returns cached Google reviews." },
     { "type": "range", "id": "min_rating", "label": "Minimum stars to show", "min": 1, "max": 5, "step": 1, "default": 4, "info": "Hide reviews below this rating. Set to 1 to show everything." },
-    { "type": "range", "id": "max_reviews", "label": "Max reviews", "min": 1, "max": 5, "step": 1, "default": 5, "info": "Google returns up to 5." },
-    { "type": "header", "content": "Layout" },
-    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 }
+    { "type": "range", "id": "max_reviews", "label": "Max Google reviews", "min": 1, "max": 5, "step": 1, "default": 5, "info": "Google returns at most 5. Add more with 'Ръчен отзив' blocks — they show after the Google ones." }
   ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Ръчен отзив",
+      "settings": [
+        { "type": "text", "id": "author", "label": "Име", "default": "Име Фамилия" },
+        { "type": "range", "id": "rating", "label": "Оценка", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "text", "label": "Текст на отзива" },
+        { "type": "text", "id": "time", "label": "Кога (напр. „преди 2 месеца”)" }
+      ]
+    }
+  ],
+  "max_blocks": 20,
   "presets": [
     { "name": "Google Reviews", "category": "Custom" }
   ],
