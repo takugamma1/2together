@@ -133,7 +133,7 @@
         "cta_label": "Виж всички отзиви в Google",
         "fallback_maps_url": "",
         "endpoint": "/apps/club/reviews",
-        "min_rating": 3,
+        "min_rating": 4,
         "max_reviews": 5,
         "columns": 3
       }
