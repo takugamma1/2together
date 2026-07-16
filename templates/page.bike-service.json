@@ -87,7 +87,8 @@
         "step1_sub": "Избери ден и часови диапазон. Ще потвърдим по телефон до 24 часа.",
         "date_label": "Дата",
         "timeslot_label": "Часови диапазон",
-        "time_slots": "Сутрин|9:00 — 12:00||Следобед|12:00 — 16:00||Вечер|16:00 — 19:00",
+        "hour_start": 9,
+        "hour_end": 18,
         "flexibility_label": "Колко си гъвкав с часа?",
         "flex_yes": "Първият свободен час ме устройва",
         "flex_no": "Само посоченият час",
@@ -128,9 +129,11 @@
       "settings": {
         "eyebrow": "Отзиви",
         "title": "КАКВО КАЗВАТ ХОРАТА",
+        "intro": "",
         "cta_label": "Виж всички отзиви в Google",
+        "fallback_maps_url": "",
         "endpoint": "/apps/club/reviews",
-        "min_rating": 4,
+        "min_rating": 3,
         "max_reviews": 5,
         "columns": 3
       }
