@@ -116,6 +116,7 @@
         "q_4"
       ],
       "settings": {
+        "hero_image": "shopify://shop_images/DSC07489.webp",
         "hero_origin": "ПРОИЗВЕДЕНИ В БОТЕВГРАД · БЪЛГАРИЯ",
         "hero_title": "ПРЕНОСИМИ",
         "hero_title_accent": "РАМПИ",
@@ -135,6 +136,7 @@
         "lineup_intro": "Три рампи и стойка, налични днес. Още на път с отварянето на сезона.",
         "features_eyebrow": "Отлично качество",
         "features_title": "ЗАЩО ДА ИЗБЕРЕШ НАС",
+        "story_image": "shopify://shop_images/DSC07706.webp",
         "story_eyebrow": "Магазинът",
         "story_title": "ИЗРАБОТЕНИ НА РЪКА",
         "story_title_em": "Тествани от нас.",
