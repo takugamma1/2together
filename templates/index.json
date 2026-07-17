@@ -37,7 +37,7 @@
         "bento_3": {
           "type": "bento_cell",
           "settings": {
-            "image": "shopify://shop_images/DSP06466.jpg",
+            "image": "shopify://shop_images/DSP06509.jpg",
             "number": "03",
             "title": "СЕРВИЗ",
             "description": "",
@@ -182,16 +182,6 @@
       ],
       "settings": {}
     },
-    "tg_products": {
-      "type": "2gether-products",
-      "settings": {
-        "label_text": "ЕЛЕКТРОНЕН МАГАЗИН",
-        "heading": "НАЙ-ПРОДАВАНИ",
-        "collection": "velosipedi-c59",
-        "view_all_text": "Виж всички",
-        "view_all_link": "shopify://collections"
-      }
-    },
     "tg_community": {
       "type": "2gether-community",
       "blocks": {
@@ -289,6 +279,16 @@
         "cta_label": "Всички клипове",
         "views_text": "гледания",
         "likes_text": "харесвания"
+      }
+    },
+    "tg_products": {
+      "type": "2gether-products",
+      "settings": {
+        "label_text": "ЕЛЕКТРОНЕН МАГАЗИН",
+        "heading": "НАЙ-ПРОДАВАНИ",
+        "collection": "velosipedi-c59",
+        "view_all_text": "Виж всички",
+        "view_all_link": "shopify://collections"
       }
     },
     "tg_services": {
