@@ -55,13 +55,25 @@
             "link": "shopify://collections",
             "icon": "layers"
           }
+        },
+        "bento_cell_QGpn83": {
+          "type": "bento_cell",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_4_5B1_5D.png",
+            "number": "05",
+            "title": "МЪРЧ",
+            "description": "",
+            "link": "shopify://collections/march-c199",
+            "icon": "star"
+          }
         }
       },
       "block_order": [
         "bento_1",
         "bento_2",
         "bento_3",
-        "bento_4"
+        "bento_4",
+        "bento_cell_QGpn83"
       ],
       "settings": {
         "hero_image": "shopify://shop_images/DSC07429.webp",
