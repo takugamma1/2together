@@ -19,7 +19,7 @@
             "number": "01",
             "title": "2GETHERBIKES Portable ramps",
             "description": "",
-            "link": "shopify://pages/bike-service",
+            "link": "shopify://pages/portable-ramps",
             "icon": "tool"
           }
         },
@@ -41,7 +41,7 @@
             "number": "03",
             "title": "СЕРВИЗ",
             "description": "",
-            "link": "/collections",
+            "link": "shopify://pages/bike-service",
             "icon": "star"
           }
         },
@@ -52,7 +52,7 @@
             "number": "04",
             "title": "ЕЛЕКТРОНЕН МАГАЗИН И МЪРЧ",
             "description": "",
-            "link": "shopify://pages/portable-ramps",
+            "link": "shopify://collections",
             "icon": "layers"
           }
         }
