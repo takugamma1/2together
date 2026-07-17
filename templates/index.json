@@ -184,7 +184,6 @@
     },
     "tg_products": {
       "type": "2gether-products",
-      "disabled": true,
       "settings": {
         "label_text": "ЕЛЕКТРОНЕН МАГАЗИН",
         "heading": "НАЙ-ПРОДАВАНИ",
@@ -343,6 +342,7 @@
         "svc_4",
         "svc_5"
       ],
+      "disabled": true,
       "settings": {
         "label_text": "КАТЕГОРИИ ПРОДУКТИ",
         "heading": "<p><strong>КОЛЕЛА ЗА ВСЕКИ ТЕРЕН И СТИЛ</strong></p>",
@@ -354,10 +354,10 @@
     "tg_hero",
     "tg_statement",
     "tg_image_band",
-    "tg_products",
     "tg_community",
     "divider_qMhyqE",
     "2gether_yt_carousel_kXttfc",
+    "tg_products",
     "tg_services"
   ]
 }
