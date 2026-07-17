@@ -73,6 +73,7 @@
           "type": "nav_tile",
           "settings": {
             "link_handle": "",
+            "image": "shopify://shop_images/DSC07351.webp",
             "descriptor": "",
             "number": "",
             "title": "Category",
