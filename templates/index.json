@@ -283,9 +283,9 @@
       "name": "2Gether YouTube клипове",
       "settings": {
         "eyebrow": "YouTube",
-        "title": "ПОСЛЕДНИ ВЛОГОВЕ",
+        "title": "Последни клипове",
         "endpoint": "/apps/club/youtube",
-        "max_videos": 10,
+        "max_videos": 15,
         "channel_url": "",
         "cta_label": "Всички клипове",
         "views_text": "гледания",
