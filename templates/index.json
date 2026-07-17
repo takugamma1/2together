@@ -128,10 +128,40 @@
     "tg_image_band": {
       "type": "2gether-image-band",
       "blocks": {
+        "image_MMHhnc": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC07211.webp"
+          }
+        },
+        "image_WREiFY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC07533.webp"
+          }
+        },
+        "image_AhYwKJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC07254.webp"
+          }
+        },
+        "img_3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSP06248-2.jpg"
+          }
+        },
+        "image_rnHp4R": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSP06509.jpg"
+          }
+        },
         "img_1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/DSP06231.jpg"
+            "image": "shopify://shop_images/DSC07630.webp"
           }
         },
         "img_2": {
@@ -139,18 +169,16 @@
           "settings": {
             "image": "shopify://shop_images/DSP06150.jpg"
           }
-        },
-        "img_3": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/DSP06121.jpg"
-          }
         }
       },
       "block_order": [
+        "image_MMHhnc",
+        "image_WREiFY",
+        "image_AhYwKJ",
+        "img_3",
+        "image_rnHp4R",
         "img_1",
-        "img_2",
-        "img_3"
+        "img_2"
       ],
       "settings": {}
     },
@@ -161,7 +189,7 @@
         "heading": "НАЙ-ПРОДАВАНИ",
         "collection": "velosipedi-c59",
         "view_all_text": "Виж всички",
-        "view_all_link": "shopify://collections/velosipedi-c59"
+        "view_all_link": "shopify://collections"
       }
     },
     "tg_community": {
