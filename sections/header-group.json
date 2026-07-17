@@ -16,7 +16,6 @@
       "blocks": {
         "nav_tile_gygNUN": {
           "type": "nav_tile",
-          "disabled": true,
           "settings": {
             "link_handle": "Е-МАГАЗИН",
             "image": "shopify://shop_images/DSC07743.webp",
@@ -83,7 +82,6 @@
         },
         "nav_tile_sunday": {
           "type": "nav_tile",
-          "disabled": true,
           "settings": {
             "link_handle": "2ГЕ",
             "image": "shopify://shop_images/DSP06315-2.jpg",
