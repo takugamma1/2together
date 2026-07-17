@@ -153,8 +153,8 @@
     "tg_products": {
       "type": "2gether-products",
       "settings": {
-        "label_text": "Колекция",
-        "heading": "Велосипеди",
+        "label_text": "ЕЛЕКТРОНЕН МАГАЗИН",
+        "heading": "НАЙ-ПРОДАВАНИ",
         "collection": "velosipedi-c59",
         "view_all_text": "Виж всички",
         "view_all_link": "shopify://collections/velosipedi-c59"
