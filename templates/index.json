@@ -81,9 +81,9 @@
           "type": "pillar",
           "settings": {
             "number": "01",
-            "icon": "clock",
-            "word": "ОПИТ",
-            "note": "9+ ГОДИНИ В БРАНША"
+            "icon": "users",
+            "word": "КАРАНЕТО ОТ НЕГО ЗАПОЧВА ВСИЧКО",
+            "note": "ОТ НЕГО ЗАПОЧВА ВСИЧКО"
           }
         },
         "pillar_2": {
