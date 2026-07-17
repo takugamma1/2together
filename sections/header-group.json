@@ -14,6 +14,17 @@
     "tg_header": {
       "type": "tg-header",
       "blocks": {
+        "nav_tile_nTqgnc": {
+          "type": "nav_tile",
+          "settings": {
+            "link_handle": "За Нас",
+            "image": "shopify://shop_images/DSC07533.webp",
+            "descriptor": "",
+            "number": "",
+            "title": "За Нас",
+            "link": "shopify://pages/about"
+          }
+        },
         "nav_tile_gygNUN": {
           "type": "nav_tile",
           "settings": {
@@ -93,6 +104,7 @@
         }
       },
       "block_order": [
+        "nav_tile_nTqgnc",
         "nav_tile_gygNUN",
         "nav_tile_LJHd78",
         "nav_tile_igVqRq",
