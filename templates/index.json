@@ -15,9 +15,10 @@
         "bento_1": {
           "type": "bento_cell",
           "settings": {
+            "image": "shopify://shop_images/DSC07743.webp",
             "number": "01",
-            "title": "Сервиз за велосипеди",
-            "description": "Експертна диагностика и ремонт. Връщаме колелото ти в перфектна форма.",
+            "title": "2GETHERBIKES Portable ramps",
+            "description": "",
             "link": "shopify://pages/bike-service",
             "icon": "tool"
           }
@@ -25,9 +26,10 @@
         "bento_2": {
           "type": "bento_cell",
           "settings": {
+            "image": "shopify://shop_images/DSP06311.jpg",
             "number": "02",
             "title": "Наем на велосипеди",
-            "description": "Градски, планински и електрически, избери своето приключение по час, ден или седмица.",
+            "description": "",
             "link": "shopify://pages/bike-rental",
             "icon": "clock"
           }
@@ -35,9 +37,10 @@
         "bento_3": {
           "type": "bento_cell",
           "settings": {
+            "image": "shopify://shop_images/DSP06466.jpg",
             "number": "03",
-            "title": "E-Shop",
-            "description": "Колела, компоненти и аксесоари от водещите световни марки.",
+            "title": "СЕРВИЗ",
+            "description": "",
             "link": "/collections",
             "icon": "star"
           }
@@ -45,9 +48,10 @@
         "bento_4": {
           "type": "bento_cell",
           "settings": {
+            "image": "shopify://shop_images/santa-cruz-heckler-sl-cc-xx-axs-rsv-mx-matte-silver-xl_20_283_29.jpg",
             "number": "04",
-            "title": "2getherbikes · Portable ramps",
-            "description": "Облечи стила на 2GETHER. Тениски, шапки и аксесоари за трасето.",
+            "title": "ЕЛЕКТРОНЕН МАГАЗИН И МЪРЧ",
+            "description": "",
             "link": "shopify://pages/portable-ramps",
             "icon": "layers"
           }
@@ -62,7 +66,7 @@
       "settings": {
         "hero_image": "shopify://shop_images/DSC07429.webp",
         "top_label": "2GETHER BIKES / VARNA",
-        "subtitle": "Сервиз, наем, магазин и клуб на едно място. От 2017 г. поддържаме колоезденето във Варна живо, за всяко колело, всеки сезон, всеки ездач.",
+        "subtitle": "Не продаваме просто велосипеди. Създаваме средата, в която се изгражда следващото поколение колоездачи.\n\nОт сервиза и магазина до клуба, отбора и собствените ни продукти — всичко в 2GETHERBIKES е създадено с една цел: да караме повече и да се развиваме заедно.\n\nТова е нашата посока от 2017 г. насам.",
         "cta_text": "разбери повече",
         "cta_link": "shopify://pages/about",
         "title_line1": "2GETHER",
