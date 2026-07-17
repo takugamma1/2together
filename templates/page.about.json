@@ -35,36 +35,12 @@
             "title": "ПРЕДАВАНЕ",
             "description": "Взимаш колелото готово за пътя."
           }
-        },
-        "mosaic_1": {
-          "type": "mosaic_image",
-          "settings": {
-            "image": "shopify://shop_images/DSP06391-2.jpg",
-            "tall": true
-          }
-        },
-        "mosaic_2": {
-          "type": "mosaic_image",
-          "settings": {
-            "image": "shopify://shop_images/DSP06437-2.jpg",
-            "tall": false
-          }
-        },
-        "mosaic_3": {
-          "type": "mosaic_image",
-          "settings": {
-            "image": "shopify://shop_images/2026-04-09.webp",
-            "tall": false
-          }
         }
       },
       "block_order": [
         "step_1",
         "step_2",
-        "step_3",
-        "mosaic_1",
-        "mosaic_2",
-        "mosaic_3"
+        "step_3"
       ],
       "settings": {
         "hero_image": "shopify://shop_images/DSP06248-2.jpg",
