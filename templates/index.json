@@ -16,7 +16,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "01",
-            "title": "СЕРВИЗ НА КОЛЕЛА",
+            "title": "Сервиз за велосипеди",
             "description": "Експертна диагностика и ремонт. Връщаме колелото ти в перфектна форма.",
             "link": "shopify://pages/bike-service",
             "icon": "tool"
@@ -26,7 +26,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "02",
-            "title": "НАЕМ НА велосипеди",
+            "title": "Наем на велосипеди",
             "description": "Градски, планински и електрически, избери своето приключение по час, ден или седмица.",
             "link": "shopify://pages/bike-rental",
             "icon": "clock"
@@ -36,7 +36,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "03",
-            "title": "E-SHOP",
+            "title": "E-Shop",
             "description": "Колела, компоненти и аксесоари от водещите световни марки.",
             "link": "/collections",
             "icon": "star"
@@ -46,7 +46,7 @@
           "type": "bento_cell",
           "settings": {
             "number": "04",
-            "title": "2GETHERBIKES | PORTABLE RAMPS",
+            "title": "2getherbikes · Portable ramps",
             "description": "Облечи стила на 2GETHER. Тениски, шапки и аксесоари за трасето.",
             "link": "shopify://pages/portable-ramps",
             "icon": "layers"
