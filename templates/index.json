@@ -9,20 +9,6 @@
  */
 {
   "sections": {
-    "2gether_yt_carousel_kXttfc": {
-      "type": "2gether-yt-carousel",
-      "name": "2Gether YouTube клипове",
-      "settings": {
-        "eyebrow": "YouTube",
-        "title": "ПОСЛЕДНИ КЛИПОВЕ",
-        "endpoint": "/apps/club/youtube",
-        "max_videos": 10,
-        "channel_url": "",
-        "cta_label": "Всички клипове",
-        "views_text": "гледания",
-        "likes_text": "харесвания"
-      }
-    },
     "tg_hero": {
       "type": "2gether-hero",
       "blocks": {
@@ -198,6 +184,7 @@
     },
     "tg_products": {
       "type": "2gether-products",
+      "disabled": true,
       "settings": {
         "label_text": "ЕЛЕКТРОНЕН МАГАЗИН",
         "heading": "НАЙ-ПРОДАВАНИ",
@@ -289,6 +276,20 @@
         "alignment_horizontal": "center",
         "padding-block-start": 0,
         "padding-block-end": 16
+      }
+    },
+    "2gether_yt_carousel_kXttfc": {
+      "type": "2gether-yt-carousel",
+      "name": "2Gether YouTube клипове",
+      "settings": {
+        "eyebrow": "YouTube",
+        "title": "ПОСЛЕДНИ ВЛОГОВЕ",
+        "endpoint": "/apps/club/youtube",
+        "max_videos": 10,
+        "channel_url": "",
+        "cta_label": "Всички клипове",
+        "views_text": "гледания",
+        "likes_text": "харесвания"
       }
     },
     "tg_services": {
