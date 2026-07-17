@@ -9,6 +9,20 @@
  */
 {
   "sections": {
+    "2gether_yt_carousel_kXttfc": {
+      "type": "2gether-yt-carousel",
+      "name": "2Gether YouTube клипове",
+      "settings": {
+        "eyebrow": "YouTube",
+        "title": "ПОСЛЕДНИ КЛИПОВЕ",
+        "endpoint": "/apps/club/youtube",
+        "max_videos": 10,
+        "channel_url": "",
+        "cta_label": "Всички клипове",
+        "views_text": "гледания",
+        "likes_text": "харесвания"
+      }
+    },
     "tg_hero": {
       "type": "2gether-hero",
       "blocks": {
@@ -224,6 +238,12 @@
           "settings": {
             "initials": "ТН"
           }
+        },
+        "avatar_UYQtWm": {
+          "type": "avatar",
+          "settings": {
+            "initials": "АБ"
+          }
         }
       },
       "block_order": [
@@ -231,10 +251,11 @@
         "avatar_2",
         "avatar_3",
         "avatar_4",
-        "avatar_5"
+        "avatar_5",
+        "avatar_UYQtWm"
       ],
       "settings": {
-        "background_image": "shopify://shop_images/DSP06311.jpg",
+        "background_image": "shopify://shop_images/DSC07519.webp",
         "label_text": "2GETHER SUPPORT PROGRAM",
         "title": "<p>СЛЕДВАЩОТО ПОКОЛЕНИЕ НЕ СЕ ИЗГРАЖДА С ДУМИ.</p><p></p>",
         "description": "Подкрепяме млади колоездачи с реални условия да се развиват — сервиз, части, екипировка, техническа грижа и възможности според тяхното ниво. Подкрепата не се подарява. Тя се печели с постоянство, отношение и прогрес.",
@@ -335,6 +356,7 @@
     "tg_products",
     "tg_community",
     "divider_qMhyqE",
+    "2gether_yt_carousel_kXttfc",
     "tg_services"
   ]
 }
