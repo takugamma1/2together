@@ -64,13 +64,13 @@
         "cat_other"
       ],
       "settings": {
-        "hero_image": "shopify://shop_images/DSP06433-2.jpg",
+        "hero_image": "shopify://shop_images/DSP06417.jpg",
         "hero_eyebrow": "СЕРВИЗ",
         "hero_title": "ЗАПАЗИ ЧАС ЗА",
         "hero_title_accent": "РЕМОНТ",
         "hero_sub": "Кажи ни какъв е проблема, избери си час и дата, остави колелото и ние ще оправим останалото.",
         "hero_cta": "Запази си час",
-        "form_image": "shopify://shop_images/DSP06497-2.jpg",
+        "form_image": "shopify://shop_images/DSP06509.jpg",
         "form_caption_eyebrow": "НАШИЯТ СЕРВИЗ",
         "form_caption": "Само опитни механици. Повечето ремонти са готови за 24 часа.",
         "form_eyebrow": "Всичко на едно място",
@@ -87,7 +87,8 @@
         "step1_sub": "Избери ден и часови диапазон. Ще потвърдим по телефон до 24 часа.",
         "date_label": "Дата",
         "timeslot_label": "Часови диапазон",
-        "time_slots": "Сутрин|9:00 — 12:00||Следобед|12:00 — 16:00||Вечер|16:00 — 19:00",
+        "hour_start": 9,
+        "hour_end": 18,
         "flexibility_label": "Колко си гъвкав с часа?",
         "flex_yes": "Първият свободен час ме устройва",
         "flex_no": "Само посоченият час",
@@ -116,8 +117,8 @@
         "email_label": "Имейл",
         "notes_label": "Нещо друго?",
         "notes_placeholder": "По желание — всичко, което искаш да знаем.",
-        "prices_eyebrow": "нашите цени",
-        "prices_title": "ПАКЕТИ И ЦЕНИ",
+        "prices_eyebrow": "",
+        "prices_title": "ЦЕНОРАЗПИС",
         "prices_intro": "",
         "cta_title": "Готов ли си да запазиш?",
         "cta_btn": "избери си час"
@@ -128,7 +129,9 @@
       "settings": {
         "eyebrow": "Отзиви",
         "title": "КАКВО КАЗВАТ ХОРАТА",
+        "intro": "",
         "cta_label": "Виж всички отзиви в Google",
+        "fallback_maps_url": "",
         "endpoint": "/apps/club/reviews",
         "min_rating": 4,
         "max_reviews": 5
