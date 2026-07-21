@@ -162,6 +162,7 @@
         "image_Gbm7XG",
         "group_F9UMmc"
       ],
+      "disabled": true,
       "name": "t:names.image_with_text",
       "settings": {
         "content_direction": "row",
