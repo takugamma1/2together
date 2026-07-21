@@ -294,7 +294,7 @@
                     "wrap": "pretty",
                     "color": "var(--color-foreground-heading)",
                     "background": false,
-                    "background_color": "#FFFFFF26",
+                    "background_color": "#ffffff26",
                     "corner_radius": 9,
                     "padding-block-start": 0,
                     "padding-block-end": 0,
@@ -382,7 +382,7 @@
                     "label": "Разгледай рампите",
                     "link": "shopify://collections/all",
                     "open_in_new_tab": false,
-                    "style_class": "button-secondary",
+                    "style_class": "button",
                     "width": "fit-content",
                     "custom_width": 34,
                     "width_mobile": "fit-content",
@@ -432,7 +432,7 @@
             "text_position_horizontal": "start",
             "text_position_vertical": "start",
             "text_background": false,
-            "text_background_color": "#FFFFFF",
+            "text_background_color": "#ffffff",
             "text_corner_radius": 0,
             "image_ratio": "landscape",
             "width": "custom",
@@ -653,10 +653,6 @@
         "heading": "<p><strong>КОЛЕЛА ЗА ВСЕКИ ТЕРЕН И СТИЛ</strong></p>",
         "description": "От сериозни планински спускания до ежедневни разходки по морето, намери колелото, което пасва на твоя начин на каране."
       }
-    },
-    "tg_blog_teaser": {
-      "type": "2gether-blog-teaser",
-      "settings": {}
     }
   },
   "order": [
@@ -665,7 +661,6 @@
     "tg_image_band",
     "section_iHJQMc",
     "tg_community",
-    "tg_blog_teaser",
     "divider_qMhyqE",
     "2gether_yt_carousel_kXttfc",
     "tg_products",
