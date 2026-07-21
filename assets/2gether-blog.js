@@ -95,6 +95,15 @@
         var target = p && p !== body && p.textContent.trim() === text ? p : a;
         target.replaceWith(buildFacade(id, playLabel));
       });
+
+    // 3) YouTube URLs left as plain text (not auto-linked by the editor).
+    body.querySelectorAll('p, div').forEach(function (el) {
+      if (el.childElementCount !== 0) return;
+      var text = el.textContent.trim();
+      if (!/^https?:\/\/\S+$/.test(text)) return;
+      var id = ytId(text);
+      if (id) el.replaceWith(buildFacade(id, playLabel));
+    });
   }
 
   document.querySelectorAll('[data-tg-article-body]').forEach(enhance);
