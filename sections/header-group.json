@@ -128,22 +128,9 @@
         "cart_checkout_label": "Към плащане",
         "cart_view_label": "Виж цялата количка"
       }
-    },
-    "2gether_blog_teaser_pm46rH": {
-      "type": "2gether-blog-teaser",
-      "name": "2Gether Блог публикации",
-      "settings": {
-        "blog": "тест-статии",
-        "eyebrow": "Club 2together",
-        "title": "ИСТОРИИ ОТ КЛУБА",
-        "cta_label": "Всички публикации",
-        "max_posts": 3,
-        "video_label": "Видео"
-      }
     }
   },
   "order": [
-    "tg_header",
-    "2gether_blog_teaser_pm46rH"
+    "tg_header"
   ]
 }
