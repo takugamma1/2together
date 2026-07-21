@@ -1,8 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "2gether-404",
-      "settings": {}
+      "settings": {
+        "eyebrow": "Грешка 404",
+        "title": "СТРАНИЦАТА НЕ Е НАМЕРЕНА",
+        "tagline": "Изгубихме следата — тази пътека не води доникъде.",
+        "text": "Връзката може да е грешна или страницата да е преместена. Върни се на познат маршрут:",
+        "primary_label": "Начална страница",
+        "primary_link": "",
+        "secondary_label": "Към магазина",
+        "secondary_link": "shopify://collections"
+      }
     }
   },
   "order": [
