@@ -653,6 +653,10 @@
         "heading": "<p><strong>КОЛЕЛА ЗА ВСЕКИ ТЕРЕН И СТИЛ</strong></p>",
         "description": "От сериозни планински спускания до ежедневни разходки по морето, намери колелото, което пасва на твоя начин на каране."
       }
+    },
+    "tg_blog_teaser": {
+      "type": "2gether-blog-teaser",
+      "settings": {}
     }
   },
   "order": [
@@ -661,6 +665,7 @@
     "tg_image_band",
     "section_iHJQMc",
     "tg_community",
+    "tg_blog_teaser",
     "divider_qMhyqE",
     "2gether_yt_carousel_kXttfc",
     "tg_products",

@@ -1,0 +1,117 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-blog.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+{%- liquid
+  assign tg_blog = section.settings.blog
+  if tg_blog == blank
+    assign tg_blog = blogs['club-2together']
+  endif
+-%}
+
+{%- if tg_blog != blank and tg_blog.articles_count > 0 -%}
+  <section class="tg-blog-teaser tg-section">
+    <div class="tg-blog-teaser-inner">
+      <header class="tg-blog-teaser-head">
+        <div class="tg-blog-teaser-head-left">
+          <span class="tg-label">{{ section.settings.eyebrow | default: 'Club 2together' }}</span>
+          <h2 class="tg-blog-teaser-title">{{ section.settings.title | default: 'ИСТОРИИ ОТ КЛУБА' }}</h2>
+        </div>
+        <a class="tg-blog-teaser-link" href="{{ tg_blog.url }}">{{ section.settings.cta_label | default: 'Всички публикации' }} &rarr;</a>
+      </header>
+      <div class="tg-blog-grid tg-blog-teaser-grid">
+        {%- for article in tg_blog.articles limit: section.settings.max_posts -%}
+          {%- render '2gether-blog-card', article: article, video_label: section.settings.video_label -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <section class="tg-blog-teaser tg-section">
+    <div class="tg-blog-teaser-inner">
+      <p style="color:#8A9BB5;font-family:sans-serif;font-size:14px;">Изберете блог от настройките на секцията (или създайте блог с публикации), за да се покажат публикациите тук.</p>
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  .tg-blog-teaser {
+    background: var(--tg-ink, #0B1220);
+    color: var(--tg-text-primary, #E8ECF2);
+    font-family: 'General Sans', sans-serif;
+    padding: var(--tg-s8, 64px) var(--tg-s7, 48px);
+  }
+
+  .tg-blog-teaser-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .tg-blog-teaser-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--tg-s5, 24px);
+    margin-bottom: var(--tg-s6, 32px);
+  }
+
+  .tg-blog-teaser-head-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tg-s3, 12px);
+  }
+
+  .tg-blog-teaser-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .tg-blog-teaser-link {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tg-flame, #E8601C);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(232, 96, 28, 0.4);
+    padding-bottom: 2px;
+    transition: border-color 150ms ease;
+  }
+
+  .tg-blog-teaser-link:hover { border-bottom-color: var(--tg-flame, #E8601C); }
+
+  @media (max-width: 1024px) {
+    .tg-blog-teaser { padding: var(--tg-s7, 48px) var(--tg-s6, 32px); }
+  }
+
+  @media (max-width: 720px) {
+    .tg-blog-teaser { padding: var(--tg-s6, 32px) var(--tg-s4, 16px); }
+    .tg-blog-teaser-head { flex-direction: column; align-items: flex-start; gap: var(--tg-s3, 12px); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "2Gether Блог публикации",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Блог" },
+    { "type": "text", "id": "eyebrow", "label": "Етикет", "default": "Club 2together" },
+    { "type": "text", "id": "title", "label": "Заглавие", "default": "ИСТОРИИ ОТ КЛУБА" },
+    { "type": "text", "id": "cta_label", "label": "Линк към блога", "default": "Всички публикации" },
+    { "type": "range", "id": "max_posts", "label": "Брой публикации", "min": 3, "max": 9, "step": 3, "default": 3 },
+    { "type": "text", "id": "video_label", "label": "Бадж за видео", "default": "Видео" }
+  ],
+  "presets": [
+    { "name": "2Gether Блог публикации" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,145 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<section class="tg-404 tg-section">
+  <div class="tg-404-diagonal" aria-hidden="true"></div>
+  <div class="tg-404-inner">
+    <span class="tg-label">{{ section.settings.eyebrow | default: 'Грешка 404' }}</span>
+    <div class="tg-404-code" aria-hidden="true">
+      <span>4</span><span class="tg-404-zero">0</span><span>4</span>
+    </div>
+    <h1 class="tg-404-title">{{ section.settings.title | default: 'СТРАНИЦАТА НЕ Е НАМЕРЕНА' }}</h1>
+    <p class="tg-404-editorial">{{ section.settings.tagline | default: 'Изгубихме следата — тази пътека не води доникъде.' }}</p>
+    <p class="tg-404-text">{{ section.settings.text | default: 'Връзката може да е грешна или страницата да е преместена. Върни се на познат маршрут:' }}</p>
+    <div class="tg-404-actions">
+      <a href="{{ section.settings.primary_link | default: routes.root_url }}" class="tg-btn-primary">{{ section.settings.primary_label | default: 'Начална страница' }} &rarr;</a>
+      <a href="{{ section.settings.secondary_link | default: routes.all_products_collection_url }}" class="tg-404-secondary">{{ section.settings.secondary_label | default: 'Към магазина' }}</a>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .tg-404 {
+    position: relative;
+    min-height: 72vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--tg-ink, #0B1220);
+    color: var(--tg-text-primary, #E8ECF2);
+    font-family: 'General Sans', sans-serif;
+    padding: var(--tg-s9, 96px) var(--tg-s6, 32px);
+  }
+
+  .tg-404-diagonal {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 34% 0, 22% 100%, 0 100%);
+    background: var(--tg-surface, #0D1526);
+    pointer-events: none;
+  }
+
+  .tg-404-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--tg-s4, 16px);
+    max-width: 640px;
+  }
+
+  .tg-404-code {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: clamp(6rem, 22vw, 13rem);
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    display: flex;
+    align-items: baseline;
+  }
+
+  .tg-404-zero {
+    color: var(--tg-flame, #E8601C);
+    position: relative;
+  }
+
+  .tg-404-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 3.5vw, 2rem);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .tg-404-editorial {
+    font-family: 'Boska', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+    line-height: 1.4;
+    color: var(--tg-text-secondary, #8A9BB5);
+    margin: 0;
+  }
+
+  .tg-404-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--tg-text-muted, #566A85);
+    margin: 0;
+    max-width: 460px;
+  }
+
+  .tg-404-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--tg-s5, 24px);
+    margin-top: var(--tg-s3, 12px);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tg-404-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px 12px 22px;
+    background: none;
+    color: var(--tg-flame, #E8601C);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: inset 0 0 0 1px var(--tg-flame, #E8601C);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+    transition: background 150ms ease, color 150ms ease;
+  }
+
+  .tg-404-secondary:hover { background: rgba(232, 96, 28, 0.12); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "2Gether 404",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["404"]
+  },
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Етикет", "default": "Грешка 404" },
+    { "type": "text", "id": "title", "label": "Заглавие", "default": "СТРАНИЦАТА НЕ Е НАМЕРЕНА" },
+    { "type": "text", "id": "tagline", "label": "Подзаглавие (курсив)", "default": "Изгубихме следата — тази пътека не води доникъде." },
+    { "type": "textarea", "id": "text", "label": "Текст", "default": "Връзката може да е грешна или страницата да е преместена. Върни се на познат маршрут:" },
+    { "type": "text", "id": "primary_label", "label": "Основен бутон", "default": "Начална страница" },
+    { "type": "url", "id": "primary_link", "label": "Линк на основния бутон" },
+    { "type": "text", "id": "secondary_label", "label": "Втори бутон", "default": "Към магазина" },
+    { "type": "url", "id": "secondary_link", "label": "Линк на втория бутон" }
+  ]
+}
+{% endschema %}

@@ -27,6 +27,8 @@
 
     {%- render 'meta-tags' -%}
     {%- render 'stylesheets' -%}
+    <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+    {{ '2gether-buttons.css' | asset_url | stylesheet_tag }}
     {%- render 'fonts' -%}
     {%- render 'scripts' -%}
     {%- render 'theme-styles-variables' -%}

@@ -84,9 +84,14 @@
         "delivery_label": "Еднопосочно €5 · Двупосочно €10",
         "delivery_text": "За Варна, доставяме до посочен от вас адрес."
       }
+    },
+    "rental_bikes": {
+      "type": "2gether-rental-bikes",
+      "settings": {}
     }
   },
   "order": [
-    "tg_rental"
+    "tg_rental",
+    "rental_bikes"
   ]
 }

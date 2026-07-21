@@ -1,0 +1,257 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<section class="tg-rentbikes tg-section">
+  <div class="tg-rentbikes-inner">
+    <header class="tg-rentbikes-head">
+      <span class="tg-label">{{ section.settings.eyebrow | default: 'Наем на велосипеди' }}</span>
+      <h2 class="tg-rentbikes-title">{{ section.settings.title | default: 'НАЛИЧНИ ВЕЛОСИПЕДИ' }}</h2>
+      {%- if section.settings.intro != blank -%}
+        <p class="tg-rentbikes-intro">{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="tg-rentbikes-grid">
+        {%- for block in section.blocks -%}
+          {%- assign bike = block.settings.product -%}
+          {%- if bike != blank -%}
+            {%- assign busy = block.settings.busy -%}
+            <article class="tg-rentbike{% if busy %} tg-rentbike--busy{% endif %}" {{ block.shopify_attributes }}>
+              {%- unless busy -%}<a class="tg-rentbike-overlay-link" href="{{ bike.url }}" aria-label="{{ bike.title | escape }}"></a>{%- endunless -%}
+              <div class="tg-rentbike-media">
+                {%- if bike.featured_image -%}
+                  {{ bike.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(max-width: 720px) 100vw, 33vw', alt: bike.featured_image.alt | default: bike.title }}
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag }}
+                {%- endif -%}
+                {%- if busy -%}
+                  <span class="tg-rentbike-stamp">{{ section.settings.busy_label | default: 'ЗАЕТО' }}</span>
+                {%- else -%}
+                  <span class="tg-rentbike-free">{{ section.settings.free_label | default: 'СВОБОДНО' }}</span>
+                {%- endif -%}
+              </div>
+              <div class="tg-rentbike-body">
+                <h3 class="tg-rentbike-name">{{ bike.title }}</h3>
+                <div class="tg-rentbike-meta">
+                  <span class="tg-rentbike-price">
+                    {%- if block.settings.price_note != blank -%}
+                      {{ block.settings.price_note }}
+                    {%- else -%}
+                      {{ bike.price | money }}{{ section.settings.price_suffix | default: ' / ден' }}
+                    {%- endif -%}
+                  </span>
+                  {%- if block.settings.note != blank -%}
+                    <span class="tg-rentbike-note">{{ block.settings.note }}</span>
+                  {%- endif -%}
+                </div>
+                {%- unless busy -%}
+                  <span class="tg-rentbike-cta">{{ section.settings.cta_label | default: 'Запази' }} &rarr;</span>
+                {%- endunless -%}
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- elsif request.design_mode -%}
+      <p style="color:#8A9BB5;font-size:14px;">Добавете блок „Велосипед” и изберете продукт за всеки велосипед под наем.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .tg-rentbikes {
+    background: var(--tg-ink, #0B1220);
+    color: var(--tg-text-primary, #E8ECF2);
+    font-family: 'General Sans', sans-serif;
+    padding: var(--tg-s8, 64px) var(--tg-s7, 48px);
+  }
+
+  .tg-rentbikes-inner { max-width: 1280px; margin: 0 auto; }
+
+  .tg-rentbikes-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tg-s3, 12px);
+    margin-bottom: var(--tg-s6, 32px);
+    max-width: 640px;
+  }
+
+  .tg-rentbikes-title {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .tg-rentbikes-intro {
+    color: var(--tg-text-secondary, #8A9BB5);
+    font-size: 14px;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .tg-rentbikes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--tg-s5, 24px);
+  }
+
+  .tg-rentbike {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--tg-surface-raised, #121E34);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.12));
+    border-left: 2px solid var(--tg-flame, #E8601C);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tg-rentbike:not(.tg-rentbike--busy):hover { transform: translateY(-4px); }
+
+  .tg-rentbike-overlay-link { position: absolute; inset: 0; z-index: 3; }
+
+  .tg-rentbike-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--tg-surface, #0D1526);
+  }
+
+  .tg-rentbike-media img,
+  .tg-rentbike-media svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1), filter 250ms ease;
+  }
+
+  .tg-rentbike:not(.tg-rentbike--busy):hover .tg-rentbike-media img { transform: scale(1.04); }
+
+  .tg-rentbike-free,
+  .tg-rentbike-stamp {
+    position: absolute;
+    left: var(--tg-s3, 12px);
+    top: var(--tg-s3, 12px);
+    z-index: 2;
+    padding: 6px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  }
+
+  .tg-rentbike-free { background: var(--tg-flame, #E8601C); color: var(--tg-ink, #0B1220); }
+
+  /* Busy state — grey, unclickable, stamped */
+  .tg-rentbike--busy { border-left-color: var(--tg-text-muted, #566A85); }
+  .tg-rentbike--busy .tg-rentbike-media img { filter: grayscale(1) brightness(0.55); }
+  .tg-rentbike--busy .tg-rentbike-body { opacity: 0.55; }
+
+  .tg-rentbike-stamp {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-8deg);
+    padding: 10px 24px;
+    font-size: 15px;
+    background: rgba(11, 18, 32, 0.85);
+    color: var(--tg-text-secondary, #8A9BB5);
+    box-shadow: inset 0 0 0 1px var(--tg-text-muted, #566A85);
+    letter-spacing: 0.22em;
+  }
+
+  .tg-rentbike-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tg-s2, 8px);
+    padding: var(--tg-s4, 16px) var(--tg-s5, 24px) var(--tg-s5, 24px);
+    flex: 1;
+  }
+
+  .tg-rentbike-name {
+    font-family: 'Technor', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .tg-rentbike-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .tg-rentbike-price {
+    font-family: 'Technor', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--tg-flame, #E8601C);
+  }
+
+  .tg-rentbike--busy .tg-rentbike-price { color: var(--tg-text-muted, #566A85); }
+
+  .tg-rentbike-note { font-size: 12px; color: var(--tg-text-muted, #566A85); }
+
+  .tg-rentbike-cta {
+    margin-top: auto;
+    padding-top: var(--tg-s2, 8px);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tg-flame, #E8601C);
+  }
+
+  @media (max-width: 1024px) {
+    .tg-rentbikes { padding: var(--tg-s7, 48px) var(--tg-s6, 32px); }
+    .tg-rentbikes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 640px) {
+    .tg-rentbikes { padding: var(--tg-s6, 32px) var(--tg-s4, 16px); }
+    .tg-rentbikes-grid { grid-template-columns: 1fr; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "2Gether Наем колела",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Етикет", "default": "Наем на велосипеди" },
+    { "type": "text", "id": "title", "label": "Заглавие", "default": "НАЛИЧНИ ВЕЛОСИПЕДИ" },
+    { "type": "textarea", "id": "intro", "label": "Кратък текст" },
+    { "type": "text", "id": "price_suffix", "label": "Текст след цената", "default": " / ден" },
+    { "type": "text", "id": "cta_label", "label": "CTA на свободен велосипед", "default": "Запази" },
+    { "type": "text", "id": "free_label", "label": "Бадж: свободен", "default": "СВОБОДНО" },
+    { "type": "text", "id": "busy_label", "label": "Бадж: зает", "default": "ЗАЕТО" }
+  ],
+  "blocks": [
+    {
+      "type": "bike",
+      "name": "Велосипед",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Продукт (велосипед)" },
+        { "type": "checkbox", "id": "busy", "label": "ЗАЕТО — маркирай като нает", "default": false },
+        { "type": "text", "id": "price_note", "label": "Цена (ръчно, напр. „30 лв / ден”)", "info": "Празно = цената на продукта" },
+        { "type": "text", "id": "note", "label": "Бележка (напр. размер, кога се освобождава)" }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    { "name": "2Gether Наем колела" }
+  ]
+}
+{% endschema %}
