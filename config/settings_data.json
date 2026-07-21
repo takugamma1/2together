@@ -76,6 +76,14 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
+    "sections": {
+      "password-footer": {
+        "type": "password-footer",
+        "settings": {
+          "color_scheme": "scheme-4"
+        }
+      }
+    },
     "content_for_index": [],
     "color_schemes": {
       "scheme-1": {
@@ -198,24 +206,24 @@
       "scheme-4": {
         "settings": {
           "background": "#0a1220",
-          "foreground_heading": "#FFFFFF",
-          "foreground": "#FFFFFFCF",
-          "primary": "#FFFFFFCF",
-          "primary_hover": "#FFFFFF",
+          "foreground_heading": "#ffffff",
+          "foreground": "#ffffffcf",
+          "primary": "#ffffffcf",
+          "primary_hover": "#ffffff",
           "border": "#d1663a",
           "shadow": "#000000",
-          "primary_button_background": "#FFFFFF",
+          "primary_button_background": "#ffffff",
           "primary_button_text": "#ffffff",
-          "primary_button_border": "#D1663A",
-          "primary_button_hover_background": "#D1663A",
-          "primary_button_hover_text": "#FFFFFF",
-          "primary_button_hover_border": "#D1663A",
-          "secondary_button_background": "#FFFFFF00",
-          "secondary_button_text": "#FFFFFF",
-          "secondary_button_border": "#D1663A",
+          "primary_button_border": "#d1663a",
+          "primary_button_hover_background": "#d1663a",
+          "primary_button_hover_text": "#ffffff",
+          "primary_button_hover_border": "#d1663a",
+          "secondary_button_background": "rgba(0,0,0,0)",
+          "secondary_button_text": "#ffffff",
+          "secondary_button_border": "#d1663a",
           "secondary_button_hover_background": "#ffffff5c",
-          "secondary_button_hover_text": "#D1663A",
-          "secondary_button_hover_border": "#D1663A",
+          "secondary_button_hover_text": "#d1663a",
+          "secondary_button_hover_border": "#d1663a",
           "input_background": "rgba(0,0,0,0)",
           "input_text_color": "#000000cf",
           "input_border_color": "#000000cf",
