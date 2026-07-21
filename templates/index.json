@@ -597,6 +597,18 @@
         "likes_text": "харесвания"
       }
     },
+    "2gether_blog_teaser_VUPtQy": {
+      "type": "2gether-blog-teaser",
+      "name": "2Gether Блог публикации",
+      "settings": {
+        "blog": "тест-статии",
+        "eyebrow": "Club 2together",
+        "title": "ИСТОРИИ ОТ КЛУБА",
+        "cta_label": "Всички публикации",
+        "max_posts": 6,
+        "video_label": "Видео"
+      }
+    },
     "tg_products": {
       "type": "2gether-products",
       "settings": {
@@ -667,18 +679,6 @@
         "heading": "<p><strong>КОЛЕЛА ЗА ВСЕКИ ТЕРЕН И СТИЛ</strong></p>",
         "description": "От сериозни планински спускания до ежедневни разходки по морето, намери колелото, което пасва на твоя начин на каране."
       }
-    },
-    "2gether_blog_teaser_VUPtQy": {
-      "type": "2gether-blog-teaser",
-      "name": "2Gether Блог публикации",
-      "settings": {
-        "blog": "тест-статии",
-        "eyebrow": "Club 2together",
-        "title": "ИСТОРИИ ОТ КЛУБА",
-        "cta_label": "Всички публикации",
-        "max_posts": 6,
-        "video_label": "Видео"
-      }
     }
   },
   "order": [
@@ -690,8 +690,8 @@
     "tg_blog_teaser",
     "divider_qMhyqE",
     "2gether_yt_carousel_kXttfc",
+    "2gether_blog_teaser_VUPtQy",
     "tg_products",
-    "tg_services",
-    "2gether_blog_teaser_VUPtQy"
+    "tg_services"
   ]
 }
