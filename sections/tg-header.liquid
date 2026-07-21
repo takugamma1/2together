@@ -688,16 +688,9 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: minmax(0, 1fr);
     gap: 16px;
     flex: 1 1 auto;
     min-height: 0;
-  }
-
-  /* When the item count leaves a lone tile on the last row (7 items in a
-     3-column grid, 4 in 2 columns…), center it instead of leaving it left. */
-  .tg-takeover-tile:last-child:nth-child(3n + 1) {
-    grid-column: 2;
   }
 
   /* Tile — sliced corner cut, hero image, info bottom-left */
@@ -943,18 +936,6 @@
       flex: 0 0 auto;
     }
 
-    /* 2-column layout: undo the 3-column centering, then center the
-       leftover tile of an odd count at half width. */
-    .tg-takeover-tile:last-child:nth-child(3n + 1) {
-      grid-column: auto;
-    }
-
-    .tg-takeover-tile:last-child:nth-child(2n + 1) {
-      grid-column: 1 / -1;
-      justify-self: center;
-      width: calc((100% - 14px) / 2);
-    }
-
     .tg-takeover-tile {
       min-height: 220px;
       aspect-ratio: 4 / 5;
@@ -969,13 +950,6 @@
     .tg-takeover-grid {
       grid-template-columns: 1fr;
       gap: 12px;
-    }
-
-    /* Single column: every tile is full width again. */
-    .tg-takeover-tile:last-child:nth-child(2n + 1) {
-      grid-column: auto;
-      justify-self: stretch;
-      width: auto;
     }
 
     .tg-takeover-tile {
