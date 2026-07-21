@@ -202,6 +202,16 @@
         <div class="tg-coll-count">{{ products_count }} {{ products_count | pluralize: 'продукт', 'продукта' }}</div>
       </div>
       <div class="tg-coll-toolbar-right">
+        <label class="tg-search-bar" for="tg-coll-search-input">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+          <input
+            type="search"
+            id="tg-coll-search-input"
+            placeholder="{{ section.settings.search_placeholder | default: 'Търси в колекцията…' }}"
+            autocomplete="off"
+            data-tg-coll-search
+          >
+        </label>
         <div class="tg-coll-sort">
           <label for="tg-sort-select">Подреди:</label>
           <select id="tg-sort-select" onchange="tgApplySort(this.value)">
@@ -483,6 +493,51 @@
       });
     });
   });
+
+  // Live search over the product cards on this page.
+  (function () {
+    var input = document.querySelector('[data-tg-coll-search]');
+    var grid = document.getElementById('tg-products-grid');
+    if (!input || !grid) return;
+
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.tg-coll-card'));
+    var pagination = grid.querySelector('.tg-coll-pagination');
+    var countEl = document.querySelector('.tg-coll-count');
+    var baseCount = countEl ? countEl.textContent : '';
+
+    var empty = document.createElement('div');
+    empty.className = 'tg-coll-search-empty';
+    empty.hidden = true;
+    empty.innerHTML = 'Няма продукти за това търсене на страницата. <a href="#" data-tg-search-all>Търси в целия магазин &rarr;</a>';
+    grid.appendChild(empty);
+    var allLink = empty.querySelector('[data-tg-search-all]');
+
+    function norm(s) { return s.toLowerCase().trim(); }
+
+    input.addEventListener('input', function () {
+      var q = norm(input.value);
+      if (allLink) allLink.href = '/search?type=product&q=' + encodeURIComponent(input.value.trim());
+
+      if (!q) {
+        cards.forEach(function (c) { c.style.display = ''; });
+        if (pagination) pagination.style.display = '';
+        empty.hidden = true;
+        if (countEl) countEl.textContent = baseCount;
+        return;
+      }
+
+      var visible = 0;
+      cards.forEach(function (c) {
+        var name = c.querySelector('.tg-coll-card-name');
+        var hit = name && norm(name.textContent).indexOf(q) !== -1;
+        c.style.display = hit ? '' : 'none';
+        if (hit) visible++;
+      });
+      if (pagination) pagination.style.display = 'none';
+      empty.hidden = visible > 0;
+      if (countEl) countEl.textContent = visible + ' от ' + baseCount;
+    });
+  })();
 </script>
 
 {% schema %}
@@ -495,6 +550,12 @@
       "id": "hero_title",
       "label": "Hero title override",
       "info": "Leave blank to auto-generate from collection title"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Търси в колекцията…"
     },
     {
       "type": "header",

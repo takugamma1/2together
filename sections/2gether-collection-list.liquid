@@ -50,6 +50,16 @@
         {% if section.settings.intro != blank %}
           <p class="tg-cl-intro">{{ section.settings.intro }}</p>
         {% endif %}
+        <label class="tg-search-bar tg-cl-search" for="tg-cl-search-input">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+          <input
+            type="search"
+            id="tg-cl-search-input"
+            placeholder="{{ section.settings.search_placeholder | default: 'Търси категория…' }}"
+            autocomplete="off"
+            data-tg-cl-search
+          >
+        </label>
       </header>
 
       <!-- ═══ FEATURED CATEGORIES — bento tiles ═══ -->
@@ -146,6 +156,40 @@
   </div>
 {% endpaginate %}
 
+<script>
+  // Live search over the collection tiles on this page.
+  (function () {
+    var input = document.querySelector('[data-tg-cl-search]');
+    var page = document.querySelector('.tg-collections-page');
+    if (!input || !page) return;
+
+    var tiles = Array.prototype.slice.call(page.querySelectorAll('.tg-cl-tile'));
+    var chrome = Array.prototype.slice.call(page.querySelectorAll('.tg-cl-rest-head, .pagination, .tg-cl-pagination, nav[aria-label]'));
+
+    var empty = document.createElement('p');
+    empty.className = 'tg-cl-search-empty';
+    empty.hidden = true;
+    empty.textContent = 'Няма категории за това търсене.';
+    var grid = page.querySelector('.tg-cl-grid') || page;
+    grid.parentNode.insertBefore(empty, grid.nextSibling);
+
+    function norm(s) { return s.toLowerCase().trim(); }
+
+    input.addEventListener('input', function () {
+      var q = norm(input.value);
+      var visible = 0;
+      tiles.forEach(function (t) {
+        var title = t.querySelector('.tg-cl-tile-title');
+        var hit = !q || (title && norm(title.textContent).indexOf(q) !== -1);
+        t.style.display = hit ? '' : 'none';
+        if (hit) visible++;
+      });
+      chrome.forEach(function (el) { el.style.display = q ? 'none' : ''; });
+      empty.hidden = !q || visible > 0;
+    });
+  })();
+</script>
+
 {% schema %}
 {
   "name": "2Gether Collection List",
@@ -156,6 +200,12 @@
       "id": "eyebrow",
       "label": "Eyebrow label",
       "default": "Е-МАГАЗИН"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Търси категория…"
     },
     {
       "type": "text",

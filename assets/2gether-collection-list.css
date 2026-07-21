@@ -569,3 +569,47 @@ body:has(.tg-collections-page) .content-for-layout {
     opacity: 0.5;
   }
 }
+
+/* === COLLECTION LIST SEARCH BAR === */
+.tg-search-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--tg-surface-raised, #121E34);
+  border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.12));
+  color: var(--tg-flame, #E8601C);
+  padding: 10px 14px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  transition: border-color 150ms ease;
+  cursor: text;
+}
+
+.tg-search-bar:focus-within { border-color: var(--tg-flame, #E8601C); }
+
+.tg-search-bar input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--tg-text-primary, #E8ECF2);
+  font-family: 'General Sans', sans-serif;
+  font-size: 13px;
+  width: 220px;
+}
+
+.tg-search-bar input::placeholder { color: var(--tg-text-muted, #566A85); }
+.tg-search-bar input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.tg-cl-search { margin-top: 20px; align-self: flex-start; }
+
+.tg-cl-search-empty {
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--tg-text-secondary, #8A9BB5);
+  border: 1px dashed var(--tg-divider, rgba(138, 155, 181, 0.2));
+}
+
+@media (max-width: 640px) {
+  .tg-cl-search { width: 100%; }
+  .tg-cl-search input { width: 100%; flex: 1; }
+}
