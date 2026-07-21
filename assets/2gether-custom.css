@@ -579,6 +579,11 @@
   border-radius: 12px;
 }
 
+/* Manual 3-product mode — taller equal cards, no hero */
+.tg-product-card--pick {
+  height: clamp(340px, 48vh, 500px);
+}
+
 .tg-product-card .tg-product-img {
   display: block;
   width: 100%;

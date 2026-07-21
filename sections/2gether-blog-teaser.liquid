@@ -7,7 +7,15 @@
 {%- liquid
   assign tg_blog = section.settings.blog
   if tg_blog == blank
-    assign tg_blog = blogs['club-2together']
+    comment
+      No blog picked in the editor — try known handles until one exists.
+    endcomment
+    assign tg_candidates = 'club-2together,test,koloezdachen-klub-2gether,news' | split: ','
+    for tg_handle in tg_candidates
+      if tg_blog == blank
+        assign tg_blog = blogs[tg_handle]
+      endif
+    endfor
   endif
 -%}
 

@@ -10,9 +10,53 @@
   </div>
 
   <div class="tg-products-grid">
-    {%- assign products_list = section.settings.collection.products -%}
+    {%- liquid
+      assign picked_count = 0
+      if section.settings.product_1 != blank
+        assign picked_count = picked_count | plus: 1
+      endif
+      if section.settings.product_2 != blank
+        assign picked_count = picked_count | plus: 1
+      endif
+      if section.settings.product_3 != blank
+        assign picked_count = picked_count | plus: 1
+      endif
+      assign products_list = section.settings.collection.products
+    -%}
 
-    {%- if products_list.size > 0 -%}
+    {%- if picked_count > 0 -%}
+      {%- comment -%} Manual mode — the three hand-picked products as an equal row {%- endcomment -%}
+      <div class="tg-products-row">
+        {%- for i in (1..3) -%}
+          {%- liquid
+            case i
+              when 1
+                assign product = section.settings.product_1
+              when 2
+                assign product = section.settings.product_2
+              else
+                assign product = section.settings.product_3
+            endcase
+          -%}
+          {%- if product != blank -%}
+            <a href="{{ product.url }}" class="tg-product-card tg-product-card--small tg-product-card--pick">
+              {% if product.featured_image != blank %}
+                {{ product.featured_image | image_url: width: 900 | image_tag: class: 'tg-product-img', loading: 'lazy', sizes: '(max-width: 768px) 100vw, 33vw' }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
+              {% endif %}
+              {%- render 'tg-product-badges', product: product -%}
+              <div class="tg-product-info">
+                <span class="tg-product-tag">{{ product.type }}</span>
+                <span class="tg-product-name">{{ product.title }}</span>
+                <span class="tg-product-more">Повече</span>
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    {%- elsif products_list.size > 0 -%}
       {%- assign hero_product = products_list[0] -%}
       <a href="{{ hero_product.url }}" class="tg-product-card tg-product-card--hero">
         {% if hero_product.featured_image != blank %}
@@ -97,6 +141,14 @@
       "label": "Heading",
       "default": "Lorem Ipsum"
     },
+    {
+      "type": "header",
+      "content": "Ръчно избрани продукти",
+      "info": "Изберете до 3 продукта — те заместват колекцията. Оставете празни, за да се показва колекцията."
+    },
+    { "type": "product", "id": "product_1", "label": "Продукт 1" },
+    { "type": "product", "id": "product_2", "label": "Продукт 2" },
+    { "type": "product", "id": "product_3", "label": "Продукт 3" },
     {
       "type": "collection",
       "id": "collection",
