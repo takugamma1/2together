@@ -277,25 +277,22 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "text_bRtpkn": {
-                  "type": "text",
-                  "name": "t:names.heading",
+                "image_AdeQCA": {
+                  "type": "image",
+                  "name": "t:names.image",
                   "settings": {
-                    "text": "<h1><em>2GETHERBIKES </em>PORTABLE RAMPS</h1>",
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "rte",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground-heading)",
-                    "background": false,
-                    "background_color": "#ffffff26",
-                    "corner_radius": 9,
+                    "image": "shopify://shop_images/Asset_6.png",
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "custom",
+                    "custom_width": 100,
+                    "width_mobile": "custom",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
                     "padding-block-start": 0,
                     "padding-block-end": 0,
                     "padding-inline-start": 0,
@@ -307,7 +304,7 @@
                   "type": "text",
                   "name": "t:names.subheading",
                   "settings": {
-                    "text": "<h2>Произведено в България</h2><p></p>",
+                    "text": "<p>Произведено в България</p><p></p>",
                     "width": "fit-content",
                     "max_width": "normal",
                     "alignment": "left",
@@ -331,7 +328,7 @@
                 }
               },
               "block_order": [
-                "text_bRtpkn",
+                "image_AdeQCA",
                 "text_qiwWMK"
               ]
             },
