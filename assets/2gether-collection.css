@@ -1225,3 +1225,10 @@ body.tg-collection-active .content-for-layout {
   .tg-search-bar { width: 100%; }
   .tg-search-bar input { width: 100%; flex: 1; }
 }
+
+
+/* Spacing fix: rhythm comes from flex/grid gaps — drop default h/p margins. */
+.tg-coll-hero-desc,
+.tg-coll-hero-title {
+  margin: 0;
+}

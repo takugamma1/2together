@@ -1,5 +1,6 @@
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {{ '2gether-collection-list.css' | asset_url | stylesheet_tag }}
+{{ '2gether-search.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
@@ -50,16 +51,18 @@
         {% if section.settings.intro != blank %}
           <p class="tg-cl-intro">{{ section.settings.intro }}</p>
         {% endif %}
-        <label class="tg-search-bar tg-cl-search" for="tg-cl-search-input">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
-          <input
-            type="search"
-            id="tg-cl-search-input"
-            placeholder="{{ section.settings.search_placeholder | default: 'Търси категория…' }}"
-            autocomplete="off"
-            data-tg-cl-search
-          >
-        </label>
+        <div class="tg-search-wrap tg-cl-search" data-tg-suggest>
+          <label class="tg-search-bar" for="tg-cl-search-input">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+            <input
+              type="search"
+              id="tg-cl-search-input"
+              placeholder="{{ section.settings.search_placeholder | default: 'Търси продукт или категория…' }}"
+              autocomplete="off"
+              data-tg-cl-search
+            >
+          </label>
+        </div>
       </header>
 
       <!-- ═══ FEATURED CATEGORIES — bento tiles ═══ -->
@@ -156,6 +159,7 @@
   </div>
 {% endpaginate %}
 
+<script src="{{ '2gether-search.js' | asset_url }}" defer></script>
 <script>
   // Live search over the collection tiles on this page.
   (function () {

@@ -678,3 +678,13 @@ body.tg-about-active .content-for-layout {
     gap: var(--tg-s4);
   }
 }
+
+
+/* Spacing fix: rhythm comes from flex/grid gaps — drop default h/p margins. */
+.tg-about-community-desc,
+.tg-about-community-title,
+.tg-about-hero-title,
+.tg-about-vision-body,
+.tg-process-desc {
+  margin: 0;
+}

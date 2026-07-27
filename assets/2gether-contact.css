@@ -579,3 +579,10 @@ body.tg-contact-active .content-for-layout {
     gap: var(--tg-s4);
   }
 }
+
+
+/* Spacing fix: rhythm comes from flex/grid gaps — drop default h/p margins. */
+.tg-contact-hero-title,
+.tg-contact-support-desc {
+  margin: 0;
+}

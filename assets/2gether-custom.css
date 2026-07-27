@@ -184,6 +184,7 @@
   font-size: 15px;
   color: rgba(138, 155, 181, 0.9);
   line-height: 1.65;
+  margin: 0; /* default <p> margins doubled the gap before the CTA */
 }
 
 .tg-hero-top-cta {
@@ -218,7 +219,8 @@
 .tg-hero-bento {
   position: absolute;
   right: var(--tg-s9);
-  top: 50%;
+  /* --tg-bento-shift (theme editor setting) nudges the grid up/down */
+  top: calc(50% + var(--tg-bento-shift, -40px));
   transform: translateY(-50%);
   z-index: 12;
   display: grid;
@@ -1856,4 +1858,26 @@ body header-component {
     font-size: 12px;
     padding: var(--tg-s3) var(--tg-s3);
   }
+}
+
+/* === COMMUNITY SECTION — SPACING & CYRILLIC TITLE FIXES === */
+/* Technor has no Cyrillic: BG titles render in the fallback font, where
+   the tight Technor tracking looks cramped. Relax it for this title. */
+.tg-community-title {
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+  margin: 0;
+}
+
+/* Richtext setting wraps the title in a <p> with big default margins. */
+.tg-community-title p { margin: 0; }
+
+.tg-community-text { margin: 0; }
+
+@media (max-width: 1024px) {
+  /* Single-column stacking: stop stretching the section to 100vh —
+     it created a huge dead gap between the CTA and the poll block. */
+  .tg-community { min-height: auto; }
+  .tg-community-top { flex: 0 0 auto; }
+  .tg-community-pool { padding-top: var(--tg-s6); }
 }

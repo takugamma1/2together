@@ -1407,3 +1407,14 @@ button.tg-price-svc-head:focus-visible {
   .tg-price-row-name { font-size: 12px; }
   .tg-price-row-bgn { font-size: 12px; }
 }
+
+/* === SPACING FIX: kill default h/p margins — the layout's flex gaps
+   define the rhythm (title → text → CTA sat too far apart). === */
+.tg-service-hero-title,
+.tg-service-hero-sub,
+.tg-service-book-title,
+.tg-service-cta-title,
+.tg-service-prices-title,
+.tg-service-prices-intro {
+  margin: 0;
+}
