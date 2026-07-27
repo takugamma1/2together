@@ -141,9 +141,31 @@
         {% endif %}
       </div>
       {% if section.settings.map_embed != blank %}
+        {%- liquid
+          comment
+            Only /maps/embed and output=embed URLs load inside iframes —
+            regular share/place links get blocked by Google. Convert
+            whatever was pasted (place link, address or embed URL).
+          endcomment
+          assign map_src = section.settings.map_embed | strip
+          assign is_embed = false
+          if map_src contains '/maps/embed' or map_src contains 'output=embed'
+            assign is_embed = true
+          endif
+          unless is_embed
+            if map_src contains '/place/'
+              assign map_q = map_src | split: '/place/' | last | split: '/' | first
+            elsif map_src contains 'http'
+              assign map_q = section.settings.store_name | default: shop.name | url_encode
+            else
+              assign map_q = map_src | url_encode
+            endif
+            assign map_src = 'https://maps.google.com/maps?q=' | append: map_q | append: '&hl=bg&z=16&output=embed'
+          endunless
+        -%}
         <iframe
           class="tg-footer-map-frame"
-          src="{{ section.settings.map_embed | escape }}"
+          src="{{ map_src | escape }}"
           loading="lazy"
           title="{{ section.settings.store_name | escape }}"
           allowfullscreen
@@ -297,8 +319,8 @@
     {
       "type": "text",
       "id": "map_embed",
-      "label": "Google Maps embed URL",
-      "info": "Малка карта под контактите. Остави празно, за да я скриеш."
+      "label": "Google Maps линк или адрес",
+      "info": "Работи с всякакъв линк от Google Maps или просто адрес/име. Остави празно, за да скриеш картата."
     },
     {
       "type": "header",
