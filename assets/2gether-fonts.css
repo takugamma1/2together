@@ -1,0 +1,64 @@
+/* === 2GETHER BIKES — CYRILLIC COMPANION FONTS ===
+ *
+ * The brand fonts (Technor / General Sans / Boska via Fontshare) have no
+ * Cyrillic glyphs, so Bulgarian text used to fall back to the visitor's
+ * system font. These @font-face rules register Cyrillic-capable fonts
+ * UNDER THE SAME FAMILY NAMES, limited to the Cyrillic unicode range:
+ * browsers pick per-glyph, so Latin keeps the brand fonts and Bulgarian
+ * text renders in a font we chose — on every device, no stack changes.
+ *
+ *   Technor       -> Unbounded        (display titles)
+ *   General Sans  -> Inter            (paragraphs, buttons, UI)
+ *   Boska         -> Playfair Display (italic editorial lines)
+ */
+
+@font-face {
+  font-family: 'Technor';
+  src: url('tg-unbounded-var.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0400-04FF, U+0500-052F, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+  font-family: 'General Sans';
+  src: url('tg-inter-var.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0400-04FF, U+0500-052F, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+  font-family: 'General Sans';
+  src: url('tg-inter-italic-var.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0400-04FF, U+0500-052F, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+  font-family: 'Boska';
+  src: url('tg-playfair-italic-var.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0400-04FF, U+0500-052F, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* Boska is occasionally used non-italic — keep Cyrillic covered there too
+   (Playfair's italic file doubles as the stand-in). */
+@font-face {
+  font-family: 'Boska';
+  src: url('tg-playfair-italic-var.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0400-04FF, U+0500-052F, U+2DE0-2DFF, U+A640-A69F;
+}
+
+/* Unbounded runs wider than Technor — ease the tightest display tracking
+   so Cyrillic headlines don't collide. */
+.tg-hero-title-main { letter-spacing: -0.02em; }
