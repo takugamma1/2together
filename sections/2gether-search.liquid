@@ -1,0 +1,500 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-collection.css' | asset_url | stylesheet_tag }}
+{{ '2gether-search.css' | asset_url | stylesheet_tag }}
+{{ '2gether-search-page.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-collection-active');</script>
+
+{%- liquid
+  assign sort_by = search.sort_by | default: search.default_sort_by | default: 'relevance'
+  assign products_per_page = section.settings.products_per_page | default: 24
+
+  assign active_filter_count = 0
+  for filter in search.filters
+    case filter.type
+      when 'list'
+        for value in filter.values
+          if value.active
+            assign active_filter_count = active_filter_count | plus: 1
+          endif
+        endfor
+      when 'price_range'
+        if filter.min_value.value or filter.max_value.value
+          assign active_filter_count = active_filter_count | plus: 1
+        endif
+    endcase
+  endfor
+-%}
+
+<!-- Filter drawer overlay -->
+<div class="tg-filter-overlay" id="tg-filter-overlay" data-tg-filter-close></div>
+
+<div class="tg-collection-page tg-search-page">
+  <!-- ═══ FILTER DRAWER (overlay on all viewports) ═══ -->
+  {% if search.performed and search.filters.size > 0 %}
+    <aside class="tg-coll-sidebar" id="tg-filter-sidebar" aria-hidden="true">
+      <div class="tg-coll-sidebar-head">
+        <span class="tg-coll-sidebar-title">Филтри</span>
+        <button class="tg-filter-close" type="button" data-tg-filter-close aria-label="Затвори филтрите">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      {% for filter in search.filters %}
+        <div class="tg-filter-group">
+          <div class="tg-filter-title">{{ filter.label }}</div>
+
+          {% case filter.type %}
+            {% when 'list' %}
+              {% for value in filter.values %}
+                <label class="tg-filter-option">
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                    onchange="tgApplyFilters()"
+                  >
+                  <span class="tg-filter-check"></span>
+                  <span class="tg-filter-label">{{ value.label }}</span>
+                  <span class="tg-filter-count">{{ value.count }}</span>
+                </label>
+              {% endfor %}
+
+            {% when 'price_range' %}
+              <div class="tg-filter-price-inputs">
+                <input
+                  type="number"
+                  class="tg-filter-price-input"
+                  name="{{ filter.min_value.param_name }}"
+                  id="tg-price-min"
+                  value="{{ filter.min_value.value | default: 0 | money_without_currency | replace: ',', '' }}"
+                  min="0"
+                  max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  placeholder="{{ 0 | money }}"
+                >
+                <span class="tg-filter-price-sep">—</span>
+                <input
+                  type="number"
+                  class="tg-filter-price-input"
+                  name="{{ filter.max_value.param_name }}"
+                  id="tg-price-max"
+                  value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', '' }}"
+                  min="0"
+                  max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  placeholder="{{ filter.range_max | money }}"
+                >
+              </div>
+          {% endcase %}
+        </div>
+      {% endfor %}
+
+      <div class="tg-filter-actions">
+        {% if active_filter_count > 0 %}
+          <a href="{{ routes.search_url }}?type=product&q={{ search.terms | url_encode }}" class="tg-filter-clear">Изчисти всички</a>
+        {% endif %}
+        <button class="tg-filter-apply" type="button" onclick="tgApplyFilters()">Приложи филтрите</button>
+      </div>
+    </aside>
+  {% endif %}
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="tg-coll-main">
+
+    <!-- Hero: title + big branded search bar -->
+    <div class="tg-coll-hero tg-srch-hero">
+      <div class="tg-coll-hero-left">
+        <span class="tg-label">{{ section.settings.eyebrow | default: 'Магазин' }}</span>
+        {% if search.performed and search.terms != blank %}
+          <h1 class="tg-coll-hero-title tg-srch-hero-title">
+            Резултати за <em class="tg-srch-q">„{{ search.terms | escape }}“</em>
+          </h1>
+        {% else %}
+          <h1 class="tg-coll-hero-title">{{ section.settings.hero_title | default: 'ТЪРСЕНЕ' }}<span>.</span></h1>
+        {% endif %}
+
+        <form action="{{ routes.search_url }}" method="get" role="search" class="tg-srch-form">
+          <input type="hidden" name="type" value="product">
+          <div class="tg-search-wrap tg-srch-wrap" data-tg-suggest>
+            <label class="tg-search-bar tg-srch-bar" for="tg-srch-input">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+              <input
+                type="search"
+                id="tg-srch-input"
+                name="q"
+                value="{{ search.terms | escape }}"
+                placeholder="{{ section.settings.search_placeholder | default: 'Какво търсиш?' }}"
+                autocomplete="off"
+                {% unless search.performed %}autofocus{% endunless %}
+              >
+            </label>
+            <button type="submit" class="tg-srch-submit">Търси</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% paginate search.results by products_per_page %}
+      {%- liquid
+        assign products = search.results | where: 'object_type', 'product'
+        assign articles = search.results | where: 'object_type', 'article'
+        assign pages = search.results | where: 'object_type', 'page'
+      -%}
+
+      {% if search.performed and search.results_count > 0 %}
+        <!-- Toolbar: Filters · Count · Sort -->
+        <div class="tg-coll-toolbar">
+          <div class="tg-coll-toolbar-left">
+            {% if search.filters.size > 0 %}
+              <button type="button" class="tg-filter-toggle" data-tg-filter-open aria-expanded="false" aria-controls="tg-filter-sidebar">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6M9 8h6M17 16h6"/></svg>
+                <span>Филтри</span>
+                {% if active_filter_count > 0 %}
+                  <span class="tg-filter-toggle-count">{{ active_filter_count }}</span>
+                {% endif %}
+              </button>
+            {% endif %}
+            <div class="tg-coll-count">{{ search.results_count }} {{ search.results_count | pluralize: 'резултат', 'резултата' }}</div>
+          </div>
+          <div class="tg-coll-toolbar-right">
+            <div class="tg-coll-sort">
+              <label for="tg-sort-select">Подреди:</label>
+              <select id="tg-sort-select" onchange="tgApplySort(this.value)">
+                <option value="relevance" {% if sort_by == 'relevance' %}selected{% endif %}>Най-подходящи</option>
+                <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Цена: ниска → висока</option>
+                <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Цена: висока → ниска</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Grid -->
+        {% if products.size > 0 %}
+          <div class="tg-coll-grid" id="tg-products-grid">
+            {% for product in products %}
+              <div class="tg-coll-card" data-product-id="{{ product.id }}">
+                <a href="{{ product.url }}" class="tg-coll-card-image">
+                  {% if product.featured_image %}
+                    {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 50vw' }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {% endif %}
+
+                  {%- liquid
+                    assign discount_pct = 0
+                    if product.compare_at_price > product.price
+                      assign diff = product.compare_at_price | minus: product.price | times: 100.0
+                      assign discount_pct = diff | divided_by: product.compare_at_price | round
+                    endif
+                  -%}
+
+                  <div class="tg-coll-badges">
+                    <div class="tg-coll-badges-left">
+                      {% if discount_pct > 0 %}
+                        <span class="tg-coll-badge tg-coll-badge--sale">-{{ discount_pct }}%</span>
+                      {% elsif product.tags contains 'new' or product.tags contains 'НОВО' %}
+                        <span class="tg-coll-badge tg-coll-badge--new">Ново</span>
+                      {% endif %}
+                      {% unless product.available %}
+                        <span class="tg-coll-badge tg-coll-badge--sold-out">Изчерпан</span>
+                      {% endunless %}
+                    </div>
+                    <div class="tg-coll-badges-right">
+                      {%- for tag in product.tags -%}
+                        {%- if tag contains '#' -%}
+                          <span class="tg-coll-badge tg-coll-badge--tag">{{ tag | remove: '#' }}</span>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </a>
+
+                <div class="tg-coll-card-info">
+                  <a href="{{ product.url }}" style="text-decoration:none;color:inherit;">
+                    <div class="tg-coll-card-name">{{ product.title }}</div>
+                  </a>
+                  <div class="tg-coll-card-price">
+                    {{ product.price | money }}
+                    {% if product.compare_at_price > product.price %}
+                      <span class="tg-coll-card-price-compare">{{ product.compare_at_price | money }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+
+                {%- form 'product', product, class: 'tg-coll-card-form' -%}
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button
+                    type="submit"
+                    class="tg-coll-card-add"
+                    {% unless product.available %}disabled{% endunless %}
+                  >
+                    {% if product.available %}
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                      Добави в количката
+                    {% else %}
+                      Изчерпан
+                    {% endif %}
+                  </button>
+                {%- endform -%}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- Articles & pages that matched -->
+        {% if articles.size > 0 or pages.size > 0 %}
+          <div class="tg-srch-other">
+            <div class="tg-srch-other-title">Статии и страници</div>
+            <div class="tg-srch-other-list">
+              {% for article in articles %}
+                <a href="{{ article.url }}" class="tg-srch-other-item">
+                  <span class="tg-srch-other-kind">Статия</span>
+                  <span class="tg-srch-other-name">{{ article.title }}</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              {% endfor %}
+              {% for page in pages %}
+                <a href="{{ page.url }}" class="tg-srch-other-item">
+                  <span class="tg-srch-other-kind">Страница</span>
+                  <span class="tg-srch-other-name">{{ page.title }}</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        {% if paginate.pages > 1 %}
+          <div class="tg-coll-pagination tg-srch-pagination">
+            <div class="tg-coll-showing">
+              Показани <strong>{{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: search.results_count }}</strong> от <strong>{{ search.results_count }}</strong> {{ search.results_count | pluralize: 'резултат', 'резултата' }}
+            </div>
+
+            <div class="tg-coll-pages">
+              {% if paginate.previous %}
+                <a href="{{ paginate.previous.url }}" aria-label="Предишна страница">&larr;</a>
+              {% endif %}
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <a href="{{ part.url }}">{{ part.title }}</a>
+                {% else %}
+                  <span class="{% if part.title == paginate.current_page %}current{% endif %}">{{ part.title }}</span>
+                {% endif %}
+              {% endfor %}
+              {% if paginate.next %}
+                <a href="{{ paginate.next.url }}" aria-label="Следваща страница">&rarr;</a>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+      {% elsif search.performed %}
+        <!-- ═══ EMPTY STATE ═══ -->
+        <div class="tg-srch-empty">
+          <div class="tg-srch-empty-mark" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+          </div>
+          <h2 class="tg-srch-empty-title">Нищо не намерихме<span>.</span></h2>
+          <p class="tg-srch-empty-desc">
+            Няма резултати за <em>„{{ search.terms | escape }}“</em>. Провери изписването или опитай с по-кратка дума.
+          </p>
+          <div class="tg-srch-empty-actions">
+            <a href="{{ routes.all_products_collection_url }}" class="tg-btn-primary">Разгледай всички продукти</a>
+          </div>
+
+          {%- liquid
+            assign chip_limit = section.settings.max_categories | default: 6
+            assign shown = 0
+          -%}
+          <div class="tg-srch-empty-cats">
+            <span class="tg-srch-empty-cats-label">Популярни категории</span>
+            <div class="tg-coll-cats-track tg-srch-cats-track">
+              {% for c in collections %}
+                {%- if shown >= chip_limit %}{% break %}{% endif -%}
+                {%- unless c.handle == 'frontpage' or c.products_count == 0 -%}
+                  <a href="{{ c.url }}" class="tg-coll-cat">{{ c.title }}</a>
+                  {%- assign shown = shown | plus: 1 -%}
+                {%- endunless -%}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+      {% else %}
+        <!-- ═══ NO SEARCH YET — invite ═══ -->
+        <div class="tg-srch-empty tg-srch-empty--idle">
+          <p class="tg-srch-empty-desc">Започни да пишеш и ще ти покажем предложения на момента.</p>
+
+          {%- liquid
+            assign chip_limit = section.settings.max_categories | default: 6
+            assign shown = 0
+          -%}
+          <div class="tg-srch-empty-cats">
+            <span class="tg-srch-empty-cats-label">Популярни категории</span>
+            <div class="tg-coll-cats-track tg-srch-cats-track">
+              {% for c in collections %}
+                {%- if shown >= chip_limit %}{% break %}{% endif -%}
+                {%- unless c.handle == 'frontpage' or c.products_count == 0 -%}
+                  <a href="{{ c.url }}" class="tg-coll-cat">{{ c.title }}</a>
+                  {%- assign shown = shown | plus: 1 -%}
+                {%- endunless -%}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endpaginate %}
+
+  </div>
+</div>
+
+<script>
+  // Filter drawer open / close (works on all viewports)
+  (function() {
+    const sidebar = document.getElementById('tg-filter-sidebar');
+    const overlay = document.getElementById('tg-filter-overlay');
+    if (!sidebar || !overlay) return;
+
+    const openBtn = document.querySelector('[data-tg-filter-open]');
+
+    function open() {
+      sidebar.classList.add('open');
+      overlay.classList.add('open');
+      sidebar.setAttribute('aria-hidden', 'false');
+      if (openBtn) openBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function close() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+      sidebar.setAttribute('aria-hidden', 'true');
+      if (openBtn) openBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (openBtn) openBtn.addEventListener('click', open);
+    document.querySelectorAll('[data-tg-filter-close]').forEach(function(el) {
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) close();
+    });
+  })();
+
+  // Sort — preserve q / type / filters, swap sort_by
+  function tgApplySort(value) {
+    var url = new URL(window.location);
+    url.searchParams.set('sort_by', value);
+    window.location = url.toString();
+  }
+
+  // Filter application — rebuild the URL keeping q, type and sort
+  function tgApplyFilters() {
+    var current = new URL(window.location);
+    var url = new URL(window.location.pathname, window.location.origin);
+
+    var q = current.searchParams.get('q');
+    if (q) url.searchParams.set('q', q);
+    url.searchParams.set('type', current.searchParams.get('type') || 'product');
+
+    var sort = current.searchParams.get('sort_by');
+    if (sort) url.searchParams.set('sort_by', sort);
+
+    document.querySelectorAll('.tg-filter-option input:checked').forEach(function(input) {
+      url.searchParams.append(input.name, input.value);
+    });
+
+    var minInput = document.getElementById('tg-price-min');
+    var maxInput = document.getElementById('tg-price-max');
+    if (minInput && minInput.value) {
+      url.searchParams.set(minInput.name, (parseFloat(minInput.value) * 100).toString());
+    }
+    if (maxInput && maxInput.value) {
+      url.searchParams.set(maxInput.name, (parseFloat(maxInput.value) * 100).toString());
+    }
+
+    window.location = url.toString();
+  }
+
+  // Quick add to cart via AJAX → refresh the header cart count and open the drawer
+  document.querySelectorAll('.tg-coll-card-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('.tg-coll-card-add');
+      var origText = btn.innerHTML;
+      btn.innerHTML = 'Добавяне...';
+      btn.disabled = true;
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      })
+      .then(function(res) { return res.json(); })
+      .then(function() {
+        btn.innerHTML = origText;
+        btn.disabled = false;
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+        document.dispatchEvent(new CustomEvent('cart:open'));
+      })
+      .catch(function() {
+        btn.innerHTML = origText;
+        btn.disabled = false;
+      });
+    });
+  });
+</script>
+<script src="{{ '2gether-search.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "2Gether Search",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "Магазин"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title (before a search is made)",
+      "default": "ТЪРСЕНЕ"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Какво търсиш?"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Results per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "max_categories",
+      "label": "Popular category chips",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    }
+  ],
+  "blocks": [],
+  "templates": ["search"]
+}
+{% endschema %}
