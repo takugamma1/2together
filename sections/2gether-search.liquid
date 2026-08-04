@@ -1,5 +1,6 @@
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {{ '2gether-collection.css' | asset_url | stylesheet_tag }}
+{{ '2gether-blog.css' | asset_url | stylesheet_tag }}
 {{ '2gether-search.css' | asset_url | stylesheet_tag }}
 {{ '2gether-search-page.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
@@ -143,6 +144,52 @@
         assign articles = search.results | where: 'object_type', 'article'
         assign pages = search.results | where: 'object_type', 'page'
       -%}
+
+      {%- comment -%} Suggested products — shown on the idle page and under "no results". {%- endcomment -%}
+      {%- liquid
+        assign sugg_coll = section.settings.suggest_collection
+        if sugg_coll == blank
+          assign sugg_coll = collections['all']
+        endif
+        assign sugg_limit = section.settings.suggest_count | default: 8
+      -%}
+      {%- capture tg_srch_suggest_html -%}
+        {%- if sugg_coll != blank and sugg_coll.products_count > 0 -%}
+          <div class="tg-srch-block">
+            <div class="tg-srch-block-head">
+              <div>
+                <span class="tg-label">{{ section.settings.suggest_eyebrow | default: 'Подбрани' }}</span>
+                <h2 class="tg-srch-block-title">{{ section.settings.suggest_title | default: 'ПРЕДЛОЖЕНИ ПРОДУКТИ' }}</h2>
+              </div>
+              <a class="tg-srch-block-link" href="{{ sugg_coll.url | default: routes.all_products_collection_url }}">Виж всички &rarr;</a>
+            </div>
+            <div class="tg-coll-grid tg-srch-products">
+              {%- for product in sugg_coll.products limit: sugg_limit -%}
+                <div class="tg-coll-card">
+                  <a href="{{ product.url }}" class="tg-coll-card-image">
+                    {%- if product.featured_image -%}
+                      {{ product.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 50vw, 25vw' }}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    {%- endif -%}
+                  </a>
+                  <div class="tg-coll-card-info">
+                    <a href="{{ product.url }}" style="text-decoration:none;color:inherit;">
+                      <div class="tg-coll-card-name">{{ product.title }}</div>
+                    </a>
+                    <div class="tg-coll-card-price">
+                      <span>{{ product.price | money }}</span>
+                      {%- if product.compare_at_price > product.price -%}
+                        <span class="tg-coll-card-price-compare">{{ product.compare_at_price | money }}</span>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endcapture -%}
 
       {% if search.performed and search.results_count > 0 %}
         <!-- Toolbar: Filters · Count · Sort -->
@@ -323,29 +370,96 @@
               {% endfor %}
             </div>
           </div>
+
+          {{ tg_srch_suggest_html }}
         </div>
 
       {% else %}
-        <!-- ═══ NO SEARCH YET — invite ═══ -->
-        <div class="tg-srch-empty tg-srch-empty--idle">
-          <p class="tg-srch-empty-desc">Започни да пишеш и ще ти покажем предложения на момента.</p>
+        <!-- ═══ NO SEARCH YET — browse hub ═══ -->
+        <div class="tg-srch-idle">
+          <p class="tg-srch-empty-desc">{{ section.settings.idle_text | default: 'Започни да пишеш и ще ти покажем предложения на момента — или разгледай директно:' }}</p>
 
+          {%- assign chips = section.settings.popular_searches | split: ',' -%}
+          {%- if chips.size > 0 and section.settings.popular_searches != blank -%}
+            <div class="tg-srch-chips">
+              <span class="tg-srch-chips-label">{{ section.settings.popular_label | default: 'Често търсени' }}</span>
+              <div class="tg-srch-chips-row">
+                {%- for chip in chips -%}
+                  {%- assign chip_t = chip | strip -%}
+                  {%- if chip_t != blank -%}
+                    <a class="tg-srch-chip" href="{{ routes.search_url }}?type=product&q={{ chip_t | url_encode }}">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+                      {{ chip_t }}
+                    </a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          <!-- Category tiles -->
           {%- liquid
-            assign chip_limit = section.settings.max_categories | default: 6
+            assign tile_limit = section.settings.max_categories | default: 6
             assign shown = 0
           -%}
-          <div class="tg-srch-empty-cats">
-            <span class="tg-srch-empty-cats-label">Популярни категории</span>
-            <div class="tg-coll-cats-track tg-srch-cats-track">
+          <div class="tg-srch-block">
+            <div class="tg-srch-block-head">
+              <div>
+                <span class="tg-label">{{ section.settings.cats_eyebrow | default: 'Е-магазин' }}</span>
+                <h2 class="tg-srch-block-title">{{ section.settings.cats_title | default: 'КАТЕГОРИИ' }}</h2>
+              </div>
+              <a class="tg-srch-block-link" href="{{ routes.collections_url }}">Всички категории &rarr;</a>
+            </div>
+            <div class="tg-srch-tiles">
               {% for c in collections %}
-                {%- if shown >= chip_limit %}{% break %}{% endif -%}
+                {%- if shown >= tile_limit %}{% break %}{% endif -%}
                 {%- unless c.handle == 'frontpage' or c.products_count == 0 -%}
-                  <a href="{{ c.url }}" class="tg-coll-cat">{{ c.title }}</a>
+                  <a href="{{ c.url }}" class="tg-srch-tile">
+                    <span class="tg-srch-tile-media">
+                      {%- if c.featured_image -%}
+                        {{ c.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(max-width: 720px) 50vw, 25vw', alt: c.title }}
+                      {%- elsif c.products.first.featured_image -%}
+                        {{ c.products.first.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(max-width: 720px) 50vw, 25vw', alt: c.title }}
+                      {%- else -%}
+                        <span class="tg-srch-tile-ph" aria-hidden="true"></span>
+                      {%- endif -%}
+                    </span>
+                    <span class="tg-srch-tile-body">
+                      <span class="tg-srch-tile-name">{{ c.title }}</span>
+                      <span class="tg-srch-tile-count">{{ c.products_count }} {{ c.products_count | pluralize: 'продукт', 'продукта' }}</span>
+                    </span>
+                  </a>
                   {%- assign shown = shown | plus: 1 -%}
                 {%- endunless -%}
               {% endfor %}
             </div>
           </div>
+
+          {{ tg_srch_suggest_html }}
+
+          <!-- Latest from the club -->
+          {%- liquid
+            assign srch_blog = section.settings.blog
+            if srch_blog == blank
+              assign srch_blog = blogs['club-2together']
+            endif
+          -%}
+          {% if section.settings.show_blog and srch_blog != blank and srch_blog.articles_count > 0 %}
+            <div class="tg-srch-block">
+              <div class="tg-srch-block-head">
+                <div>
+                  <span class="tg-label">Club 2together</span>
+                  <h2 class="tg-srch-block-title">{{ section.settings.blog_title | default: 'ОТ БЛОГА' }}</h2>
+                </div>
+                <a class="tg-srch-block-link" href="{{ srch_blog.url }}">Всички публикации &rarr;</a>
+              </div>
+              <div class="tg-blog-grid">
+                {% for article in srch_blog.articles limit: 3 %}
+                  {% render '2gether-blog-card', article: article %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
         </div>
       {% endif %}
     {% endpaginate %}
@@ -487,14 +601,31 @@
     {
       "type": "range",
       "id": "max_categories",
-      "label": "Popular category chips",
+      "label": "Категории (плочки/чипове)",
       "min": 3,
       "max": 12,
       "step": 1,
       "default": 6
-    }
+    },
+    { "type": "header", "content": "Начален изглед (преди търсене)" },
+    { "type": "textarea", "id": "idle_text", "label": "Уводен текст" },
+    { "type": "text", "id": "popular_label", "label": "Надпис „често търсени”", "default": "Често търсени" },
+    { "type": "text", "id": "popular_searches", "label": "Често търсени (със запетая)", "default": "Giant, Santa Cruz, каска, гуми, светлини" },
+    { "type": "text", "id": "cats_eyebrow", "label": "Етикет над категориите", "default": "Е-магазин" },
+    { "type": "text", "id": "cats_title", "label": "Заглавие на категориите", "default": "КАТЕГОРИИ" },
+    { "type": "header", "content": "Предложени продукти" },
+    { "type": "collection", "id": "suggest_collection", "label": "Колекция (празно = всички продукти)" },
+    { "type": "range", "id": "suggest_count", "label": "Брой продукти", "min": 4, "max": 12, "step": 4, "default": 8 },
+    { "type": "text", "id": "suggest_eyebrow", "label": "Етикет", "default": "Подбрани" },
+    { "type": "text", "id": "suggest_title", "label": "Заглавие", "default": "ПРЕДЛОЖЕНИ ПРОДУКТИ" },
+    { "type": "header", "content": "Блог" },
+    { "type": "checkbox", "id": "show_blog", "label": "Показвай публикации от блога", "default": true },
+    { "type": "blog", "id": "blog", "label": "Блог" },
+    { "type": "text", "id": "blog_title", "label": "Заглавие", "default": "ОТ БЛОГА" }
   ],
   "blocks": [],
-  "templates": ["search"]
+  "enabled_on": {
+    "templates": ["search"]
+  }
 }
 {% endschema %}
