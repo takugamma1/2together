@@ -437,38 +437,38 @@
 }
 
 .tg-statement-pillars {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--tg-s3);
 }
 
-/* Pillar cards: icon chip + word + note, ghost number on the right */
+/* Value tiles — 2×2, slash-cut, full flame inversion on hover */
 .tg-pillar {
   position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto;
-  column-gap: var(--tg-s4);
-  row-gap: 3px;
-  align-items: center;
-  padding: var(--tg-s4) var(--tg-s6) var(--tg-s4) var(--tg-s5);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--tg-s3);
+  min-height: 168px;
+  padding: var(--tg-s5);
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
-  border-left: 2px solid var(--tg-flame);
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
   overflow: hidden;
-  transition: transform var(--tg-dur-med) var(--tg-ease-out),
-    border-color var(--tg-dur-med) var(--tg-ease-out);
+  transition: background var(--tg-dur-med) var(--tg-ease-out),
+    border-color var(--tg-dur-med) var(--tg-ease-out),
+    transform var(--tg-dur-med) var(--tg-ease-out);
 }
 
 .tg-pillar:hover {
-  transform: translateX(6px);
-  border-color: rgba(232, 96, 28, 0.4);
+  background: var(--tg-flame);
+  border-color: var(--tg-flame);
+  transform: translateY(-4px);
 }
 
 .tg-pillar-num {
   position: absolute;
-  right: 20px;
+  right: 16px;
   top: 14px;
   font-family: 'Technor', sans-serif;
   font-weight: 700;
@@ -477,42 +477,43 @@
   line-height: 1;
   color: var(--tg-flame);
   pointer-events: none;
-  opacity: 0.65;
-  transition: opacity var(--tg-dur-med) var(--tg-ease-out);
+  transition: color var(--tg-dur-med) var(--tg-ease-out);
 }
 
 .tg-pillar-num::before { content: '/ '; opacity: 0.6; }
 
-.tg-pillar:hover .tg-pillar-num { opacity: 1; }
-
 .tg-pillar-icon {
-  grid-row: 1 / 3;
-  width: 44px;
-  height: 44px;
-  padding: 11px;
+  width: 26px;
+  height: 26px;
   color: var(--tg-flame);
-  background: rgba(232, 96, 28, 0.09);
-  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%);
   flex-shrink: 0;
+  transition: color var(--tg-dur-med) var(--tg-ease-out);
 }
 
 .tg-pillar-word {
   font-family: 'Technor', sans-serif;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 19px;
+  line-height: 1.1;
   text-transform: uppercase;
   color: var(--tg-text-primary);
-  padding-right: 70px;
+  margin-top: auto;
+  transition: color var(--tg-dur-med) var(--tg-ease-out);
 }
 
 .tg-pillar-note {
-  grid-column: 2;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.5;
   color: var(--tg-text-secondary);
   text-align: left;
-  padding-right: 70px;
+  transition: color var(--tg-dur-med) var(--tg-ease-out);
 }
+
+.tg-pillar:hover .tg-pillar-num,
+.tg-pillar:hover .tg-pillar-icon,
+.tg-pillar:hover .tg-pillar-word { color: var(--tg-ink); }
+
+.tg-pillar:hover .tg-pillar-note { color: rgba(11, 18, 32, 0.75); }
 
 /* ================================================
    IMAGE BAND
@@ -1693,18 +1694,15 @@ body header-component {
   }
 
   .tg-pillar {
-    padding: var(--tg-s4) var(--tg-s4);
-    column-gap: var(--tg-s3);
+    min-height: 140px;
+    padding: var(--tg-s4);
   }
 
   .tg-pillar-num { right: 12px; top: 12px; }
-  .tg-pillar-word { font-size: 16px; padding-right: 40px; }
+  .tg-pillar-word { font-size: 16px; }
 
   .tg-pillar-note {
-    grid-column: 2;
-    padding-right: 48px;
     text-align: left;
-    margin-top: var(--tg-s1);
     font-size: 11px;
   }
 
