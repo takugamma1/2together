@@ -87,20 +87,6 @@
     },
     "rental_bikes": {
       "type": "2gether-rental-bikes",
-      "blocks": {
-        "bike_LByzQR": {
-          "type": "bike",
-          "settings": {
-            "product": "e-bike-smazka-squirt-120ml-p294",
-            "busy": false,
-            "price_note": "",
-            "note": ""
-          }
-        }
-      },
-      "block_order": [
-        "bike_LByzQR"
-      ],
       "settings": {
         "eyebrow": "Наем на велосипеди",
         "title": "НАЛИЧНИ ВЕЛОСИПЕДИ",
