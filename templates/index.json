@@ -561,7 +561,7 @@
     "tg_blog_teaser": {
       "type": "2gether-blog-teaser",
       "settings": {
-        "blog": "",
+        "blog": "тест-статии",
         "eyebrow": "Club 2together",
         "title": "ИСТОРИИ ОТ КЛУБА",
         "cta_label": "Всички публикации",
