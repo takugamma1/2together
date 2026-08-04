@@ -30,7 +30,9 @@
   <!-- ═══ THE VISION ═══ -->
   <section class="tg-about-vision">
     <div class="tg-about-vision-left">
-      <div class="tg-about-vision-label">{{ section.settings.vision_label | default: 'The Vision' }}</div>
+      {% if section.settings.vision_label != blank %}
+        <div class="tg-about-vision-label">{{ section.settings.vision_label }}</div>
+      {% endif %}
       {% if section.settings.vision_image != blank %}
         {{ section.settings.vision_image | image_url: width: 1000 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw' }}
       {% else %}
@@ -55,7 +57,9 @@
 
   <!-- ═══ THE PROCESS ═══ -->
   <section class="tg-about-process">
-    <div class="tg-about-process-label">{{ section.settings.process_label | default: 'The Process' }}</div>
+    {% if section.settings.process_label != blank %}
+      <div class="tg-about-process-label">{{ section.settings.process_label }}</div>
+    {% endif %}
     <div class="tg-about-process-grid">
       {% for block in section.blocks %}
         {% if block.type == 'process_step' %}
