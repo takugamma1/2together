@@ -62,3 +62,71 @@
 /* Unbounded runs wider than Technor — ease the tightest display tracking
    so Cyrillic headlines don't collide. */
 .tg-hero-title-main { letter-spacing: -0.02em; }
+
+/* === RESPONSIVE GUARD FOR THE WIDER CYRILLIC FONTS ===
+ * Unbounded runs much wider than Technor: long Bulgarian words
+ * (СЛЕДВАЩОТО, ВЕЛОСЕРВИЗ…) overflowed titles sized for the old
+ * fallback. The `html` prefix outranks the per-section stylesheets. */
+
+/* Long display words must never force the layout wider than the screen */
+html .tg-community-top-right,
+html .tg-community-pool-right,
+html .tg-hero-top-info,
+html .tg-statement-quote {
+  min-width: 0;
+}
+
+html .tg-community-title,
+html .tg-blog-title,
+html .tg-article-title,
+html .tg-pw-title,
+html .tg-404-title,
+html .tg-service-hero-title,
+html .tg-about-hero-title,
+html .tg-contact-hero-title,
+html .tg-rental-hero-title,
+html .tg-cl-title,
+html .tg-coll-hero-title,
+html .tg-blog-teaser-title,
+html .tg-rentbikes-title,
+html .tg-ytc-title,
+html .tg-reviews-title,
+html .tg-srch-block-title,
+html .tg-article-more-title {
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 640px) {
+  /* Page / hero titles: cap the minimums so 10+ letter Bulgarian words
+     fit a 360px viewport in Unbounded. */
+  html .tg-community-title,
+  html .tg-blog-title,
+  html .tg-article-title,
+  html .tg-service-hero-title,
+  html .tg-about-hero-title,
+  html .tg-contact-hero-title,
+  html .tg-rental-hero-title,
+  html .tg-cl-title,
+  html .tg-coll-hero-title {
+    font-size: clamp(1.6rem, 7.6vw, 2.3rem);
+    line-height: 1.1;
+  }
+
+  html .tg-pw-title {
+    font-size: clamp(1.9rem, 9vw, 2.6rem);
+  }
+
+  /* Section titles inside pages */
+  html .tg-blog-teaser-title,
+  html .tg-rentbikes-title,
+  html .tg-ytc-title,
+  html .tg-reviews-title,
+  html .tg-srch-block-title,
+  html .tg-article-more-title {
+    font-size: clamp(1.3rem, 6vw, 1.7rem);
+  }
+
+  html .tg-statement-quote {
+    font-size: clamp(1.1rem, 5.4vw, 1.4rem);
+  }
+}

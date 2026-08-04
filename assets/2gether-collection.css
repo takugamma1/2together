@@ -1232,3 +1232,17 @@ body.tg-collection-active .content-for-layout {
 .tg-coll-hero-title {
   margin: 0;
 }
+
+/* === CARD RHYTHM: equal heights, button pinned to the bottom === */
+.tg-coll-card { height: 100%; }
+
+.tg-coll-card-info {
+  padding: var(--tg-s3) var(--tg-s3) var(--tg-s2);
+}
+
+/* The add-to-cart form pins to the card bottom, so every button in a
+   row sits on the same line regardless of title length. */
+.tg-coll-card-form {
+  margin-top: auto;
+  padding-top: var(--tg-s2);
+}
