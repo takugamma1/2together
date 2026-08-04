@@ -63,14 +63,14 @@ body.tg-about-active .content-for-layout {
 .tg-about-hero-content {
   position: relative;
   z-index: 2;
-  max-width: 800px;
+  max-width: 1000px;
 }
 
 .tg-about-hero-title {
   font-family: 'Technor', sans-serif;
   font-weight: 700;
-  font-size: clamp(2.4rem, 11vw, 7rem);
-  letter-spacing: -0.04em;
+  font-size: clamp(2.2rem, 8.5vw, 5.6rem);
+  letter-spacing: -0.03em;
   line-height: 0.9;
   color: var(--tg-text-primary);
   overflow-wrap: break-word;
