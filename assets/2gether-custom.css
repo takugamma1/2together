@@ -381,7 +381,7 @@
    ================================================ */
 
 .tg-statement {
-  padding: var(--tg-s9) var(--tg-s9);
+  padding: var(--tg-st-pt, var(--tg-s9)) var(--tg-s9) var(--tg-st-pb, var(--tg-s9));
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: var(--tg-s9);
@@ -1542,7 +1542,7 @@ body header-component {
   }
 
   .tg-statement {
-    padding: var(--tg-s7) var(--tg-s5);
+    padding: var(--tg-st-pt, var(--tg-s7)) var(--tg-s5) var(--tg-st-pb, var(--tg-s7));
     grid-template-columns: 1fr;
     gap: var(--tg-s5);
   }
@@ -1689,7 +1689,7 @@ body header-component {
 
   /* Statement */
   .tg-statement {
-    padding: var(--tg-s6) var(--tg-s4);
+    padding: var(--tg-st-pt, var(--tg-s6)) var(--tg-s4) var(--tg-st-pb, var(--tg-s6));
     min-height: auto;
   }
 

@@ -1,4 +1,4 @@
-<section class="tg-statement tg-section" id="statement">
+<section class="tg-statement tg-section" id="statement" style="--tg-st-pt: {{ section.settings.padding_top | default: 96 }}px; --tg-st-pb: {{ section.settings.padding_bottom | default: 96 }}px;">
   <div class="tg-reveal">
     <h2 class="tg-statement-quote">{{ section.settings.quote }}</h2>
   </div>
@@ -47,6 +47,26 @@
       "id": "pillars_label",
       "label": "Pillars label",
       "default": "Какво ни движи"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Отстояние отгоре",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Отстояние отдолу",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
     }
   ],
   "blocks": [
