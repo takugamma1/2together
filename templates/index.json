@@ -558,17 +558,6 @@
         "yt_views": "128K"
       }
     },
-    "tg_blog_teaser": {
-      "type": "2gether-blog-teaser",
-      "settings": {
-        "blog": "тест-статии",
-        "eyebrow": "Club 2together",
-        "title": "ИСТОРИИ ОТ КЛУБА",
-        "cta_label": "Всички публикации",
-        "max_posts": 3,
-        "video_label": "Видео"
-      }
-    },
     "2gether_yt_carousel_kXttfc": {
       "type": "2gether-yt-carousel",
       "name": "2Gether YouTube клипове",
@@ -673,7 +662,6 @@
     "tg_image_band",
     "section_iHJQMc",
     "tg_community",
-    "tg_blog_teaser",
     "2gether_yt_carousel_kXttfc",
     "2gether_blog_teaser_VUPtQy",
     "tg_products",
