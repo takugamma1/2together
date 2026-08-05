@@ -569,20 +569,6 @@
         "video_label": "Видео"
       }
     },
-    "divider_qMhyqE": {
-      "type": "divider",
-      "name": "t:names.divider_section",
-      "settings": {
-        "color_scheme": "scheme-4",
-        "section_width": "full-width",
-        "thickness": 5,
-        "corner_radius": "square",
-        "width_percent": 100,
-        "alignment_horizontal": "center",
-        "padding-block-start": 0,
-        "padding-block-end": 16
-      }
-    },
     "2gether_yt_carousel_kXttfc": {
       "type": "2gether-yt-carousel",
       "name": "2Gether YouTube клипове",
@@ -688,7 +674,6 @@
     "section_iHJQMc",
     "tg_community",
     "tg_blog_teaser",
-    "divider_qMhyqE",
     "2gether_yt_carousel_kXttfc",
     "2gether_blog_teaser_VUPtQy",
     "tg_products",
