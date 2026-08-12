@@ -62,14 +62,14 @@
           "type": "spec",
           "settings": {
             "label": "товаримост",
-            "value": "120 кг."
+            "value": "150 кг."
           }
         },
         "s_4": {
           "type": "spec",
           "settings": {
             "label": "тежест (на рампа)",
-            "value": "12 кг."
+            "value": "12.5 кг."
           }
         },
         "q_1": {
