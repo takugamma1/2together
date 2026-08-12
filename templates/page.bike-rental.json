@@ -87,6 +87,7 @@
     },
     "rental_bikes": {
       "type": "2gether-rental-bikes",
+      "disabled": true,
       "settings": {
         "eyebrow": "Наем на велосипеди",
         "title": "НАЛИЧНИ ВЕЛОСИПЕДИ",
