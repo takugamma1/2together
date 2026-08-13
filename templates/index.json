@@ -572,8 +572,80 @@
         "likes_text": "харесвания"
       }
     },
+    "2gether_community_dhFAMt": {
+      "type": "2gether-community",
+      "blocks": {
+        "avatar_rHe7Gg": {
+          "type": "avatar",
+          "settings": {
+            "initials": "КВ"
+          }
+        },
+        "avatar_FQe8Hi": {
+          "type": "avatar",
+          "settings": {
+            "initials": "МД"
+          }
+        },
+        "avatar_CakyDt": {
+          "type": "avatar",
+          "settings": {
+            "initials": "ИП"
+          }
+        },
+        "avatar_gkRdA6": {
+          "type": "avatar",
+          "settings": {
+            "initials": "АС"
+          }
+        },
+        "avatar_gzTwDg": {
+          "type": "avatar",
+          "settings": {
+            "initials": "ТН"
+          }
+        },
+        "avatar_xFmBBC": {
+          "type": "avatar",
+          "settings": {
+            "initials": "АБ"
+          }
+        }
+      },
+      "block_order": [
+        "avatar_rHe7Gg",
+        "avatar_FQe8Hi",
+        "avatar_CakyDt",
+        "avatar_gkRdA6",
+        "avatar_gzTwDg",
+        "avatar_xFmBBC"
+      ],
+      "settings": {
+        "background_image": "shopify://shop_images/DSC07254.webp",
+        "label_text": "2GETHER CYCLING TEAM",
+        "title": "<p>КОЛОЕЗДАЧЕН КЛУБ 2GETHER</p>",
+        "description": "Инфо за отбора",
+        "cta_text": "рапознай се с клуба",
+        "cta_link": "shopify://blogs/тест-статии",
+        "poll": "",
+        "poll_label": "ГЛАСУВАЙ ЗА СЛЕДВАЩАТА ЛОКАЦИЯ",
+        "votes_text": "гласа",
+        "voters_text": "гласували",
+        "member_cta_text": "Стани член, за да гласуваш →",
+        "guest_text": "Членовете на клуба гласуват къде караме всяка неделя. Влез в профила си или се запиши, за да участваш.",
+        "member_cta_url": "/pages/sunday-club#tg-sc-join",
+        "closed_text": "Гласуването е затворено",
+        "msg_error": "Възникна грешка, опитайте отново",
+        "msg_login": "Влезте, за да гласувате",
+        "msg_members": "Само за членове",
+        "youtube_url": "",
+        "yt_subscribers": "2.4K",
+        "yt_views": "128K"
+      }
+    },
     "2gether_blog_teaser_VUPtQy": {
       "type": "2gether-blog-teaser",
+      "disabled": true,
       "name": "2Gether Блог публикации",
       "settings": {
         "blog": "тест-статии",
@@ -663,6 +735,7 @@
     "section_iHJQMc",
     "tg_community",
     "2gether_yt_carousel_kXttfc",
+    "2gether_community_dhFAMt",
     "2gether_blog_teaser_VUPtQy",
     "tg_products",
     "tg_services"
