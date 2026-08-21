@@ -19,33 +19,12 @@
   assign faqs = section.blocks | where: 'type', 'faq'
   assign bundle = st.bundle_product
 -%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: page.handle, compare_handle: st.compare_page, support_handle: st.support_page %}{%- endcapture -%}
 {%- liquid
-  assign ramps_url = request.path
-  if st.support_page != blank and pages[st.support_page] != empty
-    assign support_url = pages[st.support_page].url
-  endif
-  if support_url == blank
-    assign support_handles = 'ramps-support,ramp-support,поддръжка-рампи,поддръжка-за-рампите' | split: ','
-    for h in support_handles
-      if pages[h] != empty
-        assign support_url = pages[h].url
-        break
-      endif
-    endfor
-  endif
-  if support_url == blank
-    for p in pages
-      if p.template_suffix == 'ramps-support'
-        assign support_url = p.url
-        break
-      endif
-    endfor
-  endif
-  if support_url == blank
-    assign support_url = '/pages/ramps-support'
-  endif
-  assign href_1 = ramps_url | append: '#' | append: st.tab_1_anchor | default: 'tg-ramps-lineup'
-  assign href_2 = ramps_url | append: '#' | append: st.tab_2_anchor | default: 'tg-ramps-compare'
+  assign rp_urls = rp_urls | strip | split: '|'
+  assign compare_url = rp_urls[1]
+  assign support_url = rp_urls[2]
+  assign href_1 = request.path | append: '#' | append: st.tab_1_anchor | default: 'tg-ramps-lineup'
 -%}
 
 <div class="tg-ramps-page" id="tg-ramps-top">
@@ -90,7 +69,7 @@
           <span class="tg-eyebrow">{{ st.lineup_eyebrow }}</span>
           <h2 class="tg-rp-h2">{{ st.lineup_title }}</h2>
         </div>
-        {% if st.lineup_cta_text != blank %}<a href="#tg-ramps-compare" class="tg-rp-btn tg-rp-btn--ghost">{{ st.lineup_cta_text }}</a>{% endif %}
+        {% if st.lineup_cta_text != blank %}<a href="{{ compare_url }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.lineup_cta_text }}</a>{% endif %}
       </header>
 
       <div class="tg-rp-models" style="--cols: {{ models.size | at_least: 1 }}">
@@ -404,7 +383,7 @@
     </div>
   </section>
 
-  {% render '2gether-ramps-tabs', settings: section.settings, href_1: href_1, href_2: href_2, href_3: support_url, brand_href: '/', hero_selector: '.tg-rp-hero' %}
+  {% render '2gether-ramps-tabs', settings: section.settings, href_1: href_1, href_2: compare_url, href_3: support_url, brand_href: '/', hero_selector: '.tg-rp-hero' %}
 </div>
 
 <script>
@@ -569,7 +548,7 @@
     { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
     { "type": "text", "id": "tab_1_anchor", "label": "Tab 1 anchor on this page", "default": "tg-ramps-lineup" },
     { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "text", "id": "tab_2_anchor", "label": "Tab 2 anchor on this page", "default": "tg-ramps-compare" },
+    { "type": "page", "id": "compare_page", "label": "Tab 2 → Comparison page", "info": "Pick the page that uses the ramps-compare template. If empty, the theme looks it up automatically." },
     { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
     { "type": "page", "id": "support_page", "label": "Tab 3 → Support page", "info": "Pick the page that uses the ramps-support template. If empty, the theme looks for common handles automatically." },
     { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }

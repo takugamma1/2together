@@ -11,33 +11,12 @@
   assign resources = section.blocks | where: 'type', 'resource'
   assign parts = section.blocks | where: 'type', 'part'
 -%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: page.handle %}{%- endcapture -%}
 {%- liquid
-  assign ramps_url = ''
-  if st.ramps_page != blank and pages[st.ramps_page] != empty
-    assign ramps_url = pages[st.ramps_page].url
-  endif
-  if ramps_url == blank
-    assign ramps_handles = 'ramps,portable-ramps,рампи,преносими-рампи' | split: ','
-    for h in ramps_handles
-      if pages[h] != empty
-        assign ramps_url = pages[h].url
-        break
-      endif
-    endfor
-  endif
-  if ramps_url == blank
-    for p in pages
-      if p.template_suffix == 'ramps'
-        assign ramps_url = p.url
-        break
-      endif
-    endfor
-  endif
-  if ramps_url == blank
-    assign ramps_url = '/pages/portable-ramps'
-  endif
+  assign rp_urls = rp_urls | strip | split: '|'
+  assign ramps_url = rp_urls[0]
+  assign compare_url = rp_urls[1]
   assign lineup_url = ramps_url | append: '#tg-ramps-lineup'
-  assign compare_url = ramps_url | append: '#tg-ramps-compare'
 -%}
 
 <div class="tg-ramps-page tg-rs-page" id="tg-ramps-top">
@@ -131,6 +110,7 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "2getherbikes Ramp Support" },
     { "type": "text", "id": "title", "label": "Title", "default": "ПОДДРЪЖКА ЗА РАМПИТЕ." },
     { "type": "page", "id": "ramps_page", "label": "Ramps page", "info": "Used by the back button, the tabs and the CTA. If empty, the theme finds the page that uses the ramps template." },
+    { "type": "page", "id": "compare_page", "label": "Comparison page (for the tab strip)" },
     { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
     { "type": "url", "id": "back_link", "label": "Back link override" },
 

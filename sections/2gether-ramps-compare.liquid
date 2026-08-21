@@ -1,0 +1,212 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-ramps.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-ramps-active');</script>
+
+{%- liquid
+  assign st = section.settings
+  assign options = section.blocks | where: 'type', 'option'
+  assign rows = section.blocks | where: 'type', 'row'
+-%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: page.handle, support_handle: st.support_page %}{%- endcapture -%}
+{%- liquid
+  assign rp_urls = rp_urls | strip | split: '|'
+  assign ramps_url = rp_urls[0]
+  assign support_url = rp_urls[2]
+  assign lineup_url = ramps_url | append: '#tg-ramps-lineup'
+  assign p1 = st.product_1
+  assign p2 = st.product_2
+  assign url_1 = st.link_1
+  if url_1 == blank and p1 != blank
+    assign url_1 = p1.url
+  endif
+  if url_1 == blank
+    assign url_1 = lineup_url
+  endif
+  assign url_2 = st.link_2
+  if url_2 == blank and p2 != blank
+    assign url_2 = p2.url
+  endif
+  if url_2 == blank
+    assign url_2 = lineup_url
+  endif
+-%}
+
+<div class="tg-ramps-page tg-rc-page" id="tg-ramps-top">
+
+  <!-- ═══ HEAD ═══ -->
+  <section class="tg-rs-head">
+    <div class="tg-rp-wrap tg-rp-head--split">
+      <div>
+        <span class="tg-eyebrow">{{ st.eyebrow }}</span>
+        <h1 class="tg-rp-h2 tg-rs-title">{{ st.title }}</h1>
+      </div>
+      {% if st.back_text != blank %}
+        <a href="{{ st.back_link | default: ramps_url }}" class="tg-rp-btn tg-rp-btn--ghost tg-rs-back">
+          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 5H2M6 1L2 5l4 4"/></svg>{{ st.back_text }}
+        </a>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ═══ CHOOSER ═══ -->
+  {% if options.size > 0 %}
+  <section id="tg-rc-chooser" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rc-grid" data-rc-chooser>
+      <div class="tg-rc-copy">
+        <h2 class="tg-rp-h2 tg-rc-q">{{ st.chooser_title }}</h2>
+        <p class="tg-rp-text">{{ st.chooser_text }}</p>
+        <div class="tg-rp-seg tg-rc-chips" role="tablist" aria-label="{{ st.chooser_title | escape }}">
+          {% for b in options %}
+            <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="tg-rc-rec-{{ section.id }}-{{ forloop.index0 }}" data-rc-chip="{{ forloop.index0 }}" style="--model: {{ b.settings.color | default: '#E8601C' }}" {{ b.shopify_attributes }}>{{ b.settings.chip }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="tg-rc-rec">
+        <span class="tg-eyebrow">{{ st.rec_label }}</span>
+        <div class="tg-rc-rec-stack">
+          {% for b in options %}
+            {%- liquid
+              assign rec_url = b.settings.cta_link
+              if rec_url == blank and b.settings.product != blank
+                assign rec_url = b.settings.product.url
+              endif
+              if rec_url == blank
+                assign rec_url = lineup_url
+              endif
+            -%}
+            <div class="tg-rc-rec-panel{% if forloop.first %} is-active{% endif %}" id="tg-rc-rec-{{ section.id }}-{{ forloop.index0 }}" role="tabpanel" data-rc-panel="{{ forloop.index0 }}" style="--model: {{ b.settings.color | default: '#E8601C' }}" {% unless forloop.first %}hidden{% endunless %}>
+              <h3 class="tg-rp-h2 tg-rp-h2--sm tg-rc-rec-name">{{ b.settings.rec_title }}</h3>
+              <p class="tg-rp-text">{{ b.settings.rec_text }}</p>
+              {% if b.settings.cta_text != blank %}<a href="{{ rec_url }}" class="tg-rp-btn tg-rp-btn--primary tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ FULL TABLE ═══ -->
+  {% if rows.size > 0 %}
+  <section id="tg-rc-table" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.table_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.table_title }}</h2></header>
+      <div class="tg-rp-table-wrap">
+        <table class="tg-rp-table tg-rc-table">
+          <thead><tr>
+            <th>{{ st.col_label | default: 'Характеристика' }}</th>
+            <th style="--model: {{ st.color_1 | default: '#C8434F' }}"><span class="tg-rc-col">{{ st.name_1 }}</span></th>
+            <th style="--model: {{ st.color_2 | default: '#2F6FD6' }}"><span class="tg-rc-col">{{ st.name_2 }}</span></th>
+          </tr></thead>
+          <tbody>
+            {% for b in rows %}
+              {%- liquid
+                assign v1 = b.settings.value_1
+                assign v2 = b.settings.value_2
+                if b.settings.use_product_price
+                  if p1 != blank
+                    assign v1 = p1.price | money
+                  endif
+                  if p2 != blank
+                    assign v2 = p2.price | money
+                  endif
+                endif
+              -%}
+              <tr {{ b.shopify_attributes }}><th scope="row">{{ b.settings.label }}</th><td>{{ v1 }}</td><td>{{ v2 }}</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="tg-rp-actions">
+        {% if st.cta_1 != blank %}<a href="{{ url_1 }}" class="tg-rp-btn tg-rp-btn--primary" style="--model: {{ st.color_1 | default: '#C8434F' }}">{{ st.cta_1 }}</a>{% endif %}
+        {% if st.cta_2 != blank %}<a href="{{ url_2 }}" class="tg-rp-btn tg-rp-btn--ghost" style="--model: {{ st.color_2 | default: '#2F6FD6' }}">{{ st.cta_2 }}</a>{% endif %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% render '2gether-ramps-tabs', settings: section.settings, href_1: lineup_url, href_2: request.path, href_3: support_url, brand_href: '/', hero_selector: '.tg-rs-head' %}
+</div>
+
+<script>
+(() => {
+  const root = document.querySelector('[data-rc-chooser]');
+  if (!root) return;
+  const chips = [...root.querySelectorAll('[data-rc-chip]')];
+  const panels = [...root.querySelectorAll('[data-rc-panel]')];
+  const show = (i) => {
+    chips.forEach((c, k) => { const on = k === i; c.classList.toggle('is-active', on); c.setAttribute('aria-selected', on); });
+    panels.forEach((p, k) => {
+      const on = k === i;
+      if (on) { p.hidden = false; requestAnimationFrame(() => p.classList.add('is-active')); }
+      else { p.classList.remove('is-active'); setTimeout(() => { if (!p.classList.contains('is-active')) p.hidden = true; }, 260); }
+    });
+  };
+  chips.forEach((c, i) => c.addEventListener('click', () => show(i)));
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Ramp Comparison",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Head" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Избор без гадаене" },
+    { "type": "text", "id": "title", "label": "Title", "default": "BREEZE ИЛИ STORM?" },
+    { "type": "page", "id": "ramps_page", "label": "Ramps page", "info": "Used by the back button, the tabs and fallback links. If empty, the theme finds the page that uses the ramps template." },
+    { "type": "page", "id": "support_page", "label": "Support page (for the tab strip)" },
+    { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
+    { "type": "url", "id": "back_link", "label": "Back link override" },
+
+    { "type": "header", "content": "Chooser" },
+    { "type": "text", "id": "chooser_title", "label": "Question", "default": "КОЕ Е НАЙ-ВАЖНО ЗА ТЕБ?" },
+    { "type": "textarea", "id": "chooser_text", "label": "Text", "default": "Изборът не е „начинаещ или напреднал“. И двата модела могат да се карат на различни нива." },
+    { "type": "text", "id": "rec_label", "label": "Recommendation label", "default": "Нашето предложение" },
+
+    { "type": "header", "content": "Models (table columns + CTAs)" },
+    { "type": "text", "id": "col_label", "label": "First column header", "default": "Характеристика" },
+    { "type": "text", "id": "name_1", "label": "Model 1 name", "default": "BREEZE" },
+    { "type": "color", "id": "color_1", "label": "Model 1 colour", "default": "#C8434F" },
+    { "type": "product", "id": "product_1", "label": "Model 1 product (price + link)" },
+    { "type": "url", "id": "link_1", "label": "Model 1 link override" },
+    { "type": "text", "id": "cta_1", "label": "Model 1 CTA", "default": "Избери BREEZE" },
+    { "type": "text", "id": "name_2", "label": "Model 2 name", "default": "STORM" },
+    { "type": "color", "id": "color_2", "label": "Model 2 colour", "default": "#2F6FD6" },
+    { "type": "product", "id": "product_2", "label": "Model 2 product (price + link)" },
+    { "type": "url", "id": "link_2", "label": "Model 2 link override" },
+    { "type": "text", "id": "cta_2", "label": "Model 2 CTA", "default": "Избери STORM" },
+
+    { "type": "header", "content": "Table" },
+    { "type": "text", "id": "table_eyebrow", "label": "Eyebrow", "default": "Пълно сравнение" },
+    { "type": "text", "id": "table_title", "label": "Title", "default": "ВСИЧКО В ЕДИН ПОГЛЕД." },
+
+    { "type": "header", "content": "Bottom tab strip" },
+    { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
+    { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
+    { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
+    { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
+    { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
+  ],
+  "blocks": [
+    { "type": "option", "name": "Priority option", "limit": 6, "settings": [
+      { "type": "text", "id": "chip", "label": "Chip label", "default": "По-леко носене" },
+      { "type": "color", "id": "color", "label": "Accent colour", "default": "#E8601C" },
+      { "type": "text", "id": "rec_title", "label": "Recommended model", "default": "BREEZE" },
+      { "type": "textarea", "id": "rec_text", "label": "Why", "default": "7.5 kg и по-нисък диапазон — най-лесният модел за носене между спотовете." },
+      { "type": "text", "id": "cta_text", "label": "CTA", "default": "Виж BREEZE" },
+      { "type": "product", "id": "product", "label": "CTA product" },
+      { "type": "url", "id": "cta_link", "label": "CTA link override" } ] },
+    { "type": "row", "name": "Table row", "settings": [
+      { "type": "text", "id": "label", "label": "Characteristic", "default": "Тегло" },
+      { "type": "text", "id": "value_1", "label": "Model 1 value", "default": "7.5 kg" },
+      { "type": "text", "id": "value_2", "label": "Model 2 value", "default": "12.5 kg" },
+      { "type": "checkbox", "id": "use_product_price", "label": "Use product prices for this row", "default": false } ] }
+  ],
+  "presets": [ { "name": "Ramp Comparison" } ]
+}
+{% endschema %}

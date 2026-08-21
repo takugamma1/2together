@@ -1,0 +1,178 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "2gether-ramps-compare",
+      "blocks": {
+        "opt_1": {
+          "type": "option",
+          "settings": {
+            "chip": "По-леко носене",
+            "color": "#C8434F",
+            "rec_title": "BREEZE",
+            "rec_text": "7.5 kg и по-нисък диапазон — най-лесният модел за носене между спотовете.",
+            "cta_text": "Виж BREEZE"
+          }
+        },
+        "opt_2": {
+          "type": "option",
+          "settings": {
+            "chip": "По-висок кикър",
+            "color": "#2F6FD6",
+            "rec_title": "STORM",
+            "rec_text": "53–62 cm и по-висок ъгъл — когато търсиш по-агресивна траектория.",
+            "cta_text": "Виж STORM"
+          }
+        },
+        "opt_3": {
+          "type": "option",
+          "settings": {
+            "chip": "Take-off + landing",
+            "color": "#E8601C",
+            "rec_title": "BREEZE + STORM",
+            "rec_text": "Пълен комплект за take-off и landing с €55 по-ниска обща цена.",
+            "cta_text": "Виж комплекта"
+          }
+        },
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "label": "Цена с ДДС",
+            "value_1": "€260",
+            "value_2": "€385",
+            "use_product_price": true
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "label": "Дължина",
+            "value_1": "130 cm",
+            "value_2": "170 cm",
+            "use_product_price": false
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "label": "Широчина",
+            "value_1": "58 cm",
+            "value_2": "58 cm",
+            "use_product_price": false
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "label": "Тегло",
+            "value_1": "7.5 kg",
+            "value_2": "12.5 kg",
+            "use_product_price": false
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "label": "4 позиции",
+            "value_1": "29 / 32 / 35 / 38 cm",
+            "value_2": "53 / 57 / 60 / 62 cm",
+            "use_product_price": false
+          }
+        },
+        "row_6": {
+          "type": "row",
+          "settings": {
+            "label": "Общо натоварване",
+            "value_1": "150 kg",
+            "value_2": "150 kg",
+            "use_product_price": false
+          }
+        },
+        "row_7": {
+          "type": "row",
+          "settings": {
+            "label": "Трансформация",
+            "value_1": "около 30 сек.",
+            "value_2": "около 30 сек.",
+            "use_product_price": false
+          }
+        },
+        "row_8": {
+          "type": "row",
+          "settings": {
+            "label": "Носене на гръб",
+            "value_1": "Да",
+            "value_2": "Да",
+            "use_product_price": false
+          }
+        },
+        "row_9": {
+          "type": "row",
+          "settings": {
+            "label": "Take-off / landing",
+            "value_1": "Да / Да",
+            "value_2": "Да / Да",
+            "use_product_price": false
+          }
+        },
+        "row_10": {
+          "type": "row",
+          "settings": {
+            "label": "Гаранция",
+            "value_1": "2 години",
+            "value_2": "2 години",
+            "use_product_price": false
+          }
+        }
+      },
+      "block_order": [
+        "opt_1",
+        "opt_2",
+        "opt_3",
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5",
+        "row_6",
+        "row_7",
+        "row_8",
+        "row_9",
+        "row_10"
+      ],
+      "settings": {
+        "eyebrow": "Избор без гадаене",
+        "title": "BREEZE ИЛИ STORM?",
+        "back_text": "Назад към рампите",
+        "chooser_title": "КОЕ Е НАЙ-ВАЖНО ЗА ТЕБ?",
+        "chooser_text": "Изборът не е „начинаещ или напреднал“. И двата модела могат да се карат на различни нива.",
+        "rec_label": "Нашето предложение",
+        "col_label": "Характеристика",
+        "name_1": "BREEZE",
+        "color_1": "#C8434F",
+        "cta_1": "Избери BREEZE",
+        "name_2": "STORM",
+        "color_2": "#2F6FD6",
+        "cta_2": "Избери STORM",
+        "table_eyebrow": "Пълно сравнение",
+        "table_title": "ВСИЧКО В ЕДИН ПОГЛЕД.",
+        "tabs_enabled": true,
+        "tab_1_label": "Рампи",
+        "tab_2_label": "Сравнение",
+        "tab_3_label": "Поддръжка",
+        "tabs_aria": "Навигация в страницата"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

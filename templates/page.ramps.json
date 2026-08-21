@@ -400,8 +400,7 @@
         "tab_2_label": "Сравнение",
         "tab_3_label": "Поддръжка",
         "tabs_aria": "Навигация в страницата",
-        "tab_1_anchor": "tg-ramps-lineup",
-        "tab_2_anchor": "tg-ramps-compare"
+        "tab_1_anchor": "tg-ramps-lineup"
       }
     }
   },
