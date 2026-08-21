@@ -1,301 +1,384 @@
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {{ '2gether-ramps.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
-<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
 
 <script>document.body.classList.add('tg-ramps-active');</script>
 
 {%- liquid
-  assign ramps_collection = collections[section.settings.collection]
-  assign ramps = ramps_collection.products
-
-  assign feature_count = 0
-  assign spec_count = 0
-  assign faq_count = 0
-  for block in section.blocks
-    case block.type
-      when 'feature'
-        assign feature_count = feature_count | plus: 1
-      when 'spec'
-        assign spec_count = spec_count | plus: 1
-      when 'faq'
-        assign faq_count = faq_count | plus: 1
-    endcase
-  endfor
+  assign st = section.settings
+  assign kpis = section.blocks | where: 'type', 'kpi'
+  assign models = section.blocks | where: 'type', 'model'
+  assign steps = section.blocks | where: 'type', 'step'
+  assign terrains = section.blocks | where: 'type', 'terrain'
+  assign details = section.blocks | where: 'type', 'detail'
+  assign gallery = section.blocks | where: 'type', 'gallery'
+  assign story_cols = section.blocks | where: 'type', 'story_col'
+  assign supports = section.blocks | where: 'type', 'support'
+  assign faqs = section.blocks | where: 'type', 'faq'
+  assign bundle = st.bundle_product
 -%}
 
-<div class="tg-ramps-page">
+<div class="tg-ramps-page" id="tg-ramps-top">
 
-  <!-- ═══ HERO ═══ -->
-  <section class="tg-ramps-hero">
-    <div class="tg-ramps-hero-media">
-      {% if section.settings.hero_image != blank %}
-        {{ section.settings.hero_image | image_url: width: 2400 | image_tag: loading: 'eager', sizes: '100vw', class: 'tg-ramps-hero-img' }}
-      {% else %}
-        <div class="tg-ramps-hero-placeholder" aria-hidden="true"></div>
-      {% endif %}
-      <div class="tg-ramps-hero-veil"></div>
-    </div>
-
-    <div class="tg-ramps-hero-inner">
-      <span class="tg-ramps-origin">
-        <span class="tg-ramps-origin-dot"></span>
-        <span>{{ section.settings.hero_origin | default: 'MADE IN BOTEVGRAD · BULGARIA' }}</span>
-      </span>
-
-      <h1 class="tg-ramps-hero-title">
-        {{ section.settings.hero_title | default: 'PORTABLE' }}
-        <span>{{ section.settings.hero_title_accent | default: 'RAMPS' }}</span>
-      </h1>
-
-      <p class="tg-ramps-hero-sub">{{ section.settings.hero_sub | default: 'Take your line anywhere. Welded steel, anti-slip skin, stackable in seconds. Built by hand in Botevgrad — tested in the dirt every weekend.' }}</p>
-
-      <div class="tg-ramps-hero-actions">
-        <a href="#tg-ramps-lineup" class="tg-ramps-hero-cta">
-          {{ section.settings.hero_cta | default: 'Shop the lineup' }}
-          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
-        </a>
-        {% if section.settings.hero_secondary_text != blank %}
-          <a href="{{ section.settings.hero_secondary_link | default: '#tg-ramps-story' }}" class="tg-ramps-hero-secondary">{{ section.settings.hero_secondary_text }}</a>
+  <!-- ═══ 01 HERO ═══ -->
+  <section class="tg-rp-hero">
+    <div class="tg-rp-wrap tg-rp-hero-grid">
+      <div class="tg-rp-hero-copy">
+        <span class="tg-eyebrow">{{ st.hero_eyebrow }}</span>
+        <h1 class="tg-rp-h1">{{ st.hero_title | newline_to_br }}</h1>
+        <p class="tg-rp-lead">{{ st.hero_sub }}</p>
+        <div class="tg-rp-actions">
+          {% if st.hero_cta1_text != blank %}<a href="{{ st.hero_cta1_link | default: '#tg-ramps-lineup' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.hero_cta1_text }}</a>{% endif %}
+          {% if st.hero_cta2_text != blank %}<a href="{{ st.hero_cta2_link | default: '#tg-ramps-transform' }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.hero_cta2_text }}</a>{% endif %}
+        </div>
+      </div>
+      <figure class="tg-rp-hero-media">
+        {% if st.hero_image != blank %}
+          {{ st.hero_image | image_url: width: 1600 | image_tag: loading: 'eager', sizes: '(max-width: 1024px) 100vw, 50vw', class: 'tg-rp-cover' }}
+        {% else %}
+          <div class="tg-rp-placeholder"></div>
         {% endif %}
-      </div>
-
-      <!-- Hero quick stats — 3 small KPIs across the bottom of the hero -->
-      <div class="tg-ramps-hero-kpis">
-        <div class="tg-ramps-kpi">
-          <strong>{{ section.settings.kpi_1_value | default: '12kg' }}</strong>
-          <span>{{ section.settings.kpi_1_label | default: 'Per ramp' }}</span>
-        </div>
-        <div class="tg-ramps-kpi">
-          <strong>{{ section.settings.kpi_2_value | default: '120kg' }}</strong>
-          <span>{{ section.settings.kpi_2_label | default: 'Load rating' }}</span>
-        </div>
-        <div class="tg-ramps-kpi">
-          <strong>{{ section.settings.kpi_3_value | default: '2 yr' }}</strong>
-          <span>{{ section.settings.kpi_3_label | default: 'Warranty' }}</span>
-        </div>
-      </div>
+        {% if st.hero_badge != blank %}<figcaption class="tg-rp-hero-badge">{{ st.hero_badge }}</figcaption>{% endif %}
+      </figure>
     </div>
-  </section>
-
-  <!-- ═══ LINEUP ═══ -->
-  <section id="tg-ramps-lineup" class="tg-ramps-lineup">
-    <header class="tg-ramps-section-head">
-      <span class="tg-eyebrow">{{ section.settings.lineup_eyebrow | default: 'The lineup' }}</span>
-      <h2 class="tg-ramps-section-title">{{ section.settings.lineup_title | default: 'PICK YOUR LINE' }}</h2>
-      {% if section.settings.lineup_intro != blank %}
-        <p class="tg-ramps-section-intro">{{ section.settings.lineup_intro }}</p>
-      {% endif %}
-    </header>
-
-    {% if ramps.size > 0 %}
-      <div class="tg-ramps-grid">
-        {% for product in ramps %}
-          {%- liquid
-            assign variant = product.selected_or_first_available_variant
-            assign on_sale = false
-            if variant.compare_at_price > variant.price
-              assign on_sale = true
-            endif
-          -%}
-          <article class="tg-ramp-card" data-ramp-handle="{{ product.handle }}">
-            <a href="{{ product.url }}" class="tg-ramp-card-media-link" aria-label="View {{ product.title }}">
-              <div class="tg-ramp-card-media">
-                {% if product.featured_image != blank %}
-                  {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 33vw', alt: product.title }}
-                {% else %}
-                  <div class="tg-ramp-card-placeholder" aria-hidden="true"></div>
-                {% endif %}
-                {% if on_sale %}
-                  <span class="tg-ramp-card-badge tg-ramp-badge--sale">Sale</span>
-                {% endif %}
-                {%- for tag in product.tags -%}
-                  {%- if tag contains 'badge:' -%}
-                    <span class="tg-ramp-card-badge tg-ramp-badge--tag">{{ tag | remove: 'badge:' | strip }}</span>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-            </a>
-
-            <div class="tg-ramp-card-info">
-              <a href="{{ product.url }}" class="tg-ramp-card-title-link">
-                <h3 class="tg-ramp-card-name">{{ product.title }}</h3>
-              </a>
-              {% if product.description != blank %}
-                <p class="tg-ramp-card-desc">{{ product.description | strip_html | truncate: 110 }}</p>
-              {% endif %}
-
-              <!-- Product micro-specs pulled from tags like "spec:Length 240cm" -->
-              {%- assign has_specs = false -%}
-              {%- for tag in product.tags -%}
-                {%- if tag contains 'spec:' -%}{%- assign has_specs = true -%}{%- break -%}{%- endif -%}
-              {%- endfor -%}
-              {% if has_specs %}
-                <ul class="tg-ramp-card-specs">
-                  {%- for tag in product.tags -%}
-                    {%- if tag contains 'spec:' -%}
-                      {%- assign spec = tag | remove: 'spec:' | strip | split: ' ' -%}
-                      <li><span>{{ spec | first }}</span><strong>{{ spec | slice: 1, 99 | join: ' ' }}</strong></li>
-                    {%- endif -%}
-                  {%- endfor -%}
-                </ul>
-              {% endif %}
-
-              <div class="tg-ramp-card-foot">
-                <div class="tg-ramp-card-price-block">
-                  <span class="tg-ramp-card-price">{{ variant.price | money }}</span>
-                  {% if on_sale %}
-                    <span class="tg-ramp-card-compare">{{ variant.compare_at_price | money }}</span>
-                  {% endif %}
-                </div>
-
-                {%- form 'product', product, data-tg-ramp-form: '' -%}
-                  <input type="hidden" name="id" value="{{ variant.id }}">
-                  <input type="hidden" name="quantity" value="1">
-                  <button
-                    type="submit"
-                    class="tg-ramp-card-buy"
-                    {% unless product.available %}disabled{% endunless %}
-                  >
-                    {% if product.available %}
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                      Add to cart
-                    {% else %}
-                      Sold out
-                    {% endif %}
-                  </button>
-                {%- endform -%}
-              </div>
-            </div>
-          </article>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="tg-ramps-empty">
-        <p>Pick a collection in the section settings to populate the lineup.</p>
+    {% if kpis.size > 0 %}
+      <div class="tg-rp-wrap">
+        <ul class="tg-rp-kpis" style="--cols: {{ kpis.size }}">
+          {% for b in kpis %}
+            <li {{ b.shopify_attributes }}><strong>{{ b.settings.value }}</strong><span>{{ b.settings.label }}</span></li>
+          {% endfor %}
+        </ul>
       </div>
     {% endif %}
   </section>
 
-  <!-- ═══ FEATURES STRIP ═══ -->
-  {% if feature_count > 0 %}
-    <section id="tg-ramps-compare" class="tg-ramps-features">
-      <header class="tg-ramps-section-head">
-        <span class="tg-eyebrow">{{ section.settings.features_eyebrow | default: 'Built right' }}</span>
-        <h2 class="tg-ramps-section-title">{{ section.settings.features_title | default: 'WHY OURS' }}</h2>
+  <!-- ═══ 02 LINEUP ═══ -->
+  <section id="tg-ramps-lineup" class="tg-rp-section">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head tg-rp-head--split">
+        <div>
+          <span class="tg-eyebrow">{{ st.lineup_eyebrow }}</span>
+          <h2 class="tg-rp-h2">{{ st.lineup_title }}</h2>
+        </div>
+        {% if st.lineup_cta_text != blank %}<a href="#tg-ramps-compare" class="tg-rp-btn tg-rp-btn--ghost">{{ st.lineup_cta_text }}</a>{% endif %}
       </header>
 
-      <div class="tg-ramps-features-grid">
-        {% for block in section.blocks %}
-          {% if block.type == 'feature' %}
-            <article class="tg-ramp-feature" {{ block.shopify_attributes }}>
-              <span class="tg-ramp-feature-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
-              {% if block.settings.icon != blank %}
-                <div class="tg-ramp-feature-icon">{{ block.settings.icon }}</div>
-              {% endif %}
-              <h3 class="tg-ramp-feature-title">{{ block.settings.title }}</h3>
-              {% if block.settings.text != blank %}
-                <p class="tg-ramp-feature-text">{{ block.settings.text }}</p>
-              {% endif %}
-            </article>
-          {% endif %}
+      <div class="tg-rp-models" style="--cols: {{ models.size | at_least: 1 }}">
+        {% for b in models %}
+          {%- liquid
+            assign p = b.settings.product
+            assign price = b.settings.price
+            if p != blank
+              assign price = p.price | money
+            endif
+            assign url = b.settings.link
+            if url == blank and p != blank
+              assign url = p.url
+            endif
+            assign img = b.settings.image
+            if img == blank and p != blank
+              assign img = p.featured_image
+            endif
+          -%}
+          <article class="tg-rp-model" {{ b.shopify_attributes }}>
+            <div class="tg-rp-model-media">
+              {% if img != blank %}{{ img | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 900px) 100vw, 50vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
+              <span class="tg-rp-corner" aria-hidden="true"></span>
+            </div>
+            <div class="tg-rp-model-body">
+              <div class="tg-rp-model-top">
+                <span class="tg-rp-tag">{{ b.settings.name }}</span>
+                {% if price != blank %}<span class="tg-rp-price">{{ price }}</span>{% endif %}
+              </div>
+              <h3 class="tg-rp-h3">{{ b.settings.tagline }}</h3>
+              <p class="tg-rp-text">{{ b.settings.description }}</p>
+              <ul class="tg-rp-specs">
+                {% if b.settings.weight != blank %}<li>{{ b.settings.weight }}</li>{% endif %}
+                {% if b.settings.dims != blank %}<li>{{ b.settings.dims }}</li>{% endif %}
+                {% if b.settings.range != blank %}<li>{{ b.settings.range }}</li>{% endif %}
+                {% if b.settings.positions_label != blank %}<li>{{ b.settings.positions_label }}</li>{% endif %}
+              </ul>
+              <div class="tg-rp-model-choose">
+                <h4>{{ b.settings.choose_title }}</h4>
+                <p>{{ b.settings.choose_text }}</p>
+              </div>
+              {% if b.settings.cta_text != blank %}<a href="{{ url | default: '#' }}" class="tg-rp-btn tg-rp-btn--primary tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
+            </div>
+          </article>
         {% endfor %}
       </div>
-    </section>
-  {% endif %}
+    </div>
+  </section>
 
-  <!-- ═══ MANUFACTURING STORY ═══ -->
-  <section id="tg-ramps-story" class="tg-ramps-story">
-    <div class="tg-ramps-story-grid">
-      <div class="tg-ramps-story-media">
-        {% if section.settings.story_image != blank %}
-          {{ section.settings.story_image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 50vw', class: 'tg-ramps-story-img' }}
-        {% else %}
-          <div class="tg-ramps-story-placeholder" aria-hidden="true"></div>
-        {% endif %}
-        <div class="tg-ramps-story-stamp">
-          <span>Hand-built</span>
-          <strong>Botevgrad</strong>
-          <small>Bulgaria · EST. {{ section.settings.story_year | default: '2024' }}</small>
+  <!-- ═══ 03 SET + COMPARE ═══ -->
+  <section id="tg-ramps-compare" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      {%- liquid
+        assign b_price = st.bundle_price
+        assign b_compare = st.bundle_compare_price
+        assign b_url = st.bundle_link
+        if bundle != blank
+          assign b_price = bundle.price | money
+          if bundle.compare_at_price > bundle.price
+            assign b_compare = bundle.compare_at_price | money
+          endif
+          if b_url == blank
+            assign b_url = bundle.url
+          endif
+        endif
+      -%}
+      <div class="tg-rp-bundle">
+        <div class="tg-rp-bundle-copy">
+          <span class="tg-eyebrow">{{ st.bundle_eyebrow }}</span>
+          <h2 class="tg-rp-h2 tg-rp-h2--sm">{{ st.bundle_title }}</h2>
+          <p class="tg-rp-text">{{ st.bundle_text }}</p>
+          <div class="tg-rp-bundle-price">
+            {% if b_price != blank %}<strong>{{ b_price }}</strong>{% endif %}
+            {% if b_compare != blank %}<s>{{ b_compare }}</s>{% endif %}
+            {% if st.bundle_save != blank %}<span class="tg-rp-tag tg-rp-tag--flame">{{ st.bundle_save }}</span>{% endif %}
+          </div>
+        </div>
+        {% if st.bundle_cta != blank %}<a href="{{ b_url | default: '#' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.bundle_cta }}</a>{% endif %}
+      </div>
+
+      {% if models.size > 0 %}
+        <div class="tg-rp-table-wrap">
+          <table class="tg-rp-table">
+            <thead><tr>
+              <th>{{ st.tbl_model | default: 'Модел' }}</th><th>{{ st.tbl_weight | default: 'Тегло' }}</th><th>{{ st.tbl_range | default: 'Диапазон' }}</th><th>{{ st.tbl_length | default: 'Дължина' }}</th><th>{{ st.tbl_price | default: 'Цена с ДДС' }}</th>
+            </tr></thead>
+            <tbody>
+              {% for b in models %}
+                {%- liquid
+                  assign p = b.settings.product
+                  assign price = b.settings.price
+                  if p != blank
+                    assign price = p.price | money
+                  endif
+                -%}
+                <tr><th scope="row">{{ b.settings.name }}</th><td>{{ b.settings.weight }}</td><td>{{ b.settings.range }}</td><td>{{ b.settings.length_cm }} cm</td><td>{{ price }}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ═══ 04 POSITIONS ═══ -->
+  {% if models.size > 0 %}
+  <section id="tg-ramps-positions" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-pos-grid" data-rp-positions>
+      <div class="tg-rp-pos-copy">
+        <span class="tg-eyebrow">{{ st.pos_eyebrow }}</span>
+        <h2 class="tg-rp-h2">{{ st.pos_title }}</h2>
+        <p class="tg-rp-text">{{ st.pos_text }}</p>
+
+        <div class="tg-rp-pos-control">
+          <span class="tg-rp-pos-label">{{ st.pos_model_label | default: 'Модел' }}</span>
+          <div class="tg-rp-seg" role="tablist" aria-label="{{ st.pos_model_label | default: 'Модел' }}">
+            {% for b in models %}
+              <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-model data-name="{{ b.settings.name | escape }}" data-length="{{ b.settings.length_cm | default: 130 }}" data-heights="{{ b.settings.heights | default: '29,32,35,38' | escape }}">{{ b.settings.name }}</button>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="tg-rp-pos-control">
+          <span class="tg-rp-pos-label">{{ st.pos_position_label | default: 'Позиция' }}</span>
+          <div class="tg-rp-seg tg-rp-seg--num" role="tablist" aria-label="{{ st.pos_position_label | default: 'Позиция' }}">
+            {% for i in (1..4) %}
+              <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-pos="{{ forloop.index0 }}">{{ i }}</button>
+            {% endfor %}
+          </div>
         </div>
       </div>
 
-      <div class="tg-ramps-story-info">
-        <span class="tg-eyebrow">{{ section.settings.story_eyebrow | default: 'The shop' }}</span>
-        <h2 class="tg-ramps-story-title">
-          {{ section.settings.story_title | default: 'WELDED BY HAND.' }}<br>
-          <em>{{ section.settings.story_title_em | default: 'Tested by us.' }}</em>
-        </h2>
-        <p class="tg-ramps-story-text">{{ section.settings.story_text | default: 'Each ramp is welded in a workshop in Botevgrad, then powder-coated and finished with an anti-slip skin. Before any unit ships, we ride it ourselves — at the shop, in the trails, on the Sunday rides. If a weld feels off, it goes back. Simple as that.' }}</p>
-
-        {% if spec_count > 0 %}
-          <dl class="tg-ramps-story-specs">
-            {% for block in section.blocks %}
-              {% if block.type == 'spec' %}
-                <div {{ block.shopify_attributes }}>
-                  <dt>{{ block.settings.label }}</dt>
-                  <dd>{{ block.settings.value }}</dd>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </dl>
-        {% endif %}
+      <div class="tg-rp-pos-stage">
+        <svg class="tg-rp-ramp" viewBox="0 0 640 280" aria-hidden="true">
+          <defs>
+            <linearGradient id="tg-rp-deck-{{ section.id }}" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="var(--tg-flame)" stop-opacity="0.55"/>
+              <stop offset="1" stop-color="var(--tg-flame)"/>
+            </linearGradient>
+          </defs>
+          <line class="tg-rp-ground" x1="40" y1="232" x2="600" y2="232"/>
+          <g class="tg-rp-deck-pivot" data-rp-deck>
+            <polygon class="tg-rp-deck" points="0,0 0,-6 440,-6 440,0" fill="url(#tg-rp-deck-{{ section.id }})" data-rp-deck-shape/>
+            <polygon class="tg-rp-deck-side" points="0,0 440,0 440,10 0,10" data-rp-deck-side/>
+          </g>
+          <g class="tg-rp-leg" data-rp-leg><line x1="0" y1="0" x2="0" y2="-1" data-rp-leg-line/></g>
+          <g class="tg-rp-dim" data-rp-dim>
+            <line x1="0" y1="0" x2="0" y2="-1" class="tg-rp-dim-line" data-rp-dim-line/>
+            <line x1="-10" y1="0" x2="10" y2="0" class="tg-rp-dim-tick"/>
+            <line x1="-10" y1="-1" x2="10" y2="-1" class="tg-rp-dim-tick" data-rp-dim-top/>
+            <text x="16" y="-1" class="tg-rp-dim-text" data-rp-dim-text>29 cm</text>
+          </g>
+          <text x="40" y="268" class="tg-rp-ramp-caption" data-rp-caption></text>
+        </svg>
+        <p class="tg-rp-pos-readout" data-rp-readout aria-live="polite"></p>
       </div>
     </div>
   </section>
-
-  <!-- ═══ FAQ ═══ -->
-  {% if faq_count > 0 %}
-    <section id="tg-ramps-faq" class="tg-ramps-faq">
-      <header class="tg-ramps-section-head">
-        <span class="tg-eyebrow">{{ section.settings.faq_eyebrow | default: 'Before you ride' }}</span>
-        <h2 class="tg-ramps-section-title">{{ section.settings.faq_title | default: 'QUESTIONS, ANSWERED' }}</h2>
-      </header>
-
-      <div class="tg-ramps-faq-list">
-        {% for block in section.blocks %}
-          {% if block.type == 'faq' %}
-            <details class="tg-ramps-faq-row" {{ block.shopify_attributes }}>
-              <summary>
-                <span class="tg-ramps-faq-q">{{ block.settings.question }}</span>
-                <span class="tg-ramps-faq-toggle" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </span>
-              </summary>
-              <div class="tg-ramps-faq-a">{{ block.settings.answer }}</div>
-            </details>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </section>
   {% endif %}
 
-  <!-- ═══ CTA STRIP ═══ -->
-  <section class="tg-ramps-cta">
-    <div class="tg-ramps-cta-inner">
-      <h2 class="tg-ramps-cta-title">{{ section.settings.cta_title | default: 'BUILD YOUR LINE TODAY' }}</h2>
-      <p class="tg-ramps-cta-sub">{{ section.settings.cta_sub | default: 'In stock. Free shipping in Bulgaria. 2-year warranty on every unit.' }}</p>
-      <div class="tg-ramps-cta-actions">
-        <a href="#tg-ramps-lineup" class="tg-ramps-cta-btn tg-ramps-cta-btn--primary">
-          {{ section.settings.cta_primary_text | default: 'Shop ramps' }}
-          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
-        </a>
-        {% if section.settings.cta_secondary_text != blank %}
-          <a href="{{ section.settings.cta_secondary_link | default: '/pages/contact' }}" class="tg-ramps-cta-btn tg-ramps-cta-btn--ghost">{{ section.settings.cta_secondary_text }}</a>
+  <!-- ═══ 05 TRANSFORMATION ═══ -->
+  <section id="tg-ramps-transform" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-split">
+      <figure class="tg-rp-media">
+        {% if st.tf_image != blank %}{{ st.tf_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
+        {% if st.tf_video_label != blank %}
+          <a class="tg-rp-play" href="{{ st.tf_video_url | default: '#' }}" {% if st.tf_video_url contains 'http' %}target="_blank" rel="noopener"{% endif %}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.tf_video_label }}
+          </a>
+        {% endif %}
+      </figure>
+      <div class="tg-rp-split-copy">
+        <span class="tg-eyebrow">{{ st.tf_eyebrow }}</span>
+        <h2 class="tg-rp-h2">{{ st.tf_title }}</h2>
+        <p class="tg-rp-text">{{ st.tf_text }}</p>
+        {% if steps.size > 0 %}
+          <ol class="tg-rp-steps">
+            {% for b in steps %}
+              <li {{ b.shopify_attributes }}>{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.label }}</span></li>
+            {% endfor %}
+          </ol>
         {% endif %}
       </div>
     </div>
   </section>
+
+  <!-- ═══ 06 TERRAINS ═══ -->
+  {% if terrains.size > 0 %}
+  <section class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.ter_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.ter_title }}</h2></header>
+      <div class="tg-rp-cards" style="--cols: {{ terrains.size }}">
+        {% for b in terrains %}
+          <article class="tg-rp-card" {{ b.shopify_attributes }}>
+            {% render '2gether-ramps-icon', name: b.settings.icon %}
+            <h3 class="tg-rp-h3">{{ b.settings.title }}</h3>
+            <p class="tg-rp-text">{{ b.settings.text }}</p>
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ 07 DETAILS + GALLERY ═══ -->
+  <section id="tg-ramps-details" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-split tg-rp-split--tight">
+      <figure class="tg-rp-media tg-rp-media--square">
+        {% if st.det_image != blank %}{{ st.det_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 45vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
+        {% if st.det_stamp_title != blank %}
+          <div class="tg-rp-stamp"><small>{{ st.det_stamp_kicker }}</small><strong>{{ st.det_stamp_title }}</strong><span>{{ st.det_stamp_sub }}</span></div>
+        {% endif %}
+      </figure>
+      <div class="tg-rp-split-copy">
+        <span class="tg-eyebrow">{{ st.det_eyebrow }}</span>
+        <h2 class="tg-rp-h2">{{ st.det_title }}</h2>
+        <p class="tg-rp-text">{{ st.det_text }}</p>
+        {% if details.size > 0 %}
+          <ul class="tg-rp-details">
+            {% for b in details %}
+              <li {{ b.shopify_attributes }}>{% render '2gether-ramps-icon', name: b.settings.icon %}<div><h3>{{ b.settings.title }}</h3><p>{{ b.settings.text }}</p></div></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+    {% if gallery.size > 0 %}
+      <div class="tg-rp-wrap">
+        <div class="tg-rp-gallery">
+          {% for b in gallery %}
+            <figure {{ b.shopify_attributes }}>
+              <div class="tg-rp-media">{% if b.settings.image != blank %}{{ b.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 900px) 100vw, 50vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}</div>
+              <figcaption><h3 class="tg-rp-h3">{{ b.settings.title }}</h3><p class="tg-rp-text">{{ b.settings.text }}</p></figcaption>
+            </figure>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- ═══ 08 STORY ═══ -->
+  <section id="tg-ramps-story" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-split">
+      <figure class="tg-rp-media">
+        {% if st.story_image != blank %}{{ st.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
+        {% if st.story_video_label != blank %}
+          <a class="tg-rp-play" href="{{ st.story_video_url | default: '#' }}" {% if st.story_video_url contains 'http' %}target="_blank" rel="noopener"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.story_video_label }}</a>
+        {% endif %}
+      </figure>
+      <div class="tg-rp-split-copy">
+        <span class="tg-eyebrow">{{ st.story_eyebrow }}</span>
+        <h2 class="tg-rp-h2">{{ st.story_title }}</h2>
+        <p class="tg-rp-text">{{ st.story_text }}</p>
+        {% if story_cols.size > 0 %}
+          <div class="tg-rp-cols" style="--cols: {{ story_cols.size }}">
+            {% for b in story_cols %}<div {{ b.shopify_attributes }}><h3>{{ b.settings.title }}</h3><p>{{ b.settings.text }}</p></div>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 09 SUPPORT ═══ -->
+  {% if supports.size > 0 %}
+  <section id="tg-ramps-support" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.sup_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.sup_title }}</h2></header>
+      <div class="tg-rp-cards" style="--cols: {{ supports.size }}">
+        {% for b in supports %}
+          <article class="tg-rp-card" {{ b.shopify_attributes }}>
+            {% render '2gether-ramps-icon', name: b.settings.icon %}
+            <h3 class="tg-rp-h3">{{ b.settings.title }}</h3>
+            <p class="tg-rp-text">{{ b.settings.text }}</p>
+            {% if b.settings.cta_text != blank %}<a href="{{ b.settings.cta_link | default: '#' }}" class="tg-rp-btn tg-rp-btn--{{ b.settings.cta_style | default: 'ghost' }} tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ 10 FAQ ═══ -->
+  {% if faqs.size > 0 %}
+  <section id="tg-ramps-faq" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-wrap--narrow">
+      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.faq_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.faq_title }}</h2></header>
+      <div class="tg-rp-faq">
+        {% for b in faqs %}
+          <details class="tg-rp-faq-item" {% if forloop.first %}open{% endif %} {{ b.shopify_attributes }}>
+            <summary><span>{{ b.settings.question }}</span><i aria-hidden="true"></i></summary>
+            <div class="tg-rp-faq-a">{{ b.settings.answer }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ 11 CTA ═══ -->
+  <section class="tg-rp-section tg-rp-section--line tg-rp-cta">
+    <div class="tg-rp-wrap tg-rp-cta-inner">
+      <span class="tg-eyebrow tg-eyebrow--center">{{ st.cta_eyebrow }}</span>
+      <h2 class="tg-rp-h2">{{ st.cta_title }}</h2>
+      <div class="tg-rp-actions tg-rp-actions--center">
+        {% if st.cta1_text != blank %}<a href="{{ st.cta1_link | default: '#tg-ramps-lineup' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.cta1_text }}</a>{% endif %}
+        {% if st.cta2_text != blank %}<a href="{{ st.cta2_link | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.cta2_text }}</a>{% endif %}
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ BOTTOM TAB STRIP ═══ -->
-  {% if section.settings.tabs_enabled %}
-    <nav class="tg-ramps-tabs" data-ramps-tabs aria-label="{{ section.settings.tabs_aria | default: 'Навигация в страницата' }}">
+  {% if st.tabs_enabled %}
+    <nav class="tg-ramps-tabs" data-ramps-tabs aria-label="{{ st.tabs_aria | default: 'Навигация в страницата' }}">
       <div class="tg-ramps-tabs-pill">
-        <a href="#top" class="tg-ramps-tabs-brand" aria-label="2gether">
-          <span>2gether</span><em aria-hidden="true">//</em>
-        </a>
-        {%- assign tab_labels = section.settings.tab_1_label | append: '|' | append: section.settings.tab_2_label | append: '|' | append: section.settings.tab_3_label | split: '|' -%}
-        {%- assign tab_links = section.settings.tab_1_link | append: '|' | append: section.settings.tab_2_link | append: '|' | append: section.settings.tab_3_link | split: '|' -%}
+        <a href="#tg-ramps-top" class="tg-ramps-tabs-brand" aria-label="2gether"><span>2gether</span><em aria-hidden="true">//</em></a>
+        {%- assign tab_labels = st.tab_1_label | append: '|' | append: st.tab_2_label | append: '|' | append: st.tab_3_label | split: '|' -%}
+        {%- assign tab_links = st.tab_1_link | append: '|' | append: st.tab_2_link | append: '|' | append: st.tab_3_link | split: '|' -%}
         {%- for label in tab_labels -%}
           {%- assign href = tab_links[forloop.index0] -%}
           {%- if label != blank and href != blank -%}
@@ -310,39 +393,73 @@
 
 <script>
 (() => {
+  /* ── Positions illustrator ── */
+  const root = document.querySelector('[data-rp-positions]');
+  if (root) {
+    const S = 2.6, PX = 60, GY = 232;              // scale (px per cm), pivot x, ground y
+    const deck = root.querySelector('[data-rp-deck]');
+    const shape = root.querySelector('[data-rp-deck-shape]');
+    const side = root.querySelector('[data-rp-deck-side]');
+    const leg = root.querySelector('[data-rp-leg]');
+    const legLine = root.querySelector('[data-rp-leg-line]');
+    const dim = root.querySelector('[data-rp-dim]');
+    const dimLine = root.querySelector('[data-rp-dim-line]');
+    const dimTop = root.querySelector('[data-rp-dim-top]');
+    const dimText = root.querySelector('[data-rp-dim-text]');
+    const caption = root.querySelector('[data-rp-caption]');
+    const readout = root.querySelector('[data-rp-readout]');
+    const modelBtns = [...root.querySelectorAll('[data-rp-model]')];
+    const posBtns = [...root.querySelectorAll('[data-rp-pos]')];
+    let model = modelBtns[0], pos = 0;
+
+    const setSeg = (btns, active) => btns.forEach(b => { const on = b === active; b.classList.toggle('is-active', on); b.setAttribute('aria-selected', on); });
+
+    const draw = () => {
+      const L = parseFloat(model.dataset.length) || 130;
+      const hs = model.dataset.heights.split(',').map(v => parseFloat(v)).filter(n => !isNaN(n));
+      const h = hs[Math.min(pos, hs.length - 1)] || 0;
+      const Lpx = L * S, hpx = Math.min(h * S, Lpx - 1);
+      const ang = Math.asin(hpx / Lpx);
+      const tipX = PX + Lpx * Math.cos(ang);
+      shape.setAttribute('points', `0,0 0,-6 ${Lpx},-6 ${Lpx},0`);
+      side.setAttribute('points', `0,0 ${Lpx},0 ${Lpx},10 0,10`);
+      deck.style.transform = `translate(${PX}px, ${GY}px) rotate(${-ang * 180 / Math.PI}deg)`;
+      leg.style.transform = `translate(${tipX - 18}px, ${GY}px)`;
+      legLine.setAttribute('y2', -(hpx - 4));
+      dim.style.transform = `translate(${tipX + 36}px, ${GY}px)`;
+      dimLine.setAttribute('y2', -hpx);
+      dimTop.setAttribute('y1', -hpx); dimTop.setAttribute('y2', -hpx);
+      dimText.setAttribute('y', -hpx / 2 + 5);
+      dimText.textContent = `${h} cm`;
+      const name = model.dataset.name;
+      caption.textContent = `${name} · позиция ${pos + 1}`;
+      readout.textContent = `${name} · позиция ${pos + 1} · ${h} cm`;
+    };
+    modelBtns.forEach(b => b.addEventListener('click', () => { model = b; setSeg(modelBtns, b); draw(); }));
+    posBtns.forEach(b => b.addEventListener('click', () => { pos = +b.dataset.pos; setSeg(posBtns, b); draw(); }));
+    draw();
+  }
+
+  /* ── Bottom tab strip ── */
   const nav = document.querySelector('[data-ramps-tabs]');
-  if (!nav) return;
-  const tabs = [...nav.querySelectorAll('[data-ramps-tab][data-target]')];
-  const targets = tabs.map(t => document.getElementById(t.dataset.target)).filter(Boolean);
-  const hero = document.querySelector('.tg-ramps-hero');
-
-  const setActive = (id) => tabs.forEach(t => {
-    const on = t.dataset.target === id;
-    t.classList.toggle('is-active', on);
-    if (on) t.setAttribute('aria-current', 'location'); else t.removeAttribute('aria-current');
-  });
-
-  const onScroll = () => {
-    // show once the hero is mostly scrolled past
-    const past = !hero || hero.getBoundingClientRect().bottom < window.innerHeight * 0.6;
-    nav.classList.toggle('is-visible', past);
-    // scroll-spy: last target whose top crossed 45% of viewport
-    let current = null;
-    const line = window.innerHeight * 0.45;
-    targets.forEach(el => { if (el.getBoundingClientRect().top <= line) current = el.id; });
-    setActive(current);
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll();
-
-  tabs.forEach(t => t.addEventListener('click', (e) => {
-    const el = document.getElementById(t.dataset.target);
-    if (!el) return;
-    e.preventDefault();
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    history.replaceState(null, '', '#' + t.dataset.target);
-  }));
+  if (nav) {
+    const tabs = [...nav.querySelectorAll('[data-ramps-tab][data-target]')];
+    const targets = tabs.map(t => document.getElementById(t.dataset.target)).filter(Boolean);
+    const hero = document.querySelector('.tg-rp-hero');
+    const onScroll = () => {
+      nav.classList.toggle('is-visible', !hero || hero.getBoundingClientRect().bottom < window.innerHeight * 0.6);
+      let current = null; const line = window.innerHeight * 0.45;
+      targets.forEach(el => { if (el.getBoundingClientRect().top <= line) current = el.id; });
+      tabs.forEach(t => { const on = t.dataset.target === current; t.classList.toggle('is-active', on); on ? t.setAttribute('aria-current', 'location') : t.removeAttribute('aria-current'); });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+    tabs.forEach(t => t.addEventListener('click', (e) => {
+      const el = document.getElementById(t.dataset.target); if (!el) return;
+      e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', '#' + t.dataset.target);
+    }));
+  }
 })();
 </script>
 
@@ -351,209 +468,154 @@
   "name": "Portable Ramps",
   "tag": "section",
   "settings": [
-    {
-      "type": "header",
-      "content": "Hero"
-    },
-    {
-      "type": "image_picker",
-      "id": "hero_image",
-      "label": "Hero image"
-    },
-    {
-      "type": "text",
-      "id": "hero_origin",
-      "label": "Origin label",
-      "default": "MADE IN BOTEVGRAD · BULGARIA"
-    },
-    {
-      "type": "text",
-      "id": "hero_title",
-      "label": "Title",
-      "default": "PORTABLE"
-    },
-    {
-      "type": "text",
-      "id": "hero_title_accent",
-      "label": "Title (flame accent)",
-      "default": "RAMPS"
-    },
-    {
-      "type": "textarea",
-      "id": "hero_sub",
-      "label": "Subtitle",
-      "default": "Take your line anywhere. Welded steel, anti-slip skin, stackable in seconds. Built by hand in Botevgrad — tested in the dirt every weekend."
-    },
-    {
-      "type": "text",
-      "id": "hero_cta",
-      "label": "Hero primary CTA",
-      "default": "Shop the lineup"
-    },
-    {
-      "type": "text",
-      "id": "hero_secondary_text",
-      "label": "Hero secondary CTA",
-      "default": "See how we build them"
-    },
-    {
-      "type": "url",
-      "id": "hero_secondary_link",
-      "label": "Hero secondary link"
-    },
-    {
-      "type": "header",
-      "content": "Hero KPIs (3 stats overlay)"
-    },
-    { "type": "text", "id": "kpi_1_value", "label": "KPI 1 value", "default": "12kg" },
-    { "type": "text", "id": "kpi_1_label", "label": "KPI 1 label", "default": "Per ramp" },
-    { "type": "text", "id": "kpi_2_value", "label": "KPI 2 value", "default": "120kg" },
-    { "type": "text", "id": "kpi_2_label", "label": "KPI 2 label", "default": "Load rating" },
-    { "type": "text", "id": "kpi_3_value", "label": "KPI 3 value", "default": "2 yr" },
-    { "type": "text", "id": "kpi_3_label", "label": "KPI 3 label", "default": "Warranty" },
-    {
-      "type": "header",
-      "content": "Lineup"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Ramps collection",
-      "info": "Products in this collection are listed in the lineup grid. Use tags like 'spec:Length 240cm' on a product to surface a stat. Use 'badge:Best seller' for a tag pill."
-    },
-    {
-      "type": "text",
-      "id": "lineup_eyebrow",
-      "label": "Eyebrow",
-      "default": "The lineup"
-    },
-    {
-      "type": "text",
-      "id": "lineup_title",
-      "label": "Title",
-      "default": "PICK YOUR LINE"
-    },
-    {
-      "type": "textarea",
-      "id": "lineup_intro",
-      "label": "Intro paragraph"
-    },
-    {
-      "type": "header",
-      "content": "Features (block-driven)"
-    },
-    { "type": "text", "id": "features_eyebrow", "label": "Eyebrow", "default": "Built right" },
-    { "type": "text", "id": "features_title", "label": "Title", "default": "WHY OURS" },
-    {
-      "type": "header",
-      "content": "Manufacturing story"
-    },
-    {
-      "type": "image_picker",
-      "id": "story_image",
-      "label": "Story image (workshop)"
-    },
-    { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "The shop" },
-    { "type": "text", "id": "story_title", "label": "Title", "default": "WELDED BY HAND." },
-    { "type": "text", "id": "story_title_em", "label": "Title (italic line)", "default": "Tested by us." },
-    {
-      "type": "textarea",
-      "id": "story_text",
-      "label": "Story body",
-      "default": "Each ramp is welded in a workshop in Botevgrad, then powder-coated and finished with an anti-slip skin. Before any unit ships, we ride it ourselves — at the shop, in the trails, on the Sunday rides. If a weld feels off, it goes back. Simple as that."
-    },
-    {
-      "type": "text",
-      "id": "story_year",
-      "label": "Stamp year",
-      "default": "2024"
-    },
-    {
-      "type": "header",
-      "content": "FAQ"
-    },
-    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Before you ride" },
-    { "type": "text", "id": "faq_title", "label": "Title", "default": "QUESTIONS, ANSWERED" },
-    {
-      "type": "header",
-      "content": "Closing CTA"
-    },
-    { "type": "text", "id": "cta_title", "label": "Title", "default": "BUILD YOUR LINE TODAY" },
-    { "type": "textarea", "id": "cta_sub", "label": "Subtitle", "default": "In stock. Free shipping in Bulgaria. 2-year warranty on every unit." },
-    { "type": "text", "id": "cta_primary_text", "label": "Primary CTA", "default": "Shop ramps" },
-    { "type": "text", "id": "cta_secondary_text", "label": "Secondary CTA", "default": "Talk to us" },
-    { "type": "url", "id": "cta_secondary_link", "label": "Secondary CTA link" },
-    {
-      "type": "header",
-      "content": "Bottom tab strip"
-    },
+    { "type": "header", "content": "01 · Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "2getherbikes Portable Ramps · Made in Bulgaria" },
+    { "type": "textarea", "id": "hero_title", "label": "Title (line breaks allowed)", "default": "СЪЗДАЙ СПОТ.\nНАВСЯКЪДЕ." },
+    { "type": "textarea", "id": "hero_sub", "label": "Subtitle", "default": "BREEZE и STORM се регулират в 4 позиции, сгъват се за 30 секунди и се носят на гръб." },
+    { "type": "text", "id": "hero_cta1_text", "label": "Primary CTA", "default": "Сравни моделите" },
+    { "type": "text", "id": "hero_cta1_link", "label": "Primary CTA link", "default": "#tg-ramps-lineup" },
+    { "type": "text", "id": "hero_cta2_text", "label": "Secondary CTA", "default": "Виж ги в действие" },
+    { "type": "text", "id": "hero_cta2_link", "label": "Secondary CTA link", "default": "#tg-ramps-transform" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_badge", "label": "Image badge", "default": "Произведени в България" },
+
+    { "type": "header", "content": "02 · Lineup" },
+    { "type": "text", "id": "lineup_eyebrow", "label": "Eyebrow", "default": "Избери своята" },
+    { "type": "text", "id": "lineup_title", "label": "Title", "default": "ДВА МОДЕЛА. РАЗЛИЧЕН ХАРАКТЕР." },
+    { "type": "text", "id": "lineup_cta_text", "label": "Compare button", "default": "Пълно сравнение" },
+
+    { "type": "header", "content": "03 · Set + comparison table" },
+    { "type": "text", "id": "bundle_eyebrow", "label": "Eyebrow", "default": "Пълният спот" },
+    { "type": "text", "id": "bundle_title", "label": "Title", "default": "BREEZE + STORM · TAKE-OFF & LANDING SET" },
+    { "type": "textarea", "id": "bundle_text", "label": "Text", "default": "Използвай едната за изстрелване, а другата за приземяване. Или изгради два различни скока." },
+    { "type": "product", "id": "bundle_product", "label": "Set product (price + link come from it)" },
+    { "type": "text", "id": "bundle_price", "label": "Price (fallback if no product)", "default": "€590" },
+    { "type": "text", "id": "bundle_compare_price", "label": "Compare-at price (fallback)", "default": "€645" },
+    { "type": "text", "id": "bundle_save", "label": "Savings badge", "default": "Спестяваш €55" },
+    { "type": "text", "id": "bundle_cta", "label": "CTA", "default": "Виж комплекта" },
+    { "type": "url", "id": "bundle_link", "label": "CTA link (fallback)" },
+    { "type": "text", "id": "tbl_model", "label": "Table: model column", "default": "Модел" },
+    { "type": "text", "id": "tbl_weight", "label": "Table: weight column", "default": "Тегло" },
+    { "type": "text", "id": "tbl_range", "label": "Table: range column", "default": "Диапазон" },
+    { "type": "text", "id": "tbl_length", "label": "Table: length column", "default": "Дължина" },
+    { "type": "text", "id": "tbl_price", "label": "Table: price column", "default": "Цена с ДДС" },
+
+    { "type": "header", "content": "04 · Positions" },
+    { "type": "text", "id": "pos_eyebrow", "label": "Eyebrow", "default": "4 фиксирани позиции" },
+    { "type": "text", "id": "pos_title", "label": "Title", "default": "ТИ РЕШАВАШ КАК ДА ИЗЛЕТИШ." },
+    { "type": "textarea", "id": "pos_text", "label": "Text", "default": "Преместваш предните крака и променяш едновременно височината и ъгъла на изстрелване." },
+    { "type": "text", "id": "pos_model_label", "label": "Model selector label", "default": "Модел" },
+    { "type": "text", "id": "pos_position_label", "label": "Position selector label", "default": "Позиция" },
+
+    { "type": "header", "content": "05 · Transformation" },
+    { "type": "image_picker", "id": "tf_image", "label": "Image" },
+    { "type": "text", "id": "tf_video_label", "label": "Play button label", "default": "30-секундната трансформация" },
+    { "type": "url", "id": "tf_video_url", "label": "Video link" },
+    { "type": "text", "id": "tf_eyebrow", "label": "Eyebrow", "default": "От готова за скок до готова за път" },
+    { "type": "text", "id": "tf_title", "label": "Title", "default": "СКАЧАШ. СГЪВАШ. ТРЪГВАШ." },
+    { "type": "textarea", "id": "tf_text", "label": "Text", "default": "Всичко остава свързано в един заключен пакет. Слагаш презрамките, качваш се на колелото и местиш спота с теб." },
+
+    { "type": "header", "content": "06 · Terrains" },
+    { "type": "text", "id": "ter_eyebrow", "label": "Eyebrow", "default": "Спотът е там, където го създадеш" },
+    { "type": "text", "id": "ter_title", "label": "Title", "default": "ЕДНА РАМПА. МНОГО ТЕРЕНИ." },
+
+    { "type": "header", "content": "07 · Product details" },
+    { "type": "image_picker", "id": "det_image", "label": "Image" },
+    { "type": "text", "id": "det_stamp_kicker", "label": "Stamp kicker", "default": "Hand-built" },
+    { "type": "text", "id": "det_stamp_title", "label": "Stamp title", "default": "Botevgrad" },
+    { "type": "text", "id": "det_stamp_sub", "label": "Stamp sub", "default": "Bulgaria · EST. 2024" },
+    { "type": "text", "id": "det_eyebrow", "label": "Eyebrow", "default": "Продуктовите детайли" },
+    { "type": "text", "id": "det_title", "label": "Title", "default": "СЪЗДАДЕНА ДА СКАЧА. НАПРАВЕНА ДА ПЪТУВА." },
+    { "type": "textarea", "id": "det_text", "label": "Text", "default": "Всеки елемент има конкретна функция — стабилност при скок, по-малко вибрации, сигурно носене и лесна поддръжка." },
+
+    { "type": "header", "content": "08 · Story" },
+    { "type": "image_picker", "id": "story_image", "label": "Image" },
+    { "type": "text", "id": "story_video_label", "label": "Play button label", "default": "Гледай влога" },
+    { "type": "url", "id": "story_video_url", "label": "Video link" },
+    { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Цялата история" },
+    { "type": "text", "id": "story_title", "label": "Title", "default": "КАК СЪЗДАДОХМЕ РАМПИТЕ." },
+    { "type": "textarea", "id": "story_text", "label": "Text", "default": "Производството в цеха, тридневният лагер с отбора и първото градско каране с рампите в Ботевград — събрани в един влог." },
+
+    { "type": "header", "content": "09 · Support" },
+    { "type": "text", "id": "sup_eyebrow", "label": "Eyebrow", "default": "Преди и след покупката" },
+    { "type": "text", "id": "sup_title", "label": "Title", "default": "ГАРАНЦИЯ. ЧАСТИ. РЕАЛНА ПОДДРЪЖКА." },
+
+    { "type": "header", "content": "10 · FAQ" },
+    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Преди да тръгнеш" },
+    { "type": "text", "id": "faq_title", "label": "Title", "default": "ЧЕСТО ЗАДАВАНИ ВЪПРОСИ" },
+
+    { "type": "header", "content": "11 · Final CTA" },
+    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Следващият спот е твой" },
+    { "type": "text", "id": "cta_title", "label": "Title", "default": "ИЗБЕРИ РАМПАТА, КОЯТО ЩЕ ТРЪГНЕ С ТЕБ." },
+    { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Сравни моделите" },
+    { "type": "text", "id": "cta1_link", "label": "Primary CTA link", "default": "#tg-ramps-lineup" },
+    { "type": "text", "id": "cta2_text", "label": "Secondary CTA", "default": "Тествай във Варна" },
+    { "type": "text", "id": "cta2_link", "label": "Secondary CTA link", "default": "/pages/contact" },
+
+    { "type": "header", "content": "Bottom tab strip" },
     { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
     { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
-    { "type": "text", "id": "tab_1_link", "label": "Tab 1 link (anchor or URL)", "default": "#tg-ramps-lineup" },
+    { "type": "text", "id": "tab_1_link", "label": "Tab 1 link", "default": "#tg-ramps-lineup" },
     { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "text", "id": "tab_2_link", "label": "Tab 2 link (anchor or URL)", "default": "#tg-ramps-compare" },
+    { "type": "text", "id": "tab_2_link", "label": "Tab 2 link", "default": "#tg-ramps-compare" },
     { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "text", "id": "tab_3_link", "label": "Tab 3 link (anchor or URL)", "default": "#tg-ramps-faq" },
+    { "type": "text", "id": "tab_3_link", "label": "Tab 3 link", "default": "#tg-ramps-support" },
     { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
   ],
   "blocks": [
-    {
-      "type": "feature",
-      "name": "Feature",
-      "limit": 8,
-      "settings": [
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Icon (single char/emoji)",
-          "info": "e.g. an emoji or symbol like ◣ ◆ ▲ • used as a graphic tile",
-          "default": "◣"
-        },
-        { "type": "text", "id": "title", "label": "Title", "default": "Stackable" },
-        { "type": "textarea", "id": "text", "label": "Text", "default": "Slot together in seconds. Pack the whole kit in the trunk." }
-      ]
-    },
-    {
-      "type": "spec",
-      "name": "Spec row",
-      "limit": 8,
-      "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Frame" },
-        { "type": "text", "id": "value", "label": "Value", "default": "12mm welded steel" }
-      ]
-    },
-    {
-      "type": "faq",
-      "name": "FAQ",
-      "limit": 10,
-      "settings": [
-        { "type": "text", "id": "question", "label": "Question", "default": "How do they ship?" },
-        { "type": "textarea", "id": "answer", "label": "Answer", "default": "Flat-pack to your door anywhere in Bulgaria, free over €100. Outside BG by request." }
-      ]
-    }
+    { "type": "kpi", "name": "Hero KPI", "limit": 6, "settings": [
+      { "type": "text", "id": "value", "label": "Value", "default": "30 сек." },
+      { "type": "text", "id": "label", "label": "Label", "default": "трансформация" } ] },
+    { "type": "model", "name": "Ramp model", "limit": 3, "settings": [
+      { "type": "text", "id": "name", "label": "Name", "default": "BREEZE" },
+      { "type": "product", "id": "product", "label": "Product (price, image, link)" },
+      { "type": "image_picker", "id": "image", "label": "Image override" },
+      { "type": "text", "id": "price", "label": "Price (fallback)", "default": "€260" },
+      { "type": "url", "id": "link", "label": "Link override" },
+      { "type": "text", "id": "tagline", "label": "Tagline", "default": "ЛЕКА. БЪРЗА. НАВСЯКЪДЕ С ТЕБ." },
+      { "type": "textarea", "id": "description", "label": "Description", "default": "По-лека за носене. По-нисък диапазон на кикъра." },
+      { "type": "text", "id": "weight", "label": "Weight", "default": "7.5 kg" },
+      { "type": "text", "id": "dims", "label": "Dimensions", "default": "130 × 58 cm" },
+      { "type": "text", "id": "range", "label": "Height range", "default": "29–38 cm" },
+      { "type": "text", "id": "positions_label", "label": "Positions label", "default": "4 позиции" },
+      { "type": "number", "id": "length_cm", "label": "Length in cm (illustration + table)", "default": 130 },
+      { "type": "text", "id": "heights", "label": "Heights per position, cm (comma-separated)", "default": "29,32,35,38" },
+      { "type": "text", "id": "choose_title", "label": "Choose-if title", "default": "ИЗБЕРИ BREEZE, АКО:" },
+      { "type": "textarea", "id": "choose_text", "label": "Choose-if text", "default": "искаш ниското тегло и лесното местене между спотовете да са приоритет." },
+      { "type": "text", "id": "cta_text", "label": "CTA", "default": "Виж BREEZE" } ] },
+    { "type": "step", "name": "Transformation step", "limit": 8, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "fold", "options": [
+        { "value": "fold", "label": "Fold" }, { "value": "lock", "label": "Lock" }, { "value": "carry", "label": "Carry" }, { "value": "ride", "label": "Ride" }, { "value": "unfold", "label": "Unfold" }, { "value": "jump", "label": "Jump" } ] },
+      { "type": "text", "id": "label", "label": "Label", "default": "СГЪВАШ" } ] },
+    { "type": "terrain", "name": "Terrain card", "limit": 4, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "city", "options": [
+        { "value": "city", "label": "City" }, { "value": "forest", "label": "Forest" }, { "value": "landing", "label": "Landing" }, { "value": "jump", "label": "Jump" } ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "ГРАДЪТ" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Равен терен, стълби и градски препятствия." } ] },
+    { "type": "detail", "name": "Product detail", "limit": 6, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "grip", "options": [
+        { "value": "grip", "label": "Grip" }, { "value": "spring", "label": "Spring" }, { "value": "foot", "label": "Rubber foot" }, { "value": "lock", "label": "Lock" } ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "ПОВЪРХНОСТ С ДОПЪЛНИТЕЛНО СЦЕПЛЕНИЕ" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Специалното покритие запазва сцеплението и при мокра повърхност." } ] },
+    { "type": "gallery", "name": "Detail photo", "limit": 6, "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "title", "label": "Title", "default": "ГУМЕНИТЕ КРАЧЕТА" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Кадър отблизо показва контакта с терена и лесната подмяна при износване." } ] },
+    { "type": "story_col", "name": "Story column", "limit": 4, "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "ПРОИЗВОДСТВО" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "От отделните елементи до готовата рампа." } ] },
+    { "type": "support", "name": "Support card", "limit": 4, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "shield", "options": [
+        { "value": "shield", "label": "Shield" }, { "value": "wrench", "label": "Wrench" }, { "value": "pin", "label": "Pin" } ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "2 ГОДИНИ ГАРАНЦИЯ" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Ясно описани производствени и конструктивни дефекти." },
+      { "type": "text", "id": "cta_text", "label": "CTA", "default": "Условия" },
+      { "type": "url", "id": "cta_link", "label": "CTA link" },
+      { "type": "select", "id": "cta_style", "label": "CTA style", "default": "ghost", "options": [ { "value": "ghost", "label": "Ghost" }, { "value": "primary", "label": "Primary" } ] } ] },
+    { "type": "faq", "name": "FAQ", "settings": [
+      { "type": "text", "id": "question", "label": "Question", "default": "Кой модел да избера?" },
+      { "type": "textarea", "id": "answer", "label": "Answer", "default": "BREEZE, ако ниското тегло и по-ниският кикър са приоритет. STORM, ако търсиш по-висок диапазон и по-агресивен ъгъл." } ] }
   ],
-  "presets": [
-    {
-      "name": "Portable Ramps",
-      "category": "Custom",
-      "blocks": [
-        { "type": "feature", "settings": { "icon": "◣", "title": "Stackable", "text": "Slot together in seconds. Pack the whole kit in the trunk." } },
-        { "type": "feature", "settings": { "icon": "◆", "title": "Anti-slip skin", "text": "Marine-grade textured surface. Grips in rain, mud, and powder." } },
-        { "type": "feature", "settings": { "icon": "▲", "title": "Two-person setup", "text": "Lifted, set, ridden in under a minute. No tools." } },
-        { "type": "feature", "settings": { "icon": "●", "title": "Steel-built", "text": "12mm welded frame. 120kg load rating. Won't flex under a sprint." } },
-        { "type": "spec", "settings": { "label": "Frame", "value": "12mm welded steel" } },
-        { "type": "spec", "settings": { "label": "Surface", "value": "Anti-slip composite" } },
-        { "type": "spec", "settings": { "label": "Load rating", "value": "120 kg" } },
-        { "type": "spec", "settings": { "label": "Weight (per ramp)", "value": "12 kg" } },
-        { "type": "faq", "settings": { "question": "How do they ship?", "answer": "Flat-pack to your door anywhere in Bulgaria — free over €100 of ramps. Outside BG by request, we'll quote." } },
-        { "type": "faq", "settings": { "question": "Can I mix and match ramps and stands?", "answer": "Yes. All our ramps fit any of our stands. Build the kit you need, scale later." } },
-        { "type": "faq", "settings": { "question": "What's the warranty?", "answer": "2 years on welds, frame, and skin. If a part fails from normal use, we replace it." } },
-        { "type": "faq", "settings": { "question": "Where do you make them?", "answer": "Welded and finished in Botevgrad, Bulgaria. We visit the workshop every month." } }
-      ]
-    }
-  ],
-  "enabled_on": {
-    "templates": ["page"]
-  }
+  "presets": [ { "name": "Portable Ramps" } ]
 }
 {% endschema %}

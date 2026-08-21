@@ -12,143 +12,380 @@
     "tg_ramps": {
       "type": "2gether-ramps",
       "blocks": {
-        "f_1": {
-          "type": "feature",
+        "kpi_1": {
+          "type": "kpi",
           "settings": {
-            "icon": "◣",
-            "title": "СГЛОБЯЕМИ",
-            "text": "Захващат се за секунди. Целият комплект се събира в багажника."
+            "value": "30 сек.",
+            "label": "трансформация"
           }
         },
-        "f_2": {
-          "type": "feature",
+        "kpi_2": {
+          "type": "kpi",
           "settings": {
-            "icon": "◆",
-            "title": "АНТИПЛЪЗГАЩА ПОВЪРХНОСТ",
-            "text": "Текстурирано покритие. Държи в дъжд, кал и пясък."
+            "value": "4 позиции",
+            "label": "височина и ъгъл"
           }
         },
-        "f_3": {
-          "type": "feature",
+        "kpi_3": {
+          "type": "kpi",
           "settings": {
-            "icon": "▲",
-            "title": "БЪРЗ И ЛЕСЕН МОНТАЖ",
-            "text": "Наместват се под минута без инструменти."
+            "value": "150 kg",
+            "label": "ездач + велосипед"
           }
         },
-        "f_4": {
-          "type": "feature",
+        "kpi_4": {
+          "type": "kpi",
           "settings": {
-            "icon": "●",
+            "value": "2 години",
+            "label": "гаранция"
+          }
+        },
+        "kpi_5": {
+          "type": "kpi",
+          "settings": {
+            "value": "България",
+            "label": "проектиране и производство"
+          }
+        },
+        "model_breeze": {
+          "type": "model",
+          "settings": {
+            "name": "BREEZE",
+            "price": "€260",
+            "tagline": "ЛЕКА. БЪРЗА. НАВСЯКЪДЕ С ТЕБ.",
+            "description": "По-лека за носене. По-нисък диапазон на кикъра.",
+            "weight": "7.5 kg",
+            "dims": "130 × 58 cm",
+            "range": "29–38 cm",
+            "positions_label": "4 позиции",
+            "length_cm": 130,
+            "heights": "29,32,35,38",
+            "choose_title": "ИЗБЕРИ BREEZE, АКО:",
+            "choose_text": "искаш ниското тегло и лесното местене между спотовете да са приоритет.",
+            "cta_text": "Виж BREEZE"
+          }
+        },
+        "model_storm": {
+          "type": "model",
+          "settings": {
+            "name": "STORM",
+            "price": "€385",
+            "tagline": "ПО-ВИСОК КИКЪР. ПО-АГРЕСИВЕН ЪГЪЛ.",
+            "description": "Повече височина, когато искаш по-агресивна траектория.",
+            "weight": "12.5 kg",
+            "dims": "170 × 58 cm",
+            "range": "53–62 cm",
+            "positions_label": "4 позиции",
+            "length_cm": 170,
+            "heights": "53,56,59,62",
+            "choose_title": "ИЗБЕРИ STORM, АКО:",
+            "choose_text": "по-високият кикър и по-агресивният ъгъл са по-важни от теглото.",
+            "cta_text": "Виж STORM"
+          }
+        },
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "icon": "fold",
+            "label": "СГЪВАШ"
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "icon": "lock",
+            "label": "ЗАКЛЮЧВАШ"
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "icon": "carry",
+            "label": "НОСИШ"
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "icon": "ride",
+            "label": "КАРАШ"
+          }
+        },
+        "step_5": {
+          "type": "step",
+          "settings": {
+            "icon": "unfold",
+            "label": "РАЗГЪВАШ"
+          }
+        },
+        "step_6": {
+          "type": "step",
+          "settings": {
+            "icon": "jump",
+            "label": "СКАЧАШ"
+          }
+        },
+        "terrain_1": {
+          "type": "terrain",
+          "settings": {
+            "icon": "city",
+            "title": "ГРАДЪТ",
+            "text": "Равен терен, стълби и градски препятствия."
+          }
+        },
+        "terrain_2": {
+          "type": "terrain",
+          "settings": {
+            "icon": "forest",
+            "title": "ГОРАТА",
+            "text": "Създаваш нова линия там, където трасето не стига."
+          }
+        },
+        "terrain_3": {
+          "type": "terrain",
+          "settings": {
+            "icon": "landing",
+            "title": "LANDING",
+            "text": "Обръщаш рампата и я използваш за приземяване."
+          }
+        },
+        "detail_1": {
+          "type": "detail",
+          "settings": {
+            "icon": "grip",
+            "title": "ПОВЪРХНОСТ С ДОПЪЛНИТЕЛНО СЦЕПЛЕНИЕ",
+            "text": "Специалното покритие запазва сцеплението и при мокра повърхност."
+          }
+        },
+        "detail_2": {
+          "type": "detail",
+          "settings": {
+            "icon": "spring",
+            "title": "ЕЛАСТИЧНА СИСТЕМА",
+            "text": "Свързва отделните части и обира вибрациите от натоварването при скок."
+          }
+        },
+        "detail_3": {
+          "type": "detail",
+          "settings": {
+            "icon": "foot",
+            "title": "СМЕНЯЕМИ ГУМЕНИ КРАЧЕТА",
+            "text": "Ограничават приплъзването и се подменят, когато се износят."
+          }
+        },
+        "detail_4": {
+          "type": "detail",
+          "settings": {
+            "icon": "lock",
+            "title": "ЗАКЛЮЧВАНЕ ПРИ НОСЕНЕ",
+            "text": "Не позволява на пакета да се разгъне, докато караш с рампата на гръб."
+          }
+        },
+        "gallery_1": {
+          "type": "gallery",
+          "settings": {
+            "title": "ГУМЕНИТЕ КРАЧЕТА",
+            "text": "Кадър отблизо показва контакта с терена и лесната подмяна при износване."
+          }
+        },
+        "gallery_2": {
+          "type": "gallery",
+          "settings": {
+            "title": "ЛАСТИЦИ И ШАЙБИ",
+            "text": "Вижда се как еластичната система държи конструкцията свързана и обира вибрациите."
+          }
+        },
+        "gallery_3": {
+          "type": "gallery",
+          "settings": {
+            "title": "ЗАКЛЮЧВАНЕТО",
+            "text": "Показваме механизма, който държи сгънатия пакет затворен при носене."
+          }
+        },
+        "gallery_4": {
+          "type": "gallery",
+          "settings": {
+            "title": "СПЕЦИАЛНОТО ПОКРИТИЕ",
+            "text": "Макро кадър на повърхността, която осигурява допълнително сцепление."
+          }
+        },
+        "story_1": {
+          "type": "story_col",
+          "settings": {
+            "title": "ПРОИЗВОДСТВО",
+            "text": "От отделните елементи до готовата рампа."
+          }
+        },
+        "story_2": {
+          "type": "story_col",
+          "settings": {
+            "title": "СЪБОРЪТ",
+            "text": "Децата се запознават с процеса директно в цеха."
+          }
+        },
+        "story_3": {
+          "type": "story_col",
+          "settings": {
+            "title": "РЕАЛНО КАРАНЕ",
+            "text": "Първият градски спот с рампите."
+          }
+        },
+        "support_1": {
+          "type": "support",
+          "settings": {
+            "icon": "shield",
             "title": "2 ГОДИНИ ГАРАНЦИЯ",
-            "text": "????????"
+            "text": "Ясно описани производствени и конструктивни дефекти.",
+            "cta_text": "Условия",
+            "cta_link": "/pages/contact",
+            "cta_style": "ghost"
           }
         },
-        "s_1": {
-          "type": "spec",
+        "support_2": {
+          "type": "support",
           "settings": {
-            "label": "рамката",
-            "value": "12мм заварена стомана"
+            "icon": "wrench",
+            "title": "РЕЗЕРВНИ ЧАСТИ",
+            "text": "Сменяеми крачета, ластици и директно запитване при повреда.",
+            "cta_text": "Поддръжка",
+            "cta_link": "/pages/contact",
+            "cta_style": "ghost"
           }
         },
-        "s_2": {
-          "type": "spec",
+        "support_3": {
+          "type": "support",
           "settings": {
-            "label": "повърхност",
-            "value": "антиплъзгащо покритие"
+            "icon": "pin",
+            "title": "ТЕСТ ВЪВ ВАРНА",
+            "text": "Пробваш BREEZE и STORM пред магазина, преди да избереш.",
+            "cta_text": "Запази тест",
+            "cta_link": "/pages/contact",
+            "cta_style": "primary"
           }
         },
-        "s_3": {
-          "type": "spec",
-          "settings": {
-            "label": "товаримост",
-            "value": "150 кг."
-          }
-        },
-        "s_4": {
-          "type": "spec",
-          "settings": {
-            "label": "тежест (на рампа)",
-            "value": "12.5 кг."
-          }
-        },
-        "q_1": {
+        "faq_1": {
           "type": "faq",
           "settings": {
-            "question": "Как се доставят?",
-            "answer": "С куриер до адрес или лично взимане от магазина ни в гр. Варна, избираш ти."
+            "question": "Кой модел да избера?",
+            "answer": "BREEZE, ако ниското тегло и по-ниският кикър са приоритет. STORM, ако търсиш по-висок диапазон и по-агресивен ъгъл."
           }
         },
-        "q_2": {
+        "faq_2": {
           "type": "faq",
           "settings": {
-            "question": "Мога ли да комбинирам различни рампи и стойки?",
-            "answer": "Да, всички продукти от линията са съвместими помежду си. Строй комплекта който ти трябва."
+            "question": "Мога ли да поръчам, ако наличните бройки са изчерпани?",
+            "answer": "Да. Поръчката се приема, след което се свързваме лично с теб и потвърждаваме срока за изработка от 5 до 10 работни дни."
           }
         },
-        "q_3": {
+        "faq_3": {
           "type": "faq",
           "settings": {
-            "question": "Има ли гаранция?",
-            "answer": "2 години на всяка единица. Ако нещо се счупи при нормална употреба, оправяме го."
+            "question": "Може ли да се кара при мокра повърхност?",
+            "answer": "Да. След каране рампата трябва да бъде подсушена и съхранявана на сухо."
           }
         },
-        "q_4": {
+        "faq_4": {
           "type": "faq",
           "settings": {
-            "question": "Къде се произвеждат?",
-            "answer": "На ръка в Ботевград, България. Всяка рампа минава през нашите ръце преди да стигне до твоите."
+            "question": "Мога ли първо да я тествам?",
+            "answer": "Да — BREEZE и STORM могат да се тестват пред магазина на 2GETHERBIKES във Варна."
           }
         }
       },
       "block_order": [
-        "f_1",
-        "f_2",
-        "f_3",
-        "f_4",
-        "s_1",
-        "s_2",
-        "s_3",
-        "s_4",
-        "q_1",
-        "q_2",
-        "q_3",
-        "q_4"
+        "kpi_1",
+        "kpi_2",
+        "kpi_3",
+        "kpi_4",
+        "kpi_5",
+        "model_breeze",
+        "model_storm",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5",
+        "step_6",
+        "terrain_1",
+        "terrain_2",
+        "terrain_3",
+        "detail_1",
+        "detail_2",
+        "detail_3",
+        "detail_4",
+        "gallery_1",
+        "gallery_2",
+        "gallery_3",
+        "gallery_4",
+        "story_1",
+        "story_2",
+        "story_3",
+        "support_1",
+        "support_2",
+        "support_3",
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4"
       ],
       "settings": {
+        "hero_eyebrow": "2getherbikes Portable Ramps · Made in Bulgaria",
+        "hero_title": "СЪЗДАЙ СПОТ.\nНАВСЯКЪДЕ.",
+        "hero_sub": "BREEZE и STORM се регулират в 4 позиции, сгъват се за 30 секунди и се носят на гръб.",
+        "hero_cta1_text": "Сравни моделите",
+        "hero_cta1_link": "#tg-ramps-lineup",
+        "hero_cta2_text": "Виж ги в действие",
+        "hero_cta2_link": "#tg-ramps-transform",
         "hero_image": "shopify://shop_images/DSC07489.webp",
-        "hero_origin": "ПРОИЗВЕДЕНО В БЪЛГАРИЯ",
-        "hero_title": "ПРЕНОСИМИ",
-        "hero_title_accent": "РАМПИ",
-        "hero_sub": "Дървена, антиплъзгаща повърхност, сгъва се за секунди.",
-        "hero_cta": "РАЗГЛЕДАЙ КАТАЛОГА",
-        "hero_secondary_text": "ВИЖ КАК ГИ ПРАВИМ",
-        "hero_secondary_link": "#tg-ramps-story",
-        "kpi_1_value": "12 кг.",
-        "kpi_1_label": "на рампа",
-        "kpi_2_value": "120 кг.",
-        "kpi_2_label": "товарене",
-        "kpi_3_value": "2 г.",
-        "kpi_3_label": "гаранция",
-        "collection": "portable-ramps",
-        "lineup_eyebrow": "Рампите ни",
-        "lineup_title": "ИЗБЕРИ СВОЯТА",
-        "lineup_intro": "Най-ранна доставка 20/08/2026г.",
-        "features_eyebrow": "Отлично качество",
-        "features_title": "ЗАЩО ДА ИЗБЕРЕШ НАС",
-        "story_image": "shopify://shop_images/DSC07706.webp",
-        "story_eyebrow": "Магазинът",
-        "story_title": "ИЗРАБОТЕНИ НА РЪКА",
-        "story_title_em": "Тествани от нас.",
-        "story_text": "Всяка рампа се изработва в работилницата ни в Ботевград, после се боядисва и финишира с антиплъзгащо покритие. Преди да стигне до теб, я возим ние. В магазина, по пътеките, на груповите излизания. Ако нещо не е наред, се връща за преработка.",
-        "story_year": "2024",
+        "hero_badge": "Произведени в България",
+        "lineup_eyebrow": "Избери своята",
+        "lineup_title": "ДВА МОДЕЛА. РАЗЛИЧЕН ХАРАКТЕР.",
+        "lineup_cta_text": "Пълно сравнение",
+        "bundle_eyebrow": "Пълният спот",
+        "bundle_title": "BREEZE + STORM · TAKE-OFF & LANDING SET",
+        "bundle_text": "Използвай едната за изстрелване, а другата за приземяване. Или изгради два различни скока.",
+        "bundle_price": "€590",
+        "bundle_compare_price": "€645",
+        "bundle_save": "Спестяваш €55",
+        "bundle_cta": "Виж комплекта",
+        "pos_eyebrow": "4 фиксирани позиции",
+        "pos_title": "ТИ РЕШАВАШ КАК ДА ИЗЛЕТИШ.",
+        "pos_text": "Преместваш предните крака и променяш едновременно височината и ъгъла на изстрелване.",
+        "tf_video_label": "30-секундната трансформация",
+        "tf_eyebrow": "От готова за скок до готова за път",
+        "tf_title": "СКАЧАШ. СГЪВАШ. ТРЪГВАШ.",
+        "tf_text": "Всичко остава свързано в един заключен пакет. Слагаш презрамките, качваш се на колелото и местиш спота с теб.",
+        "ter_eyebrow": "Спотът е там, където го създадеш",
+        "ter_title": "ЕДНА РАМПА. МНОГО ТЕРЕНИ.",
+        "det_image": "shopify://shop_images/DSC07706.webp",
+        "det_stamp_kicker": "Hand-built",
+        "det_stamp_title": "Botevgrad",
+        "det_stamp_sub": "Bulgaria · EST. 2024",
+        "det_eyebrow": "Продуктовите детайли",
+        "det_title": "СЪЗДАДЕНА ДА СКАЧА. НАПРАВЕНА ДА ПЪТУВА.",
+        "det_text": "Всеки елемент има конкретна функция — стабилност при скок, по-малко вибрации, сигурно носене и лесна поддръжка.",
+        "story_video_label": "Гледай влога",
+        "story_eyebrow": "Цялата история",
+        "story_title": "КАК СЪЗДАДОХМЕ РАМПИТЕ.",
+        "story_text": "Производството в цеха, тридневният лагер с отбора и първото градско каране с рампите в Ботевград — събрани в един влог.",
+        "sup_eyebrow": "Преди и след покупката",
+        "sup_title": "ГАРАНЦИЯ. ЧАСТИ. РЕАЛНА ПОДДРЪЖКА.",
         "faq_eyebrow": "Преди да тръгнеш",
-        "faq_title": "ЧЕСТО ЗАДАВАНИ ВЪПРОСИ.",
-        "cta_title": "СГЛОБИ ТВОИТЕ РАМПИ ОЩЕ ДНЕС",
-        "cta_sub": "В наличност. Доставка до всяка точка на България. 2 години гаранция.",
-        "cta_primary_text": "Разгледай рампите",
-        "cta_secondary_text": "Свържи се с нас",
-        "cta_secondary_link": "/pages/contact"
+        "faq_title": "ЧЕСТО ЗАДАВАНИ ВЪПРОСИ",
+        "cta_eyebrow": "Следващият спот е твой",
+        "cta_title": "ИЗБЕРИ РАМПАТА, КОЯТО ЩЕ ТРЪГНЕ С ТЕБ.",
+        "cta1_text": "Сравни моделите",
+        "cta1_link": "#tg-ramps-lineup",
+        "cta2_text": "Тествай във Варна",
+        "cta2_link": "/pages/contact",
+        "tabs_enabled": true,
+        "tab_1_label": "Рампи",
+        "tab_1_link": "#tg-ramps-lineup",
+        "tab_2_label": "Сравнение",
+        "tab_2_link": "#tg-ramps-compare",
+        "tab_3_label": "Поддръжка",
+        "tab_3_link": "#tg-ramps-support",
+        "tabs_aria": "Навигация в страницата"
       }
     }
   },
