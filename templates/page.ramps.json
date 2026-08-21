@@ -243,6 +243,7 @@
             "title": "2 ГОДИНИ ГАРАНЦИЯ",
             "text": "Ясно описани производствени и конструктивни дефекти.",
             "cta_text": "Условия",
+            "cta_link": "",
             "cta_style": "ghost"
           }
         },
@@ -253,6 +254,7 @@
             "title": "РЕЗЕРВНИ ЧАСТИ",
             "text": "Сменяеми крачета, ластици и директно запитване при повреда.",
             "cta_text": "Поддръжка",
+            "cta_link": "",
             "cta_style": "ghost"
           }
         },
@@ -337,6 +339,7 @@
         "hero_title": "СЪЗДАЙ СПОТ.\nНАВСЯКЪДЕ.",
         "hero_sub": "BREEZE и STORM се регулират в 4 позиции, сгъват се за 30 секунди и се носят на гръб.",
         "hero_cta1_text": "Сравни моделите",
+        "hero_cta1_link": "",
         "hero_cta2_text": "Виж ги в действие",
         "hero_cta2_link": "#tg-ramps-transform",
         "hero_image": "shopify://shop_images/DSC07489.webp",
@@ -347,6 +350,7 @@
         "bundle_eyebrow": "Пълният спот",
         "bundle_title": "BREEZE + STORM · TAKE-OFF & LANDING SET",
         "bundle_text": "Използвай едната за изстрелване, а другата за приземяване. Или изгради два различни скока.",
+        "set_page": "комплект-рампи",
         "bundle_product": "",
         "bundle_price": "€590",
         "bundle_compare_price": "€645",
@@ -389,6 +393,7 @@
         "cta_eyebrow": "Следващият спот е твой",
         "cta_title": "ИЗБЕРИ РАМПАТА, КОЯТО ЩЕ ТРЪГНЕ С ТЕБ.",
         "cta1_text": "Сравни моделите",
+        "cta1_link": "",
         "cta2_text": "Тествай във Варна",
         "cta2_link": "/pages/contact",
         "tabs_enabled": true,
