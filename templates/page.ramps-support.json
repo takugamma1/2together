@@ -99,7 +99,6 @@
         "eyebrow": "2getherbikes Ramp Support",
         "title": "ПОДДРЪЖКА ЗА РАМПИТЕ.",
         "back_text": "Назад към рампите",
-        "back_link": "/pages/ramps",
         "res_eyebrow": "Всичко на едно място",
         "res_title": "ИНСТРУКЦИИ, ГАРАНЦИЯ И ЧАСТИ.",
         "parts_eyebrow": "Сменяеми консумативи",
@@ -110,14 +109,10 @@
         "cta1_text": "Запази тест",
         "cta1_link": "/pages/contact",
         "cta2_text": "Сравни моделите",
-        "cta2_link": "/pages/ramps#tg-ramps-lineup",
         "tabs_enabled": true,
         "tab_1_label": "Рампи",
-        "tab_1_link": "/pages/ramps#tg-ramps-lineup",
         "tab_2_label": "Сравнение",
-        "tab_2_link": "/pages/ramps#tg-ramps-compare",
         "tab_3_label": "Поддръжка",
-        "tab_3_link": "/pages/ramps-support",
         "tabs_aria": "Навигация в страницата"
       }
     }

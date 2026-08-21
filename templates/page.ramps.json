@@ -395,12 +395,11 @@
         "cta2_link": "/pages/contact",
         "tabs_enabled": true,
         "tab_1_label": "Рампи",
-        "tab_1_link": "#tg-ramps-lineup",
         "tab_2_label": "Сравнение",
-        "tab_2_link": "#tg-ramps-compare",
         "tab_3_label": "Поддръжка",
-        "tab_3_link": "/pages/ramps-support",
-        "tabs_aria": "Навигация в страницата"
+        "tabs_aria": "Навигация в страницата",
+        "tab_1_anchor": "tg-ramps-lineup",
+        "tab_2_anchor": "tg-ramps-compare"
       }
     }
   },
