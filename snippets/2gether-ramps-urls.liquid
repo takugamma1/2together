@@ -1,13 +1,14 @@
 {%- comment -%}
   Resolves the ramps-area page URLs without hard-coded handles.
-  Params: ramps_handle, compare_handle, support_handle (page pickers; may be blank).
-  Outputs 'ramps|compare|support' — the caller captures and splits it.
+  Params: ramps_handle, compare_handle, support_handle, set_handle (page pickers; may be blank).
+  Outputs 'ramps|compare|support|set' — the caller captures and splits it.
   Order: picker → common handles → page using the matching template → fallback.
 {%- endcomment -%}
 {%- liquid
   assign ramps_handles = 'ramps,portable-ramps,рампи,преносими-рампи' | split: ','
   assign compare_handles = 'ramps-compare,ramp-compare,compare,сравнение,сравнение-рампи' | split: ','
   assign support_handles = 'ramps-support,ramp-support,поддръжка-рампи,поддръжка-за-рампите' | split: ','
+  assign set_handles = 'ramps-set,ramp-set,breeze-storm,breeze-storm-set,комплект,комплект-рампи' | split: ','
 
   assign ramps_url = ''
   if ramps_handle != blank and pages[ramps_handle] != empty
@@ -48,7 +49,20 @@
     endfor
   endif
 
-  if ramps_url == blank or compare_url == blank or support_url == blank
+  assign set_url = ''
+  if set_handle != blank and pages[set_handle] != empty
+    assign set_url = pages[set_handle].url
+  endif
+  if set_url == blank
+    for h in set_handles
+      if pages[h] != empty
+        assign set_url = pages[h].url
+        break
+      endif
+    endfor
+  endif
+
+  if ramps_url == blank or compare_url == blank or support_url == blank or set_url == blank
     for p in pages
       if ramps_url == blank and p.template_suffix == 'ramps'
         assign ramps_url = p.url
@@ -58,6 +72,9 @@
       endif
       if support_url == blank and p.template_suffix == 'ramps-support'
         assign support_url = p.url
+      endif
+      if set_url == blank and p.template_suffix == 'ramps-set'
+        assign set_url = p.url
       endif
     endfor
   endif
@@ -70,4 +87,7 @@
   if support_url == blank
     assign support_url = '/pages/ramps-support'
   endif
--%}{{ ramps_url }}|{{ compare_url }}|{{ support_url }}
+  if set_url == blank
+    assign set_url = compare_url
+  endif
+-%}{{ ramps_url }}|{{ compare_url }}|{{ support_url }}|{{ set_url }}

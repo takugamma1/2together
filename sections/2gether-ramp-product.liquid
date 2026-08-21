@@ -56,7 +56,7 @@
   assign other = all_products[other_handle]
   assign variant = product.selected_or_first_available_variant
 -%}
-{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: st.support_page %}{%- endcapture -%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: st.support_page, set_handle: st.set_page %}{%- endcapture -%}
 {%- liquid
   assign rp_urls = rp_urls | strip | split: '|'
   assign ramps_url = rp_urls[0]
@@ -307,7 +307,7 @@
     { "type": "text", "id": "test_text", "label": "Test button", "default": "Запази тест във Варна" },
     { "type": "url", "id": "test_link", "label": "Test link" },
     { "type": "text", "id": "compare_text", "label": "Compare link", "default": "Сравни с другия модел" },
-    { "type": "checkbox", "id": "compare_to_product", "label": "Compare link → other model's product page", "info": "Off: opens the comparison page", "default": false },
+    { "type": "checkbox", "id": "compare_to_product", "label": "Compare link → other model's product page", "info": "Off: opens the comparison page", "default": true },
 
     { "type": "header", "content": "Specs + kit" },
     { "type": "text", "id": "spec_eyebrow", "label": "Eyebrow", "default": "Технически данни" },
@@ -350,7 +350,8 @@
     { "type": "header", "content": "Pages" },
     { "type": "page", "id": "ramps_page", "label": "Ramps page" },
     { "type": "page", "id": "compare_page", "label": "Comparison page" },
-    { "type": "page", "id": "support_page", "label": "Support page" }
+    { "type": "page", "id": "support_page", "label": "Support page" },
+    { "type": "page", "id": "set_page", "label": "Set page" }
   ],
   "blocks": [
     { "type": "feature", "name": "Info row", "limit": 8, "settings": [

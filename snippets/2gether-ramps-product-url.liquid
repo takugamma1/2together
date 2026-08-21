@@ -1,6 +1,11 @@
-{%- comment -%} Outputs the best URL for a ramp model. Params: product (object, may be blank), link (override), name (e.g. BREEZE), fallback {%- endcomment -%}
+{%- comment -%} Outputs the best URL for a ramp model. Params: product, link (override), name (e.g. BREEZE; names with + / set go to set_url), set_url, fallback {%- endcomment -%}
 {%- liquid
   assign out = link
+  if out == blank and set_url != blank and name != blank
+    if name contains '+' or name contains 'SET' or name contains 'set' or name contains 'КОМПЛЕКТ' or name contains 'комплект'
+      assign out = set_url
+    endif
+  endif
   if out == blank and product != blank
     assign out = product.url
   endif

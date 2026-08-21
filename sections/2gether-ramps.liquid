@@ -19,11 +19,12 @@
   assign faqs = section.blocks | where: 'type', 'faq'
   assign bundle = st.bundle_product
 -%}
-{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: page.handle, compare_handle: st.compare_page, support_handle: st.support_page %}{%- endcapture -%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: page.handle, compare_handle: st.compare_page, support_handle: st.support_page, set_handle: st.set_page %}{%- endcapture -%}
 {%- liquid
   assign rp_urls = rp_urls | strip | split: '|'
   assign compare_url = rp_urls[1]
   assign support_url = rp_urls[2]
+  assign set_page_url = rp_urls[3]
   assign href_1 = request.path | append: '#' | append: st.tab_1_anchor | default: 'tg-ramps-lineup'
 -%}
 
@@ -85,7 +86,7 @@
               assign img = p.featured_image
             endif
           -%}
-          {%- capture url -%}{% render '2gether-ramps-product-url', product: p, link: b.settings.link, name: b.settings.name, fallback: compare_url %}{%- endcapture -%}
+          {%- capture url -%}{% render '2gether-ramps-product-url', product: p, link: b.settings.link, name: b.settings.name, set_url: set_page_url, fallback: compare_url %}{%- endcapture -%}
           {%- assign url = url | strip -%}
           <article class="tg-rp-model" style="--model: {{ b.settings.color | default: '#E8601C' }}" {{ b.shopify_attributes }}>
             <div class="tg-rp-model-media">
@@ -134,24 +135,7 @@
           endif
         endif
       -%}
-      {%- liquid
-        assign set_page_url = ''
-        if st.set_page != blank and pages[st.set_page] != empty
-          assign set_page_url = pages[st.set_page].url
-        endif
-        if set_page_url == blank
-          for pg in pages
-            if pg.template_suffix == 'ramps-set'
-              assign set_page_url = pg.url
-              break
-            endif
-          endfor
-        endif
-        if set_page_url == blank
-          assign set_page_url = compare_url
-        endif
-      -%}
-      {%- capture b_url -%}{% render '2gether-ramps-product-url', product: bundle, link: b_url, name: 'BREEZE + STORM', fallback: set_page_url %}{%- endcapture -%}
+      {%- capture b_url -%}{% render '2gether-ramps-product-url', product: bundle, link: b_url, name: 'BREEZE + STORM', set_url: set_page_url, fallback: set_page_url %}{%- endcapture -%}
       {%- assign b_url = b_url | strip -%}
       <div class="tg-rp-bundle">
         <div class="tg-rp-bundle-copy">
