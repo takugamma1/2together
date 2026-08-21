@@ -1,0 +1,215 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-timeline.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+{%- liquid
+  assign milestones = section.blocks | where: 'type', 'milestone'
+  assign count = milestones.size
+-%}
+
+<section
+  class="tg-timeline"
+  id="timeline-{{ section.id }}"
+  data-tg-timeline
+  style="--tg-tl-pt: {{ section.settings.padding_top }}px; --tg-tl-pb: {{ section.settings.padding_bottom }}px; --tg-tl-pt-m: {{ section.settings.padding_top | times: 0.75 | round }}px; --tg-tl-pb-m: {{ section.settings.padding_bottom | times: 0.75 | round }}px;"
+>
+  <div class="tg-tl-head">
+    <div>
+      {% if section.settings.label != blank %}
+        <span class="tg-label">{{ section.settings.label }}</span>
+      {% endif %}
+      <h2 class="tg-tl-title">
+        {{ section.settings.title_line1 }}{% if section.settings.title_line2 != blank %}<br><span>{{ section.settings.title_line2 }}</span>{% endif %}
+      </h2>
+    </div>
+    {% if count > 1 %}
+      <div class="tg-tl-arrows">
+        <button type="button" class="tg-tl-arrow" data-tl-prev aria-label="{{ section.settings.prev_label | default: 'Предишна година' }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="tg-tl-arrow" data-tl-next aria-label="{{ section.settings.next_label | default: 'Следваща година' }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="tg-tl-track" data-tl-track>
+    <div class="tg-tl-rail" data-tl-rail role="tablist" aria-label="{{ section.settings.label | default: 'Timeline' }}">
+      <div class="tg-tl-line"></div>
+      <div class="tg-tl-line-fill" data-tl-fill></div>
+
+      {% for block in milestones %}
+        <button
+          type="button"
+          class="tg-tl-node{% if forloop.first %} is-active{% endif %}"
+          role="tab"
+          data-tl-node
+          data-tl-year="{{ block.settings.year | escape }}"
+          data-block-id="{{ block.id }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="tl-panel-{{ section.id }}-{{ forloop.index0 }}"
+          {% unless forloop.first %}tabindex="-1"{% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          <span class="tg-tl-year">{{ block.settings.year }}</span>
+          <span class="tg-tl-dot"></span>
+          {% if block.settings.caption != blank %}
+            <span class="tg-tl-caption">{{ block.settings.caption }}</span>
+          {% endif %}
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="tg-tl-stage">
+    <div class="tg-tl-stage-media">
+      {% for block in milestones %}
+        {% if block.settings.image != blank %}
+          {{ block.settings.image
+            | image_url: width: 1600
+            | image_tag:
+              class: 'tg-tl-img',
+              loading: 'lazy',
+              sizes: '(max-width: 900px) 100vw, 55vw',
+              widths: '600, 900, 1200, 1600',
+              alt: block.settings.image.alt
+            | replace: 'class="tg-tl-img"', 'class="tg-tl-img" data-tl-img'
+          }}
+        {% else %}
+          <div class="tg-tl-img" data-tl-img>
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'tg-tl-placeholder' }}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <span class="tg-tl-stage-year" data-tl-big aria-hidden="true">{{ milestones.first.settings.year }}</span>
+    </div>
+
+    <div class="tg-tl-stage-copy">
+      {% for block in milestones %}
+        <div
+          class="tg-tl-copy{% if forloop.first %} is-active{% endif %}"
+          id="tl-panel-{{ section.id }}-{{ forloop.index0 }}"
+          role="tabpanel"
+          data-tl-panel
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+          {% if block.settings.kicker != blank %}
+            <span class="tg-label">{{ block.settings.kicker }}</span>
+          {% endif %}
+          {% if block.settings.heading != blank %}
+            <h3>{{ block.settings.heading }}</h3>
+          {% endif %}
+          {% if block.settings.text != blank %}
+            <div class="tg-tl-text">{{ block.settings.text }}</div>
+          {% endif %}
+          {% if block.settings.stat_value != blank %}
+            <div class="tg-tl-stat">
+              <strong>{{ block.settings.stat_value }}</strong>
+              {% if block.settings.stat_label != blank %}<span>{{ block.settings.stat_label }}</span>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if count > 1 %}
+    <div class="tg-tl-progress" data-tl-progress aria-hidden="true">
+      {% for block in milestones %}<i{% if forloop.first %} class="is-active"{% endif %}></i>{% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+<script src="{{ '2gether-timeline.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "2Gether Timeline",
+  "tag": "div",
+  "class": "tg-timeline-wrap",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section label",
+      "default": "Нашата история"
+    },
+    {
+      "type": "text",
+      "id": "title_line1",
+      "label": "Title line 1",
+      "default": "ПЕТ ГОДИНИ"
+    },
+    {
+      "type": "text",
+      "id": "title_line2",
+      "label": "Title line 2 (accent color)",
+      "default": "НА ПЪТЯ"
+    },
+    {
+      "type": "text",
+      "id": "prev_label",
+      "label": "Previous button aria-label",
+      "default": "Предишна година"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next button aria-label",
+      "default": "Следваща година"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 128
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 128
+    }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Milestone",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year", "default": "2021" },
+        { "type": "text", "id": "caption", "label": "Short caption (under the dot)", "default": "Началото" },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "kicker", "label": "Kicker (small label above heading)", "default": "2021 — Началото" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Две колела, един гараж, нула план." },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Разкажете накратко какво се случи през тази година.</p>" },
+        { "type": "text", "id": "stat_value", "label": "Stat value", "default": "2" },
+        { "type": "text", "id": "stat_label", "label": "Stat label", "default": "основатели" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "2Gether Timeline",
+      "blocks": [
+        { "type": "milestone", "settings": { "year": "2021", "caption": "Първият гараж", "kicker": "2021 — Началото", "heading": "Две колела, един гараж, нула план.", "stat_value": "2", "stat_label": "основатели" } },
+        { "type": "milestone", "settings": { "year": "2022", "caption": "Ражда се Sunday Club", "kicker": "2022 — Sunday Club", "heading": "Първото групово каране тръгва в 8:00.", "stat_value": "14", "stat_label": "колоездачи на първия ден" } },
+        { "type": "milestone", "settings": { "year": "2023", "caption": "Отваряме във Варна", "kicker": "2023 — Магазинът", "heading": "Истинска врата, истински сервиз.", "stat_value": "120м²", "stat_label": "площ" } },
+        { "type": "milestone", "settings": { "year": "2024", "caption": "Към планината", "kicker": "2024 — Off-road", "heading": "Заведохме клуба в планината.", "stat_value": "38", "stat_label": "картирани маршрута" } },
+        { "type": "milestone", "settings": { "year": "2025", "caption": "1000+ колоездачи", "kicker": "2025 — Днес", "heading": "Хиляда от нас — и продължаваме.", "stat_value": "1000+", "stat_label": "членове на общността" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
