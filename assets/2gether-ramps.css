@@ -273,3 +273,15 @@ body.tg-ramps-active .content-for-layout { max-width: none; padding: 0; margin: 
 @media (prefers-reduced-motion: reduce) {
   .tg-ramps-tabs, .tg-rp-deck-pivot, .tg-rp-leg, .tg-rp-dim, .tg-rp-btn, .tg-rp-card, .tg-rp-model-media img { transition: none; }
 }
+
+/* ═══ RAMP SUPPORT PAGE ═══ */
+.tg-rs-head { padding: clamp(40px, 6vw, 80px) 0 clamp(28px, 4vw, 48px); border-bottom: 1px solid var(--tg-divider); }
+.tg-rs-head .tg-rp-head--split { align-items: flex-end; }
+.tg-rs-title { font-size: clamp(2rem, 4vw, 3.2rem); }
+.tg-rs-back { flex-shrink: 0; }
+.tg-rs-resources .tg-rp-card { min-height: 260px; }
+.tg-rs-intro { max-width: 62ch; }
+.tg-rs-page .tg-rp-card .tg-rp-h3 { margin-top: var(--tg-s4); }
+.tg-rs-page .tg-rp-card .tg-rp-btn { margin-top: auto; }
+.tg-ramps-tab.is-static { cursor: default; }
+@media (max-width: 768px) { .tg-rs-back { width: 100%; justify-content: center; } }

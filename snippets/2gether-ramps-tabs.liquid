@@ -1,0 +1,46 @@
+{%- comment -%} Floating bottom tab strip shared by the Ramps + Ramp Support pages. Params: settings (section.settings with tab_*), hero_selector {%- endcomment -%}
+{%- if settings.tabs_enabled -%}
+<nav class="tg-ramps-tabs" data-ramps-tabs data-hero="{{ hero_selector | default: '.tg-rp-hero' }}" aria-label="{{ settings.tabs_aria | default: 'Навигация в страницата' }}">
+  <div class="tg-ramps-tabs-pill">
+    <a href="{{ settings.tabs_brand_link | default: '/pages/ramps' }}" class="tg-ramps-tabs-brand" aria-label="2gether"><span>2gether</span><em aria-hidden="true">//</em></a>
+    {%- assign tab_labels = settings.tab_1_label | append: '|' | append: settings.tab_2_label | append: '|' | append: settings.tab_3_label | split: '|' -%}
+    {%- assign tab_links = settings.tab_1_link | append: '|' | append: settings.tab_2_link | append: '|' | append: settings.tab_3_link | split: '|' -%}
+    {%- for label in tab_labels -%}
+      {%- assign href = tab_links[forloop.index0] -%}
+      {%- if label != blank and href != blank -%}
+        {%- assign path = href | split: '#' | first -%}
+        {%- assign anchor = '' -%}
+        {%- if href contains '#' -%}{%- assign anchor = href | split: '#' | last -%}{%- endif -%}
+        {%- assign same_page = false -%}
+        {%- if path == blank or path == request.path -%}{%- assign same_page = true -%}{%- endif -%}
+        {%- unless forloop.first -%}<span class="tg-ramps-tabs-slash" aria-hidden="true">/</span>{%- endunless -%}
+        <a href="{{ href }}" class="tg-ramps-tab{% if same_page and anchor == blank %} is-active is-static{% endif %}" data-ramps-tab{% if same_page and anchor != blank %} data-target="{{ anchor }}"{% endif %}>{{ label }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</nav>
+<script>
+(() => {
+  const nav = document.querySelector('[data-ramps-tabs]');
+  if (!nav || nav.dataset.ready) return; nav.dataset.ready = '1';
+  const tabs = [...nav.querySelectorAll('[data-ramps-tab][data-target]')];
+  const targets = tabs.map(t => document.getElementById(t.dataset.target)).filter(Boolean);
+  const hero = document.querySelector(nav.dataset.hero);
+  const hasStatic = !!nav.querySelector('.is-static');
+  const onScroll = () => {
+    nav.classList.toggle('is-visible', !hero || hero.getBoundingClientRect().bottom < window.innerHeight * 0.6);
+    if (hasStatic) return;
+    let current = null; const line = window.innerHeight * 0.45;
+    targets.forEach(el => { if (el.getBoundingClientRect().top <= line) current = el.id; });
+    tabs.forEach(t => { const on = t.dataset.target === current; t.classList.toggle('is-active', on); on ? t.setAttribute('aria-current', 'location') : t.removeAttribute('aria-current'); });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+  tabs.forEach(t => t.addEventListener('click', (e) => {
+    const el = document.getElementById(t.dataset.target); if (!el) return;
+    e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', '#' + t.dataset.target);
+  }));
+})();
+</script>
+{%- endif -%}
