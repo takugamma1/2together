@@ -10,8 +10,9 @@
       assign out = all_products[h].url
     endif
   endif
+  assign set_handles = 'breeze-storm-set,breeze-storm,take-off-landing-set,ramp-set' | split: ','
   if out == blank and name != blank
-    for h in 'breeze-storm-set,breeze-storm,take-off-landing-set,ramp-set' | split: ','
+    for h in set_handles
       if name contains '+' and all_products[h] != empty
         assign out = all_products[h].url
         break
