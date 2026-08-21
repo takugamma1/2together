@@ -1,0 +1,75 @@
+{%- comment -%}
+  Resolves the three ramps-area page URLs without hard-coded handles.
+  Params: ramps_handle, compare_handle, support_handle (page pickers; may be blank).
+  Usage: {% render '2gether-ramps-urls' ... %} cannot export variables, so this snippet is
+  included via {% include %}-free pattern: copy the liquid below? No — Shopify allows
+  variables to flow OUT of {% render %} only via captured output. We therefore output a
+  pipe-separated string and the caller splits it.
+{%- endcomment -%}
+{%- liquid
+  assign ramps_handles = 'ramps,portable-ramps,рампи,преносими-рампи' | split: ','
+  assign compare_handles = 'ramps-compare,ramp-compare,compare,сравнение,сравнение-рампи' | split: ','
+  assign support_handles = 'ramps-support,ramp-support,поддръжка-рампи,поддръжка-за-рампите' | split: ','
+
+  assign ramps_url = ''
+  if ramps_handle != blank and pages[ramps_handle] != empty
+    assign ramps_url = pages[ramps_handle].url
+  endif
+  if ramps_url == blank
+    for h in ramps_handles
+      if pages[h] != empty
+        assign ramps_url = pages[h].url
+        break
+      endif
+    endfor
+  endif
+
+  assign compare_url = ''
+  if compare_handle != blank and pages[compare_handle] != empty
+    assign compare_url = pages[compare_handle].url
+  endif
+  if compare_url == blank
+    for h in compare_handles
+      if pages[h] != empty
+        assign compare_url = pages[h].url
+        break
+      endif
+    endfor
+  endif
+
+  assign support_url = ''
+  if support_handle != blank and pages[support_handle] != empty
+    assign support_url = pages[support_handle].url
+  endif
+  if support_url == blank
+    for h in support_handles
+      if pages[h] != empty
+        assign support_url = pages[h].url
+        break
+      endif
+    endfor
+  endif
+
+  if ramps_url == blank or compare_url == blank or support_url == blank
+    for p in pages
+      if ramps_url == blank and p.template_suffix == 'ramps'
+        assign ramps_url = p.url
+      endif
+      if compare_url == blank and p.template_suffix == 'ramps-compare'
+        assign compare_url = p.url
+      endif
+      if support_url == blank and p.template_suffix == 'ramps-support'
+        assign support_url = p.url
+      endif
+    endfor
+  endif
+  if ramps_url == blank
+    assign ramps_url = '/pages/portable-ramps'
+  endif
+  if compare_url == blank
+    assign compare_url = '/pages/ramps-compare'
+  endif
+  if support_url == blank
+    assign support_url = '/pages/ramps-support'
+  endif
+-%}{{ ramps_url }}|{{ compare_url }}|{{ support_url }}
