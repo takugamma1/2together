@@ -1,0 +1,21 @@
+{%- comment -%} Inline icon set for the ramps page. Param: name {%- endcomment -%}
+<svg class="tg-rp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+{%- case name -%}
+  {%- when 'fold' -%}<path d="M3 12h7M14 12h7"/><path d="M10 12l-3-3M10 12l-3 3M14 12l3-3M14 12l3 3"/>
+  {%- when 'unfold' -%}<path d="M3 12h7M14 12h7"/><path d="M6 12l3-3M6 12l3 3M18 12l-3-3M18 12l-3 3"/>
+  {%- when 'lock' -%}<rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+  {%- when 'carry' -%}<rect x="6" y="8" width="12" height="13" rx="1.5"/><path d="M9 8V6a3 3 0 0 1 6 0v2M10 13h4"/>
+  {%- when 'ride' -%}<circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l4-8h5l3 8M10 9l2-4h3"/>
+  {%- when 'jump' -%}<path d="M4 18L20 6M12 6h8v8"/>
+  {%- when 'city' -%}<path d="M3 21h18M5 21V9h6v12M11 21V4h8v17M7 12h2M7 15h2M14 8h2M14 11h2M14 14h2"/>
+  {%- when 'forest' -%}<path d="M8 21v-4M16 21v-4M8 3l4 6H4zM8 9l4 6H4zM16 6l3 5h-6zM16 11l3 5h-6z"/>
+  {%- when 'landing' -%}<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>
+  {%- when 'grip' -%}<circle cx="7" cy="7" r="1" fill="currentColor"/><circle cx="12" cy="7" r="1" fill="currentColor"/><circle cx="17" cy="7" r="1" fill="currentColor"/><circle cx="7" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="17" cy="12" r="1" fill="currentColor"/><circle cx="7" cy="17" r="1" fill="currentColor"/><circle cx="12" cy="17" r="1" fill="currentColor"/><circle cx="17" cy="17" r="1" fill="currentColor"/>
+  {%- when 'spring' -%}<path d="M4 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0M4 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M4 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>
+  {%- when 'foot' -%}<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2" fill="currentColor"/>
+  {%- when 'shield' -%}<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>
+  {%- when 'wrench' -%}<path d="M14.5 4.5a4 4 0 0 0-5 5L4 15l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2-2z"/>
+  {%- when 'pin' -%}<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/>
+  {%- else -%}<circle cx="12" cy="12" r="8"/>
+{%- endcase -%}
+</svg>
