@@ -119,101 +119,23 @@
         "vision_body": "2gether bikes се роди от една проста идея, че около колелото се събират правилните хора. Започнахме като магазин, станахме общност. Днес сме място където можеш да купиш, да оправиш, да наемеш и най-важното, да намериш с кого да покараш.",
         "vision_signature": "2Gether",
         "process_label": "НАШИЯТ ПРОЦЕС",
+        "label": "Нашата история",
+        "title_line1": "ПЕТ ГОДИНИ",
+        "title_line2": "НА ПЪТЯ",
+        "prev_label": "Предишна година",
+        "next_label": "Следваща година",
+        "padding_top": 96,
+        "padding_bottom": 96,
         "community_image": "shopify://shop_images/Screensho6854t_1.png",
         "community_label": "НАШАТА ОБЩНОСТ",
         "community_title": "SUNDAY CLUB",
         "community_desc": "",
         "community_cta_text": "КАРАЙ С НАС",
-        "community_cta_link": "shopify://pages/sunday-club",
-        "label": "Нашата история",
-        "title_line1": "ПЕТ ГОДИНИ",
-        "title_line2": "НА ПЪТЯ",
-        "padding_top": 96,
-        "padding_bottom": 96
-      }
-    },
-    "tg_timeline": {
-      "type": "2gether-timeline",
-      "blocks": {
-        "milestone_1": {
-          "type": "milestone",
-          "settings": {
-            "year": "2021",
-            "caption": "Първият гараж",
-            "kicker": "2021 — Началото",
-            "heading": "Две колела, един гараж, нула план.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "2",
-            "stat_label": "основатели"
-          }
-        },
-        "milestone_2": {
-          "type": "milestone",
-          "settings": {
-            "year": "2022",
-            "caption": "Ражда се Sunday Club",
-            "kicker": "2022 — Sunday Club",
-            "heading": "Първото групово каране тръгва в 8:00.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "14",
-            "stat_label": "колоездачи на първия ден"
-          }
-        },
-        "milestone_3": {
-          "type": "milestone",
-          "settings": {
-            "year": "2023",
-            "caption": "Отваряме във Варна",
-            "kicker": "2023 — Магазинът",
-            "heading": "Истинска врата, истински сервиз.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "120м²",
-            "stat_label": "площ"
-          }
-        },
-        "milestone_4": {
-          "type": "milestone",
-          "settings": {
-            "year": "2024",
-            "caption": "Към планината",
-            "kicker": "2024 — Off-road",
-            "heading": "Заведохме клуба в планината.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "38",
-            "stat_label": "картирани маршрута"
-          }
-        },
-        "milestone_5": {
-          "type": "milestone",
-          "settings": {
-            "year": "2025",
-            "caption": "1000+ колоездачи",
-            "kicker": "2025 — Днес",
-            "heading": "Хиляда от нас — и продължаваме.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "1000+",
-            "stat_label": "членове на общността"
-          }
-        }
-      },
-      "block_order": [
-        "milestone_1",
-        "milestone_2",
-        "milestone_3",
-        "milestone_4",
-        "milestone_5"
-      ],
-      "settings": {
-        "label": "Нашата история",
-        "title_line1": "ПЕТ ГОДИНИ",
-        "title_line2": "НА ПЪТЯ",
-        "padding_top": 128,
-        "padding_bottom": 128
+        "community_cta_link": "shopify://pages/sunday-club"
       }
     }
   },
   "order": [
-    "main",
-    "tg_timeline"
+    "main"
   ]
 }
