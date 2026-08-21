@@ -143,14 +143,16 @@
           <span class="tg-rp-tag">{{ n1 }}</span>
           <h3 class="tg-rp-h3">{{ st.role_1 }}</h3>
           <p class="tg-rp-text">{{ st.role_text_1 }}</p>
-          {% if st.specs_1 != blank %}<ul class="tg-rp-specs">{% for x in st.specs_1 | split: '|' %}<li>{{ x | strip }}</li>{% endfor %}</ul>{% endif %}
+          {%- assign specs_1 = st.specs_1 | split: '|' -%}
+          {% if st.specs_1 != blank %}<ul class="tg-rp-specs">{% for x in specs_1 %}<li>{{ x | strip }}</li>{% endfor %}</ul>{% endif %}
           <a href="{{ p1.url | default: lineup_url }}" class="tg-rp-btn tg-rp-btn--ghost tg-rp-btn--sm">{{ st.view_text | replace: '[name]', n1 }}</a>
         </article>
         <article class="tg-rp-card tg-set-card" style="--model: var(--c2)">
           <span class="tg-rp-tag">{{ n2 }}</span>
           <h3 class="tg-rp-h3">{{ st.role_2 }}</h3>
           <p class="tg-rp-text">{{ st.role_text_2 }}</p>
-          {% if st.specs_2 != blank %}<ul class="tg-rp-specs">{% for x in st.specs_2 | split: '|' %}<li>{{ x | strip }}</li>{% endfor %}</ul>{% endif %}
+          {%- assign specs_2 = st.specs_2 | split: '|' -%}
+          {% if st.specs_2 != blank %}<ul class="tg-rp-specs">{% for x in specs_2 %}<li>{{ x | strip }}</li>{% endfor %}</ul>{% endif %}
           <a href="{{ p2.url | default: lineup_url }}" class="tg-rp-btn tg-rp-btn--ghost tg-rp-btn--sm">{{ st.view_text | replace: '[name]', n2 }}</a>
         </article>
       </div>
