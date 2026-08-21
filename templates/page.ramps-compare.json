@@ -16,30 +16,36 @@
           "type": "option",
           "settings": {
             "chip": "По-леко носене",
-            "color": "#C8434F",
+            "color": "#c8434f",
             "rec_title": "BREEZE",
             "rec_text": "7.5 kg и по-нисък диапазон — най-лесният модел за носене между спотовете.",
-            "cta_text": "Виж BREEZE"
+            "cta_text": "Виж BREEZE",
+            "product": "",
+            "cta_link": ""
           }
         },
         "opt_2": {
           "type": "option",
           "settings": {
             "chip": "По-висок кикър",
-            "color": "#2F6FD6",
+            "color": "#2f6fd6",
             "rec_title": "STORM",
             "rec_text": "53–62 cm и по-висок ъгъл — когато търсиш по-агресивна траектория.",
-            "cta_text": "Виж STORM"
+            "cta_text": "Виж STORM",
+            "product": "",
+            "cta_link": ""
           }
         },
         "opt_3": {
           "type": "option",
           "settings": {
             "chip": "Take-off + landing",
-            "color": "#E8601C",
+            "color": "#e8601c",
             "rec_title": "BREEZE + STORM",
             "rec_text": "Пълен комплект за take-off и landing с €55 по-ниска обща цена.",
-            "cta_text": "Виж комплекта"
+            "cta_text": "Виж комплекта",
+            "product": "",
+            "cta_link": ""
           }
         },
         "row_1": {
@@ -151,16 +157,23 @@
       "settings": {
         "eyebrow": "Избор без гадаене",
         "title": "BREEZE ИЛИ STORM?",
+        "ramps_page": "portable-ramps",
+        "support_page": "",
         "back_text": "Назад към рампите",
+        "back_link": "",
         "chooser_title": "КОЕ Е НАЙ-ВАЖНО ЗА ТЕБ?",
         "chooser_text": "Изборът не е „начинаещ или напреднал“. И двата модела могат да се карат на различни нива.",
         "rec_label": "Нашето предложение",
         "col_label": "Характеристика",
         "name_1": "BREEZE",
-        "color_1": "#C8434F",
+        "color_1": "#c8434f",
+        "product_1": "",
+        "link_1": "",
         "cta_1": "Избери BREEZE",
         "name_2": "STORM",
-        "color_2": "#2F6FD6",
+        "color_2": "#2f6fd6",
+        "product_2": "",
+        "link_2": "",
         "cta_2": "Избери STORM",
         "table_eyebrow": "Пълно сравнение",
         "table_title": "ВСИЧКО В ЕДИН ПОГЛЕД.",
