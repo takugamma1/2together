@@ -726,6 +726,85 @@
         "heading": "<p><strong>КОЛЕЛА ЗА ВСЕКИ ТЕРЕН И СТИЛ</strong></p>",
         "description": "От сериозни планински спускания до ежедневни разходки по морето, намери колелото, което пасва на твоя начин на каране."
       }
+    },
+    "tg_timeline": {
+      "type": "2gether-timeline",
+      "blocks": {
+        "milestone_1": {
+          "type": "milestone",
+          "settings": {
+            "year": "2021",
+            "caption": "Първият гараж",
+            "kicker": "2021 — Началото",
+            "heading": "Две колела, един гараж, нула план.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "2",
+            "stat_label": "основатели"
+          }
+        },
+        "milestone_2": {
+          "type": "milestone",
+          "settings": {
+            "year": "2022",
+            "caption": "Ражда се Sunday Club",
+            "kicker": "2022 — Sunday Club",
+            "heading": "Първото групово каране тръгва в 8:00.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "14",
+            "stat_label": "колоездачи на първия ден"
+          }
+        },
+        "milestone_3": {
+          "type": "milestone",
+          "settings": {
+            "year": "2023",
+            "caption": "Отваряме във Варна",
+            "kicker": "2023 — Магазинът",
+            "heading": "Истинска врата, истински сервиз.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "120м²",
+            "stat_label": "площ"
+          }
+        },
+        "milestone_4": {
+          "type": "milestone",
+          "settings": {
+            "year": "2024",
+            "caption": "Към планината",
+            "kicker": "2024 — Off-road",
+            "heading": "Заведохме клуба в планината.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "38",
+            "stat_label": "картирани маршрута"
+          }
+        },
+        "milestone_5": {
+          "type": "milestone",
+          "settings": {
+            "year": "2025",
+            "caption": "1000+ колоездачи",
+            "kicker": "2025 — Днес",
+            "heading": "Хиляда от нас — и продължаваме.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "1000+",
+            "stat_label": "членове на общността"
+          }
+        }
+      },
+      "block_order": [
+        "milestone_1",
+        "milestone_2",
+        "milestone_3",
+        "milestone_4",
+        "milestone_5"
+      ],
+      "settings": {
+        "label": "Нашата история",
+        "title_line1": "ПЕТ ГОДИНИ",
+        "title_line2": "НА ПЪТЯ",
+        "padding_top": 128,
+        "padding_bottom": 128
+      }
     }
   },
   "order": [
@@ -734,6 +813,7 @@
     "tg_image_band",
     "section_iHJQMc",
     "tg_community",
+    "tg_timeline",
     "2gether_yt_carousel_kXttfc",
     "2gether_community_dhFAMt",
     "2gether_blog_teaser_VUPtQy",
