@@ -19,21 +19,11 @@
   assign lineup_url = ramps_url | append: '#tg-ramps-lineup'
   assign p1 = st.product_1
   assign p2 = st.product_2
-  assign url_1 = st.link_1
-  if url_1 == blank and p1 != blank
-    assign url_1 = p1.url
-  endif
-  if url_1 == blank
-    assign url_1 = lineup_url
-  endif
-  assign url_2 = st.link_2
-  if url_2 == blank and p2 != blank
-    assign url_2 = p2.url
-  endif
-  if url_2 == blank
-    assign url_2 = lineup_url
-  endif
 -%}
+{%- capture url_1 -%}{% render '2gether-ramps-product-url', product: p1, link: st.link_1, name: st.name_1, fallback: lineup_url %}{%- endcapture -%}
+{%- capture url_2 -%}{% render '2gether-ramps-product-url', product: p2, link: st.link_2, name: st.name_2, fallback: lineup_url %}{%- endcapture -%}
+{%- assign url_1 = url_1 | strip -%}
+{%- assign url_2 = url_2 | strip -%}
 
 <div class="tg-ramps-page tg-rc-page" id="tg-ramps-top">
 
@@ -69,15 +59,8 @@
         <span class="tg-eyebrow">{{ st.rec_label }}</span>
         <div class="tg-rc-rec-stack">
           {% for b in options %}
-            {%- liquid
-              assign rec_url = b.settings.cta_link
-              if rec_url == blank and b.settings.product != blank
-                assign rec_url = b.settings.product.url
-              endif
-              if rec_url == blank
-                assign rec_url = lineup_url
-              endif
-            -%}
+            {%- capture rec_url -%}{% render '2gether-ramps-product-url', product: b.settings.product, link: b.settings.cta_link, name: b.settings.rec_title, fallback: lineup_url %}{%- endcapture -%}
+            {%- assign rec_url = rec_url | strip -%}
             <div class="tg-rc-rec-panel{% if forloop.first %} is-active{% endif %}" id="tg-rc-rec-{{ section.id }}-{{ forloop.index0 }}" role="tabpanel" data-rc-panel="{{ forloop.index0 }}" style="--model: {{ b.settings.color | default: '#E8601C' }}" {% unless forloop.first %}hidden{% endunless %}>
               <h3 class="tg-rp-h2 tg-rp-h2--sm tg-rc-rec-name">{{ b.settings.rec_title }}</h3>
               <p class="tg-rp-text">{{ b.settings.rec_text }}</p>

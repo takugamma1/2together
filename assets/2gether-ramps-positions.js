@@ -2,7 +2,7 @@
 (() => {
   const init = (root) => {
     if (root.dataset.ready) return; root.dataset.ready = '1';
-    const S = 2.6, PX = 60, GY = 232;
+    const DECK = 440, PX = 60, GY = 232;   // deck always spans the stage; angle = asin(h/L) is scale-free
     const q = (k) => root.querySelector(k);
     const deck = q('[data-rp-deck]'), shape = q('[data-rp-deck-shape]'), side = q('[data-rp-deck-side]'), edge = q('[data-rp-deck-edge]'), grip = q('[data-rp-deck-grip]');
     const leg = q('[data-rp-leg]'), legLine = q('[data-rp-leg-line]');
@@ -23,7 +23,7 @@
       return { L, h: hs[Math.min(pos, Math.max(hs.length - 1, 0))] || 0 };
     };
     const render = ({ L, h }) => {
-      const Lpx = L * S, hpx = Math.min(h * S, Lpx - 1);
+      const S = DECK / (L || 130), Lpx = DECK, hpx = Math.min(h * S, Lpx - 1);
       const ang = Math.asin(hpx / Lpx), deg = -ang * 180 / Math.PI;
       const tipX = PX + Lpx * Math.cos(ang);
       shape.setAttribute('points', `0,0 0,-8 ${Lpx},-8 ${Lpx},0`);
