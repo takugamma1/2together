@@ -1,0 +1,121 @@
+{%- comment -%}
+  2gether timeline — params: blocks (section.blocks), section_id, settings (hash with label,title_line1,title_line2,prev_label,next_label,padding_top,padding_bottom)
+{%- endcomment -%}
+{%- liquid
+  assign milestones = blocks | where: 'type', 'milestone'
+  assign count = milestones.size
+-%}
+
+<section
+  class="tg-timeline"
+  id="timeline-{{ section_id }}"
+  data-tg-timeline
+  style="--tg-tl-pt: {{ settings.padding_top }}px; --tg-tl-pb: {{ settings.padding_bottom }}px; --tg-tl-pt-m: {{ settings.padding_top | times: 0.75 | round }}px; --tg-tl-pb-m: {{ settings.padding_bottom | times: 0.75 | round }}px;"
+>
+  <div class="tg-tl-head">
+    <div>
+      {% if settings.label != blank %}
+        <span class="tg-label">{{ settings.label }}</span>
+      {% endif %}
+      <h2 class="tg-tl-title">
+        {{ settings.title_line1 }}{% if settings.title_line2 != blank %}<br><span>{{ settings.title_line2 }}</span>{% endif %}
+      </h2>
+    </div>
+    {% if count > 1 %}
+      <div class="tg-tl-arrows">
+        <button type="button" class="tg-tl-arrow" data-tl-prev aria-label="{{ settings.prev_label | default: 'Предишна година' }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="tg-tl-arrow" data-tl-next aria-label="{{ settings.next_label | default: 'Следваща година' }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="tg-tl-track" data-tl-track>
+    <div class="tg-tl-rail" data-tl-rail role="tablist" aria-label="{{ settings.label | default: 'Timeline' }}">
+      <div class="tg-tl-line"></div>
+      <div class="tg-tl-line-fill" data-tl-fill></div>
+
+      {% for block in milestones %}
+        <button
+          type="button"
+          class="tg-tl-node{% if forloop.first %} is-active{% endif %}"
+          role="tab"
+          data-tl-node
+          data-tl-year="{{ block.settings.year | escape }}"
+          data-block-id="{{ block.id }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="tl-panel-{{ section_id }}-{{ forloop.index0 }}"
+          {% unless forloop.first %}tabindex="-1"{% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          <span class="tg-tl-year">{{ block.settings.year }}</span>
+          <span class="tg-tl-dot"></span>
+          {% if block.settings.caption != blank %}
+            <span class="tg-tl-caption">{{ block.settings.caption }}</span>
+          {% endif %}
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="tg-tl-stage">
+    <div class="tg-tl-stage-media">
+      {% for block in milestones %}
+        {% if block.settings.image != blank %}
+          {{ block.settings.image
+            | image_url: width: 1600
+            | image_tag:
+              class: 'tg-tl-img',
+              loading: 'lazy',
+              sizes: '(max-width: 900px) 100vw, 55vw',
+              widths: '600, 900, 1200, 1600',
+              alt: block.settings.image.alt
+            | replace: 'class="tg-tl-img"', 'class="tg-tl-img" data-tl-img'
+          }}
+        {% else %}
+          <div class="tg-tl-img" data-tl-img>
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'tg-tl-placeholder' }}
+          </div>
+        {% endif %}
+      {% endfor %}
+      <span class="tg-tl-stage-year" data-tl-big aria-hidden="true">{{ milestones.first.settings.year }}</span>
+    </div>
+
+    <div class="tg-tl-stage-copy">
+      {% for block in milestones %}
+        <div
+          class="tg-tl-copy{% if forloop.first %} is-active{% endif %}"
+          id="tl-panel-{{ section_id }}-{{ forloop.index0 }}"
+          role="tabpanel"
+          data-tl-panel
+          {% unless forloop.first %}hidden{% endunless %}
+        >
+          {% if block.settings.kicker != blank %}
+            <span class="tg-label">{{ block.settings.kicker }}</span>
+          {% endif %}
+          {% if block.settings.heading != blank %}
+            <h3>{{ block.settings.heading }}</h3>
+          {% endif %}
+          {% if block.settings.text != blank %}
+            <div class="tg-tl-text">{{ block.settings.text }}</div>
+          {% endif %}
+          {% if block.settings.stat_value != blank %}
+            <div class="tg-tl-stat">
+              <strong>{{ block.settings.stat_value }}</strong>
+              {% if block.settings.stat_label != blank %}<span>{{ block.settings.stat_label }}</span>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if count > 1 %}
+    <div class="tg-tl-progress" data-tl-progress aria-hidden="true">
+      {% for block in milestones %}<i{% if forloop.first %} class="is-active"{% endif %}></i>{% endfor %}
+    </div>
+  {% endif %}
+</section>

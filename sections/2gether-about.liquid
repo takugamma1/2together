@@ -1,5 +1,6 @@
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {{ '2gether-about.css' | asset_url | stylesheet_tag }}
+{{ '2gether-timeline.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
@@ -99,40 +100,8 @@
     </div>
   </section>
 
-  <!-- ═══ IMAGE MOSAIC ═══ -->
-  <div class="tg-about-mosaic">
-    {% for block in section.blocks %}
-      {% if block.type == 'mosaic_image' %}
-        <div class="tg-mosaic-cell {% if block.settings.tall %}tg-mosaic-cell--tall{% endif %}" {{ block.shopify_attributes }}>
-          {% if block.settings.image != blank %}
-            {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy' }}
-          {% else %}
-            <div style="width:100%;height:100%;background:linear-gradient(160deg, var(--tg-ink-70), var(--tg-ink-90));"></div>
-          {% endif %}
-        </div>
-      {% endif %}
-    {% endfor %}
-
-    {%- comment -%} Fallback defaults {%- endcomment -%}
-    {% assign mosaic_count = 0 %}
-    {% for block in section.blocks %}
-      {% if block.type == 'mosaic_image' %}
-        {% assign mosaic_count = mosaic_count | plus: 1 %}
-      {% endif %}
-    {% endfor %}
-
-    {% if mosaic_count == 0 %}
-      <div class="tg-mosaic-cell tg-mosaic-cell--tall">
-        <div style="width:100%;height:100%;background:linear-gradient(160deg, var(--tg-ink-70), var(--tg-ink-90));"></div>
-      </div>
-      <div class="tg-mosaic-cell">
-        <div style="width:100%;height:100%;background:linear-gradient(140deg, var(--tg-surface-raised), var(--tg-ink-80));"></div>
-      </div>
-      <div class="tg-mosaic-cell">
-        <div style="width:100%;height:100%;background:linear-gradient(200deg, var(--tg-ink-80), var(--tg-surface-raised));"></div>
-      </div>
-    {% endif %}
-  </div>
+  <!-- ═══ TIMELINE ═══ -->
+  {% render '2gether-timeline', blocks: section.blocks, section_id: section.id, settings: section.settings %}
 
   <!-- ═══ COMMUNITY / SUNDAY CLUB ═══ -->
   <section class="tg-about-community">
@@ -156,6 +125,8 @@
   </section>
 
 </div>
+
+<script src="{{ '2gether-timeline.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -237,6 +208,52 @@
     },
     {
       "type": "header",
+      "content": "Timeline"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Timeline label",
+      "default": "Нашата история"
+    },
+    {
+      "type": "text",
+      "id": "title_line1",
+      "label": "Timeline title line 1",
+      "default": "ПЕТ ГОДИНИ"
+    },
+    {
+      "type": "text",
+      "id": "title_line2",
+      "label": "Timeline title line 2 (accent color)",
+      "default": "НА ПЪТЯ"
+    },
+    {
+      "type": "text",
+      "id": "prev_label",
+      "label": "Previous button aria-label",
+      "default": "Предишна година"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next button aria-label",
+      "default": "Следваща година"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Timeline padding top",
+      "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Timeline padding bottom",
+      "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96
+    },
+    {
+      "type": "header",
       "content": "Community"
     },
     {
@@ -298,20 +315,18 @@
       ]
     },
     {
-      "type": "mosaic_image",
-      "name": "Mosaic Image",
+      "type": "milestone",
+      "name": "Timeline Milestone",
+      "limit": 8,
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "checkbox",
-          "id": "tall",
-          "label": "Tall (spans two rows)",
-          "default": false
-        }
+        { "type": "text", "id": "year", "label": "Year", "default": "2021" },
+        { "type": "text", "id": "caption", "label": "Short caption (under the dot)", "default": "Началото" },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "kicker", "label": "Kicker (small label above heading)", "default": "2021 — Началото" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Две колела, един гараж, нула план." },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Разкажете накратко какво се случи през тази година.</p>" },
+        { "type": "text", "id": "stat_value", "label": "Stat value", "default": "2" },
+        { "type": "text", "id": "stat_label", "label": "Stat label", "default": "основатели" }
       ]
     }
   ],
