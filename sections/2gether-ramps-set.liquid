@@ -60,7 +60,7 @@
     endif
   endfor
 -%}
-{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: st.support_page %}{%- endcapture -%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: st.support_page, set_handle: st.set_page %}{%- endcapture -%}
 {%- liquid
   assign rp_urls = rp_urls | strip | split: '|'
   assign ramps_url = rp_urls[0]
@@ -299,6 +299,7 @@
     { "type": "header", "content": "Pages + tab strip" },
     { "type": "page", "id": "ramps_page", "label": "Ramps page" },
     { "type": "page", "id": "compare_page", "label": "Comparison page" },
+    { "type": "page", "id": "set_page", "label": "Set page" },
     { "type": "page", "id": "support_page", "label": "Support page" },
     { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
     { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },

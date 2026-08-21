@@ -11,7 +11,7 @@
   assign resources = section.blocks | where: 'type', 'resource'
   assign parts = section.blocks | where: 'type', 'part'
 -%}
-{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: page.handle %}{%- endcapture -%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: page.handle, set_handle: st.set_page %}{%- endcapture -%}
 {%- liquid
   assign rp_urls = rp_urls | strip | split: '|'
   assign ramps_url = rp_urls[0]
@@ -111,6 +111,7 @@
     { "type": "text", "id": "title", "label": "Title", "default": "ПОДДРЪЖКА ЗА РАМПИТЕ." },
     { "type": "page", "id": "ramps_page", "label": "Ramps page", "info": "Used by the back button, the tabs and the CTA. If empty, the theme finds the page that uses the ramps template." },
     { "type": "page", "id": "compare_page", "label": "Comparison page (for the tab strip)" },
+    { "type": "page", "id": "set_page", "label": "Set page" },
     { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
     { "type": "url", "id": "back_link", "label": "Back link override" },
 

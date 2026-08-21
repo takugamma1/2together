@@ -11,11 +11,12 @@
   assign options = section.blocks | where: 'type', 'option'
   assign rows = section.blocks | where: 'type', 'row'
 -%}
-{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: page.handle, support_handle: st.support_page %}{%- endcapture -%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: page.handle, support_handle: st.support_page, set_handle: st.set_page %}{%- endcapture -%}
 {%- liquid
   assign rp_urls = rp_urls | strip | split: '|'
   assign ramps_url = rp_urls[0]
   assign support_url = rp_urls[2]
+  assign set_url = rp_urls[3]
   assign lineup_url = ramps_url | append: '#tg-ramps-lineup'
   assign p1 = st.product_1
   assign p2 = st.product_2
@@ -59,7 +60,7 @@
         <span class="tg-eyebrow">{{ st.rec_label }}</span>
         <div class="tg-rc-rec-stack">
           {% for b in options %}
-            {%- capture rec_url -%}{% render '2gether-ramps-product-url', product: b.settings.product, link: b.settings.cta_link, name: b.settings.rec_title, fallback: lineup_url %}{%- endcapture -%}
+            {%- capture rec_url -%}{% render '2gether-ramps-product-url', product: b.settings.product, link: b.settings.cta_link, name: b.settings.rec_title, set_url: set_url, fallback: lineup_url %}{%- endcapture -%}
             {%- assign rec_url = rec_url | strip -%}
             <div class="tg-rc-rec-panel{% if forloop.first %} is-active{% endif %}" id="tg-rc-rec-{{ section.id }}-{{ forloop.index0 }}" role="tabpanel" data-rc-panel="{{ forloop.index0 }}" style="--model: {{ b.settings.color | default: '#E8601C' }}" {% unless forloop.first %}hidden{% endunless %}>
               <h3 class="tg-rp-h2 tg-rp-h2--sm tg-rc-rec-name">{{ b.settings.rec_title }}</h3>
@@ -143,6 +144,7 @@
     { "type": "text", "id": "title", "label": "Title", "default": "BREEZE ИЛИ STORM?" },
     { "type": "page", "id": "ramps_page", "label": "Ramps page", "info": "Used by the back button, the tabs and fallback links. If empty, the theme finds the page that uses the ramps template." },
     { "type": "page", "id": "support_page", "label": "Support page (for the tab strip)" },
+    { "type": "page", "id": "set_page", "label": "Set page (for the BREEZE + STORM recommendation)" },
     { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
     { "type": "url", "id": "back_link", "label": "Back link override" },
 
