@@ -64,7 +64,8 @@
             "heights": "29,32,35,38",
             "choose_title": "ИЗБЕРИ BREEZE, АКО:",
             "choose_text": "искаш ниското тегло и лесното местене между спотовете да са приоритет.",
-            "cta_text": "Виж BREEZE"
+            "cta_text": "Виж BREEZE",
+            "color": "#C8434F"
           }
         },
         "model_storm": {
@@ -84,7 +85,8 @@
             "heights": "53,56,59,62",
             "choose_title": "ИЗБЕРИ STORM, АКО:",
             "choose_text": "по-високият кикър и по-агресивният ъгъл са по-важни от теглото.",
-            "cta_text": "Виж STORM"
+            "cta_text": "Виж STORM",
+            "color": "#2F6FD6"
           }
         },
         "step_1": {
