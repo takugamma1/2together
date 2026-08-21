@@ -51,7 +51,8 @@
           "type": "model",
           "settings": {
             "name": "BREEZE",
-            "product": "",
+            "color": "#c8434f",
+            "product": "2getherbikes-portable-ramp-breeze",
             "price": "€260",
             "link": "",
             "tagline": "ЛЕКА. БЪРЗА. НАВСЯКЪДЕ С ТЕБ.",
@@ -64,15 +65,15 @@
             "heights": "29,32,35,38",
             "choose_title": "ИЗБЕРИ BREEZE, АКО:",
             "choose_text": "искаш ниското тегло и лесното местене между спотовете да са приоритет.",
-            "cta_text": "Виж BREEZE",
-            "color": "#C8434F"
+            "cta_text": "Виж BREEZE"
           }
         },
         "model_storm": {
           "type": "model",
           "settings": {
             "name": "STORM",
-            "product": "",
+            "color": "#2f6fd6",
+            "product": "2getherbikes-portable-ramp-storm",
             "price": "€385",
             "link": "",
             "tagline": "ПО-ВИСОК КИКЪР. ПО-АГРЕСИВЕН ЪГЪЛ.",
@@ -85,8 +86,7 @@
             "heights": "53,56,59,62",
             "choose_title": "ИЗБЕРИ STORM, АКО:",
             "choose_text": "по-високият кикър и по-агресивният ъгъл са по-важни от теглото.",
-            "cta_text": "Виж STORM",
-            "color": "#2F6FD6"
+            "cta_text": "Виж STORM"
           }
         },
         "step_1": {
@@ -397,10 +397,12 @@
         "cta2_link": "/pages/contact",
         "tabs_enabled": true,
         "tab_1_label": "Рампи",
+        "tab_1_anchor": "tg-ramps-lineup",
         "tab_2_label": "Сравнение",
+        "compare_page": "",
         "tab_3_label": "Поддръжка",
-        "tabs_aria": "Навигация в страницата",
-        "tab_1_anchor": "tg-ramps-lineup"
+        "support_page": "",
+        "tabs_aria": "Навигация в страницата"
       }
     }
   },
