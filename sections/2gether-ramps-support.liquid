@@ -17,7 +17,8 @@
     assign ramps_url = pages[st.ramps_page].url
   endif
   if ramps_url == blank
-    for h in 'ramps,portable-ramps,рампи,преносими-рампи' | split: ','
+    assign ramps_handles = 'ramps,portable-ramps,рампи,преносими-рампи' | split: ','
+    for h in ramps_handles
       if pages[h] != empty
         assign ramps_url = pages[h].url
         break

@@ -25,7 +25,8 @@
     assign support_url = pages[st.support_page].url
   endif
   if support_url == blank
-    for h in 'ramps-support,ramp-support,поддръжка-рампи,поддръжка-за-рампите' | split: ','
+    assign support_handles = 'ramps-support,ramp-support,поддръжка-рампи,поддръжка-за-рампите' | split: ','
+    for h in support_handles
       if pages[h] != empty
         assign support_url = pages[h].url
         break
