@@ -110,7 +110,7 @@
               assign img = p.featured_image
             endif
           -%}
-          <article class="tg-rp-model" {{ b.shopify_attributes }}>
+          <article class="tg-rp-model" style="--model: {{ b.settings.color | default: '#E8601C' }}" {{ b.shopify_attributes }}>
             <div class="tg-rp-model-media">
               {% if img != blank %}{{ img | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 900px) 100vw, 50vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
               <span class="tg-rp-corner" aria-hidden="true"></span>
@@ -208,7 +208,7 @@
           <span class="tg-rp-pos-label">{{ st.pos_model_label | default: 'Модел' }}</span>
           <div class="tg-rp-seg" role="tablist" aria-label="{{ st.pos_model_label | default: 'Модел' }}">
             {% for b in models %}
-              <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-model data-name="{{ b.settings.name | escape }}" data-length="{{ b.settings.length_cm | default: 130 }}" data-heights="{{ b.settings.heights | default: '29,32,35,38' | escape }}">{{ b.settings.name }}</button>
+              <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-model data-name="{{ b.settings.name | escape }}" data-color="{{ b.settings.color | default: '#E8601C' }}" style="--model: {{ b.settings.color | default: '#E8601C' }}" data-length="{{ b.settings.length_cm | default: 130 }}" data-heights="{{ b.settings.heights | default: '29,32,35,38' | escape }}">{{ b.settings.name }}</button>
             {% endfor %}
           </div>
         </div>
@@ -223,26 +223,30 @@
       </div>
 
       <div class="tg-rp-pos-stage">
-        <svg class="tg-rp-ramp" viewBox="0 0 640 280" aria-hidden="true">
-          <defs>
-            <linearGradient id="tg-rp-deck-{{ section.id }}" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="var(--tg-flame)" stop-opacity="0.55"/>
-              <stop offset="1" stop-color="var(--tg-flame)"/>
-            </linearGradient>
-          </defs>
-          <line class="tg-rp-ground" x1="40" y1="232" x2="600" y2="232"/>
-          <g class="tg-rp-deck-pivot" data-rp-deck>
-            <polygon class="tg-rp-deck" points="0,0 0,-6 440,-6 440,0" fill="url(#tg-rp-deck-{{ section.id }})" data-rp-deck-shape/>
-            <polygon class="tg-rp-deck-side" points="0,0 440,0 440,10 0,10" data-rp-deck-side/>
+        <svg class="tg-rp-ramp" viewBox="0 0 640 300" aria-hidden="true">
+          <line class="tg-rp-ground" x1="36" y1="236" x2="604" y2="236"/>
+          <!-- rear foot -->
+          <rect class="tg-rp-foot" x="52" y="228" width="22" height="8" rx="2"/>
+          <!-- deck: pivot at rear-bottom corner (60,232) -->
+          <g data-rp-deck transform="translate(60 232)">
+            <polygon class="tg-rp-deck-side" data-rp-deck-side points="0,0 440,0 440,12 0,12"/>
+            <polygon class="tg-rp-deck" data-rp-deck-shape points="0,0 0,-8 440,-8 440,0"/>
+            <line class="tg-rp-deck-edge" data-rp-deck-edge x1="0" y1="-8" x2="440" y2="-8"/>
+            <g class="tg-rp-deck-grip" data-rp-deck-grip></g>
           </g>
-          <g class="tg-rp-leg" data-rp-leg><line x1="0" y1="0" x2="0" y2="-1" data-rp-leg-line/></g>
-          <g class="tg-rp-dim" data-rp-dim>
-            <line x1="0" y1="0" x2="0" y2="-1" class="tg-rp-dim-line" data-rp-dim-line/>
-            <line x1="-10" y1="0" x2="10" y2="0" class="tg-rp-dim-tick"/>
-            <line x1="-10" y1="-1" x2="10" y2="-1" class="tg-rp-dim-tick" data-rp-dim-top/>
-            <text x="16" y="-1" class="tg-rp-dim-text" data-rp-dim-text>29 cm</text>
+          <!-- front leg -->
+          <g data-rp-leg transform="translate(500 232)">
+            <line class="tg-rp-leg-line" data-rp-leg-line x1="0" y1="0" x2="0" y2="-1"/>
+            <rect class="tg-rp-foot" x="-12" y="-4" width="24" height="8" rx="2"/>
           </g>
-          <text x="40" y="268" class="tg-rp-ramp-caption" data-rp-caption></text>
+          <!-- height marker -->
+          <g data-rp-dim transform="translate(560 232)">
+            <line class="tg-rp-dim-line" data-rp-dim-line x1="0" y1="0" x2="0" y2="-1"/>
+            <line class="tg-rp-dim-tick" x1="-8" y1="0" x2="8" y2="0"/>
+            <line class="tg-rp-dim-tick" data-rp-dim-top x1="-8" y1="-1" x2="8" y2="-1"/>
+            <text class="tg-rp-dim-text" data-rp-dim-text x="14" y="-1">29 cm</text>
+          </g>
+          <text class="tg-rp-ramp-caption" data-rp-caption x="36" y="278"></text>
         </svg>
         <p class="tg-rp-pos-readout" data-rp-readout aria-live="polite"></p>
       </div>
@@ -405,53 +409,69 @@
 
 <script>
 (() => {
-  /* ── Positions illustrator ── */
+  /* ── Positions illustrator (JS tween, SVG attribute transforms — no CSS transforms on SVG) ── */
   const root = document.querySelector('[data-rp-positions]');
   if (root) {
-    const S = 2.6, PX = 60, GY = 232;              // scale (px per cm), pivot x, ground y
-    const deck = root.querySelector('[data-rp-deck]');
-    const shape = root.querySelector('[data-rp-deck-shape]');
-    const side = root.querySelector('[data-rp-deck-side]');
-    const leg = root.querySelector('[data-rp-leg]');
-    const legLine = root.querySelector('[data-rp-leg-line]');
-    const dim = root.querySelector('[data-rp-dim]');
-    const dimLine = root.querySelector('[data-rp-dim-line]');
-    const dimTop = root.querySelector('[data-rp-dim-top]');
-    const dimText = root.querySelector('[data-rp-dim-text]');
-    const caption = root.querySelector('[data-rp-caption]');
-    const readout = root.querySelector('[data-rp-readout]');
+    const S = 2.6, PX = 60, GY = 232;
+    const q = (k) => root.querySelector(k);
+    const deck = q('[data-rp-deck]'), shape = q('[data-rp-deck-shape]'), side = q('[data-rp-deck-side]'), edge = q('[data-rp-deck-edge]'), grip = q('[data-rp-deck-grip]');
+    const leg = q('[data-rp-leg]'), legLine = q('[data-rp-leg-line]');
+    const dim = q('[data-rp-dim]'), dimLine = q('[data-rp-dim-line]'), dimTop = q('[data-rp-dim-top]'), dimText = q('[data-rp-dim-text]');
+    const caption = q('[data-rp-caption]'), readout = q('[data-rp-readout]');
     const modelBtns = [...root.querySelectorAll('[data-rp-model]')];
     const posBtns = [...root.querySelectorAll('[data-rp-pos]')];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let model = modelBtns[0], pos = 0;
+    let cur = { L: 0, h: 0 }, from = null, to = null, t0 = 0, raf = 0;
 
     const setSeg = (btns, active) => btns.forEach(b => { const on = b === active; b.classList.toggle('is-active', on); b.setAttribute('aria-selected', on); });
-
-    const draw = () => {
+    const target = () => {
       const L = parseFloat(model.dataset.length) || 130;
-      const hs = model.dataset.heights.split(',').map(v => parseFloat(v)).filter(n => !isNaN(n));
-      const h = hs[Math.min(pos, hs.length - 1)] || 0;
+      const hs = (model.dataset.heights || '').split(',').map(parseFloat).filter(n => !isNaN(n));
+      return { L, h: hs[Math.min(pos, Math.max(hs.length - 1, 0))] || 0 };
+    };
+    const render = ({ L, h }) => {
       const Lpx = L * S, hpx = Math.min(h * S, Lpx - 1);
-      const ang = Math.asin(hpx / Lpx);
+      const ang = Math.asin(hpx / Lpx), deg = -ang * 180 / Math.PI;
       const tipX = PX + Lpx * Math.cos(ang);
-      shape.setAttribute('points', `0,0 0,-6 ${Lpx},-6 ${Lpx},0`);
-      side.setAttribute('points', `0,0 ${Lpx},0 ${Lpx},10 0,10`);
-      deck.style.transform = `translate(${PX}px, ${GY}px) rotate(${-ang * 180 / Math.PI}deg)`;
-      leg.style.transform = `translate(${tipX - 18}px, ${GY}px)`;
-      legLine.setAttribute('y2', -(hpx - 4));
-      dim.style.transform = `translate(${tipX + 36}px, ${GY}px)`;
+      shape.setAttribute('points', `0,0 0,-8 ${Lpx},-8 ${Lpx},0`);
+      side.setAttribute('points', `0,0 ${Lpx},0 ${Lpx},12 0,12`);
+      edge.setAttribute('x2', Lpx);
+      deck.setAttribute('transform', `translate(${PX} ${GY}) rotate(${deg})`);
+      leg.setAttribute('transform', `translate(${(tipX - 16).toFixed(1)} ${GY})`);
+      legLine.setAttribute('y2', -(hpx - 6));
+      dim.setAttribute('transform', `translate(${(tipX + 30).toFixed(1)} ${GY})`);
       dimLine.setAttribute('y2', -hpx);
       dimTop.setAttribute('y1', -hpx); dimTop.setAttribute('y2', -hpx);
-      dimText.setAttribute('y', -hpx / 2 + 5);
+      dimText.setAttribute('y', -hpx / 2 + 6);
+      // grip strips along the deck
+      if (grip.dataset.len !== String(Lpx)) {
+        grip.dataset.len = String(Lpx); grip.innerHTML = '';
+        for (let x = 40; x < Lpx - 30; x += 44) { const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect'); r.setAttribute('x', x); r.setAttribute('y', -7); r.setAttribute('width', 22); r.setAttribute('height', 6); r.setAttribute('rx', 1); grip.appendChild(r); }
+      }
+    };
+    const ease = (x) => 1 - Math.pow(1 - x, 3);
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / 600), e = ease(p);
+      cur = { L: from.L + (to.L - from.L) * e, h: from.h + (to.h - from.h) * e };
+      render(cur);
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    const draw = (animate = true) => {
+      to = target();
+      const { L, h } = to;
       dimText.textContent = `${h} cm`;
-      const name = model.dataset.name;
-      caption.textContent = `${name} · позиция ${pos + 1}`;
-      readout.textContent = `${name} · позиция ${pos + 1} · ${h} cm`;
+      caption.textContent = `${model.dataset.name} · позиция ${pos + 1}`;
+      readout.textContent = `${model.dataset.name} · позиция ${pos + 1} · ${h} cm`;
+      root.style.setProperty('--model', model.dataset.color || '#E8601C');
+      cancelAnimationFrame(raf);
+      if (!animate || reduce || !cur.L) { cur = { ...to }; render(cur); return; }
+      from = { ...cur }; t0 = performance.now(); raf = requestAnimationFrame(tick);
     };
     modelBtns.forEach(b => b.addEventListener('click', () => { model = b; setSeg(modelBtns, b); draw(); }));
-    posBtns.forEach(b => b.addEventListener('click', () => { pos = +b.dataset.pos; setSeg(posBtns, b); draw(); }));
-    draw();
+    posBtns.forEach(b => b.addEventListener('click', () => { pos = +b.dataset.rpPos; setSeg(posBtns, b); draw(); }));
+    draw(false);
   }
-
 })();
 </script>
 
@@ -560,6 +580,7 @@
       { "type": "text", "id": "label", "label": "Label", "default": "трансформация" } ] },
     { "type": "model", "name": "Ramp model", "limit": 3, "settings": [
       { "type": "text", "id": "name", "label": "Name", "default": "BREEZE" },
+      { "type": "color", "id": "color", "label": "Model colour (deck, tag, toggle)", "default": "#E8601C" },
       { "type": "product", "id": "product", "label": "Product (price, image, link)" },
       { "type": "image_picker", "id": "image", "label": "Image override" },
       { "type": "text", "id": "price", "label": "Price (fallback)", "default": "€260" },

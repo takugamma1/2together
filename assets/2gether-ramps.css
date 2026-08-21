@@ -65,6 +65,8 @@ body.tg-ramps-active .content-for-layout { max-width: none; padding: 0; margin: 
   color: var(--tg-flame-soft); background: var(--tg-flame-glow); border: 1px solid rgba(232, 96, 28, 0.35);
   clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
 }
+.tg-rp-model .tg-rp-tag { color: #fff; background: var(--model, var(--tg-flame)); border-color: var(--model, var(--tg-flame)); }
+.tg-rp-model:hover { border-color: var(--model, var(--tg-flame)); }
 .tg-rp-tag--flame { color: var(--tg-ink); background: var(--tg-flame); border-color: var(--tg-flame); }
 
 .tg-rp-media { position: relative; overflow: hidden; border-radius: var(--rp-radius); background: var(--tg-surface-raised); aspect-ratio: 16 / 10; }
@@ -161,18 +163,22 @@ body.tg-ramps-active .content-for-layout { max-width: none; padding: 0; margin: 
 .tg-rp-seg--num .tg-rp-seg-btn { min-width: 52px; text-align: center; }
 .tg-rp-seg-btn:hover { color: var(--tg-text-primary); background: var(--tg-ink-70); }
 .tg-rp-seg-btn.is-active { background: var(--tg-flame); color: var(--tg-ink); border-color: var(--tg-flame); }
+.tg-rp-seg-btn[data-rp-model].is-active { background: var(--model, var(--tg-flame)); border-color: var(--model, var(--tg-flame)); color: #fff; }
 .tg-rp-seg-btn:focus-visible { outline: 2px solid var(--tg-flame); outline-offset: 2px; }
 
 .tg-rp-pos-stage { background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); border-radius: var(--rp-radius); padding: var(--tg-s5); position: relative; overflow: hidden; }
 .tg-rp-pos-stage::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--tg-divider) 1px, transparent 1px), linear-gradient(90deg, var(--tg-divider) 1px, transparent 1px); background-size: 32px 32px; opacity: 0.5; pointer-events: none; }
 .tg-rp-ramp { width: 100%; height: auto; display: block; position: relative; }
 .tg-rp-ground { stroke: var(--tg-text-muted); stroke-width: 2; }
-.tg-rp-deck-pivot, .tg-rp-leg, .tg-rp-dim { transition: transform 600ms var(--tg-ease-out); transform-origin: 0 0; }
+.tg-rp-foot { fill: var(--tg-text-primary); }
+.tg-rp-deck { fill: var(--model, var(--tg-flame)); transition: fill 400ms var(--tg-ease-out); }
 .tg-rp-deck-side { fill: var(--tg-ink-70); }
-.tg-rp-leg line { stroke: var(--tg-text-primary); stroke-width: 6; stroke-linecap: round; transition: all 600ms var(--tg-ease-out); }
-.tg-rp-dim-line { stroke: var(--tg-flame); stroke-width: 1.5; stroke-dasharray: 4 4; transition: all 600ms var(--tg-ease-out); }
-.tg-rp-dim-tick { stroke: var(--tg-flame); stroke-width: 1.5; transition: all 600ms var(--tg-ease-out); }
-.tg-rp-dim-text { fill: var(--tg-flame-soft); font-family: 'Technor', sans-serif; font-weight: 700; font-size: 18px; transition: all 600ms var(--tg-ease-out); }
+.tg-rp-deck-edge { stroke: rgba(255, 255, 255, 0.45); stroke-width: 1.5; }
+.tg-rp-deck-grip rect { fill: rgba(11, 18, 32, 0.35); }
+.tg-rp-leg-line { stroke: var(--tg-text-primary); stroke-width: 6; stroke-linecap: round; }
+.tg-rp-dim-line { stroke: var(--tg-flame); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.tg-rp-dim-tick { stroke: var(--tg-flame); stroke-width: 1.5; }
+.tg-rp-dim-text { fill: var(--tg-flame-soft); font-family: 'Technor', sans-serif; font-weight: 700; font-size: 18px; }
 .tg-rp-ramp-caption { fill: var(--tg-text-primary); font-family: 'General Sans', sans-serif; font-weight: 600; font-size: 15px; }
 .tg-rp-pos-readout { margin: var(--tg-s4) 0 0; text-align: center; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tg-text-muted); position: relative; }
 
@@ -271,7 +277,7 @@ body.tg-ramps-active .content-for-layout { max-width: none; padding: 0; margin: 
 }
 @media (max-width: 360px) { .tg-ramps-tabs-brand { display: none; } .tg-ramps-tab { font-size: 11px; } }
 @media (prefers-reduced-motion: reduce) {
-  .tg-ramps-tabs, .tg-rp-deck-pivot, .tg-rp-leg, .tg-rp-dim, .tg-rp-btn, .tg-rp-card, .tg-rp-model-media img { transition: none; }
+  .tg-ramps-tabs, .tg-rp-btn, .tg-rp-card, .tg-rp-model-media img { transition: none; }
 }
 
 /* ═══ RAMP SUPPORT PAGE ═══ */
