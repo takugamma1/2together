@@ -1,0 +1,89 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "2gether-ramps-set",
+      "blocks": {
+        "reason_1": {
+          "type": "reason",
+          "settings": {
+            "icon": "jump",
+            "title": "TAKE-OFF И LANDING",
+            "text": "Пълна линия: изстрелване от BREEZE, приземяване върху обърнатата STORM."
+          }
+        },
+        "reason_2": {
+          "type": "reason",
+          "settings": {
+            "icon": "landing",
+            "title": "ДВА РАЗЛИЧНИ СКОКА",
+            "text": "Нисък и висок кикър на един спот — тренираш прогресивно."
+          }
+        },
+        "reason_3": {
+          "type": "reason",
+          "settings": {
+            "icon": "carry",
+            "title": "ДВЕ НА ГРЪБ",
+            "text": "И двете се сгъват за 30 секунди и се носят с включените презрамки."
+          }
+        },
+        "reason_4": {
+          "type": "reason",
+          "settings": {
+            "icon": "shield",
+            "title": "ЕДНА ГАРАНЦИЯ",
+            "text": "2 години на всяка рампа, сменяеми консумативи и реална поддръжка."
+          }
+        },
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "Как се прилага отстъпката за комплекта?",
+            "answer": "Автоматично в количката, когато и двете рампи са в нея. Не е нужен код."
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "Мога ли да комбинирам с друга рампа по-късно?",
+            "answer": "Да. Всички модели от линията са съвместими и се ползват заедно."
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Какво става, ако единият модел е изчерпан?",
+            "answer": "Поръчката се приема. Свързваме се лично и потвърждаваме срок за изработка от 5 до 10 работни дни."
+          }
+        }
+      },
+      "block_order": [
+        "reason_1",
+        "reason_2",
+        "reason_3",
+        "reason_4",
+        "faq_1",
+        "faq_2",
+        "faq_3"
+      ],
+      "settings": {
+        "handle_1": "breeze",
+        "handle_2": "storm",
+        "test_link": "/pages/contact",
+        "set_price": 590
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

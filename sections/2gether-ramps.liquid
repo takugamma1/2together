@@ -134,7 +134,24 @@
           endif
         endif
       -%}
-      {%- capture b_url -%}{% render '2gether-ramps-product-url', product: bundle, link: b_url, name: 'BREEZE + STORM', fallback: compare_url %}{%- endcapture -%}
+      {%- liquid
+        assign set_page_url = ''
+        if st.set_page != blank and pages[st.set_page] != empty
+          assign set_page_url = pages[st.set_page].url
+        endif
+        if set_page_url == blank
+          for pg in pages
+            if pg.template_suffix == 'ramps-set'
+              assign set_page_url = pg.url
+              break
+            endif
+          endfor
+        endif
+        if set_page_url == blank
+          assign set_page_url = compare_url
+        endif
+      -%}
+      {%- capture b_url -%}{% render '2gether-ramps-product-url', product: bundle, link: b_url, name: 'BREEZE + STORM', fallback: set_page_url %}{%- endcapture -%}
       {%- assign b_url = b_url | strip -%}
       <div class="tg-rp-bundle">
         <div class="tg-rp-bundle-copy">
@@ -386,7 +403,8 @@
     { "type": "text", "id": "bundle_eyebrow", "label": "Eyebrow", "default": "Пълният спот" },
     { "type": "text", "id": "bundle_title", "label": "Title", "default": "BREEZE + STORM · TAKE-OFF & LANDING SET" },
     { "type": "textarea", "id": "bundle_text", "label": "Text", "default": "Използвай едната за изстрелване, а другата за приземяване. Или изгради два различни скока." },
-    { "type": "product", "id": "bundle_product", "label": "Set product (price + link come from it)" },
+    { "type": "page", "id": "set_page", "label": "Set page (Виж комплекта)", "info": "If empty, the theme finds the page using the ramps-set template" },
+    { "type": "product", "id": "bundle_product", "label": "Set product (overrides the page)" },
     { "type": "text", "id": "bundle_price", "label": "Price (fallback if no product)", "default": "€590" },
     { "type": "text", "id": "bundle_compare_price", "label": "Compare-at price (fallback)", "default": "€645" },
     { "type": "text", "id": "bundle_save", "label": "Savings badge", "default": "Спестяваш €55" },
