@@ -109,7 +109,7 @@
         {% if features.size > 0 %}
           <ul class="tg-pp-features">
             {% for b in features %}
-              <li {{ b.shopify_attributes }}>{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.text | replace: '{positions}', positions_label | replace: '{range}', range_label | replace: '{name}', name | replace: '{length}', length | replace: '{weight}', weight }}</span></li>
+              <li {{ b.shopify_attributes }}>{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.text | replace: '[positions]', positions_label | replace: '[range]', range_label | replace: '[name]', name | replace: '[length]', length | replace: '[weight]', weight }}</span></li>
             {% endfor %}
           </ul>
         {% endif %}
@@ -131,11 +131,11 @@
     <div class="tg-rp-wrap tg-pp-two">
       <div>
         <span class="tg-eyebrow">{{ st.spec_eyebrow }}</span>
-        <h2 class="tg-rp-h2 tg-rp-h2--sm">{{ st.spec_title | replace: '{name}', name }}</h2>
+        <h2 class="tg-rp-h2 tg-rp-h2--sm">{{ st.spec_title | replace: '[name]', name }}</h2>
         {% if specs.size > 0 %}
           <dl class="tg-pp-specs">
             {% for b in specs %}
-              {%- assign v = b.settings.value | replace: '{positions}', positions_label | replace: '{range}', range_label | replace: '{length}', length | replace: '{width}', width | replace: '{weight}', weight | replace: '{name}', name -%}
+              {%- assign v = b.settings.value | replace: '[positions]', positions_label | replace: '[range]', range_label | replace: '[length]', length | replace: '[width]', width | replace: '[weight]', weight | replace: '[name]', name -%}
               {% if v != blank %}<div {{ b.shopify_attributes }}><dt>{{ b.settings.label }}</dt><dd>{{ v }}</dd></div>{% endif %}
             {% endfor %}
           </dl>
@@ -158,7 +158,7 @@
   <section class="tg-rp-section tg-rp-section--line">
     <div class="tg-rp-wrap tg-rp-pos-grid" data-rp-positions data-pos-word="{{ st.pos_word | default: 'позиция' | escape }}">
       <div class="tg-rp-pos-copy">
-        <span class="tg-eyebrow">{{ st.pos_eyebrow | replace: '{name}', name }}</span>
+        <span class="tg-eyebrow">{{ st.pos_eyebrow | replace: '[name]', name }}</span>
         <h2 class="tg-rp-h2">{{ st.pos_title }}</h2>
         <p class="tg-rp-text">{{ st.pos_text }}</p>
         <div class="tg-rp-pos-control">
@@ -187,8 +187,8 @@
       </figure>
       <div class="tg-rp-split-copy">
         <span class="tg-eyebrow">{{ st.action_eyebrow }}</span>
-        <h2 class="tg-rp-h2">{{ st.action_title | replace: '{name}', name }}</h2>
-        <p class="tg-rp-text">{{ blurb | default: st.action_text | replace: '{range}', range_label | replace: '{name}', name }}</p>
+        <h2 class="tg-rp-h2">{{ st.action_title | replace: '[name]', name }}</h2>
+        <p class="tg-rp-text">{{ blurb | default: st.action_text | replace: '[range]', range_label | replace: '[name]', name }}</p>
         {% if uses.size > 0 %}
           <div class="tg-rp-cols" style="--cols: {{ uses.size }}">
             {% for b in uses %}<div {{ b.shopify_attributes }}><h3>{{ b.settings.title }}</h3><p>{{ b.settings.text }}</p></div>{% endfor %}
@@ -293,7 +293,7 @@
   "name": "Ramp product",
   "tag": "section",
   "settings": [
-    { "type": "paragraph", "content": "Per-model values come from product tags: color:#2F6FD6 · colorname:Син · length:170 · width:58 · weight:12.5 kg · heights:53,57,60,62 · other:breeze · blurb:… · video:https://… — text fields below may use {name} {positions} {range} {length} {width} {weight}." },
+    { "type": "paragraph", "content": "Per-model values come from product tags: color:#2F6FD6 · colorname:Син · length:170 · width:58 · weight:12.5 kg · heights:53,57,60,62 · other:breeze · blurb:… · video:https://… — text fields below may use [name] [positions] [range] [length] [width] [weight]." },
     { "type": "header", "content": "Info card" },
     { "type": "color", "id": "default_color", "label": "Fallback model colour", "default": "#E8601C" },
     { "type": "text", "id": "color_prefix", "label": "Colour tag prefix", "default": "Фиксиран цвят" },
@@ -311,13 +311,13 @@
 
     { "type": "header", "content": "Specs + kit" },
     { "type": "text", "id": "spec_eyebrow", "label": "Eyebrow", "default": "Технически данни" },
-    { "type": "text", "id": "spec_title", "label": "Title", "default": "{name} В ДЕТАЙЛ." },
+    { "type": "text", "id": "spec_title", "label": "Title", "default": "[name] В ДЕТАЙЛ." },
     { "type": "text", "id": "kit_eyebrow", "label": "Kit eyebrow", "default": "В комплекта" },
     { "type": "text", "id": "kit_title", "label": "Kit title", "default": "ГОТОВА ЗА ПЪРВИЯ СПОТ." },
     { "type": "textarea", "id": "kit_note", "label": "Kit note", "default": "Подплатите за презрамките и транспортната чанта се предлагат отделно, когато бъдат налични." },
 
     { "type": "header", "content": "Positions" },
-    { "type": "text", "id": "pos_eyebrow", "label": "Eyebrow", "default": "Настрой {name}" },
+    { "type": "text", "id": "pos_eyebrow", "label": "Eyebrow", "default": "Настрой [name]" },
     { "type": "text", "id": "pos_title", "label": "Title", "default": "4 ПОЗИЦИИ. 4 РАЗЛИЧНИ ЪГЪЛА." },
     { "type": "textarea", "id": "pos_text", "label": "Text", "default": "Преместваш предните крака между четирите фиксирани отвора. С едно действие променяш височината и ъгъла на изстрелване." },
     { "type": "textarea", "id": "pos_note", "label": "Note", "default": "Дистанцията на полета зависи от скоростта, велосипеда и техниката на ездача." },
@@ -328,8 +328,8 @@
     { "type": "text", "id": "action_video_label", "label": "Play label", "default": "Виж скокове с този модел" },
     { "type": "url", "id": "action_video_url", "label": "Video link (fallback; tag video: wins)" },
     { "type": "text", "id": "action_eyebrow", "label": "Eyebrow", "default": "В реални условия" },
-    { "type": "text", "id": "action_title", "label": "Title", "default": "ВИЖ {name} В ДЕЙСТВИЕ." },
-    { "type": "textarea", "id": "action_text", "label": "Text (fallback; tag blurb: wins)", "default": "Четири настройки на кикъра от {range}." },
+    { "type": "text", "id": "action_title", "label": "Title", "default": "ВИЖ [name] В ДЕЙСТВИЕ." },
+    { "type": "textarea", "id": "action_text", "label": "Text (fallback; tag blurb: wins)", "default": "Четири настройки на кикъра от [range]." },
 
     { "type": "header", "content": "Support" },
     { "type": "text", "id": "sup_eyebrow", "label": "Eyebrow", "default": "Преди първия скок" },
@@ -355,10 +355,10 @@
   "blocks": [
     { "type": "feature", "name": "Info row", "limit": 8, "settings": [
       { "type": "select", "id": "icon", "label": "Icon", "default": "fold", "options": [ { "value": "fold", "label": "Positions" }, { "value": "clock", "label": "Clock" }, { "value": "weight", "label": "Weight" }, { "value": "shield", "label": "Shield" }, { "value": "pin", "label": "Pin" } ] },
-      { "type": "text", "id": "text", "label": "Text", "default": "4 позиции · {positions}" } ] },
+      { "type": "text", "id": "text", "label": "Text", "default": "4 позиции · [positions]" } ] },
     { "type": "spec", "name": "Spec row", "settings": [
       { "type": "text", "id": "label", "label": "Label", "default": "Дължина" },
-      { "type": "text", "id": "value", "label": "Value", "default": "{length} cm" } ] },
+      { "type": "text", "id": "value", "label": "Value", "default": "[length] cm" } ] },
     { "type": "kit", "name": "Kit item", "limit": 8, "settings": [ { "type": "text", "id": "label", "label": "Item", "default": "Рампа" } ] },
     { "type": "use", "name": "Bike type", "limit": 4, "settings": [
       { "type": "text", "id": "title", "label": "Title", "default": "MTB И DIRT JUMP" },
