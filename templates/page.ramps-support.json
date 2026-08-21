@@ -1,0 +1,128 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "2gether-ramps-support",
+      "blocks": {
+        "res_1": {
+          "type": "resource",
+          "settings": {
+            "icon": "book",
+            "title": "ИНСТРУКЦИИ ЗА УПОТРЕБА",
+            "text": "Настройване на четирите позиции, избор на терен, take-off и landing употреба.",
+            "cta_text": "Тук се отваря документът",
+            "new_tab": true
+          }
+        },
+        "res_2": {
+          "type": "resource",
+          "settings": {
+            "icon": "video",
+            "title": "ВИДЕО РЪКОВОДСТВА",
+            "text": "Пълно сглобяване, 30-секундно сгъване, заключване и носене на гръб.",
+            "cta_text": "Тук се отваря видеото",
+            "new_tab": true
+          }
+        },
+        "res_3": {
+          "type": "resource",
+          "settings": {
+            "icon": "shield",
+            "title": "ГАРАНЦИОННИ УСЛОВИЯ",
+            "text": "Какво покрива двугодишната гаранция и кои части са сменяеми консумативи.",
+            "cta_text": "Тук се отваря документът",
+            "new_tab": true
+          }
+        },
+        "res_4": {
+          "type": "resource",
+          "settings": {
+            "icon": "care",
+            "title": "ГРИЖА И СЪХРАНЕНИЕ",
+            "text": "Употреба при мокра повърхност, подсушаване, съхранение и периодична проверка.",
+            "cta_text": "Тук се отваря документът",
+            "new_tab": true
+          }
+        },
+        "part_1": {
+          "type": "part",
+          "settings": {
+            "icon": "foot",
+            "title": "ГУМЕНИ КРАЧЕТА",
+            "text": "Сменяем комплект при износване.",
+            "cta_text": "Изпрати запитване",
+            "cta_link": "/pages/contact",
+            "cta_style": "ghost"
+          }
+        },
+        "part_2": {
+          "type": "part",
+          "settings": {
+            "icon": "spring",
+            "title": "КОМПЛЕКТ ЛАСТИЦИ",
+            "text": "Подмяна при разтягане или износване.",
+            "cta_text": "Изпрати запитване",
+            "cta_link": "/pages/contact",
+            "cta_style": "ghost"
+          }
+        },
+        "part_3": {
+          "type": "part",
+          "settings": {
+            "icon": "chat",
+            "title": "ДРУГ ТИП ПОВРЕДА",
+            "text": "Изпрати снимки и ще преценим как може да бъде отстранена.",
+            "cta_text": "Свържи се с нас",
+            "cta_link": "/pages/contact",
+            "cta_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "res_1",
+        "res_2",
+        "res_3",
+        "res_4",
+        "part_1",
+        "part_2",
+        "part_3"
+      ],
+      "settings": {
+        "eyebrow": "2getherbikes Ramp Support",
+        "title": "ПОДДРЪЖКА ЗА РАМПИТЕ.",
+        "back_text": "Назад към рампите",
+        "back_link": "/pages/ramps",
+        "res_eyebrow": "Всичко на едно място",
+        "res_title": "ИНСТРУКЦИИ, ГАРАНЦИЯ И ЧАСТИ.",
+        "parts_eyebrow": "Сменяеми консумативи",
+        "parts_title": "РЕЗЕРВНИ ЧАСТИ.",
+        "parts_text": "Поръчваш необходимото или изпращаш снимка, ако не си сигурен какво трябва да се подмени.",
+        "cta_eyebrow": "Искаш да видиш всичко на живо?",
+        "cta_title": "ТЕСТВАЙ BREEZE И STORM ПРЕД МАГАЗИНА ВЪВ ВАРНА.",
+        "cta1_text": "Запази тест",
+        "cta1_link": "/pages/contact",
+        "cta2_text": "Сравни моделите",
+        "cta2_link": "/pages/ramps#tg-ramps-lineup",
+        "tabs_enabled": true,
+        "tab_1_label": "Рампи",
+        "tab_1_link": "/pages/ramps#tg-ramps-lineup",
+        "tab_2_label": "Сравнение",
+        "tab_2_link": "/pages/ramps#tg-ramps-compare",
+        "tab_3_label": "Поддръжка",
+        "tab_3_link": "/pages/ramps-support",
+        "tabs_aria": "Навигация в страницата"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

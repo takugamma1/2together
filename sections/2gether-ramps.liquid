@@ -372,23 +372,7 @@
     </div>
   </section>
 
-  <!-- ═══ BOTTOM TAB STRIP ═══ -->
-  {% if st.tabs_enabled %}
-    <nav class="tg-ramps-tabs" data-ramps-tabs aria-label="{{ st.tabs_aria | default: 'Навигация в страницата' }}">
-      <div class="tg-ramps-tabs-pill">
-        <a href="#tg-ramps-top" class="tg-ramps-tabs-brand" aria-label="2gether"><span>2gether</span><em aria-hidden="true">//</em></a>
-        {%- assign tab_labels = st.tab_1_label | append: '|' | append: st.tab_2_label | append: '|' | append: st.tab_3_label | split: '|' -%}
-        {%- assign tab_links = st.tab_1_link | append: '|' | append: st.tab_2_link | append: '|' | append: st.tab_3_link | split: '|' -%}
-        {%- for label in tab_labels -%}
-          {%- assign href = tab_links[forloop.index0] -%}
-          {%- if label != blank and href != blank -%}
-            {%- unless forloop.first -%}<span class="tg-ramps-tabs-slash" aria-hidden="true">/</span>{%- endunless -%}
-            <a href="{{ href }}" class="tg-ramps-tab" data-ramps-tab{% if href contains '#' %} data-target="{{ href | split: '#' | last }}"{% endif %}>{{ label }}</a>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
-    </nav>
-  {% endif %}
+  {% render '2gether-ramps-tabs', settings: section.settings, hero_selector: '.tg-rp-hero' %}
 </div>
 
 <script>
@@ -440,26 +424,6 @@
     draw();
   }
 
-  /* ── Bottom tab strip ── */
-  const nav = document.querySelector('[data-ramps-tabs]');
-  if (nav) {
-    const tabs = [...nav.querySelectorAll('[data-ramps-tab][data-target]')];
-    const targets = tabs.map(t => document.getElementById(t.dataset.target)).filter(Boolean);
-    const hero = document.querySelector('.tg-rp-hero');
-    const onScroll = () => {
-      nav.classList.toggle('is-visible', !hero || hero.getBoundingClientRect().bottom < window.innerHeight * 0.6);
-      let current = null; const line = window.innerHeight * 0.45;
-      targets.forEach(el => { if (el.getBoundingClientRect().top <= line) current = el.id; });
-      tabs.forEach(t => { const on = t.dataset.target === current; t.classList.toggle('is-active', on); on ? t.setAttribute('aria-current', 'location') : t.removeAttribute('aria-current'); });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    onScroll();
-    tabs.forEach(t => t.addEventListener('click', (e) => {
-      const el = document.getElementById(t.dataset.target); if (!el) return;
-      e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', '#' + t.dataset.target);
-    }));
-  }
 })();
 </script>
 
@@ -559,7 +523,8 @@
     { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
     { "type": "text", "id": "tab_2_link", "label": "Tab 2 link", "default": "#tg-ramps-compare" },
     { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "text", "id": "tab_3_link", "label": "Tab 3 link", "default": "#tg-ramps-support" },
+    { "type": "text", "id": "tab_3_link", "label": "Tab 3 link", "default": "/pages/ramps-support" },
+    { "type": "url", "id": "tabs_brand_link", "label": "Brand chip link" },
     { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
   ],
   "blocks": [

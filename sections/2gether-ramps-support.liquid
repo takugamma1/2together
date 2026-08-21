@@ -1,0 +1,157 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-ramps.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-ramps-active');</script>
+
+{%- liquid
+  assign st = section.settings
+  assign resources = section.blocks | where: 'type', 'resource'
+  assign parts = section.blocks | where: 'type', 'part'
+-%}
+
+<div class="tg-ramps-page tg-rs-page" id="tg-ramps-top">
+
+  <!-- ═══ HEAD ═══ -->
+  <section class="tg-rs-head">
+    <div class="tg-rp-wrap tg-rp-head--split">
+      <div>
+        <span class="tg-eyebrow">{{ st.eyebrow }}</span>
+        <h1 class="tg-rp-h2 tg-rs-title">{{ st.title }}</h1>
+      </div>
+      {% if st.back_text != blank %}
+        <a href="{{ st.back_link | default: '/pages/ramps' }}" class="tg-rp-btn tg-rp-btn--ghost tg-rs-back">
+          <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 5H2M6 1L2 5l4 4"/></svg>{{ st.back_text }}
+        </a>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ═══ RESOURCES ═══ -->
+  {% if resources.size > 0 %}
+  <section id="tg-rs-resources" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.res_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.res_title }}</h2></header>
+      <div class="tg-rp-cards tg-rs-resources" style="--cols: 2">
+        {% for b in resources %}
+          {%- liquid
+            assign href = b.settings.link
+            if b.settings.file != blank
+              assign href = b.settings.file | file_url
+            endif
+          -%}
+          <article class="tg-rp-card" {{ b.shopify_attributes }}>
+            {% render '2gether-ramps-icon', name: b.settings.icon %}
+            <h3 class="tg-rp-h3">{{ b.settings.title }}</h3>
+            <p class="tg-rp-text">{{ b.settings.text }}</p>
+            {% if b.settings.cta_text != blank %}
+              <a href="{{ href | default: '#' }}" class="tg-rp-btn tg-rp-btn--ghost tg-rp-btn--sm"{% if b.settings.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ b.settings.cta_text }}</a>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ PARTS ═══ -->
+  {% if parts.size > 0 %}
+  <section id="tg-rs-parts" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head">
+        <span class="tg-eyebrow">{{ st.parts_eyebrow }}</span>
+        <h2 class="tg-rp-h2">{{ st.parts_title }}</h2>
+        {% if st.parts_text != blank %}<p class="tg-rp-text tg-rs-intro">{{ st.parts_text }}</p>{% endif %}
+      </header>
+      <div class="tg-rp-cards" style="--cols: {{ parts.size }}">
+        {% for b in parts %}
+          <article class="tg-rp-card" {{ b.shopify_attributes }}>
+            {% render '2gether-ramps-icon', name: b.settings.icon %}
+            <h3 class="tg-rp-h3">{{ b.settings.title }}</h3>
+            <p class="tg-rp-text">{{ b.settings.text }}</p>
+            {% if b.settings.cta_text != blank %}<a href="{{ b.settings.cta_link | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--{{ b.settings.cta_style | default: 'ghost' }} tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ CTA ═══ -->
+  <section class="tg-rp-section tg-rp-section--line tg-rp-cta">
+    <div class="tg-rp-wrap tg-rp-cta-inner">
+      <span class="tg-eyebrow tg-eyebrow--center">{{ st.cta_eyebrow }}</span>
+      <h2 class="tg-rp-h2">{{ st.cta_title }}</h2>
+      <div class="tg-rp-actions tg-rp-actions--center">
+        {% if st.cta1_text != blank %}<a href="{{ st.cta1_link | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.cta1_text }}</a>{% endif %}
+        {% if st.cta2_text != blank %}<a href="{{ st.cta2_link | default: '/pages/ramps#tg-ramps-lineup' }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.cta2_text }}</a>{% endif %}
+      </div>
+    </div>
+  </section>
+
+  {% render '2gether-ramps-tabs', settings: section.settings, hero_selector: '.tg-rs-head' %}
+</div>
+
+{% schema %}
+{
+  "name": "Ramp Support",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Head" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "2getherbikes Ramp Support" },
+    { "type": "text", "id": "title", "label": "Title", "default": "ПОДДРЪЖКА ЗА РАМПИТЕ." },
+    { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
+    { "type": "url", "id": "back_link", "label": "Back link" },
+
+    { "type": "header", "content": "Resources" },
+    { "type": "text", "id": "res_eyebrow", "label": "Eyebrow", "default": "Всичко на едно място" },
+    { "type": "text", "id": "res_title", "label": "Title", "default": "ИНСТРУКЦИИ, ГАРАНЦИЯ И ЧАСТИ." },
+
+    { "type": "header", "content": "Spare parts" },
+    { "type": "text", "id": "parts_eyebrow", "label": "Eyebrow", "default": "Сменяеми консумативи" },
+    { "type": "text", "id": "parts_title", "label": "Title", "default": "РЕЗЕРВНИ ЧАСТИ." },
+    { "type": "textarea", "id": "parts_text", "label": "Text", "default": "Поръчваш необходимото или изпращаш снимка, ако не си сигурен какво трябва да се подмени." },
+
+    { "type": "header", "content": "CTA" },
+    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Искаш да видиш всичко на живо?" },
+    { "type": "text", "id": "cta_title", "label": "Title", "default": "ТЕСТВАЙ BREEZE И STORM ПРЕД МАГАЗИНА ВЪВ ВАРНА." },
+    { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Запази тест" },
+    { "type": "text", "id": "cta1_link", "label": "Primary CTA link", "default": "/pages/contact" },
+    { "type": "text", "id": "cta2_text", "label": "Secondary CTA", "default": "Сравни моделите" },
+    { "type": "text", "id": "cta2_link", "label": "Secondary CTA link", "default": "/pages/ramps#tg-ramps-lineup" },
+
+    { "type": "header", "content": "Bottom tab strip" },
+    { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
+    { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
+    { "type": "text", "id": "tab_1_link", "label": "Tab 1 link", "default": "/pages/ramps#tg-ramps-lineup" },
+    { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
+    { "type": "text", "id": "tab_2_link", "label": "Tab 2 link", "default": "/pages/ramps#tg-ramps-compare" },
+    { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
+    { "type": "text", "id": "tab_3_link", "label": "Tab 3 link", "default": "/pages/ramps-support" },
+    { "type": "url", "id": "tabs_brand_link", "label": "Brand chip link" },
+    { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
+  ],
+  "blocks": [
+    { "type": "resource", "name": "Resource card", "limit": 6, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "book", "options": [
+        { "value": "book", "label": "Book" }, { "value": "video", "label": "Video" }, { "value": "shield", "label": "Shield" }, { "value": "care", "label": "Care" }, { "value": "wrench", "label": "Wrench" } ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "ИНСТРУКЦИИ ЗА УПОТРЕБА" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Настройване на четирите позиции, избор на терен, take-off и landing употреба." },
+      { "type": "text", "id": "cta_text", "label": "Button", "default": "Тук се отваря документът" },
+      { "type": "url", "id": "link", "label": "Link (page, video…)" },
+      { "type": "text", "id": "file", "label": "Or file name from Content → Files (e.g. manual.pdf)" },
+      { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": true } ] },
+    { "type": "part", "name": "Spare part card", "limit": 6, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "foot", "options": [
+        { "value": "foot", "label": "Rubber foot" }, { "value": "spring", "label": "Spring" }, { "value": "chat", "label": "Chat" }, { "value": "wrench", "label": "Wrench" } ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "ГУМЕНИ КРАЧЕТА" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Сменяем комплект при износване." },
+      { "type": "text", "id": "cta_text", "label": "Button", "default": "Изпрати запитване" },
+      { "type": "url", "id": "cta_link", "label": "Button link" },
+      { "type": "select", "id": "cta_style", "label": "Button style", "default": "ghost", "options": [ { "value": "ghost", "label": "Ghost" }, { "value": "primary", "label": "Primary" } ] } ] }
+  ],
+  "presets": [ { "name": "Ramp Support" } ]
+}
+{% endschema %}
