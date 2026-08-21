@@ -1,6 +1,9 @@
 /* === 2GETHER TIMELINE === */
 
 .tg-timeline {
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
   padding: var(--tg-tl-pt, 128px) 0 var(--tg-tl-pb, 128px);
   position: relative;
   overflow: hidden;
@@ -47,6 +50,7 @@
 .tg-tl-arrow svg { width: 18px; height: 18px; }
 
 /* --- Track --- */
+.tg-timeline *, .tg-timeline *::before, .tg-timeline *::after { box-sizing: border-box; }
 
 .tg-tl-track {
   position: relative;
@@ -67,7 +71,7 @@
   position: relative;
   display: flex;
   width: max-content;
-  padding: 0 calc(50vw - 140px);
+  padding: 0 calc(50% - 140px);
 }
 
 .tg-tl-line,
@@ -297,14 +301,31 @@
 }
 .tg-tl-progress i.is-active::after { transform: scaleX(1); }
 
-@media (max-width: 900px) {
-  .tg-timeline { padding: var(--tg-tl-pt-m, 96px) 0 var(--tg-tl-pb-m, 96px); }
-  .tg-tl-head { padding: 0 var(--tg-s5); flex-direction: column; align-items: flex-start; }
-  .tg-tl-title { font-size: clamp(34px, 10vw, 48px); }
-  .tg-tl-stage, .tg-tl-progress { margin-left: var(--tg-s5); margin-right: var(--tg-s5); }
-  .tg-tl-rail { padding: 0 calc(50vw - 110px); }
-  .tg-tl-node { width: 220px; }
+@media (max-width: 1024px) {
   .tg-tl-stage { grid-template-columns: 1fr; gap: var(--tg-s6); }
+  .tg-tl-stage-media { aspect-ratio: 16 / 9; }
+}
+
+@media (max-width: 768px) {
+  .tg-timeline { padding: var(--tg-tl-pt-m, 96px) 0 var(--tg-tl-pb-m, 96px); }
+  .tg-tl-head { padding: 0 var(--tg-s5); flex-direction: column; align-items: flex-start; gap: var(--tg-s5); margin-bottom: var(--tg-s6); }
+  .tg-tl-title { font-size: clamp(32px, 9vw, 48px); }
+  .tg-tl-arrows { align-self: flex-end; }
+  .tg-tl-stage, .tg-tl-progress { margin-left: var(--tg-s5); margin-right: var(--tg-s5); }
+  .tg-tl-rail { padding: 0 calc(50% - 100px); }
+  .tg-tl-node { width: 200px; }
+  .tg-tl-year { font-size: 24px; }
+  .tg-tl-caption { font-size: 12px; }
+  .tg-tl-copy h3 { font-size: 24px; }
+  .tg-tl-copy p, .tg-tl-copy .tg-tl-text { font-size: 15px; }
+  .tg-tl-stage-year { font-size: 48px; left: var(--tg-s4); bottom: var(--tg-s3); }
+}
+
+@media (max-width: 420px) {
+  .tg-tl-rail { padding: 0 calc(50% - 80px); }
+  .tg-tl-node { width: 160px; padding: 0 var(--tg-s2); }
+  .tg-tl-head, .tg-tl-stage, .tg-tl-progress { margin-left: var(--tg-s4); margin-right: var(--tg-s4); }
+  .tg-tl-head { padding: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
