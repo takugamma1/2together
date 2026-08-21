@@ -1,10 +1,8 @@
 {%- comment -%}
-  Resolves the three ramps-area page URLs without hard-coded handles.
+  Resolves the ramps-area page URLs without hard-coded handles.
   Params: ramps_handle, compare_handle, support_handle (page pickers; may be blank).
-  Usage: {% render '2gether-ramps-urls' ... %} cannot export variables, so this snippet is
-  included via {% include %}-free pattern: copy the liquid below? No — Shopify allows
-  variables to flow OUT of {% render %} only via captured output. We therefore output a
-  pipe-separated string and the caller splits it.
+  Outputs 'ramps|compare|support' — the caller captures and splits it.
+  Order: picker → common handles → page using the matching template → fallback.
 {%- endcomment -%}
 {%- liquid
   assign ramps_handles = 'ramps,portable-ramps,рампи,преносими-рампи' | split: ','
@@ -67,7 +65,7 @@
     assign ramps_url = '/pages/portable-ramps'
   endif
   if compare_url == blank
-    assign compare_url = '/pages/ramps-compare'
+    assign compare_url = ramps_url | append: '#tg-ramps-compare'
   endif
   if support_url == blank
     assign support_url = '/pages/ramps-support'
