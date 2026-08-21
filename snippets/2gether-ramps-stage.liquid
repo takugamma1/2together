@@ -1,0 +1,25 @@
+{%- comment -%} Ramp illustrator stage. Params: uid (unique id) {%- endcomment -%}
+<div class="tg-rp-pos-stage">
+  <svg class="tg-rp-ramp" viewBox="0 0 640 300" aria-hidden="true">
+    <line class="tg-rp-ground" x1="36" y1="236" x2="604" y2="236"/>
+    <rect class="tg-rp-foot" x="52" y="228" width="22" height="8" rx="2"/>
+    <g data-rp-deck transform="translate(60 232)">
+      <polygon class="tg-rp-deck-side" data-rp-deck-side points="0,0 440,0 440,12 0,12"/>
+      <polygon class="tg-rp-deck" data-rp-deck-shape points="0,0 0,-8 440,-8 440,0"/>
+      <line class="tg-rp-deck-edge" data-rp-deck-edge x1="0" y1="-8" x2="440" y2="-8"/>
+      <g class="tg-rp-deck-grip" data-rp-deck-grip></g>
+    </g>
+    <g data-rp-leg transform="translate(500 232)">
+      <line class="tg-rp-leg-line" data-rp-leg-line x1="0" y1="0" x2="0" y2="-1"/>
+      <rect class="tg-rp-foot" x="-12" y="-4" width="24" height="8" rx="2"/>
+    </g>
+    <g data-rp-dim transform="translate(560 232)">
+      <line class="tg-rp-dim-line" data-rp-dim-line x1="0" y1="0" x2="0" y2="-1"/>
+      <line class="tg-rp-dim-tick" x1="-8" y1="0" x2="8" y2="0"/>
+      <line class="tg-rp-dim-tick" data-rp-dim-top x1="-8" y1="-1" x2="8" y2="-1"/>
+      <text class="tg-rp-dim-text" data-rp-dim-text x="14" y="-1">0 cm</text>
+    </g>
+    <text class="tg-rp-ramp-caption" data-rp-caption x="36" y="278"></text>
+  </svg>
+  <p class="tg-rp-pos-readout" data-rp-readout aria-live="polite"></p>
+</div>
