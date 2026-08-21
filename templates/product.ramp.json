@@ -16,7 +16,7 @@
           "type": "feature",
           "settings": {
             "icon": "fold",
-            "text": "4 позиции · {positions}"
+            "text": "4 позиции · [positions]"
           }
         },
         "feat_2": {
@@ -51,28 +51,28 @@
           "type": "spec",
           "settings": {
             "label": "Дължина",
-            "value": "{length} cm"
+            "value": "[length] cm"
           }
         },
         "spec_2": {
           "type": "spec",
           "settings": {
             "label": "Широчина",
-            "value": "{width} cm"
+            "value": "[width] cm"
           }
         },
         "spec_3": {
           "type": "spec",
           "settings": {
             "label": "Тегло",
-            "value": "{weight}"
+            "value": "[weight]"
           }
         },
         "spec_4": {
           "type": "spec",
           "settings": {
             "label": "Позиции",
-            "value": "{positions}"
+            "value": "[positions]"
           }
         },
         "spec_5": {
