@@ -35,12 +35,77 @@
             "title": "ПРЕДАВАНЕ",
             "description": "Взимаш колелото готово за пътя."
           }
+        },
+        "milestone_1": {
+          "type": "milestone",
+          "settings": {
+            "year": "2021",
+            "caption": "Първият гараж",
+            "kicker": "2021 — Началото",
+            "heading": "Две колела, един гараж, нула план.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "2",
+            "stat_label": "основатели"
+          }
+        },
+        "milestone_2": {
+          "type": "milestone",
+          "settings": {
+            "year": "2022",
+            "caption": "Ражда се Sunday Club",
+            "kicker": "2022 — Sunday Club",
+            "heading": "Първото групово каране тръгва в 8:00.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "14",
+            "stat_label": "колоездачи на първия ден"
+          }
+        },
+        "milestone_3": {
+          "type": "milestone",
+          "settings": {
+            "year": "2023",
+            "caption": "Отваряме във Варна",
+            "kicker": "2023 — Магазинът",
+            "heading": "Истинска врата, истински сервиз.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "120м²",
+            "stat_label": "площ"
+          }
+        },
+        "milestone_4": {
+          "type": "milestone",
+          "settings": {
+            "year": "2024",
+            "caption": "Към планината",
+            "kicker": "2024 — Off-road",
+            "heading": "Заведохме клуба в планината.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "38",
+            "stat_label": "картирани маршрута"
+          }
+        },
+        "milestone_5": {
+          "type": "milestone",
+          "settings": {
+            "year": "2025",
+            "caption": "1000+ колоездачи",
+            "kicker": "2025 — Днес",
+            "heading": "Хиляда от нас — и продължаваме.",
+            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
+            "stat_value": "1000+",
+            "stat_label": "членове на общността"
+          }
         }
       },
       "block_order": [
         "step_1",
         "step_2",
-        "step_3"
+        "step_3",
+        "milestone_1",
+        "milestone_2",
+        "milestone_3",
+        "milestone_4",
+        "milestone_5"
       ],
       "settings": {
         "hero_image": "shopify://shop_images/DSP06248-2.jpg",
@@ -59,7 +124,12 @@
         "community_title": "SUNDAY CLUB",
         "community_desc": "",
         "community_cta_text": "КАРАЙ С НАС",
-        "community_cta_link": "shopify://pages/sunday-club"
+        "community_cta_link": "shopify://pages/sunday-club",
+        "label": "Нашата история",
+        "title_line1": "ПЕТ ГОДИНИ",
+        "title_line2": "НА ПЪТЯ",
+        "padding_top": 96,
+        "padding_bottom": 96
       }
     },
     "tg_timeline": {
