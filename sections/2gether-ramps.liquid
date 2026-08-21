@@ -469,7 +469,7 @@
       from = { ...cur }; t0 = performance.now(); raf = requestAnimationFrame(tick);
     };
     modelBtns.forEach(b => b.addEventListener('click', () => { model = b; setSeg(modelBtns, b); draw(); }));
-    posBtns.forEach(b => b.addEventListener('click', () => { pos = +b.dataset.pos; setSeg(posBtns, b); draw(); }));
+    posBtns.forEach(b => b.addEventListener('click', () => { pos = +b.dataset.rpPos; setSeg(posBtns, b); draw(); }));
     draw(false);
   }
 })();
