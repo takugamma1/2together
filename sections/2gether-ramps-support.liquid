@@ -54,7 +54,7 @@
             <h3 class="tg-rp-h3">{{ b.settings.title }}</h3>
             <p class="tg-rp-text">{{ b.settings.text }}</p>
             {% if b.settings.cta_text != blank %}
-              <a href="{{ href | default: '#' }}" class="tg-rp-btn tg-rp-btn--ghost tg-rp-btn--sm"{% if b.settings.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ b.settings.cta_text }}</a>
+              <a href="{{ href | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--ghost tg-rp-btn--sm"{% if b.settings.new_tab %} target="_blank" rel="noopener"{% endif %}>{{ b.settings.cta_text }}</a>
             {% endif %}
           </article>
         {% endfor %}
@@ -145,7 +145,7 @@
       { "type": "text", "id": "title", "label": "Title", "default": "ИНСТРУКЦИИ ЗА УПОТРЕБА" },
       { "type": "textarea", "id": "text", "label": "Text", "default": "Настройване на четирите позиции, избор на терен, take-off и landing употреба." },
       { "type": "text", "id": "cta_text", "label": "Button", "default": "Тук се отваря документът" },
-      { "type": "url", "id": "link", "label": "Link (page, video…)" },
+      { "type": "url", "id": "link", "label": "Link (page, video…)", "info": "Empty and no file = contact page" },
       { "type": "text", "id": "file", "label": "Or file name from Content → Files (e.g. manual.pdf)" },
       { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": true } ] },
     { "type": "part", "name": "Spare part card", "limit": 6, "settings": [

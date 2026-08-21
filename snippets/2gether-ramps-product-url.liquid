@@ -1,0 +1,27 @@
+{%- comment -%} Outputs the best URL for a ramp model. Params: product (object, may be blank), link (override), name (e.g. BREEZE), fallback {%- endcomment -%}
+{%- liquid
+  assign out = link
+  if out == blank and product != blank
+    assign out = product.url
+  endif
+  if out == blank and name != blank
+    assign h = name | downcase | strip | replace: ' + ', '-' | replace: ' ', '-'
+    if all_products[h] != empty
+      assign out = all_products[h].url
+    endif
+  endif
+  if out == blank and name != blank
+    for h in 'breeze-storm-set,breeze-storm,take-off-landing-set,ramp-set' | split: ','
+      if name contains '+' and all_products[h] != empty
+        assign out = all_products[h].url
+        break
+      endif
+    endfor
+  endif
+  if out == blank and collections['portable-ramps'] != empty
+    assign out = collections['portable-ramps'].url
+  endif
+  if out == blank
+    assign out = fallback
+  endif
+-%}{{ out }}

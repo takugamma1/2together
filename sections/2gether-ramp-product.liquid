@@ -180,9 +180,9 @@
     <div class="tg-rp-wrap tg-rp-split">
       <figure class="tg-rp-media">
         {% if st.action_image != blank %}{{ st.action_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% elsif product.media.size > 2 %}{{ product.media.last | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
-        {% if st.action_video_label != blank %}
-          {%- assign v_url = video_url | default: st.action_video_url -%}
-          <a class="tg-rp-play" href="{{ v_url | default: '#' }}" {% if v_url contains 'http' %}target="_blank" rel="noopener"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.action_video_label }}</a>
+        {%- assign v_url = video_url | default: st.action_video_url -%}
+        {% if st.action_video_label != blank and v_url != blank %}
+          <a class="tg-rp-play" href="{{ v_url }}" {% if v_url contains 'http' %}target="_blank" rel="noopener"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.action_video_label }}</a>
         {% endif %}
       </figure>
       <div class="tg-rp-split-copy">

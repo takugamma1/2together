@@ -37,7 +37,7 @@
         <h1 class="tg-rp-h1">{{ st.hero_title | newline_to_br }}</h1>
         <p class="tg-rp-lead">{{ st.hero_sub }}</p>
         <div class="tg-rp-actions">
-          {% if st.hero_cta1_text != blank %}<a href="{{ st.hero_cta1_link | default: '#tg-ramps-lineup' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.hero_cta1_text }}</a>{% endif %}
+          {% if st.hero_cta1_text != blank %}<a href="{{ st.hero_cta1_link | default: compare_url }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.hero_cta1_text }}</a>{% endif %}
           {% if st.hero_cta2_text != blank %}<a href="{{ st.hero_cta2_link | default: '#tg-ramps-transform' }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.hero_cta2_text }}</a>{% endif %}
         </div>
       </div>
@@ -80,15 +80,13 @@
             if p != blank
               assign price = p.price | money
             endif
-            assign url = b.settings.link
-            if url == blank and p != blank
-              assign url = p.url
-            endif
             assign img = b.settings.image
             if img == blank and p != blank
               assign img = p.featured_image
             endif
           -%}
+          {%- capture url -%}{% render '2gether-ramps-product-url', product: p, link: b.settings.link, name: b.settings.name, fallback: compare_url %}{%- endcapture -%}
+          {%- assign url = url | strip -%}
           <article class="tg-rp-model" style="--model: {{ b.settings.color | default: '#E8601C' }}" {{ b.shopify_attributes }}>
             <div class="tg-rp-model-media">
               {% if img != blank %}{{ img | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(max-width: 900px) 100vw, 50vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
@@ -111,7 +109,7 @@
                 <h4>{{ b.settings.choose_title }}</h4>
                 <p>{{ b.settings.choose_text }}</p>
               </div>
-              {% if b.settings.cta_text != blank %}<a href="{{ url | default: '#' }}" class="tg-rp-btn tg-rp-btn--primary tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
+              {% if b.settings.cta_text != blank %}<a href="{{ url }}" class="tg-rp-btn tg-rp-btn--primary tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
             </div>
           </article>
         {% endfor %}
@@ -136,6 +134,8 @@
           endif
         endif
       -%}
+      {%- capture b_url -%}{% render '2gether-ramps-product-url', product: bundle, link: b_url, name: 'BREEZE + STORM', fallback: compare_url %}{%- endcapture -%}
+      {%- assign b_url = b_url | strip -%}
       <div class="tg-rp-bundle">
         <div class="tg-rp-bundle-copy">
           <span class="tg-eyebrow">{{ st.bundle_eyebrow }}</span>
@@ -147,7 +147,7 @@
             {% if st.bundle_save != blank %}<span class="tg-rp-tag tg-rp-tag--flame">{{ st.bundle_save }}</span>{% endif %}
           </div>
         </div>
-        {% if st.bundle_cta != blank %}<a href="{{ b_url | default: '#' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.bundle_cta }}</a>{% endif %}
+        {% if st.bundle_cta != blank %}<a href="{{ b_url }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.bundle_cta }}</a>{% endif %}
       </div>
 
       {% if models.size > 0 %}
@@ -211,8 +211,8 @@
     <div class="tg-rp-wrap tg-rp-split">
       <figure class="tg-rp-media">
         {% if st.tf_image != blank %}{{ st.tf_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
-        {% if st.tf_video_label != blank %}
-          <a class="tg-rp-play" href="{{ st.tf_video_url | default: '#' }}" {% if st.tf_video_url contains 'http' %}target="_blank" rel="noopener"{% endif %}>
+        {% if st.tf_video_label != blank and st.tf_video_url != blank %}
+          <a class="tg-rp-play" href="{{ st.tf_video_url }}" {% if st.tf_video_url contains 'http' %}target="_blank" rel="noopener"{% endif %}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.tf_video_label }}
           </a>
         {% endif %}
@@ -291,8 +291,8 @@
     <div class="tg-rp-wrap tg-rp-split">
       <figure class="tg-rp-media">
         {% if st.story_image != blank %}{{ st.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
-        {% if st.story_video_label != blank %}
-          <a class="tg-rp-play" href="{{ st.story_video_url | default: '#' }}" {% if st.story_video_url contains 'http' %}target="_blank" rel="noopener"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.story_video_label }}</a>
+        {% if st.story_video_label != blank and st.story_video_url != blank %}
+          <a class="tg-rp-play" href="{{ st.story_video_url }}" {% if st.story_video_url contains 'http' %}target="_blank" rel="noopener"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.story_video_label }}</a>
         {% endif %}
       </figure>
       <div class="tg-rp-split-copy">
@@ -319,7 +319,7 @@
             {% render '2gether-ramps-icon', name: b.settings.icon %}
             <h3 class="tg-rp-h3">{{ b.settings.title }}</h3>
             <p class="tg-rp-text">{{ b.settings.text }}</p>
-            {% if b.settings.cta_text != blank %}<a href="{{ b.settings.cta_link | default: '#' }}" class="tg-rp-btn tg-rp-btn--{{ b.settings.cta_style | default: 'ghost' }} tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
+            {% if b.settings.cta_text != blank %}<a href="{{ b.settings.cta_link | default: support_url }}" class="tg-rp-btn tg-rp-btn--{{ b.settings.cta_style | default: 'ghost' }} tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
           </article>
         {% endfor %}
       </div>
@@ -350,7 +350,7 @@
       <span class="tg-eyebrow tg-eyebrow--center">{{ st.cta_eyebrow }}</span>
       <h2 class="tg-rp-h2">{{ st.cta_title }}</h2>
       <div class="tg-rp-actions tg-rp-actions--center">
-        {% if st.cta1_text != blank %}<a href="{{ st.cta1_link | default: '#tg-ramps-lineup' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.cta1_text }}</a>{% endif %}
+        {% if st.cta1_text != blank %}<a href="{{ st.cta1_link | default: compare_url }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.cta1_text }}</a>{% endif %}
         {% if st.cta2_text != blank %}<a href="{{ st.cta2_link | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.cta2_text }}</a>{% endif %}
       </div>
     </div>
@@ -371,7 +371,7 @@
     { "type": "textarea", "id": "hero_title", "label": "Title (line breaks allowed)", "default": "СЪЗДАЙ СПОТ.\nНАВСЯКЪДЕ." },
     { "type": "textarea", "id": "hero_sub", "label": "Subtitle", "default": "BREEZE и STORM се регулират в 4 позиции, сгъват се за 30 секунди и се носят на гръб." },
     { "type": "text", "id": "hero_cta1_text", "label": "Primary CTA", "default": "Сравни моделите" },
-    { "type": "text", "id": "hero_cta1_link", "label": "Primary CTA link", "default": "#tg-ramps-lineup" },
+    { "type": "text", "id": "hero_cta1_link", "label": "Primary CTA link", "info": "Empty = comparison page" },
     { "type": "text", "id": "hero_cta2_text", "label": "Secondary CTA", "default": "Виж ги в действие" },
     { "type": "text", "id": "hero_cta2_link", "label": "Secondary CTA link", "default": "#tg-ramps-transform" },
     { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
@@ -446,7 +446,7 @@
     { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Следващият спот е твой" },
     { "type": "text", "id": "cta_title", "label": "Title", "default": "ИЗБЕРИ РАМПАТА, КОЯТО ЩЕ ТРЪГНЕ С ТЕБ." },
     { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Сравни моделите" },
-    { "type": "text", "id": "cta1_link", "label": "Primary CTA link", "default": "#tg-ramps-lineup" },
+    { "type": "text", "id": "cta1_link", "label": "Primary CTA link", "info": "Empty = comparison page" },
     { "type": "text", "id": "cta2_text", "label": "Secondary CTA", "default": "Тествай във Варна" },
     { "type": "text", "id": "cta2_link", "label": "Secondary CTA link", "default": "/pages/contact" },
 
@@ -509,7 +509,7 @@
       { "type": "text", "id": "title", "label": "Title", "default": "2 ГОДИНИ ГАРАНЦИЯ" },
       { "type": "textarea", "id": "text", "label": "Text", "default": "Ясно описани производствени и конструктивни дефекти." },
       { "type": "text", "id": "cta_text", "label": "CTA", "default": "Условия" },
-      { "type": "url", "id": "cta_link", "label": "CTA link" },
+      { "type": "url", "id": "cta_link", "label": "CTA link", "info": "Empty = support page" },
       { "type": "select", "id": "cta_style", "label": "CTA style", "default": "ghost", "options": [ { "value": "ghost", "label": "Ghost" }, { "value": "primary", "label": "Primary" } ] } ] },
     { "type": "faq", "name": "FAQ", "settings": [
       { "type": "text", "id": "question", "label": "Question", "default": "Кой модел да избера?" },
