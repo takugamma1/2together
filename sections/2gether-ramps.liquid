@@ -19,6 +19,34 @@
   assign faqs = section.blocks | where: 'type', 'faq'
   assign bundle = st.bundle_product
 -%}
+{%- liquid
+  assign ramps_url = request.path
+  if st.support_page != blank and pages[st.support_page] != empty
+    assign support_url = pages[st.support_page].url
+  endif
+  if support_url == blank
+    assign support_handles = 'ramps-support,ramp-support,поддръжка-рампи,поддръжка-за-рампите' | split: ','
+    for h in support_handles
+      if pages[h] != empty
+        assign support_url = pages[h].url
+        break
+      endif
+    endfor
+  endif
+  if support_url == blank
+    for p in pages
+      if p.template_suffix == 'ramps-support'
+        assign support_url = p.url
+        break
+      endif
+    endfor
+  endif
+  if support_url == blank
+    assign support_url = '/pages/ramps-support'
+  endif
+  assign href_1 = ramps_url | append: '#' | append: st.tab_1_anchor | default: 'tg-ramps-lineup'
+  assign href_2 = ramps_url | append: '#' | append: st.tab_2_anchor | default: 'tg-ramps-compare'
+-%}
 
 <div class="tg-ramps-page" id="tg-ramps-top">
 
@@ -372,7 +400,7 @@
     </div>
   </section>
 
-  {% render '2gether-ramps-tabs', settings: section.settings, hero_selector: '.tg-rp-hero' %}
+  {% render '2gether-ramps-tabs', settings: section.settings, href_1: href_1, href_2: href_2, href_3: support_url, brand_href: '/', hero_selector: '.tg-rp-hero' %}
 </div>
 
 <script>
@@ -519,12 +547,11 @@
     { "type": "header", "content": "Bottom tab strip" },
     { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
     { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
-    { "type": "text", "id": "tab_1_link", "label": "Tab 1 link", "default": "#tg-ramps-lineup" },
+    { "type": "text", "id": "tab_1_anchor", "label": "Tab 1 anchor on this page", "default": "tg-ramps-lineup" },
     { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "text", "id": "tab_2_link", "label": "Tab 2 link", "default": "#tg-ramps-compare" },
+    { "type": "text", "id": "tab_2_anchor", "label": "Tab 2 anchor on this page", "default": "tg-ramps-compare" },
     { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "text", "id": "tab_3_link", "label": "Tab 3 link", "default": "/pages/ramps-support" },
-    { "type": "url", "id": "tabs_brand_link", "label": "Brand chip link" },
+    { "type": "page", "id": "support_page", "label": "Tab 3 → Support page", "info": "Pick the page that uses the ramps-support template. If empty, the theme looks for common handles automatically." },
     { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
   ],
   "blocks": [

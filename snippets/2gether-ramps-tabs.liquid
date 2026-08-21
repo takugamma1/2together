@@ -1,10 +1,11 @@
-{%- comment -%} Floating bottom tab strip shared by the Ramps + Ramp Support pages. Params: settings (section.settings with tab_*), hero_selector {%- endcomment -%}
+{%- comment -%} Floating bottom tab strip shared by the Ramps + Ramp Support pages.
+    Params: settings (tabs_enabled, tab_*_label, tabs_aria), href_1/2/3 (resolved URLs), brand_href, hero_selector {%- endcomment -%}
 {%- if settings.tabs_enabled -%}
+{%- assign tab_labels = settings.tab_1_label | append: '|' | append: settings.tab_2_label | append: '|' | append: settings.tab_3_label | split: '|' -%}
+{%- assign tab_links = href_1 | append: '|' | append: href_2 | append: '|' | append: href_3 | split: '|' -%}
 <nav class="tg-ramps-tabs" data-ramps-tabs data-hero="{{ hero_selector | default: '.tg-rp-hero' }}" aria-label="{{ settings.tabs_aria | default: 'Навигация в страницата' }}">
   <div class="tg-ramps-tabs-pill">
-    <a href="{{ settings.tabs_brand_link | default: '/pages/ramps' }}" class="tg-ramps-tabs-brand" aria-label="2gether"><span>2gether</span><em aria-hidden="true">//</em></a>
-    {%- assign tab_labels = settings.tab_1_label | append: '|' | append: settings.tab_2_label | append: '|' | append: settings.tab_3_label | split: '|' -%}
-    {%- assign tab_links = settings.tab_1_link | append: '|' | append: settings.tab_2_link | append: '|' | append: settings.tab_3_link | split: '|' -%}
+    <a href="{{ brand_href | default: '/' }}" class="tg-ramps-tabs-brand" aria-label="2gether"><span>2gether</span><em aria-hidden="true">//</em></a>
     {%- for label in tab_labels -%}
       {%- assign href = tab_links[forloop.index0] -%}
       {%- if label != blank and href != blank -%}

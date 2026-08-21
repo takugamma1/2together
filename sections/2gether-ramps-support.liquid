@@ -11,6 +11,34 @@
   assign resources = section.blocks | where: 'type', 'resource'
   assign parts = section.blocks | where: 'type', 'part'
 -%}
+{%- liquid
+  assign ramps_url = ''
+  if st.ramps_page != blank and pages[st.ramps_page] != empty
+    assign ramps_url = pages[st.ramps_page].url
+  endif
+  if ramps_url == blank
+    assign ramps_handles = 'ramps,portable-ramps,рампи,преносими-рампи' | split: ','
+    for h in ramps_handles
+      if pages[h] != empty
+        assign ramps_url = pages[h].url
+        break
+      endif
+    endfor
+  endif
+  if ramps_url == blank
+    for p in pages
+      if p.template_suffix == 'ramps'
+        assign ramps_url = p.url
+        break
+      endif
+    endfor
+  endif
+  if ramps_url == blank
+    assign ramps_url = '/pages/portable-ramps'
+  endif
+  assign lineup_url = ramps_url | append: '#tg-ramps-lineup'
+  assign compare_url = ramps_url | append: '#tg-ramps-compare'
+-%}
 
 <div class="tg-ramps-page tg-rs-page" id="tg-ramps-top">
 
@@ -22,7 +50,7 @@
         <h1 class="tg-rp-h2 tg-rs-title">{{ st.title }}</h1>
       </div>
       {% if st.back_text != blank %}
-        <a href="{{ st.back_link | default: '/pages/ramps' }}" class="tg-rp-btn tg-rp-btn--ghost tg-rs-back">
+        <a href="{{ st.back_link | default: ramps_url }}" class="tg-rp-btn tg-rp-btn--ghost tg-rs-back">
           <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 5H2M6 1L2 5l4 4"/></svg>{{ st.back_text }}
         </a>
       {% endif %}
@@ -86,12 +114,12 @@
       <h2 class="tg-rp-h2">{{ st.cta_title }}</h2>
       <div class="tg-rp-actions tg-rp-actions--center">
         {% if st.cta1_text != blank %}<a href="{{ st.cta1_link | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.cta1_text }}</a>{% endif %}
-        {% if st.cta2_text != blank %}<a href="{{ st.cta2_link | default: '/pages/ramps#tg-ramps-lineup' }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.cta2_text }}</a>{% endif %}
+        {% if st.cta2_text != blank %}<a href="{{ st.cta2_link | default: lineup_url }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.cta2_text }}</a>{% endif %}
       </div>
     </div>
   </section>
 
-  {% render '2gether-ramps-tabs', settings: section.settings, hero_selector: '.tg-rs-head' %}
+  {% render '2gether-ramps-tabs', settings: section.settings, href_1: lineup_url, href_2: compare_url, href_3: request.path, brand_href: '/', hero_selector: '.tg-rs-head' %}
 </div>
 
 {% schema %}
@@ -102,8 +130,9 @@
     { "type": "header", "content": "Head" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "2getherbikes Ramp Support" },
     { "type": "text", "id": "title", "label": "Title", "default": "ПОДДРЪЖКА ЗА РАМПИТЕ." },
+    { "type": "page", "id": "ramps_page", "label": "Ramps page", "info": "Used by the back button, the tabs and the CTA. If empty, the theme finds the page that uses the ramps template." },
     { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
-    { "type": "url", "id": "back_link", "label": "Back link" },
+    { "type": "url", "id": "back_link", "label": "Back link override" },
 
     { "type": "header", "content": "Resources" },
     { "type": "text", "id": "res_eyebrow", "label": "Eyebrow", "default": "Всичко на едно място" },
@@ -120,17 +149,13 @@
     { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Запази тест" },
     { "type": "text", "id": "cta1_link", "label": "Primary CTA link", "default": "/pages/contact" },
     { "type": "text", "id": "cta2_text", "label": "Secondary CTA", "default": "Сравни моделите" },
-    { "type": "text", "id": "cta2_link", "label": "Secondary CTA link", "default": "/pages/ramps#tg-ramps-lineup" },
+    { "type": "text", "id": "cta2_link", "label": "Secondary CTA link override" },
 
     { "type": "header", "content": "Bottom tab strip" },
     { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
     { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
-    { "type": "text", "id": "tab_1_link", "label": "Tab 1 link", "default": "/pages/ramps#tg-ramps-lineup" },
     { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "text", "id": "tab_2_link", "label": "Tab 2 link", "default": "/pages/ramps#tg-ramps-compare" },
     { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "text", "id": "tab_3_link", "label": "Tab 3 link", "default": "/pages/ramps-support" },
-    { "type": "url", "id": "tabs_brand_link", "label": "Brand chip link" },
     { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
   ],
   "blocks": [
