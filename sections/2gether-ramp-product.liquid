@@ -1,0 +1,378 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-ramps.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+<script>document.body.classList.add('tg-ramps-active');</script>
+
+{%- liquid
+  assign st = section.settings
+  assign features = section.blocks | where: 'type', 'feature'
+  assign specs = section.blocks | where: 'type', 'spec'
+  assign kit = section.blocks | where: 'type', 'kit'
+  assign uses = section.blocks | where: 'type', 'use'
+  assign supports = section.blocks | where: 'type', 'support'
+  assign faqs = section.blocks | where: 'type', 'faq'
+
+  comment
+    Per-model data travels on product tags:
+    color:#2F6FD6  colorname:Син  length:170  width:58  weight:12.5  heights:53,57,60,62  other:breeze  blurb:...  video:https://...
+  endcomment
+  assign model_color = st.default_color
+  assign color_name = ''
+  assign length = ''
+  assign width = ''
+  assign weight = ''
+  assign heights = '29,32,35,38'
+  assign other_handle = ''
+  assign blurb = ''
+  assign video_url = ''
+  for tag in product.tags
+    if tag contains 'color:'
+      assign model_color = tag | remove_first: 'color:' | strip
+    elsif tag contains 'colorname:'
+      assign color_name = tag | remove_first: 'colorname:' | strip
+    elsif tag contains 'length:'
+      assign length = tag | remove_first: 'length:' | strip
+    elsif tag contains 'width:'
+      assign width = tag | remove_first: 'width:' | strip
+    elsif tag contains 'weight:'
+      assign weight = tag | remove_first: 'weight:' | strip
+    elsif tag contains 'heights:'
+      assign heights = tag | remove_first: 'heights:' | strip
+    elsif tag contains 'other:'
+      assign other_handle = tag | remove_first: 'other:' | strip
+    elsif tag contains 'blurb:'
+      assign blurb = tag | remove_first: 'blurb:' | strip
+    elsif tag contains 'video:'
+      assign video_url = tag | remove_first: 'video:' | strip
+    endif
+  endfor
+  assign heights_arr = heights | split: ','
+  assign positions_label = heights_arr | join: ' / ' | append: ' cm'
+  assign range_label = heights_arr.first | append: '–' | append: heights_arr.last | append: ' cm'
+  assign name = product.title
+  assign other = all_products[other_handle]
+  assign variant = product.selected_or_first_available_variant
+-%}
+{%- capture rp_urls -%}{% render '2gether-ramps-urls', ramps_handle: st.ramps_page, compare_handle: st.compare_page, support_handle: st.support_page %}{%- endcapture -%}
+{%- liquid
+  assign rp_urls = rp_urls | strip | split: '|'
+  assign ramps_url = rp_urls[0]
+  assign compare_url = rp_urls[1]
+  assign support_url = rp_urls[2]
+  assign compare_href = compare_url
+  if other != blank and st.compare_to_product
+    assign compare_href = other.url
+  endif
+-%}
+
+<div class="tg-ramps-page tg-pp" style="--model: {{ model_color }}">
+
+  <!-- ═══ 01 PRODUCT ═══ -->
+  <section class="tg-pp-hero">
+    <div class="tg-rp-wrap tg-pp-grid">
+      <div class="tg-pp-gallery" data-pp-gallery>
+        <div class="tg-rp-media tg-pp-main">
+          {% if product.featured_media != blank %}
+            {{ product.featured_media | image_url: width: 1600 | image_tag: loading: 'eager', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover', data-pp-main: '' }}
+          {% else %}
+            <div class="tg-rp-placeholder"></div>
+          {% endif %}
+        </div>
+        {% if product.media.size > 1 %}
+          <div class="tg-pp-thumbs" role="list">
+            {% for m in product.media %}
+              {% if m.media_type == 'image' %}
+                <button type="button" class="tg-pp-thumb{% if forloop.first %} is-active{% endif %}" data-pp-thumb="{{ m | image_url: width: 1600 }}" aria-label="{{ m.alt | default: name | escape }}">
+                  {{ m | image_url: width: 400 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}
+                </button>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <aside class="tg-pp-card">
+        {% if color_name != blank %}<span class="tg-rp-tag tg-pp-color">{{ st.color_prefix }} · {{ color_name }}</span>{% endif %}
+        <h1 class="tg-rp-h1 tg-pp-title">{{ name }}</h1>
+        <div class="tg-rp-text tg-pp-desc">{{ product.description }}</div>
+
+        <p class="tg-pp-price"><span data-pp-price>{{ variant.price | money }}</span>{% if st.vat_suffix != blank %} <small>{{ st.vat_suffix }}</small>{% endif %}</p>
+        {% if st.shipping_note != blank %}<p class="tg-pp-note">{{ st.shipping_note }}</p>{% endif %}
+
+        {% if st.stock_title != blank %}
+          <div class="tg-pp-stock"><i aria-hidden="true"></i><div><strong>{{ st.stock_title }}</strong><p>{{ st.stock_text }}</p></div></div>
+        {% endif %}
+
+        {% if features.size > 0 %}
+          <ul class="tg-pp-features">
+            {% for b in features %}
+              <li {{ b.shopify_attributes }}>{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.text | replace: '{positions}', positions_label | replace: '{range}', range_label | replace: '{name}', name | replace: '{length}', length | replace: '{weight}', weight }}</span></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        {%- form 'product', product, id: 'tg-pp-form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" value="{{ variant.id }}" data-pp-variant>
+          <button type="submit" name="add" class="tg-rp-btn tg-rp-btn--primary tg-pp-add" data-pp-add {% unless variant.available and st.allow_sold_out == false %}{% if variant.available == false and st.allow_sold_out == false %}disabled{% endif %}{% endunless %}>
+            {% if variant.available or st.allow_sold_out %}{{ st.add_text }}{% else %}{{ st.sold_out_text }}{% endif %}
+          </button>
+        {%- endform -%}
+        {% if st.test_text != blank %}<a href="{{ st.test_link | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--ghost tg-pp-test">{{ st.test_text }}</a>{% endif %}
+        {% if st.compare_text != blank %}<a href="{{ compare_href }}" class="tg-pp-compare">{{ st.compare_text }}</a>{% endif %}
+      </aside>
+    </div>
+  </section>
+
+  <!-- ═══ 02 SPECS + KIT ═══ -->
+  <section class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-pp-two">
+      <div>
+        <span class="tg-eyebrow">{{ st.spec_eyebrow }}</span>
+        <h2 class="tg-rp-h2 tg-rp-h2--sm">{{ st.spec_title | replace: '{name}', name }}</h2>
+        {% if specs.size > 0 %}
+          <dl class="tg-pp-specs">
+            {% for b in specs %}
+              {%- assign v = b.settings.value | replace: '{positions}', positions_label | replace: '{range}', range_label | replace: '{length}', length | replace: '{width}', width | replace: '{weight}', weight | replace: '{name}', name -%}
+              {% if v != blank %}<div {{ b.shopify_attributes }}><dt>{{ b.settings.label }}</dt><dd>{{ v }}</dd></div>{% endif %}
+            {% endfor %}
+          </dl>
+        {% endif %}
+      </div>
+      <div>
+        <span class="tg-eyebrow">{{ st.kit_eyebrow }}</span>
+        <h2 class="tg-rp-h2 tg-rp-h2--sm">{{ st.kit_title }}</h2>
+        {% if kit.size > 0 %}
+          <ul class="tg-pp-kit">
+            {% for b in kit %}<li {{ b.shopify_attributes }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>{{ b.settings.label }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        {% if st.kit_note != blank %}<p class="tg-rp-text tg-pp-kit-note">{{ st.kit_note }}</p>{% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 03 POSITIONS ═══ -->
+  <section class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-pos-grid" data-rp-positions data-pos-word="{{ st.pos_word | default: 'позиция' | escape }}">
+      <div class="tg-rp-pos-copy">
+        <span class="tg-eyebrow">{{ st.pos_eyebrow | replace: '{name}', name }}</span>
+        <h2 class="tg-rp-h2">{{ st.pos_title }}</h2>
+        <p class="tg-rp-text">{{ st.pos_text }}</p>
+        <div class="tg-rp-pos-control">
+          <div class="tg-rp-seg tg-rp-seg--num" role="tablist" aria-label="{{ st.pos_word | default: 'позиция' | escape }}">
+            <button type="button" class="tg-rp-seg-btn is-active" hidden data-rp-model data-name="{{ name | escape }}" data-color="{{ model_color }}" data-length="{{ length | default: 130 }}" data-heights="{{ heights | escape }}">{{ name }}</button>
+            {% for h in heights_arr %}
+              <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-pos="{{ forloop.index0 }}">{{ forloop.index }}</button>
+            {% endfor %}
+          </div>
+        </div>
+        {% if st.pos_note != blank %}<p class="tg-rp-text tg-pp-pos-note">{{ st.pos_note }}</p>{% endif %}
+      </div>
+      {% render '2gether-ramps-stage', uid: section.id %}
+    </div>
+  </section>
+
+  <!-- ═══ 04 IN ACTION ═══ -->
+  <section class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-split">
+      <figure class="tg-rp-media">
+        {% if st.action_image != blank %}{{ st.action_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% elsif product.media.size > 2 %}{{ product.media.last | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
+        {% if st.action_video_label != blank %}
+          {%- assign v_url = video_url | default: st.action_video_url -%}
+          <a class="tg-rp-play" href="{{ v_url | default: '#' }}" {% if v_url contains 'http' %}target="_blank" rel="noopener"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.action_video_label }}</a>
+        {% endif %}
+      </figure>
+      <div class="tg-rp-split-copy">
+        <span class="tg-eyebrow">{{ st.action_eyebrow }}</span>
+        <h2 class="tg-rp-h2">{{ st.action_title | replace: '{name}', name }}</h2>
+        <p class="tg-rp-text">{{ blurb | default: st.action_text | replace: '{range}', range_label | replace: '{name}', name }}</p>
+        {% if uses.size > 0 %}
+          <div class="tg-rp-cols" style="--cols: {{ uses.size }}">
+            {% for b in uses %}<div {{ b.shopify_attributes }}><h3>{{ b.settings.title }}</h3><p>{{ b.settings.text }}</p></div>{% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 SUPPORT ═══ -->
+  {% if supports.size > 0 %}
+  <section class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head tg-rp-head--split">
+        <div><span class="tg-eyebrow">{{ st.sup_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.sup_title }}</h2></div>
+        {% if st.sup_cta != blank %}<a href="{{ support_url }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.sup_cta }}</a>{% endif %}
+      </header>
+      <div class="tg-rp-cards" style="--cols: {{ supports.size }}">
+        {% for b in supports %}
+          {%- liquid
+            assign href = b.settings.cta_link
+            if b.settings.file != blank
+              assign href = b.settings.file | file_url
+            endif
+            if href == blank
+              assign href = support_url
+            endif
+          -%}
+          <article class="tg-rp-card" {{ b.shopify_attributes }}>
+            {% render '2gether-ramps-icon', name: b.settings.icon %}
+            <h3 class="tg-rp-h3">{{ b.settings.title }}</h3>
+            <p class="tg-rp-text">{{ b.settings.text }}</p>
+            {% if b.settings.cta_text != blank %}<a href="{{ href }}" class="tg-rp-btn tg-rp-btn--ghost tg-rp-btn--sm">{{ b.settings.cta_text }}</a>{% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ 06 FAQ ═══ -->
+  {% if faqs.size > 0 %}
+  <section class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-wrap--narrow">
+      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.faq_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.faq_title }}</h2></header>
+      <div class="tg-rp-faq">
+        {% for b in faqs %}
+          <details class="tg-rp-faq-item" {% if forloop.first %}open{% endif %} {{ b.shopify_attributes }}>
+            <summary><span>{{ b.settings.question }}</span><i aria-hidden="true"></i></summary>
+            <div class="tg-rp-faq-a">{{ b.settings.answer }}</div>
+          </details>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ═══ 07 CTA ═══ -->
+  <section class="tg-rp-section tg-rp-section--line tg-rp-cta">
+    <div class="tg-rp-wrap tg-rp-cta-inner">
+      <span class="tg-eyebrow tg-eyebrow--center">{{ st.cta_eyebrow }}</span>
+      <h2 class="tg-rp-h2">{{ st.cta_title }}</h2>
+      <div class="tg-rp-actions tg-rp-actions--center">
+        {% if st.cta1_text != blank %}<a href="{{ st.cta1_link | default: '/pages/contact' }}" class="tg-rp-btn tg-rp-btn--primary">{{ st.cta1_text }}</a>{% endif %}
+        {% if st.cta2_text != blank %}<a href="{{ compare_url }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.cta2_text }}</a>{% endif %}
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="{{ '2gether-ramps-positions.js' | asset_url }}" defer></script>
+<script>
+(() => {
+  // gallery
+  const g = document.querySelector('[data-pp-gallery]');
+  if (g) {
+    const main = g.querySelector('[data-pp-main]');
+    g.querySelectorAll('[data-pp-thumb]').forEach(t => t.addEventListener('click', () => {
+      if (!main) return;
+      g.querySelectorAll('[data-pp-thumb]').forEach(x => x.classList.toggle('is-active', x === t));
+      main.style.opacity = 0;
+      const img = new Image(); img.onload = () => { main.src = t.dataset.ppThumb; main.removeAttribute('srcset'); main.style.opacity = 1; }; img.src = t.dataset.ppThumb;
+    }));
+  }
+  // add to cart (AJAX + open the theme's cart drawer)
+  const form = document.getElementById('tg-pp-form');
+  if (form) form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = form.querySelector('[data-pp-variant]').value, btn = form.querySelector('[data-pp-add]');
+    if (!id) return; btn.disabled = true;
+    fetch('/cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ id, quantity: 1 }) })
+      .then(r => r.json())
+      .then(() => { document.dispatchEvent(new CustomEvent('cart:refresh')); document.dispatchEvent(new CustomEvent('cart:open')); })
+      .catch(() => { window.location = '/cart'; })
+      .finally(() => { btn.disabled = false; });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Ramp product",
+  "tag": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Per-model values come from product tags: color:#2F6FD6 · colorname:Син · length:170 · width:58 · weight:12.5 kg · heights:53,57,60,62 · other:breeze · blurb:… · video:https://… — text fields below may use {name} {positions} {range} {length} {width} {weight}." },
+    { "type": "header", "content": "Info card" },
+    { "type": "color", "id": "default_color", "label": "Fallback model colour", "default": "#E8601C" },
+    { "type": "text", "id": "color_prefix", "label": "Colour tag prefix", "default": "Фиксиран цвят" },
+    { "type": "text", "id": "vat_suffix", "label": "Price suffix", "default": "с ДДС" },
+    { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Доставката се изчислява отделно." },
+    { "type": "text", "id": "stock_title", "label": "Availability title", "default": "ОГРАНИЧЕНА НАЛИЧНОСТ" },
+    { "type": "textarea", "id": "stock_text", "label": "Availability text", "default": "След изчерпване приемаме поръчки и потвърждаваме лично срок от 5–10 работни дни." },
+    { "type": "text", "id": "add_text", "label": "Add to cart", "default": "Добави в количката" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold out", "default": "Изчерпано" },
+    { "type": "checkbox", "id": "allow_sold_out", "label": "Keep the button active when sold out (pre-orders)", "default": true },
+    { "type": "text", "id": "test_text", "label": "Test button", "default": "Запази тест във Варна" },
+    { "type": "url", "id": "test_link", "label": "Test link" },
+    { "type": "text", "id": "compare_text", "label": "Compare link", "default": "Сравни с другия модел" },
+    { "type": "checkbox", "id": "compare_to_product", "label": "Compare link opens the other model's product page (else the comparison page)", "default": false },
+
+    { "type": "header", "content": "Specs + kit" },
+    { "type": "text", "id": "spec_eyebrow", "label": "Eyebrow", "default": "Технически данни" },
+    { "type": "text", "id": "spec_title", "label": "Title", "default": "{name} В ДЕТАЙЛ." },
+    { "type": "text", "id": "kit_eyebrow", "label": "Kit eyebrow", "default": "В комплекта" },
+    { "type": "text", "id": "kit_title", "label": "Kit title", "default": "ГОТОВА ЗА ПЪРВИЯ СПОТ." },
+    { "type": "textarea", "id": "kit_note", "label": "Kit note", "default": "Подплатите за презрамките и транспортната чанта се предлагат отделно, когато бъдат налични." },
+
+    { "type": "header", "content": "Positions" },
+    { "type": "text", "id": "pos_eyebrow", "label": "Eyebrow", "default": "Настрой {name}" },
+    { "type": "text", "id": "pos_title", "label": "Title", "default": "4 ПОЗИЦИИ. 4 РАЗЛИЧНИ ЪГЪЛА." },
+    { "type": "textarea", "id": "pos_text", "label": "Text", "default": "Преместваш предните крака между четирите фиксирани отвора. С едно действие променяш височината и ъгъла на изстрелване." },
+    { "type": "textarea", "id": "pos_note", "label": "Note", "default": "Дистанцията на полета зависи от скоростта, велосипеда и техниката на ездача." },
+    { "type": "text", "id": "pos_word", "label": "Word for 'position'", "default": "позиция" },
+
+    { "type": "header", "content": "In action" },
+    { "type": "image_picker", "id": "action_image", "label": "Image (else last product photo)" },
+    { "type": "text", "id": "action_video_label", "label": "Play label", "default": "Виж скокове с този модел" },
+    { "type": "url", "id": "action_video_url", "label": "Video link (fallback; tag video: wins)" },
+    { "type": "text", "id": "action_eyebrow", "label": "Eyebrow", "default": "В реални условия" },
+    { "type": "text", "id": "action_title", "label": "Title", "default": "ВИЖ {name} В ДЕЙСТВИЕ." },
+    { "type": "textarea", "id": "action_text", "label": "Text (fallback; tag blurb: wins)", "default": "Четири настройки на кикъра от {range}." },
+
+    { "type": "header", "content": "Support" },
+    { "type": "text", "id": "sup_eyebrow", "label": "Eyebrow", "default": "Преди първия скок" },
+    { "type": "text", "id": "sup_title", "label": "Title", "default": "ВСИЧКО, КОЕТО ТРЯБВА ДА ЗНАЕШ." },
+    { "type": "text", "id": "sup_cta", "label": "Button → support page", "default": "Отвори цялата поддръжка" },
+
+    { "type": "header", "content": "FAQ" },
+    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Употреба и грижа" },
+    { "type": "text", "id": "faq_title", "label": "Title", "default": "ВАЖНАТА ИНФОРМАЦИЯ БЕЗ ДРЕБЕН ШРИФТ." },
+
+    { "type": "header", "content": "CTA" },
+    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Не си сигурен?" },
+    { "type": "text", "id": "cta_title", "label": "Title", "default": "ЕЛА И ТЕСТВАЙ И ДВАТА МОДЕЛА ВЪВ ВАРНА." },
+    { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Запази тест" },
+    { "type": "url", "id": "cta1_link", "label": "Primary CTA link" },
+    { "type": "text", "id": "cta2_text", "label": "Secondary CTA → comparison page", "default": "Сравни моделите" },
+
+    { "type": "header", "content": "Pages" },
+    { "type": "page", "id": "ramps_page", "label": "Ramps page" },
+    { "type": "page", "id": "compare_page", "label": "Comparison page" },
+    { "type": "page", "id": "support_page", "label": "Support page" }
+  ],
+  "blocks": [
+    { "type": "feature", "name": "Info row", "limit": 8, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "fold", "options": [ { "value": "fold", "label": "Positions" }, { "value": "clock", "label": "Clock" }, { "value": "weight", "label": "Weight" }, { "value": "shield", "label": "Shield" }, { "value": "pin", "label": "Pin" } ] },
+      { "type": "text", "id": "text", "label": "Text", "default": "4 позиции · {positions}" } ] },
+    { "type": "spec", "name": "Spec row", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Дължина" },
+      { "type": "text", "id": "value", "label": "Value", "default": "{length} cm" } ] },
+    { "type": "kit", "name": "Kit item", "limit": 8, "settings": [ { "type": "text", "id": "label", "label": "Item", "default": "Рампа" } ] },
+    { "type": "use", "name": "Bike type", "limit": 4, "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "MTB И DIRT JUMP" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "DH, Enduro, XC и Dirt Jump велосипеди." } ] },
+    { "type": "support", "name": "Support card", "limit": 4, "settings": [
+      { "type": "select", "id": "icon", "label": "Icon", "default": "book", "options": [ { "value": "book", "label": "Book" }, { "value": "video", "label": "Video" }, { "value": "shield", "label": "Shield" }, { "value": "wrench", "label": "Wrench" }, { "value": "care", "label": "Care" } ] },
+      { "type": "text", "id": "title", "label": "Title", "default": "ИНСТРУКЦИИ" },
+      { "type": "textarea", "id": "text", "label": "Text", "default": "Настройване, позициониране и безопасна употреба." },
+      { "type": "text", "id": "cta_text", "label": "Button", "default": "Отвори" },
+      { "type": "url", "id": "cta_link", "label": "Link (else support page)" },
+      { "type": "text", "id": "file", "label": "Or file name from Content → Files" } ] },
+    { "type": "faq", "name": "FAQ", "settings": [
+      { "type": "text", "id": "question", "label": "Question", "default": "Може ли рампата да се използва при мокра повърхност?" },
+      { "type": "textarea", "id": "answer", "label": "Answer", "default": "Да. Специалното покритие запазва сцеплението. След употреба рампата трябва да бъде подсушена и съхранявана на сухо." } ] }
+  ]
+}
+{% endschema %}

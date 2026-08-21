@@ -1,0 +1,285 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "2gether-ramp-product",
+      "blocks": {
+        "feat_1": {
+          "type": "feature",
+          "settings": {
+            "icon": "fold",
+            "text": "4 позиции · {positions}"
+          }
+        },
+        "feat_2": {
+          "type": "feature",
+          "settings": {
+            "icon": "clock",
+            "text": "30 секунди до заключена за носене"
+          }
+        },
+        "feat_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "weight",
+            "text": "150 kg · ездач + велосипед"
+          }
+        },
+        "feat_4": {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "text": "2 години гаранция"
+          }
+        },
+        "feat_5": {
+          "type": "feature",
+          "settings": {
+            "icon": "pin",
+            "text": "Може да се тества пред магазина във Варна"
+          }
+        },
+        "spec_1": {
+          "type": "spec",
+          "settings": {
+            "label": "Дължина",
+            "value": "{length} cm"
+          }
+        },
+        "spec_2": {
+          "type": "spec",
+          "settings": {
+            "label": "Широчина",
+            "value": "{width} cm"
+          }
+        },
+        "spec_3": {
+          "type": "spec",
+          "settings": {
+            "label": "Тегло",
+            "value": "{weight}"
+          }
+        },
+        "spec_4": {
+          "type": "spec",
+          "settings": {
+            "label": "Позиции",
+            "value": "{positions}"
+          }
+        },
+        "spec_5": {
+          "type": "spec",
+          "settings": {
+            "label": "Натоварване",
+            "value": "150 kg общо"
+          }
+        },
+        "spec_6": {
+          "type": "spec",
+          "settings": {
+            "label": "Take-off / landing",
+            "value": "Да / Да"
+          }
+        },
+        "spec_7": {
+          "type": "spec",
+          "settings": {
+            "label": "Материал",
+            "value": "Дървена конструкция"
+          }
+        },
+        "spec_8": {
+          "type": "spec",
+          "settings": {
+            "label": "Трансформация",
+            "value": "Около 30 секунди"
+          }
+        },
+        "spec_9": {
+          "type": "spec",
+          "settings": {
+            "label": "Пълно сглобяване",
+            "value": "Около 2 минути"
+          }
+        },
+        "spec_10": {
+          "type": "spec",
+          "settings": {
+            "label": "Презрамки",
+            "value": "Включени и регулируеми"
+          }
+        },
+        "spec_11": {
+          "type": "spec",
+          "settings": {
+            "label": "Гаранция",
+            "value": "2 години"
+          }
+        },
+        "kit_1": {
+          "type": "kit",
+          "settings": {
+            "label": "Рампа"
+          }
+        },
+        "kit_2": {
+          "type": "kit",
+          "settings": {
+            "label": "Презрамки"
+          }
+        },
+        "kit_3": {
+          "type": "kit",
+          "settings": {
+            "label": "Гумени крачета"
+          }
+        },
+        "kit_4": {
+          "type": "kit",
+          "settings": {
+            "label": "Ластици"
+          }
+        },
+        "kit_5": {
+          "type": "kit",
+          "settings": {
+            "label": "Инструкции"
+          }
+        },
+        "kit_6": {
+          "type": "kit",
+          "settings": {
+            "label": "2 г. гаранция"
+          }
+        },
+        "use_1": {
+          "type": "use",
+          "settings": {
+            "title": "MTB И DIRT JUMP",
+            "text": "DH, Enduro, XC и Dirt Jump велосипеди."
+          }
+        },
+        "use_2": {
+          "type": "use",
+          "settings": {
+            "title": "E-BIKE",
+            "text": "До 150 kg общо натоварване с ездача."
+          }
+        },
+        "use_3": {
+          "type": "use",
+          "settings": {
+            "title": "SUR-RON",
+            "text": "Тествана с Light Bee X, Ultra Bee и Storm Bee."
+          }
+        },
+        "sup_1": {
+          "type": "support",
+          "settings": {
+            "icon": "book",
+            "title": "ИНСТРУКЦИИ",
+            "text": "Настройване, позициониране и безопасна употреба.",
+            "cta_text": "Отвори"
+          }
+        },
+        "sup_2": {
+          "type": "support",
+          "settings": {
+            "icon": "video",
+            "title": "СГЛОБЯВАНЕ",
+            "text": "Видео за пълно сглобяване, сгъване и носене.",
+            "cta_text": "Гледай"
+          }
+        },
+        "sup_3": {
+          "type": "support",
+          "settings": {
+            "icon": "shield",
+            "title": "ГАРАНЦИЯ",
+            "text": "2 години за производствени и конструктивни дефекти.",
+            "cta_text": "Условия"
+          }
+        },
+        "sup_4": {
+          "type": "support",
+          "settings": {
+            "icon": "wrench",
+            "title": "РЕЗЕРВНИ ЧАСТИ",
+            "text": "Крачета, ластици и запитване при друг вид повреда.",
+            "cta_text": "Виж частите"
+          }
+        },
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "question": "Може ли рампата да се използва при мокра повърхност?",
+            "answer": "Да. Специалното покритие запазва сцеплението. След употреба рампата трябва да бъде подсушена и съхранявана на сухо."
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "question": "Какво не се покрива от гаранцията?",
+            "answer": "Гумените крачета и ластиците са сменяеми консумативи. При друг вид повреда можеш да изпратиш снимки за индивидуална оценка."
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "question": "Какво става, ако наличността е изчерпана?",
+            "answer": "Поръчката се приема. Свързваме се лично с клиента и потвърждаваме кога ще бъде изработена рампата — обичайно в срок от 5 до 10 работни дни."
+          }
+        }
+      },
+      "block_order": [
+        "feat_1",
+        "feat_2",
+        "feat_3",
+        "feat_4",
+        "feat_5",
+        "spec_1",
+        "spec_2",
+        "spec_3",
+        "spec_4",
+        "spec_5",
+        "spec_6",
+        "spec_7",
+        "spec_8",
+        "spec_9",
+        "spec_10",
+        "spec_11",
+        "kit_1",
+        "kit_2",
+        "kit_3",
+        "kit_4",
+        "kit_5",
+        "kit_6",
+        "use_1",
+        "use_2",
+        "use_3",
+        "sup_1",
+        "sup_2",
+        "sup_3",
+        "sup_4",
+        "faq_1",
+        "faq_2",
+        "faq_3"
+      ],
+      "settings": {
+        "test_link": "/pages/contact",
+        "cta1_link": "/pages/contact"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
