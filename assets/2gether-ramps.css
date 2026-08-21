@@ -919,3 +919,110 @@ body.tg-ramps-active .content-for-layout {
     transform: none !important;
   }
 }
+
+/* ═══ BOTTOM TAB STRIP ═══ */
+.tg-ramps-tabs {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: calc(var(--tg-s5) + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--tg-s4);
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--tg-dur-slow) var(--tg-ease-out), transform var(--tg-dur-slow) var(--tg-ease-out);
+}
+.tg-ramps-tabs.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+
+.tg-ramps-tabs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--tg-s1);
+  padding: 6px 8px 6px 6px;
+  border-radius: 999px;
+  background: rgba(13, 21, 38, 0.82);
+  border: 1px solid var(--tg-divider);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(232, 96, 28, 0.08);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tg-ramps-tabs-pill::-webkit-scrollbar { display: none; }
+
+.tg-ramps-tabs-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  padding: 8px 14px 8px 16px;
+  margin-right: var(--tg-s2);
+  border-radius: 999px;
+  background: var(--tg-surface-elevated);
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tg-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--tg-dur-med) var(--tg-ease-out);
+}
+.tg-ramps-tabs-brand em {
+  font-style: normal;
+  color: var(--tg-flame);
+  font-size: 15px;
+  line-height: 1;
+}
+.tg-ramps-tabs-brand:hover { background: var(--tg-ink-70); }
+
+.tg-ramps-tab {
+  position: relative;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-family: 'General Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--tg-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--tg-dur-med) var(--tg-ease-out), background var(--tg-dur-med) var(--tg-ease-out);
+}
+.tg-ramps-tab:hover { color: var(--tg-text-primary); }
+.tg-ramps-tab.is-active {
+  color: var(--tg-ink);
+  background: var(--tg-flame);
+  clip-path: polygon(0.55em 0, 100% 0, calc(100% - 0.55em) 100%, 0 100%);
+  border-radius: 0;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.tg-ramps-tab:focus-visible { outline: 2px solid var(--tg-flame); outline-offset: 2px; }
+
+.tg-ramps-tabs-slash {
+  font-family: 'Technor', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--tg-flame);
+  padding: 0 2px;
+  user-select: none;
+}
+
+/* room so the strip never covers the last CTA */
+.tg-ramps-page { padding-bottom: var(--tg-s9); }
+
+@media (max-width: 640px) {
+  .tg-ramps-tabs { bottom: calc(var(--tg-s3) + env(safe-area-inset-bottom, 0px)); padding: 0 var(--tg-s3); }
+  .tg-ramps-tabs-pill { width: 100%; justify-content: flex-start; }
+  .tg-ramps-tabs-brand { padding: 8px 12px; font-size: 12px; }
+  .tg-ramps-tabs-brand span { display: none; }
+  .tg-ramps-tab { padding: 8px 12px; font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg-ramps-tabs { transition: none; }
+}
