@@ -275,8 +275,8 @@
       ],
       "settings": {
         "test_link": "/pages/contact",
-        "cta1_link": "/pages/contact",
-        "compare_to_product": true
+        "compare_to_product": true,
+        "cta1_link": "/pages/contact"
       }
     }
   },
