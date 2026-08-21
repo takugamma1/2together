@@ -24,10 +24,33 @@
   assign length = ''
   assign width = ''
   assign weight = ''
-  assign heights = '29,32,35,38'
+  assign heights = ''
   assign other_handle = ''
   assign blurb = ''
   assign video_url = ''
+
+  comment
+    1) Built-in defaults per product handle (settings → "Model defaults"), format per line:
+       handle=color|colorname|length|width|weight|heights(29/32/35/38)|other-handle
+  endcomment
+  assign default_lines = st.model_defaults | newline_to_br | split: '<br />'
+  for line in default_lines
+    assign kv = line | strip | split: '='
+    assign kv_handle = kv[0] | strip | downcase
+    if kv_handle == product.handle and kv.size > 1
+      assign f = kv[1] | split: '|'
+      if f[0] != blank
+        assign model_color = f[0] | strip
+      endif
+      assign color_name = f[1] | strip
+      assign length = f[2] | strip
+      assign width = f[3] | strip
+      assign weight = f[4] | strip
+      assign heights = f[5] | strip
+      assign other_handle = f[6] | strip
+    endif
+  endfor
+
   for tag in product.tags
     if tag contains 'color:'
       assign model_color = tag | remove_first: 'color:' | strip
@@ -49,7 +72,11 @@
       assign video_url = tag | remove_first: 'video:' | strip
     endif
   endfor
-  assign heights_arr = heights | split: ','
+  if heights == blank
+    assign heights = '29/32/35/38'
+  endif
+  assign heights = heights | replace: ',', '/'
+  assign heights_arr = heights | split: '/'
   assign positions_label = heights_arr | join: ' / ' | append: ' cm'
   assign range_label = heights_arr.first | append: '–' | append: heights_arr.last | append: ' cm'
   assign name = product.title
@@ -293,7 +320,8 @@
   "name": "Ramp product",
   "tag": "section",
   "settings": [
-    { "type": "paragraph", "content": "Per-model values come from product tags: color:#2F6FD6 · colorname:Син · length:170 · width:58 · weight:12.5 kg · heights:53,57,60,62 · other:breeze · blurb:… · video:https://… — text fields below may use [name] [positions] [range] [length] [width] [weight]." },
+    { "type": "paragraph", "content": "Per-model values: first from 'Model defaults' below (by product handle), then overridden by product tags: color:#2F6FD6 · colorname:Син · length:170 · width:58 · weight:12.5 kg · heights:53/57/60/62 · other:breeze · blurb:… · video:https://… — text fields may use [name] [positions] [range] [length] [width] [weight]." },
+    { "type": "textarea", "id": "model_defaults", "label": "Model defaults (one per line)", "info": "handle=color|colour name|length|width|weight|heights 29/32/35/38|other handle", "default": "breeze=#C8434F|Червен|130|58|7.5 kg|29/32/35/38|storm\nstorm=#2F6FD6|Син|170|58|12.5 kg|53/57/60/62|breeze" },
     { "type": "header", "content": "Info card" },
     { "type": "color", "id": "default_color", "label": "Fallback model colour", "default": "#E8601C" },
     { "type": "text", "id": "color_prefix", "label": "Colour tag prefix", "default": "Фиксиран цвят" },
