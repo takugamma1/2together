@@ -91,86 +91,6 @@
             "text": "Преносими рампи BREEZE и STORM — произведени в България.",
             "items": "portable-ramps|Преносими рампи|ramp рампа breeze storm"
           }
-        },
-        "finder_1": {
-          "type": "finder",
-          "settings": {
-            "label": "Гуми 29\"",
-            "url": "/collections/tires-tubes-od20/tyre-size-29",
-            "kicker": "Външни гуми"
-          }
-        },
-        "finder_2": {
-          "type": "finder",
-          "settings": {
-            "label": "Гуми 27.5\"",
-            "url": "/collections/tires-tubes-od20/tyre-size-27-5",
-            "kicker": "Външни гуми"
-          }
-        },
-        "finder_3": {
-          "type": "finder",
-          "settings": {
-            "label": "Гуми 26\"",
-            "url": "/collections/tires-tubes-od20/tyre-size-26",
-            "kicker": "Външни гуми"
-          }
-        },
-        "finder_4": {
-          "type": "finder",
-          "settings": {
-            "label": "Гуми 28\" / 700c",
-            "url": "/collections/tires-tubes-od20/tyre-size-28-700c",
-            "kicker": "Шосе и gravel"
-          }
-        },
-        "finder_5": {
-          "type": "finder",
-          "settings": {
-            "label": "Капли 29\"",
-            "url": "/collections/rims-od18/rim-size-29",
-            "kicker": "Капли"
-          }
-        },
-        "finder_6": {
-          "type": "finder",
-          "settings": {
-            "label": "Капли 27.5\"",
-            "url": "/collections/rims-od18/rim-size-27-5",
-            "kicker": "Капли"
-          }
-        },
-        "finder_7": {
-          "type": "finder",
-          "settings": {
-            "label": "Намаления",
-            "url": "/collections/discount-od100",
-            "kicker": "Оферти"
-          }
-        },
-        "finder_8": {
-          "type": "finder",
-          "settings": {
-            "label": "Пълно окачване",
-            "url": "/collections/palno-okachvane-c216",
-            "kicker": "Велосипеди"
-          }
-        },
-        "finder_9": {
-          "type": "finder",
-          "settings": {
-            "label": "Каски",
-            "url": "/collections/helmets-od72",
-            "kicker": "Екипировка"
-          }
-        },
-        "finder_10": {
-          "type": "finder",
-          "settings": {
-            "label": "Ръкавици",
-            "url": "/collections/gloves-od55",
-            "kicker": "Екипировка"
-          }
         }
       },
       "block_order": [
@@ -181,17 +101,7 @@
         "dept_5",
         "dept_6",
         "dept_7",
-        "dept_8",
-        "finder_1",
-        "finder_2",
-        "finder_3",
-        "finder_4",
-        "finder_5",
-        "finder_6",
-        "finder_7",
-        "finder_8",
-        "finder_9",
-        "finder_10"
+        "dept_8"
       ],
       "settings": {
         "eyebrow": "Е-магазин",
