@@ -18,67 +18,43 @@
       endif
     -%}
 
-    <div class="tg-product-gallery" data-tg-gallery>
+    <div class="tg-product-gallery{% if gallery_media.size > 1 %} has-thumbs{% endif %}" data-tg-gallery>
+      {% if gallery_media.size > 1 %}
+        <div class="tg-product-thumbs-col">
+          <button type="button" class="tg-thumbs-nav tg-thumbs-up" data-tg-prev aria-label="Предишна снимка">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 15 12 9 18 15"/></svg>
+          </button>
+          <div class="tg-product-thumbs" data-tg-thumbs role="tablist" aria-label="Снимки на продукта">
+            {% for media in gallery_media %}
+              {%- assign preview = media.preview_image | default: media -%}
+              <button type="button" class="tg-thumb{% if forloop.first %} is-active{% endif %}" data-tg-thumb data-index="{{ forloop.index0 }}"
+                data-img-src="{{ preview | image_url: width: 1600 }}"
+                data-img-srcset="{{ preview | image_url: width: 800 }} 800w, {{ preview | image_url: width: 1200 }} 1200w, {{ preview | image_url: width: 1600 }} 1600w, {{ preview | image_url: width: 2000 }} 2000w"
+                data-img-alt="{{ media.alt | default: product.title | escape }}"
+                role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Снимка {{ forloop.index }} от {{ gallery_media.size }}">
+                <img src="{{ preview | image_url: width: 240 }}" alt="" loading="lazy" width="120" height="120">
+              </button>
+            {% endfor %}
+          </div>
+          <button type="button" class="tg-thumbs-nav tg-thumbs-down" data-tg-next aria-label="Следваща снимка">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+      {% endif %}
       <div class="tg-product-hero">
         {% if gallery_media.size > 0 %}
           {%- assign first_media = gallery_media | first -%}
           {%- assign first_preview = first_media.preview_image | default: first_media -%}
-          <img
-            data-tg-hero-img
-            src="{{ first_preview | image_url: width: 1600 }}"
-            srcset="{{ first_preview | image_url: width: 800 }} 800w, {{ first_preview | image_url: width: 1200 }} 1200w, {{ first_preview | image_url: width: 1600 }} 1600w, {{ first_preview | image_url: width: 2000 }} 2000w"
-            sizes="(max-width: 1024px) 100vw, 60vw"
-            alt="{{ first_media.alt | default: product.title | escape }}"
-            loading="eager"
-            width="1600"
-            height="1200"
-          >
+          <img data-tg-hero-img src="{{ first_preview | image_url: width: 1600 }}" srcset="{{ first_preview | image_url: width: 800 }} 800w, {{ first_preview | image_url: width: 1200 }} 1200w, {{ first_preview | image_url: width: 1600 }} 1600w, {{ first_preview | image_url: width: 2000 }} 2000w" sizes="(max-width: 1024px) 100vw, 60vw" alt="{{ first_media.alt | default: product.title | escape }}" loading="eager" width="1600" height="1200">
         {% elsif product.featured_image %}
           {{ product.featured_image | image_url: width: 1600 | image_tag: loading: 'eager', sizes: '(max-width: 1024px) 100vw, 60vw', data-tg-hero-img: '' }}
         {% else %}
           {{ 'product-1' | placeholder_svg_tag }}
         {% endif %}
-
         {% if gallery_media.size > 1 %}
-          <button type="button" class="tg-hero-nav tg-hero-prev" data-tg-prev aria-label="Previous image">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button type="button" class="tg-hero-nav tg-hero-next" data-tg-next aria-label="Next image">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-          <div class="tg-hero-counter" data-tg-counter aria-hidden="true">
-            <span data-tg-counter-current>1</span> / {{ gallery_media.size }}
-          </div>
+          <div class="tg-hero-counter" data-tg-counter aria-hidden="true"><span data-tg-counter-current>1</span> / {{ gallery_media.size }}</div>
         {% endif %}
       </div>
-
-      {% if gallery_media.size > 1 %}
-        <div class="tg-product-thumbs" data-tg-thumbs role="tablist" aria-label="Product images">
-          {% for media in gallery_media %}
-            {%- assign preview = media.preview_image | default: media -%}
-            <button
-              type="button"
-              class="tg-thumb{% if forloop.first %} is-active{% endif %}"
-              data-tg-thumb
-              data-index="{{ forloop.index0 }}"
-              data-img-src="{{ preview | image_url: width: 1600 }}"
-              data-img-srcset="{{ preview | image_url: width: 800 }} 800w, {{ preview | image_url: width: 1200 }} 1200w, {{ preview | image_url: width: 1600 }} 1600w, {{ preview | image_url: width: 2000 }} 2000w"
-              data-img-alt="{{ media.alt | default: product.title | escape }}"
-              role="tab"
-              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-              aria-label="View image {{ forloop.index }} of {{ gallery_media.size }}"
-            >
-              <img
-                src="{{ preview | image_url: width: 240 }}"
-                alt=""
-                loading="lazy"
-                width="120"
-                height="120"
-              >
-            </button>
-          {% endfor %}
-        </div>
-      {% endif %}
     </div>
 
     {%- liquid
@@ -98,6 +74,7 @@
     -%}
 
     <!-- ═══ STATS STRIP — quick scan of key data ═══ -->
+    {% if section.settings.show_stats %}
     {% if stat_count > 0 %}
       <div class="tg-stats-strip">
         {% for block in section.blocks %}
@@ -114,8 +91,10 @@
     {% endif %}
 
 
+    {% endif %}
+
     <!-- ═══ FEATURE HIGHLIGHTS — 3 sliced cards with icons ═══ -->
-    {% if feature_count > 0 %}
+    {% if section.settings.show_features and feature_count > 0 %}
       <div class="tg-features">
         <div class="tg-section-head">
           <div class="tg-eyebrow">{{ section.settings.features_label | default: 'Highlights' }}</div>
@@ -146,6 +125,7 @@
     {% endif %}
 
     <!-- ═══ WHAT'S IN THE BOX — visual checklist ═══ -->
+    {% if section.settings.show_included %}
     {% if included_count > 0 %}
       <div class="tg-included">
         <div class="tg-section-head">
@@ -170,7 +150,10 @@
       </div>
     {% endif %}
 
+    {% endif %}
+
     <!-- ═══ SUPPORT STRIP — sliced trust pills ═══ -->
+    {% if section.settings.show_support %}
     <div class="tg-support">
       <div class="tg-support-pill">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -202,7 +185,10 @@
       </div>
     </div>
 
+    {% endif %}
+
     <!-- Related Products -->
+    {% if section.settings.show_related %}
     {%- liquid
       assign related_products = nil
       assign related_count = 0
@@ -217,9 +203,9 @@
     {% if related_count > 1 %}
       <div class="tg-product-related">
         <div class="tg-product-related-header">
-          <div class="tg-product-related-title">Related Products</div>
+          <div class="tg-product-related-title">Подобни продукти</div>
           {% if product.collections.first %}
-            <a href="{{ product.collections.first.url }}" class="tg-product-related-link">View All &rarr;</a>
+            <a href="{{ product.collections.first.url }}" class="tg-product-related-link">Виж всички &rarr;</a>
           {% endif %}
         </div>
         <div class="tg-product-related-grid">
@@ -244,7 +230,10 @@
       </div>
     {% endif %}
 
+    {% endif %}
+
     <!-- Brand Statement -->
+    {% if section.settings.show_brand %}
     <div class="tg-product-brand">
       <div class="tg-product-brand-bg">
         {% if section.settings.brand_image != blank %}
@@ -257,7 +246,7 @@
         <p class="tg-product-brand-desc">{{ section.settings.brand_description | default: 'Every frame is handcrafted with aerospace-grade carbon fiber, engineered for the perfect balance of stiffness and compliance.' }}</p>
       </div>
     </div>
-
+    {% endif %}
   </div>
 
   <!-- ═══ RIGHT COLUMN: Purchase Panel ═══ -->
@@ -267,7 +256,7 @@
       <!-- Back link -->
       <a href="{{ product.collections.first.url | default: '/collections/all' }}" class="tg-product-back">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Back to collection
+        Назад
       </a>
 
       <!-- Product Header -->
@@ -350,9 +339,9 @@
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             {% if current_variant.available %}
-              {{ section.settings.add_to_cart_text | default: 'Add to Cart' }}
+              {{ section.settings.add_to_cart_text | default: 'Добави в количката' }}
             {% else %}
-              {{ section.settings.sold_out_text | default: 'Sold Out' }}
+              {{ section.settings.sold_out_text | default: 'Изчерпано' }}
             {% endif %}
           </button>
 
@@ -360,7 +349,7 @@
             {{ form | payment_button }}
           {% elsif current_variant.available %}
             <button type="button" class="tg-btn-buy-now" data-tg-buy-now>
-              {{ section.settings.buy_now_text | default: 'Buy Now' }}
+              {{ section.settings.buy_now_text | default: 'Купи сега' }}
             </button>
           {% endif %}
         </div>
@@ -441,11 +430,13 @@
     if (!opts.skipScroll) {
       const thumbsParent = t.parentElement;
       if (thumbsParent) {
+        const vertical = thumbsParent.scrollHeight > thumbsParent.clientHeight + 2;
+        const targetTop = t.offsetTop - (thumbsParent.clientHeight / 2) + (t.clientHeight / 2);
         const targetLeft = t.offsetLeft - (thumbsParent.clientWidth / 2) + (t.clientWidth / 2);
         try {
-          thumbsParent.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+          thumbsParent.scrollTo(vertical ? { top: Math.max(0, targetTop), behavior: 'smooth' } : { left: Math.max(0, targetLeft), behavior: 'smooth' });
         } catch (e) {
-          thumbsParent.scrollLeft = Math.max(0, targetLeft);
+          if (vertical) thumbsParent.scrollTop = Math.max(0, targetTop); else thumbsParent.scrollLeft = Math.max(0, targetLeft);
         }
       }
     }
@@ -679,6 +670,46 @@
   "settings": [
     {
       "type": "header",
+      "content": "Below the gallery (all off = clean product page)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show stats strip",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show feature highlights",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_included",
+      "label": "Show what's-in-the-box list",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_support",
+      "label": "Show support strip",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_related",
+      "label": "Show related products",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_brand",
+      "label": "Show brand statement",
+      "default": false
+    },
+    {
+      "type": "header",
       "content": "Buy box (cart & buttons)"
     },
     {
@@ -898,6 +929,8 @@
       ]
     }
   ],
-  "templates": ["product"]
+  "templates": [
+    "product"
+  ]
 }
 {% endschema %}
