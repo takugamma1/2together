@@ -11,7 +11,6 @@ def gql(q,v=None):
     return r['data']
 DEFS=[{
   "name":"Rental bike","type":"rental_bike","access":{"storefront":"PUBLIC_READ"},
-  "displayNameField":"name",
   "capabilities":{"publishable":{"enabled":True}},
   "fieldDefinitions":[
     {"key":"name","name":"Име","type":"single_line_text_field","required":True},
@@ -28,7 +27,6 @@ DEFS=[{
     {"key":"sort","name":"Подредба","type":"number_integer"}
   ]},{
   "name":"Rental booking","type":"rental_booking","access":{"storefront":"NONE"},
-  "displayNameField":"reference",
   "fieldDefinitions":[
     {"key":"reference","name":"Референция","type":"single_line_text_field","required":True},
     {"key":"bike","name":"Колело","type":"metaobject_reference","validations":[{"name":"metaobject_definition_id","value":"__RENTAL_BIKE_ID__"}]},

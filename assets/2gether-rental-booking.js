@@ -116,10 +116,21 @@
         const r = await fetch(`${EP}/rental-book`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ bike: it.h, quantity: it.qty, mode: p.mode, start: p.start.toISOString(), end: p.end.toISOString(), name, phone, email: f.email.value.trim(), note: f.note.value.trim(), price: Math.round(it.price * 100) / 100 }) });
         const j = await r.json().catch(() => ({}));
         if (r.status === 409) { status.textContent = I.msg_unavailable || ''; btn.disabled = false; loadAvail(); return; }
-        if (!r.ok) throw new Error('book'); refs.push(j.reference);
+        if (!r.ok) throw new Error('book ' + r.status); refs.push(j.reference);
       }
       status.textContent = (I.msg_success || 'OK {ref}').replace('{ref}', refs.join(', ')); f.reset(); Object.keys(sel).forEach(k => delete sel[k]); bikes.forEach(b => { b.querySelector('[data-rb-qty]').textContent = 0; b.classList.remove('is-selected'); }); range = { start: null, end: null }; loadAvail();
-    } catch (err) { status.textContent = I.msg_error || ''; btn.disabled = false; }
+    } catch (err) {
+      // worker not deployed / unreachable → e-mail fallback via Shopify contact form
+      const fb = document.getElementById('tg-rb-fallback');
+      if (fb) {
+        const lines = p.items.map(it => `${bikeCfg(it.h).name} ×${it.qty} · ${it.label} · ${fmt(it.price)}`).join('\n');
+        const when = p.mode === 'short' ? `${p.start.toLocaleString('bg-BG')} → ${p.end.toLocaleString('bg-BG')}` : `${p.start.toLocaleDateString('bg-BG')} → ${p.end.toLocaleDateString('bg-BG')}`;
+        fb.querySelector('[data-fb-name]').value = name; fb.querySelector('[data-fb-phone]').value = phone; fb.querySelector('[data-fb-email]').value = f.email.value.trim() || 'no-reply@2getherbikes.bg';
+        fb.querySelector('[data-fb-body]').value = `${p.mode === 'short' ? 'Краткосрочен' : 'Дългосрочен'} наем\n${when}\n${lines}\nОбщо: ${fmt(p.total)}\n${f.note.value.trim()}`;
+        fb.submit(); return;
+      }
+      status.textContent = I.msg_error || ''; btn.disabled = false;
+    }
   });
   loadAvail();
 })();
