@@ -60,6 +60,12 @@ export default {
         case 'youtube':
           if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
           return await handleYoutube(env, ctx);
+        case 'rental-availability':
+          if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+          return await handleRentalAvailability(url, env);
+        case 'rental-book':
+          if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+          return await handleRentalBook(request, env, customerId);
         default:
           return json({ error: 'not_found' }, 404);
       }
@@ -666,9 +672,123 @@ async function readJson(request) {
   }
 }
 
-function json(data, status = 200) {
+function json(data, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...extraHeaders },
   });
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Bike rental — availability + booking (metaobjects) + Google Calendar */
+/* ------------------------------------------------------------------ */
+/*
+ * Secrets (wrangler secret put …):
+ *   GOOGLE_SA_EMAIL   service-account e-mail (…@….iam.gserviceaccount.com)
+ *   GOOGLE_SA_KEY     service-account private key (PEM, \n-escaped ok)
+ *   GOOGLE_CALENDAR_ID calendar id shared with the service account (e.g. abc@group.calendar.google.com)
+ * Without them bookings still work; the calendar mirror is skipped.
+ *
+ * GET  /apps/club/rental-availability?from=YYYY-MM-DD&to=YYYY-MM-DD
+ *      → { bikes: [{handle, name, count}], booked: { [bikeHandle]: { [YYYY-MM-DD]: unitsBooked } } }
+ *      Calendar events titled "BLOCK <bike-handle>" (or "BLOCK all") count as fully booked.
+ * POST /apps/club/rental-book  {bike, quantity, mode:'short'|'long', start, end, name, phone, email, note, price}
+ *      → { ok, reference } / 409 {error:'unavailable'} / 400 {error:'invalid'}
+ */
+const DAY = 86400000;
+function dayKey(d) { return new Date(d).toISOString().slice(0, 10); }
+function daysBetween(startIso, endIso) {
+  const out = []; let t = new Date(dayKey(startIso)).getTime(); const end = new Date(dayKey(endIso)).getTime();
+  while (t <= end) { out.push(new Date(t).toISOString().slice(0, 10)); t += DAY; }
+  return out;
+}
+async function rentalBikes(env) {
+  const list = await listMetaobjects(env, 'rental_bike');
+  return list.filter(b => String(b.fields.active) === 'true').map(b => ({ id: b.id, handle: b.handle, name: b.fields.name, count: parseInt(b.fields.count || '0', 10) || 0 }));
+}
+async function rentalBookedMap(env, fromIso, toIso) {
+  const bookings = await listMetaobjects(env, 'rental_booking');
+  const booked = {};
+  const add = (handle, day, n) => { booked[handle] = booked[handle] || {}; booked[handle][day] = (booked[handle][day] || 0) + n; };
+  const from = new Date(dayKey(fromIso)).getTime(), to = new Date(dayKey(toIso)).getTime();
+  for (const b of bookings) {
+    const f = b.fields; if (!f.start || !f.end || f.status === 'cancelled') continue;
+    const handle = f.bike_handle || (f.bike ? f.bike : ''); // bike_handle is stored alongside the reference for cheap lookups
+    if (!handle) continue;
+    for (const day of daysBetween(f.start, f.end)) { const t = new Date(day).getTime(); if (t >= from && t <= to) add(handle, day, parseInt(f.quantity || '1', 10) || 1); }
+  }
+  // Google Calendar blocks
+  try {
+    const events = await gcalList(env, fromIso, toIso);
+    for (const ev of events) {
+      const m = /^BLOCK\s+(\S+)/i.exec(ev.summary || ''); if (!m) continue;
+      const target = m[1].toLowerCase(); const s = ev.start.date || ev.start.dateTime, e = ev.end.date ? new Date(new Date(ev.end.date).getTime() - DAY).toISOString() : ev.end.dateTime;
+      for (const day of daysBetween(s, e)) add(target === 'all' ? '*' : target, day, 9999);
+    }
+  } catch (e) { console.warn('gcal list skipped:', e && e.message); }
+  return booked;
+}
+async function handleRentalAvailability(url, env) {
+  const from = url.searchParams.get('from') || dayKey(Date.now());
+  const to = url.searchParams.get('to') || dayKey(Date.now() + 90 * DAY);
+  const [bikes, booked] = await Promise.all([rentalBikes(env), rentalBookedMap(env, from, to)]);
+  return json({ bikes, booked, from, to }, 200, { 'Cache-Control': 'private, max-age=60' });
+}
+async function handleRentalBook(request, env, customerId) {
+  const body = await readJson(request); if (!body) return json({ error: 'invalid' }, 400);
+  const { bike, quantity, mode, start, end, name, phone, email, note, price } = body;
+  const qty = parseInt(quantity || '1', 10) || 1;
+  if (!bike || !start || !end || !name || !phone || !['short', 'long'].includes(mode)) return json({ error: 'invalid' }, 400);
+  if (new Date(end) <= new Date(start)) return json({ error: 'invalid' }, 400);
+  if (mode === 'short' && (new Date(end) - new Date(start)) > DAY + 60000) return json({ error: 'invalid' }, 400);
+  const bikes = await rentalBikes(env); const b = bikes.find(x => x.handle === bike);
+  if (!b) return json({ error: 'invalid' }, 400);
+  const booked = await rentalBookedMap(env, start, end);
+  for (const day of daysBetween(start, end)) {
+    const used = ((booked[bike] || {})[day] || 0) + ((booked['*'] || {})[day] || 0);
+    if (used + qty > b.count) return json({ error: 'unavailable', day }, 409);
+  }
+  const reference = 'R' + new Date().toISOString().slice(2, 10).replace(/-/g, '') + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+  let eventId = '';
+  try { eventId = await gcalInsert(env, { summary: `${b.name} ×${qty} — ${name}`, description: `Резервация ${reference}\n${mode === 'short' ? 'Краткосрочен' : 'Дългосрочен'} наем\nТел: ${phone}\nИмейл: ${email || '-'}\nЦена: €${price || '-'}\n${note || ''}`, start, end, mode }); } catch (e) { console.warn('gcal insert skipped:', e && e.message); }
+  const fields = [
+    ['reference', reference], ['bike', b.id], ['bike_handle', bike], ['quantity', String(qty)], ['mode', mode], ['start', new Date(start).toISOString()], ['end', new Date(end).toISOString()],
+    ['status', 'pending'], ['customer_name', name], ['phone', phone], ['email', email || ''], ['note', note || ''], ['price', price ? String(price) : ''], ['calendar_event', eventId],
+  ].filter(([, v]) => v !== undefined).map(([key, value]) => ({ key, value }));
+  await metaobjectUpsert(env, 'rental_booking', reference.toLowerCase(), fields);
+  return json({ ok: true, reference });
+}
+/* Google service-account JWT → access token (RS256 via WebCrypto) */
+async function gcalToken(env) {
+  if (!env.GOOGLE_SA_EMAIL || !env.GOOGLE_SA_KEY) throw new Error('gcal not configured');
+  const now = Math.floor(Date.now() / 1000);
+  const enc = (o) => btoa(JSON.stringify(o)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const unsigned = enc({ alg: 'RS256', typ: 'JWT' }) + '.' + enc({ iss: env.GOOGLE_SA_EMAIL, scope: 'https://www.googleapis.com/auth/calendar', aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 3600 });
+  const pem = env.GOOGLE_SA_KEY.replace(/\\n/g, '\n').replace(/-----[A-Z ]+-----/g, '').replace(/\s+/g, '');
+  const keyData = Uint8Array.from(atob(pem), c => c.charCodeAt(0));
+  const key = await crypto.subtle.importKey('pkcs8', keyData, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
+  const sig = new Uint8Array(await crypto.subtle.sign('RSASSA-PKCS1-v1_5', key, new TextEncoder().encode(unsigned)));
+  const jwt = unsigned + '.' + btoa(String.fromCharCode(...sig)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const res = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=' + jwt });
+  if (!res.ok) throw new Error('gcal token ' + res.status);
+  return (await res.json()).access_token;
+}
+async function gcalList(env, fromIso, toIso) {
+  if (!env.GOOGLE_CALENDAR_ID) return [];
+  const token = await gcalToken(env);
+  const q = new URLSearchParams({ timeMin: new Date(fromIso).toISOString(), timeMax: new Date(new Date(toIso).getTime() + DAY).toISOString(), singleEvents: 'true', maxResults: '500' });
+  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.GOOGLE_CALENDAR_ID)}/events?${q}`, { headers: { Authorization: 'Bearer ' + token } });
+  if (!res.ok) throw new Error('gcal list ' + res.status);
+  return (await res.json()).items || [];
+}
+async function gcalInsert(env, { summary, description, start, end, mode }) {
+  if (!env.GOOGLE_CALENDAR_ID) return '';
+  const token = await gcalToken(env);
+  const body = mode === 'long'
+    ? { summary, description, start: { date: dayKey(start) }, end: { date: dayKey(new Date(new Date(end).getTime() + DAY)) } }
+    : { summary, description, start: { dateTime: new Date(start).toISOString() }, end: { dateTime: new Date(end).toISOString() } };
+  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.GOOGLE_CALENDAR_ID)}/events`, { method: 'POST', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  if (!res.ok) throw new Error('gcal insert ' + res.status);
+  return (await res.json()).id || '';
 }

@@ -1,0 +1,78 @@
+/* === 2GETHER — RENTAL BOOKING === */
+.tg-rb { padding: clamp(56px, 8vw, 112px) var(--tg-s9); background: var(--tg-ink); color: var(--tg-text-primary); font-family: var(--tg-font-body); }
+.tg-rb-inner { max-width: 1280px; margin: 0 auto; }
+.tg-rb-head { margin-bottom: var(--tg-s7); max-width: 64ch; }
+.tg-rb-title { font-family: var(--tg-font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(1.9rem, 3.6vw, 3rem); line-height: 1; margin: var(--tg-s2) 0 var(--tg-s3); }
+.tg-rb-intro { color: var(--tg-text-secondary); line-height: 1.6; margin: 0; }
+.tg-rb-block { margin-bottom: var(--tg-s8); }
+.tg-rb-step { display: flex; align-items: center; gap: var(--tg-s3); font-family: var(--tg-font-display); font-weight: 700; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--tg-s5); }
+.tg-rb-step span { color: var(--tg-ink); background: var(--tg-flame); padding: 3px 9px; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); font-size: 12px; }
+.tg-rb-bikes { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--tg-s4); }
+.tg-rb-bike { background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); border-radius: 4px; overflow: hidden; transition: border-color var(--tg-dur-med), transform var(--tg-dur-med) var(--tg-ease-out); }
+.tg-rb-bike.is-selected { border-color: var(--tg-flame); box-shadow: 0 0 0 3px var(--tg-flame-glow); }
+.tg-rb-bike.is-soldout { opacity: 0.5; }
+.tg-rb-bike-media { position: relative; aspect-ratio: 4 / 3; background: var(--tg-ink-80); }
+.tg-rb-bike-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tg-rb-ph { width: 100%; height: 100%; background: linear-gradient(160deg, var(--tg-ink-70), var(--tg-ink-90)); }
+.tg-rb-bike-cat { position: absolute; left: 10px; top: 10px; padding: 4px 9px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--tg-flame); color: var(--tg-ink); clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
+.tg-rb-bike-avail { position: absolute; right: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; font-size: 12px; background: rgba(11, 18, 32, 0.85); border-radius: 3px; }
+.tg-rb-bike-avail i { width: 8px; height: 8px; border-radius: 50%; background: #3DD68C; }
+.tg-rb-bike.is-soldout .tg-rb-bike-avail i { background: var(--tg-flame); }
+.tg-rb-bike-body { padding: var(--tg-s4); display: flex; flex-direction: column; gap: 6px; }
+.tg-rb-bike-name { font-family: var(--tg-font-display); font-weight: 700; font-size: 17px; text-transform: uppercase; margin: 0; }
+.tg-rb-bike-sizes, .tg-rb-bike-desc { font-size: 13px; color: var(--tg-text-secondary); margin: 0; }
+.tg-rb-bike-foot { display: flex; align-items: center; justify-content: space-between; margin-top: var(--tg-s2); }
+.tg-rb-bike-price { font-size: 13px; color: var(--tg-text-secondary); }
+.tg-rb-bike-price b { color: var(--tg-text-primary); font-family: var(--tg-font-display); font-size: 16px; }
+.tg-rb-qty { display: inline-flex; align-items: center; border: 1px solid var(--tg-divider); border-radius: 3px; }
+.tg-rb-qty button { width: 34px; height: 34px; background: none; border: 0; color: var(--tg-text-primary); font-size: 18px; cursor: pointer; }
+.tg-rb-qty button:hover { background: var(--tg-flame); color: var(--tg-ink); }
+.tg-rb-qty span { min-width: 28px; text-align: center; font-family: var(--tg-font-display); font-weight: 700; }
+.tg-rb-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr); gap: var(--tg-s7); align-items: start; }
+.tg-rb-modes { display: grid; grid-template-columns: 1fr 1fr; gap: var(--tg-s3); margin-bottom: var(--tg-s5); }
+.tg-rb-mode { text-align: left; padding: var(--tg-s4) var(--tg-s5); background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); color: var(--tg-text-secondary); cursor: pointer; display: flex; flex-direction: column; gap: 4px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.tg-rb-mode strong { font-family: var(--tg-font-display); font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tg-text-primary); }
+.tg-rb-mode small { font-size: 12px; }
+.tg-rb-mode.is-active { background: var(--tg-flame); border-color: var(--tg-flame); color: rgba(11, 18, 32, 0.75); }
+.tg-rb-mode.is-active strong { color: var(--tg-ink); }
+.tg-rb-field { display: flex; flex-direction: column; gap: 8px; margin-bottom: var(--tg-s5); }
+.tg-rb-field > span { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tg-text-muted); }
+.tg-rb-field input[type=date] { background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); color: var(--tg-text-primary); padding: 12px 14px; font: inherit; border-radius: 3px; max-width: 260px; color-scheme: dark; }
+.tg-rb-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tg-rb-chip { padding: 9px 14px; background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); color: var(--tg-text-secondary); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 0 100%); }
+.tg-rb-chip:hover { color: var(--tg-text-primary); }
+.tg-rb-chip.is-on { background: var(--tg-flame); border-color: var(--tg-flame); color: var(--tg-ink); }
+.tg-rb-hint { font-size: 13px; color: var(--tg-text-muted); margin: 0; }
+.tg-rb-cal { background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); border-radius: 4px; padding: var(--tg-s4); }
+.tg-rb-cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--tg-s3); }
+.tg-rb-cal-nav button { width: 34px; height: 34px; background: var(--tg-surface-elevated); border: 1px solid var(--tg-divider); color: var(--tg-text-primary); font-size: 20px; cursor: pointer; border-radius: 3px; }
+.tg-rb-cal-months { display: grid; grid-template-columns: 1fr 1fr; gap: var(--tg-s5); }
+.tg-rb-month-name { font-family: var(--tg-font-display); font-weight: 700; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.tg-rb-dow, .tg-rb-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.tg-rb-dow span { font-size: 11px; color: var(--tg-text-muted); text-align: center; padding: 4px 0; }
+.tg-rb-days button, .tg-rb-days i { aspect-ratio: 1; display: grid; place-items: center; background: var(--tg-surface-elevated); border: 1px solid transparent; color: var(--tg-text-primary); font: inherit; font-size: 13px; cursor: pointer; border-radius: 3px; }
+.tg-rb-days i { background: none; }
+.tg-rb-days button:disabled { color: var(--tg-text-muted); background: none; cursor: default; }
+.tg-rb-days button.is-busy { background: repeating-linear-gradient(45deg, var(--tg-ink-80), var(--tg-ink-80) 3px, var(--tg-ink-90) 3px, var(--tg-ink-90) 6px); color: var(--tg-text-muted); }
+.tg-rb-days button:not(:disabled):hover { border-color: var(--tg-flame); }
+.tg-rb-days button.is-start, .tg-rb-days button.is-end { background: var(--tg-flame); color: var(--tg-ink); font-weight: 700; }
+.tg-rb-days button.is-in { background: var(--tg-flame-glow); color: var(--tg-flame-soft); }
+.tg-rb-cal-legend { display: flex; gap: var(--tg-s4); margin-top: var(--tg-s3); font-size: 12px; color: var(--tg-text-muted); align-items: center; }
+.tg-rb-cal-legend i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+.tg-rb-cal-legend .is-free { background: var(--tg-surface-elevated); } .tg-rb-cal-legend .is-busy { background: repeating-linear-gradient(45deg, var(--tg-ink-80), var(--tg-ink-80) 3px, var(--tg-ink-90) 3px, var(--tg-ink-90) 6px); } .tg-rb-cal-legend .is-sel { background: var(--tg-flame); }
+.tg-rb-summary { position: sticky; top: calc(var(--header-min-block-size, 88px) + 16px); background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); border-radius: 4px; padding: var(--tg-s5); }
+.tg-rb-lines { margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.tg-rb-lines > div { display: flex; justify-content: space-between; gap: var(--tg-s3); font-size: 14px; }
+.tg-rb-lines dt { color: var(--tg-text-secondary); } .tg-rb-lines dd { margin: 0; font-family: var(--tg-font-display); font-weight: 700; }
+.tg-rb-lines-empty { margin: 0; color: var(--tg-text-muted); font-size: 13px; }
+.tg-rb-when dt { font-size: 12px; color: var(--tg-flame-soft); }
+.tg-rb-total { display: flex; justify-content: space-between; align-items: baseline; margin: var(--tg-s4) 0; padding-top: var(--tg-s3); border-top: 1px solid var(--tg-divider); }
+.tg-rb-total strong { font-family: var(--tg-font-display); font-size: 26px; color: var(--tg-flame); }
+.tg-rb-note { font-size: 12px; color: var(--tg-text-muted); margin: 0 0 var(--tg-s4); line-height: 1.5; }
+.tg-rb-form { display: flex; flex-direction: column; gap: var(--tg-s3); }
+.tg-rb-form label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tg-text-muted); }
+.tg-rb-form input, .tg-rb-form textarea { background: var(--tg-ink); border: 1px solid var(--tg-divider); color: var(--tg-text-primary); padding: 11px 12px; font: inherit; font-size: 14px; border-radius: 3px; }
+.tg-rb-form input:focus, .tg-rb-form textarea:focus { outline: none; border-color: var(--tg-flame); }
+.tg-rb-submit { justify-content: center; margin-top: var(--tg-s2); }
+.tg-rb-status { font-size: 13px; color: var(--tg-flame-soft); margin: 0; min-height: 1.2em; }
+@media (max-width: 1024px) { .tg-rb { padding-left: var(--tg-s5); padding-right: var(--tg-s5); } .tg-rb-grid { grid-template-columns: 1fr; } .tg-rb-summary { position: static; } .tg-rb-cal-months { grid-template-columns: 1fr; } }
