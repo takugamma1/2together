@@ -55,6 +55,11 @@
   assign current_handles = current_handles | split: ','
 -%}
 
+{%- comment -%} Bulgarian labels for Search & Discovery filters (hard-coded) {%- endcomment -%}
+{%- liquid
+  assign tr_keys = 'Availability,In stock,Out of stock,Price,Vendor,Brand,Product type,Type,Size,Color,Colour,Material,Gender,Age group' | split: ','
+  assign tr_vals = 'Наличност,В наличност,Изчерпано,Цена,Марка,Марка,Тип продукт,Тип,Размер,Цвят,Цвят,Материал,Пол,Възраст' | split: ','
+-%}
 <!-- Filter drawer overlay -->
 <div class="tg-filter-overlay" id="tg-filter-overlay" data-tg-filter-close></div>
 
@@ -72,7 +77,7 @@
     {%- comment -%} Native Shopify filters (Search & Discovery): availability, price, vendor, type, options… {%- endcomment -%}
     {% for filter in collection.filters %}
       <details class="tg-facet" open>
-        <summary class="tg-facet-title">{{ filter.label }}<i aria-hidden="true"></i></summary>
+        <summary class="tg-facet-title">{%- assign _l = filter.label -%}{%- for k in tr_keys -%}{%- if k == _l -%}{%- assign _l = tr_vals[forloop.index0] -%}{%- break -%}{%- endif -%}{%- endfor -%}{{ _l }}<i aria-hidden="true"></i></summary>
         <div class="tg-facet-body">
           {% case filter.type %}
             {% when 'list' %}
@@ -80,7 +85,7 @@
                 <label class="tg-filter-option{% if value.count == 0 and value.active == false %} is-empty{% endif %}">
                   <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} onchange="tgApplyFilters()">
                   <span class="tg-filter-check"></span>
-                  <span class="tg-filter-label">{{ value.label }}</span>
+                  <span class="tg-filter-label">{%- assign _l = value.label -%}{%- for k in tr_keys -%}{%- if k == _l -%}{%- assign _l = tr_vals[forloop.index0] -%}{%- break -%}{%- endif -%}{%- endfor -%}{{ _l }}</span>
                   <span class="tg-filter-count">{{ value.count }}</span>
                 </label>
               {% endfor %}
@@ -264,7 +269,7 @@
           <a href="{{ href }}" class="tg-coll-chip" rel="nofollow"><span>{{ tag | split: ': ' | last }}</span><i aria-hidden="true">×</i></a>
         {% endfor %}
         {% for filter in collection.filters %}
-          {% for value in filter.active_values %}<a href="{{ value.url_to_remove }}" class="tg-coll-chip"><span>{{ value.label }}</span><i aria-hidden="true">×</i></a>{% endfor %}
+          {% for value in filter.active_values %}<a href="{{ value.url_to_remove }}" class="tg-coll-chip"><span>{%- assign _l = value.label -%}{%- for k in tr_keys -%}{%- if k == _l -%}{%- assign _l = tr_vals[forloop.index0] -%}{%- break -%}{%- endif -%}{%- endfor -%}{{ _l }}</span><i aria-hidden="true">×</i></a>{% endfor %}
           {% if filter.type == 'price_range' and filter.min_value.value != blank or filter.max_value.value != blank %}<a href="{{ filter.url_to_remove }}" class="tg-coll-chip"><span>{{ filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money }}</span><i aria-hidden="true">×</i></a>{% endif %}
         {% endfor %}
         <a href="{{ collection.url }}{{ sort_query }}" class="tg-coll-chip tg-coll-chip--clear">Изчисти всички</a>
