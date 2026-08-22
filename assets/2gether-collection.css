@@ -1246,3 +1246,62 @@ body.tg-collection-active .content-for-layout {
   margin-top: auto;
   padding-top: var(--tg-s2);
 }
+
+/* ═══════════════════════════════════════════════
+   STANDARD LAYOUT — facets left, controls on top
+   ═══════════════════════════════════════════════ */
+@media (min-width: 1025px) {
+  .tg-collection-page { display: grid; grid-template-columns: 272px minmax(0, 1fr); gap: var(--tg-s7); align-items: start; }
+  .tg-coll-sidebar {
+    position: sticky; top: calc(var(--header-min-block-size, 88px) + 16px); max-height: calc(100vh - var(--header-min-block-size, 88px) - 32px); overflow-y: auto;
+    transform: none !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important;
+    left: auto; right: auto; bottom: auto; width: auto; height: auto; border-radius: 4px; border: 1px solid var(--tg-divider); background: var(--tg-surface-raised); padding: var(--tg-s4) var(--tg-s5) var(--tg-s5); z-index: 1;
+    scrollbar-width: thin;
+  }
+  .tg-filter-overlay { display: none !important; }
+  .tg-filter-close { display: none; }
+  .tg-filter-toggle { display: none; }
+}
+.tg-coll-sidebar-head { display: flex; align-items: center; gap: var(--tg-s3); padding-bottom: var(--tg-s3); border-bottom: 1px solid var(--tg-divider); margin-bottom: var(--tg-s2); }
+.tg-coll-sidebar-title { font-family: 'Technor', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; flex: 1; }
+.tg-coll-sidebar-title em { font-style: normal; color: var(--tg-ink); background: var(--tg-flame); padding: 1px 7px; margin-left: 6px; font-size: 11px; clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
+.tg-coll-sidebar-head .tg-filter-clear { font-size: 12px; color: var(--tg-text-secondary); text-decoration: none; border-bottom: 1px solid var(--tg-divider); }
+.tg-coll-sidebar-head .tg-filter-clear:hover { color: var(--tg-flame); border-color: var(--tg-flame); }
+
+.tg-facet { border-bottom: 1px solid var(--tg-divider); }
+.tg-facet:last-of-type { border-bottom: 0; }
+.tg-facet-title { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: var(--tg-s4) 0; font-family: 'General Sans', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tg-text-primary); user-select: none; }
+.tg-facet-title::-webkit-details-marker { display: none; }
+.tg-facet-title i { width: 18px; height: 18px; position: relative; flex-shrink: 0; }
+.tg-facet-title i::before, .tg-facet-title i::after { content: ''; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; background: var(--tg-flame); transform: translate(-50%, -50%); transition: transform var(--tg-dur-med); }
+.tg-facet-title i::after { transform: translate(-50%, -50%) rotate(90deg); }
+.tg-facet[open] .tg-facet-title i::after { transform: translate(-50%, -50%) rotate(0); }
+.tg-facet-body { padding: 0 0 var(--tg-s4); display: flex; flex-direction: column; gap: 2px; }
+.tg-filter-option--link { display: flex; align-items: center; gap: 10px; padding: 6px 0; text-decoration: none; color: var(--tg-text-secondary); font-size: 14px; cursor: pointer; transition: color var(--tg-dur-fast); }
+.tg-filter-option--link:hover { color: var(--tg-text-primary); }
+.tg-filter-option--link .tg-filter-check { width: 16px; height: 16px; border: 1.5px solid var(--tg-text-muted); border-radius: 2px; flex-shrink: 0; position: relative; transition: all var(--tg-dur-fast); }
+.tg-filter-option--link.is-on { color: var(--tg-text-primary); }
+.tg-filter-option--link.is-on .tg-filter-check { background: var(--tg-flame); border-color: var(--tg-flame); }
+.tg-filter-option--link.is-on .tg-filter-check::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid var(--tg-ink); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.tg-filter-option.is-empty { opacity: 0.45; }
+.tg-facet-body .is-extra { display: none; }
+.tg-facet-body.is-expanded .is-extra { display: flex; }
+.tg-facet-more { align-self: flex-start; margin-top: 6px; background: none; border: 0; padding: 0; color: var(--tg-flame); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-bottom: 1px solid transparent; }
+.tg-facet-more:hover { border-color: var(--tg-flame); }
+.tg-filter-price-go { padding: 8px 12px; background: var(--tg-flame); color: var(--tg-ink); border: 0; font-weight: 700; font-size: 12px; cursor: pointer; clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
+
+.tg-coll-chips { display: flex; flex-wrap: wrap; gap: var(--tg-s2); margin: calc(-1 * var(--tg-s3)) 0 var(--tg-s5); }
+.tg-coll-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px 6px 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--tg-text-primary); background: var(--tg-surface-elevated); border: 1px solid var(--tg-divider); text-decoration: none; clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); transition: border-color var(--tg-dur-fast), color var(--tg-dur-fast); }
+.tg-coll-chip i { font-style: normal; color: var(--tg-flame); font-size: 14px; line-height: 1; }
+.tg-coll-chip:hover { border-color: var(--tg-flame); }
+.tg-coll-chip--clear { background: none; border-color: transparent; color: var(--tg-text-secondary); }
+.tg-coll-chip--clear:hover { color: var(--tg-flame); }
+
+.tg-coll-density { display: inline-flex; gap: 2px; border: 1px solid var(--tg-divider); border-radius: 3px; padding: 2px; }
+.tg-coll-density button { width: 32px; height: 30px; display: grid; place-items: center; background: none; border: 0; color: var(--tg-text-muted); cursor: pointer; border-radius: 2px; }
+.tg-coll-density button.is-active { background: var(--tg-surface-elevated); color: var(--tg-flame); }
+@media (max-width: 1024px) { .tg-coll-density { display: none; } }
+@media (min-width: 1025px) {
+  #tg-products-grid[data-density="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #tg-products-grid[data-density="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

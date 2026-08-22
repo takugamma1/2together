@@ -26,79 +26,118 @@
         endif
     endcase
   endfor
+  assign active_filter_count = active_filter_count | plus: current_tags.size
+
+  comment
+    Tag facets: every "Name: value" tag in the collection becomes a facet group.
+    Known families get a Bulgarian label + fixed order; spelling variants are merged.
+  endcomment
+  assign facet_map = 'Tyre Size|Tire Size=Размер гума;Tyre Width|Tire Width=Ширина гума;Rim Size=Размер капла;Rim Width=Ширина капла;Holes=Брой спици;Spoke Size=Дължина спици;Wheel Size=Размер колело;Frame Size=Размер рамка;Bicycle Type=Тип велосипед;Clothes Size=Размер;Size=Размер;Color=Цвят;Number Of Teeth=Брой зъби;Rise=Rise;Bearing Category=Лагер;EnduroGuard Size=Размер EnduroGuard'
+  assign facet_defs = facet_map | split: ';'
+  assign facet_tags = ''
+  for tag in collection.all_tags
+    if tag contains ': '
+      unless tag contains 'od-'
+        assign facet_tags = facet_tags | append: tag | append: '||'
+      endunless
+    endif
+  endfor
+  assign facet_tags = facet_tags | split: '||'
+  assign sort_query = ''
+  if sort_by != blank
+    assign sort_query = '?sort_by=' | append: sort_by
+  endif
+  assign current_handles = ''
+  for t in current_tags
+    assign current_handles = current_handles | append: t | handleize | append: ','
+  endfor
+  assign current_handles = current_handles | split: ','
 -%}
 
 <!-- Filter drawer overlay -->
 <div class="tg-filter-overlay" id="tg-filter-overlay" data-tg-filter-close></div>
 
 <div class="tg-collection-page">
-  <!-- ═══ FILTER DRAWER (overlay on all viewports) ═══ -->
-  <aside class="tg-coll-sidebar" id="tg-filter-sidebar" aria-hidden="true">
+  <!-- ═══ FILTERS: sidebar on desktop, drawer on mobile ═══ -->
+  <aside class="tg-coll-sidebar" id="tg-filter-sidebar" aria-label="Филтри">
     <div class="tg-coll-sidebar-head">
-      <span class="tg-coll-sidebar-title">Филтри</span>
+      <span class="tg-coll-sidebar-title">Филтри{% if active_filter_count > 0 %} <em>{{ active_filter_count }}</em>{% endif %}</span>
+      {% if active_filter_count > 0 %}<a href="{{ collection.url }}{{ sort_query }}" class="tg-filter-clear">Изчисти</a>{% endif %}
       <button class="tg-filter-close" type="button" data-tg-filter-close aria-label="Затвори филтрите">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
 
+    {%- comment -%} Native Shopify filters (Search & Discovery): availability, price, vendor, type, options… {%- endcomment -%}
     {% for filter in collection.filters %}
-      <div class="tg-filter-group">
-        <div class="tg-filter-title">{{ filter.label }}</div>
-
-        {% case filter.type %}
-          {% when 'list' %}
-            {% for value in filter.values %}
-              <label class="tg-filter-option">
-                <input
-                  type="checkbox"
-                  name="{{ value.param_name }}"
-                  value="{{ value.value }}"
-                  {% if value.active %}checked{% endif %}
-                  onchange="tgApplyFilters()"
-                >
-                <span class="tg-filter-check"></span>
-                <span class="tg-filter-label">{{ value.label }}</span>
-                <span class="tg-filter-count">{{ value.count }}</span>
-              </label>
-            {% endfor %}
-
-          {% when 'price_range' %}
-            <div class="tg-filter-price-inputs">
-              <input
-                type="number"
-                class="tg-filter-price-input"
-                name="{{ filter.min_value.param_name }}"
-                id="tg-price-min"
-                value="{{ filter.min_value.value | default: 0 | money_without_currency | replace: ',', '' }}"
-                min="0"
-                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                placeholder="{{ 0 | money }}"
-              >
-              <span class="tg-filter-price-sep">—</span>
-              <input
-                type="number"
-                class="tg-filter-price-input"
-                name="{{ filter.max_value.param_name }}"
-                id="tg-price-max"
-                value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', '' }}"
-                min="0"
-                max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                placeholder="{{ filter.range_max | money }}"
-              >
-            </div>
-
-        {% endcase %}
-      </div>
+      <details class="tg-facet" open>
+        <summary class="tg-facet-title">{{ filter.label }}<i aria-hidden="true"></i></summary>
+        <div class="tg-facet-body">
+          {% case filter.type %}
+            {% when 'list' %}
+              {% for value in filter.values %}
+                <label class="tg-filter-option{% if value.count == 0 and value.active == false %} is-empty{% endif %}">
+                  <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} onchange="tgApplyFilters()">
+                  <span class="tg-filter-check"></span>
+                  <span class="tg-filter-label">{{ value.label }}</span>
+                  <span class="tg-filter-count">{{ value.count }}</span>
+                </label>
+              {% endfor %}
+            {% when 'price_range' %}
+              <div class="tg-filter-price-inputs">
+                <input type="number" class="tg-filter-price-input" name="{{ filter.min_value.param_name }}" id="tg-price-min" value="{{ filter.min_value.value | default: 0 | money_without_currency | replace: ',', '' }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="{{ 0 | money }}">
+                <span class="tg-filter-price-sep">—</span>
+                <input type="number" class="tg-filter-price-input" name="{{ filter.max_value.param_name }}" id="tg-price-max" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', '' }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="{{ filter.range_max | money }}">
+                <button type="button" class="tg-filter-price-go" onclick="tgApplyFilters()">OK</button>
+              </div>
+          {% endcase %}
+        </div>
+      </details>
     {% endfor %}
 
-    {% if collection.filters.size > 0 %}
-      <div class="tg-filter-actions">
-        {% if active_filter_count > 0 %}
-          <a href="{{ collection.url }}" class="tg-filter-clear">Изчисти всички</a>
-        {% endif %}
-        <button class="tg-filter-apply" type="button" onclick="tgApplyFilters()">Приложи филтрите</button>
-      </div>
-    {% endif %}
+    {%- comment -%} Tag facets — server-side filtering via /collections/handle/tag-a+tag-b (AND) {%- endcomment -%}
+    {%- assign rendered_prefixes = '' -%}
+    {% for def in facet_defs %}
+      {%- assign def_parts = def | split: '=' -%}
+      {%- assign prefixes = def_parts[0] | split: '|' -%}
+      {%- assign label = def_parts[1] -%}
+      {%- assign values = '' -%}
+      {% for tag in facet_tags %}
+        {%- assign tag_prefix = tag | split: ': ' | first -%}
+        {%- if prefixes contains tag_prefix -%}
+          {%- assign values = values | append: tag | append: '||' -%}
+        {%- endif -%}
+      {% endfor %}
+      {%- assign values = values | split: '||' | uniq | sort_natural -%}
+      {% if values.size > 0 %}
+        {%- assign rendered_prefixes = rendered_prefixes | append: def_parts[0] | append: '|' -%}
+        {%- assign group_active = false -%}
+        {% for tag in values %}{% if current_tags contains tag %}{% assign group_active = true %}{% endif %}{% endfor %}
+        <details class="tg-facet tg-facet--tags" {% if forloop.index <= 4 or group_active %}open{% endif %}>
+          <summary class="tg-facet-title">{{ label }}<i aria-hidden="true"></i></summary>
+          <div class="tg-facet-body" data-tg-facet-body>
+            {% for tag in values %}
+              {%- assign tag_handle = tag | handleize -%}
+              {%- assign is_on = false -%}
+              {%- if current_tags contains tag -%}{%- assign is_on = true -%}{%- endif -%}
+              {%- comment -%} build the toggled tag set {%- endcomment -%}
+              {%- assign next = '' -%}
+              {%- for h in current_handles -%}
+                {%- if h != blank and h != tag_handle -%}{%- assign next = next | append: h | append: '+' -%}{%- endif -%}
+              {%- endfor -%}
+              {%- unless is_on -%}{%- assign next = next | append: tag_handle | append: '+' -%}{%- endunless -%}
+              {%- assign next = next | split: '+' | join: '+' -%}
+              {%- if next == blank -%}{%- assign href = collection.url | append: sort_query -%}{%- else -%}{%- assign href = collection.url | append: '/' | append: next | append: sort_query -%}{%- endif -%}
+              <a href="{{ href }}" class="tg-filter-option tg-filter-option--link{% if is_on %} is-on{% endif %}{% if forloop.index > 8 %} is-extra{% endif %}" rel="nofollow">
+                <span class="tg-filter-check"></span>
+                <span class="tg-filter-label">{{ tag | split: ': ' | last }}</span>
+              </a>
+            {% endfor %}
+            {% if values.size > 8 %}<button type="button" class="tg-facet-more" data-tg-facet-more>Покажи всички ({{ values.size }})</button>{% endif %}
+          </div>
+        </details>
+      {% endif %}
+    {% endfor %}
   </aside>
 
   <!-- ═══ MAIN CONTENT ═══ -->
@@ -151,25 +190,6 @@
           {% endfor %}
         </div>
       </nav>
-    {% else %}
-      {%- comment -%} No menu set yet: show a BOUNDED fallback (never the full list) so it can't become an infinity bar. {%- endcomment -%}
-      <nav class="tg-coll-cats" aria-label="Категории">
-        <div class="tg-coll-cats-track">
-          <a href="{{ routes.all_products_collection_url }}" class="tg-coll-cat{% if collection.handle == 'all' %} is-active{% endif %}">{{ section.settings.all_label | default: 'Всички' }}</a>
-          {%- assign shown = 0 -%}
-          {% for c in collections %}
-            {%- if shown >= cat_limit %}{% break %}{% endif -%}
-            {%- unless c.handle == 'frontpage' or c.products_count == 0 -%}
-              <a
-                href="{{ c.url }}"
-                class="tg-coll-cat{% if c.id == collection.id %} is-active{% endif %}"
-              >{{ c.title }}</a>
-              {%- assign shown = shown | plus: 1 -%}
-            {%- endunless -%}
-          {% endfor %}
-          <a href="{{ routes.collections_url }}" class="tg-coll-cat tg-coll-cat--more">{{ section.settings.more_label | default: 'Всички категории →' }}</a>
-        </div>
-      </nav>
     {% endif %}
 
     <!-- Hero Banner -->
@@ -188,31 +208,21 @@
       </div>
     </div>
 
-    <!-- Toolbar: Filters · Sort · Count -->
+    <!-- Toolbar: count · active chips · sort · density -->
     <div class="tg-coll-toolbar">
       <div class="tg-coll-toolbar-left">
-        {% if collection.filters.size > 0 %}
-          <button type="button" class="tg-filter-toggle" data-tg-filter-open aria-expanded="false" aria-controls="tg-filter-sidebar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6M9 8h6M17 16h6"/></svg>
-            <span>Филтри</span>
-            {% if active_filter_count > 0 %}
-              <span class="tg-filter-toggle-count">{{ active_filter_count }}</span>
-            {% endif %}
-          </button>
-        {% endif %}
+        <button type="button" class="tg-filter-toggle" data-tg-filter-open aria-expanded="false" aria-controls="tg-filter-sidebar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6M9 8h6M17 16h6"/></svg>
+          <span>Филтри</span>
+          {% if active_filter_count > 0 %}<span class="tg-filter-toggle-count">{{ active_filter_count }}</span>{% endif %}
+        </button>
         <div class="tg-coll-count">{{ products_count }} {{ products_count | pluralize: 'продукт', 'продукта' }}</div>
       </div>
       <div class="tg-coll-toolbar-right">
         <div class="tg-search-wrap" data-tg-suggest>
           <label class="tg-search-bar" for="tg-coll-search-input">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
-            <input
-              type="search"
-              id="tg-coll-search-input"
-              placeholder="{{ section.settings.search_placeholder | default: 'Търси в колекцията…' }}"
-              autocomplete="off"
-              data-tg-coll-search
-            >
+            <input type="search" id="tg-coll-search-input" placeholder="{{ section.settings.search_placeholder | default: 'Търси в колекцията…' }}" autocomplete="off" data-tg-coll-search>
           </label>
         </div>
         <div class="tg-coll-sort">
@@ -224,12 +234,33 @@
             <option value="title-descending" {% if sort_by == 'title-descending' %}selected{% endif %}>Я–А</option>
             <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Цена: ниска → висока</option>
             <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Цена: висока → ниска</option>
-            <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected{% endif %}>Най-стари</option>
             <option value="created-descending" {% if sort_by == 'created-descending' %}selected{% endif %}>Най-нови</option>
           </select>
         </div>
+        <div class="tg-coll-density" role="group" aria-label="Изглед">
+          <button type="button" data-tg-density="3" aria-label="3 колони"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="5.5" height="5.5"/><rect x="9.25" y="2" width="5.5" height="5.5"/><rect x="16.5" y="2" width="5.5" height="5.5"/><rect x="2" y="9.25" width="5.5" height="5.5"/><rect x="9.25" y="9.25" width="5.5" height="5.5"/><rect x="16.5" y="9.25" width="5.5" height="5.5"/></svg></button>
+          <button type="button" data-tg-density="4" aria-label="4 колони"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="2" width="4" height="4"/><rect x="8" y="2" width="4" height="4"/><rect x="14" y="2" width="4" height="4"/><rect x="20" y="2" width="2" height="4"/><rect x="2" y="8" width="4" height="4"/><rect x="8" y="8" width="4" height="4"/><rect x="14" y="8" width="4" height="4"/><rect x="20" y="8" width="2" height="4"/></svg></button>
+        </div>
       </div>
     </div>
+
+    {% if current_tags.size > 0 or active_filter_count > current_tags.size %}
+      <div class="tg-coll-chips">
+        {% for tag in current_tags %}
+          {%- assign tag_handle = tag | handleize -%}
+          {%- assign next = '' -%}
+          {%- for h in current_handles -%}{%- if h != blank and h != tag_handle -%}{%- assign next = next | append: h | append: '+' -%}{%- endif -%}{%- endfor -%}
+          {%- assign next = next | split: '+' | join: '+' -%}
+          {%- if next == blank -%}{%- assign href = collection.url | append: sort_query -%}{%- else -%}{%- assign href = collection.url | append: '/' | append: next | append: sort_query -%}{%- endif -%}
+          <a href="{{ href }}" class="tg-coll-chip" rel="nofollow"><span>{{ tag | split: ': ' | last }}</span><i aria-hidden="true">×</i></a>
+        {% endfor %}
+        {% for filter in collection.filters %}
+          {% for value in filter.active_values %}<a href="{{ value.url_to_remove }}" class="tg-coll-chip"><span>{{ value.label }}</span><i aria-hidden="true">×</i></a>{% endfor %}
+          {% if filter.type == 'price_range' and filter.min_value.value != blank or filter.max_value.value != blank %}<a href="{{ filter.url_to_remove }}" class="tg-coll-chip"><span>{{ filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money }}</span><i aria-hidden="true">×</i></a>{% endif %}
+        {% endfor %}
+        <a href="{{ collection.url }}{{ sort_query }}" class="tg-coll-chip tg-coll-chip--clear">Изчисти всички</a>
+      </div>
+    {% endif %}
 
     <!-- Product Grid -->
     <div class="tg-coll-grid" id="tg-products-grid">
@@ -387,6 +418,21 @@
     }
 
     if (openBtn) openBtn.addEventListener('click', open);
+    // Facet "show more"
+    document.querySelectorAll('[data-tg-facet-more]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var body = btn.closest('[data-tg-facet-body]');
+        body.classList.toggle('is-expanded');
+        btn.textContent = body.classList.contains('is-expanded') ? 'Покажи по-малко' : btn.getAttribute('data-label') || 'Покажи всички';
+      });
+      btn.setAttribute('data-label', btn.textContent);
+    });
+    // Grid density (remembered)
+    var grid = document.getElementById('tg-products-grid');
+    var saved = localStorage.getItem('tg-coll-density');
+    function setDensity(n) { if (!grid) return; grid.setAttribute('data-density', n); document.querySelectorAll('[data-tg-density]').forEach(function(b) { b.classList.toggle('is-active', b.getAttribute('data-tg-density') === String(n)); }); localStorage.setItem('tg-coll-density', n); }
+    setDensity(saved || 3);
+    document.querySelectorAll('[data-tg-density]').forEach(function(b) { b.addEventListener('click', function() { setDensity(b.getAttribute('data-tg-density')); }); });
     document.querySelectorAll('[data-tg-filter-close]').forEach(function(el) {
       el.addEventListener('click', close);
     });
@@ -444,6 +490,7 @@
 
   // Filter application
   function tgApplyFilters() {
+    // keep the tag path (/collections/x/tag-a+tag-b) so tag facets and native filters combine
     var url = new URL(window.location.pathname, window.location.origin);
 
     // Preserve sort
