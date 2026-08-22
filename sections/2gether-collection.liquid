@@ -32,7 +32,8 @@
     Tag facets: every "Name: value" tag in the collection becomes a facet group.
     Known families get a Bulgarian label + fixed order; spelling variants are merged.
   endcomment
-  assign facet_map = 'Tyre Size|Tire Size=Размер гума;Tyre Width|Tire Width=Ширина гума;Rim Size=Размер капла;Rim Width=Ширина капла;Holes=Брой спици;Spoke Size=Дължина спици;Wheel Size=Размер колело;Frame Size=Размер рамка;Bicycle Type=Тип велосипед;Clothes Size=Размер;Size=Размер;Color=Цвят;Number Of Teeth=Брой зъби;Rise=Rise;Bearing Category=Лагер;EnduroGuard Size=Размер EnduroGuard'
+  assign facet_map = section.settings.facet_map | default: 'Tyre Size|Tire Size=Размер гума'
+  assign facet_map = facet_map | newline_to_br | split: '<br />' | join: ';'
   assign facet_defs = facet_map | split: ';'
   assign facet_tags = ''
   for tag in collection.all_tags
@@ -97,6 +98,14 @@
 
     {%- comment -%} Tag facets — server-side filtering via /collections/handle/tag-a+tag-b (AND) {%- endcomment -%}
     {%- assign rendered_prefixes = '' -%}
+    {%- comment -%} prefixes present in the collection but not in the map get a generic group {%- endcomment -%}
+    {%- assign extra_prefixes = '' -%}
+    {% for tag in facet_tags %}
+      {%- assign pfx = tag | split: ': ' | first -%}
+      {%- unless facet_map contains pfx -%}{%- assign extra_prefixes = extra_prefixes | append: pfx | append: '||' -%}{%- endunless -%}
+    {% endfor %}
+    {%- assign extra_prefixes = extra_prefixes | split: '||' | uniq -%}
+    {%- for pfx in extra_prefixes -%}{%- if pfx != blank -%}{%- assign facet_defs = facet_defs | concat: pfx | split: '|' -%}{%- endif -%}{%- endfor -%}
     {% for def in facet_defs %}
       {%- assign def_parts = def | split: '=' -%}
       {%- assign prefixes = def_parts[0] | split: '|' -%}
@@ -598,6 +607,7 @@
   "name": "2Gether Collection",
   "tag": "section",
   "settings": [
+    { "type": "textarea", "id": "facet_map", "label": "Filter families (one per line: Tag prefix|alt prefix=Label)", "info": "Every \"Prefix: value\" product tag in a collection becomes a filter. Order here = order in the sidebar.", "default": "Tyre Size|Tire Size=Размер гума\nTyre Width|Tire Width=Ширина гума\nRim Size=Размер капла\nRim Width=Ширина капла\nClothes Size=Размер\nHelmet Size=Размер каска\nShoe Size=Размер обувки\nFrame Size=Размер рамка\nWheel Size=Размер колело\nGender=Пол\nType=Тип\nDiameter=Диаметър\nWidth=Ширина\nLength=Дължина\nCrank Length=Дължина курбел\nClamp=Захват\nRise=Rise\nTravel=Ход\nMount=Монтаж\nCompatibility=Съвместимост\nCompound=Компаунд / материал\nStandard=Стандарт\nSpacing=Ос\nHoles=Брой спици\nSpoke Type=Тип спица\nSpoke Size=Дължина спици\nPosition=Позиция\nNumber Of Teeth=Брой зъби\nShape=Форма\nOffset=Офсет\nLumens=Лумени\nVolume=Обем\nDeck Width=Ширина дъска\nLens=Стъкло\nBearing Size=Размер лагер\nBearing Category=Категория лагер\nBicycle Type=Тип велосипед\nColor=Цвят\nSize=Размер\nEnduroGuard Size=Размер EnduroGuard" },
     {
       "type": "text",
       "id": "hero_title",
