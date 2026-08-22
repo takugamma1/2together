@@ -1,5 +1,5 @@
 <section
-  class="tg-community tg-section"
+  class="tg-community tg-section{% if section.settings.content_side == 'left' %} tg-community--left{% endif %}"
   id="community"
   data-club-section
   data-msg-error="{{ section.settings.msg_error | escape }}"
@@ -174,6 +174,22 @@
   "tag": "section",
   "settings": [
     {
+      "type": "select",
+      "id": "content_side",
+      "label": "Content side",
+      "default": "right",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right (image left)"
+        },
+        {
+          "value": "left",
+          "label": "Left (image right)"
+        }
+      ]
+    },
+    {
       "type": "image_picker",
       "id": "background_image",
       "label": "Background image"
@@ -222,7 +238,16 @@
       "id": "poll_mode",
       "label": "Voting block",
       "default": "link",
-      "options": [ { "value": "link", "label": "Link (title + text + button)" }, { "value": "vote", "label": "Live voting (members)" } ]
+      "options": [
+        {
+          "value": "link",
+          "label": "Link (title + text + button)"
+        },
+        {
+          "value": "vote",
+          "label": "Live voting (members)"
+        }
+      ]
     },
     {
       "type": "text",
@@ -325,11 +350,36 @@
     {
       "name": "2Gether Community",
       "blocks": [
-        { "type": "avatar", "settings": { "initials": "КВ" } },
-        { "type": "avatar", "settings": { "initials": "МД" } },
-        { "type": "avatar", "settings": { "initials": "ИП" } },
-        { "type": "avatar", "settings": { "initials": "АС" } },
-        { "type": "avatar", "settings": { "initials": "ТН" } }
+        {
+          "type": "avatar",
+          "settings": {
+            "initials": "КВ"
+          }
+        },
+        {
+          "type": "avatar",
+          "settings": {
+            "initials": "МД"
+          }
+        },
+        {
+          "type": "avatar",
+          "settings": {
+            "initials": "ИП"
+          }
+        },
+        {
+          "type": "avatar",
+          "settings": {
+            "initials": "АС"
+          }
+        },
+        {
+          "type": "avatar",
+          "settings": {
+            "initials": "ТН"
+          }
+        }
       ]
     }
   ]
