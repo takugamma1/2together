@@ -1,0 +1,226 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-ramps.css' | asset_url | stylesheet_tag }}
+{{ '2gether-service-booking.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable RemoteAsset %}
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+{% # theme-check-enable RemoteAsset %}
+
+{%- liquid
+  assign st = section.settings
+  assign services = shop.metaobjects.service_type.values | sort: 'sort'
+  assign mechanics = shop.metaobjects.mechanic.values | sort: 'sort'
+-%}
+
+<div class="tg-ramps-page tg-sb" data-tg-sb data-endpoint="{{ st.endpoint | default: '/apps/club' }}" data-lead="{{ st.lead_hours | default: 2 }}">
+  <section class="tg-sb-hero">
+    {% if st.hero_image != blank %}<div class="tg-sb-hero-bg">{{ st.hero_image | image_url: width: 2000 | image_tag: loading: 'eager', class: 'tg-rp-cover' }}</div>{% endif %}
+    <div class="tg-rp-wrap tg-sb-hero-inner">
+      <span class="tg-eyebrow">{{ st.hero_eyebrow }}</span>
+      <h1 class="tg-rp-h1">{{ st.hero_title }} <span>{{ st.hero_title_accent }}</span></h1>
+      <p class="tg-rp-lead">{{ st.hero_sub }}</p>
+      <a href="#tg-sb-book" class="tg-rp-btn tg-rp-btn--primary">{{ st.hero_cta }}</a>
+    </div>
+  </section>
+
+  <section id="tg-sb-book" class="tg-rp-section">
+    <div class="tg-rp-wrap">
+      <ol class="tg-sb-steps" data-sb-steps>
+        <li class="is-active" data-sb-step-tab="1"><i>1</i>{{ st.step1_tab }}</li>
+        <li data-sb-step-tab="2"><i>2</i>{{ st.step2_tab }}</li>
+        <li data-sb-step-tab="3"><i>3</i>{{ st.step3_tab }}</li>
+        <li data-sb-step-tab="4"><i>4</i>{{ st.step4_tab }}</li>
+      </ol>
+
+      <!-- STEP 1: service -->
+      <div class="tg-sb-step is-active" data-sb-step="1">
+        <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.step1_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.step1_title }}</h2><p class="tg-rp-text">{{ st.step1_text }}</p></header>
+        <div class="tg-sb-cards">
+          {% for s in services %}
+            {% if s.active %}
+              <button type="button" class="tg-sb-card" data-sb-service="{{ s.system.handle }}" data-name="{{ s.name | escape }}" data-duration="{{ s.duration_minutes }}" data-price="{{ s.price_from }}">
+                <span class="tg-sb-card-top"><strong>{{ s.name }}</strong><em>{{ s.duration_minutes }} мин</em></span>
+                {% if s.description != blank %}<span class="tg-sb-card-desc">{{ s.description }}</span>{% endif %}
+                {% if s.price_from != blank %}<span class="tg-sb-card-price">от €{{ s.price_from }}</span>{% endif %}
+              </button>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="tg-sb-nav"><button type="button" class="tg-rp-btn tg-rp-btn--primary" data-sb-next disabled>{{ st.next_label }}</button></div>
+      </div>
+
+      <!-- STEP 2: mechanic -->
+      <div class="tg-sb-step" data-sb-step="2">
+        <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.step2_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.step2_title }}</h2><p class="tg-rp-text">{{ st.step2_text }}</p></header>
+        <div class="tg-sb-cards tg-sb-cards--mech">
+          <button type="button" class="tg-sb-card tg-sb-mech is-selected" data-sb-mechanic="any" data-name="{{ st.any_mechanic | escape }}">
+            <span class="tg-sb-mech-avatar tg-sb-mech-avatar--any">{% render '2gether-ramps-icon', name: 'wrench' %}</span>
+            <span class="tg-sb-card-top"><strong>{{ st.any_mechanic }}</strong></span><span class="tg-sb-card-desc">{{ st.any_mechanic_text }}</span>
+          </button>
+          {% for m in mechanics %}
+            {% if m.active %}
+              <button type="button" class="tg-sb-card tg-sb-mech" data-sb-mechanic="{{ m.system.handle }}" data-name="{{ m.name | escape }}">
+                <span class="tg-sb-mech-avatar">{% if m.photo != blank %}{{ m.photo | image_url: width: 240 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}{% else %}{{ m.name | slice: 0, 1 }}{% endif %}</span>
+                <span class="tg-sb-card-top"><strong>{{ m.name }}</strong></span>
+                {% if m.specialties != blank %}<span class="tg-sb-card-desc">{{ m.specialties }}</span>{% endif %}
+              </button>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="tg-sb-nav"><button type="button" class="tg-rp-btn tg-rp-btn--ghost" data-sb-back>{{ st.back_label }}</button><button type="button" class="tg-rp-btn tg-rp-btn--primary" data-sb-next>{{ st.next_label }}</button></div>
+      </div>
+
+      <!-- STEP 3: date + time -->
+      <div class="tg-sb-step" data-sb-step="3">
+        <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.step3_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.step3_title }}</h2><p class="tg-rp-text" data-sb-step3-text>{{ st.step3_text }}</p></header>
+        <div class="tg-sb-datetime">
+          <div class="tg-sb-cal" data-sb-cal>
+            <div class="tg-sb-cal-head"><button type="button" data-sb-cal-prev aria-label="Предишен месец">‹</button><strong data-sb-cal-title></strong><button type="button" data-sb-cal-next aria-label="Следващ месец">›</button></div>
+            {%- assign sb_weekdays = 'Пн,Вт,Ср,Чт,Пт,Сб,Нд' | split: ',' -%}<div class="tg-sb-cal-week">{% for d in sb_weekdays %}<span>{{ d }}</span>{% endfor %}</div>
+            <div class="tg-sb-cal-days" data-sb-cal-days></div>
+            <p class="tg-sb-cal-note" data-sb-cal-note>{{ st.loading_text }}</p>
+          </div>
+          <div class="tg-sb-times">
+            <h3 class="tg-rp-h3" data-sb-times-title>{{ st.pick_day_text }}</h3>
+            <div class="tg-sb-time-groups" data-sb-times></div>
+          </div>
+        </div>
+        <div class="tg-sb-nav"><button type="button" class="tg-rp-btn tg-rp-btn--ghost" data-sb-back>{{ st.back_label }}</button><button type="button" class="tg-rp-btn tg-rp-btn--primary" data-sb-next disabled>{{ st.next_label }}</button></div>
+      </div>
+
+      <!-- STEP 4: details -->
+      <div class="tg-sb-step" data-sb-step="4">
+        <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.step4_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.step4_title }}</h2></header>
+        <div class="tg-sb-final">
+          <form class="tg-sb-form" data-sb-form novalidate>
+            <label><span>{{ st.f_name }}</span><input type="text" name="name" required autocomplete="name"></label>
+            <label><span>{{ st.f_phone }}</span><input type="tel" name="phone" required autocomplete="tel"></label>
+            <label><span>{{ st.f_email }}</span><input type="email" name="email" autocomplete="email"></label>
+            <label><span>{{ st.f_bike }}</span><input type="text" name="bike" placeholder="{{ st.f_bike_ph | escape }}"></label>
+            <label class="tg-sb-full"><span>{{ st.f_note }}</span><textarea name="note" rows="3" placeholder="{{ st.f_note_ph | escape }}"></textarea></label>
+            <p class="tg-sb-error" data-sb-error hidden></p>
+            <div class="tg-sb-nav"><button type="button" class="tg-rp-btn tg-rp-btn--ghost" data-sb-back>{{ st.back_label }}</button><button type="submit" class="tg-rp-btn tg-rp-btn--primary" data-sb-submit>{{ st.submit_label }}</button></div>
+            <p class="tg-sb-note">{{ st.form_note }}</p>
+          </form>
+          <aside class="tg-sb-summary" data-sb-summary>
+            <span class="tg-eyebrow">{{ st.summary_title }}</span>
+            <dl>
+              <div><dt>{{ st.step1_tab }}</dt><dd data-sum="service">—</dd></div>
+              <div><dt>{{ st.step2_tab }}</dt><dd data-sum="mechanic">—</dd></div>
+              <div><dt>{{ st.step3_tab }}</dt><dd data-sum="when">—</dd></div>
+              <div><dt>{{ st.sum_duration }}</dt><dd data-sum="duration">—</dd></div>
+              <div class="tg-sb-sum-total"><dt>{{ st.sum_price }}</dt><dd data-sum="price">—</dd></div>
+            </dl>
+          </aside>
+        </div>
+      </div>
+
+      <!-- DONE -->
+      <div class="tg-sb-step tg-sb-done" data-sb-step="done">
+        <div class="tg-sb-done-card">
+          <span class="tg-eyebrow">{{ st.done_eyebrow }}</span>
+          <h2 class="tg-rp-h2">{{ st.done_title }}</h2>
+          <p class="tg-rp-text" data-sb-done-text></p>
+          <p class="tg-sb-ref">№ <strong data-sb-ref></strong></p>
+          <a href="{{ routes.root_url }}" class="tg-rp-btn tg-rp-btn--ghost">{{ st.done_cta }}</a>
+        </div>
+      </div>
+
+      {%- comment -%} Fallback: e-mail the shop through Shopify when the worker is unreachable {%- endcomment -%}
+      {%- form 'contact', id: 'tg-sb-fallback', class: 'tg-sb-fallback' -%}
+        <input type="hidden" name="contact[type]" value="Service booking">
+        <input type="hidden" name="contact[name]" data-fb="name"><input type="hidden" name="contact[phone]" data-fb="phone"><input type="hidden" name="contact[email]" data-fb="email"><input type="hidden" name="contact[details]" data-fb="details">
+      {%- endform -%}
+    </div>
+  </section>
+
+  <!-- PRICES -->
+  {% if st.show_prices %}
+  <section id="tg-sb-prices" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap tg-rp-wrap--narrow">
+      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.prices_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.prices_title }}</h2></header>
+      <div class="tg-rp-table-wrap"><table class="tg-rp-table tg-sb-prices"><thead><tr><th>{{ st.step1_tab }}</th><th>{{ st.sum_duration }}</th><th>{{ st.sum_price }}</th></tr></thead><tbody>
+        {% for s in services %}{% if s.active %}<tr><th scope="row">{{ s.name }}{% if s.description != blank %}<small>{{ s.description }}</small>{% endif %}</th><td>{{ s.duration_minutes }} мин</td><td>{% if s.price_from != blank %}от €{{ s.price_from }}{% else %}—{% endif %}</td></tr>{% endif %}{% endfor %}
+      </tbody></table></div>
+      <p class="tg-rp-text">{{ st.prices_note }}</p>
+    </div>
+  </section>
+  {% endif %}
+</div>
+
+<script>
+  window.TG_SB = {
+    months: {{ 'януари,февруари,март,април,май,юни,юли,август,септември,октомври,ноември,декември' | split: ',' | json }},
+    t: { pickDay: {{ st.pick_day_text | json }}, noSlots: {{ st.no_slots_text | json }}, loading: {{ st.loading_text | json }}, free: {{ st.free_text | json }}, anyMech: {{ st.any_mechanic | json }}, errSlot: {{ st.err_slot | json }}, errGeneric: {{ st.err_generic | json }}, errFields: {{ st.err_fields | json }}, doneText: {{ st.done_text | json }}, doneFallback: {{ st.done_fallback | json }}, sending: {{ st.sending_label | json }} }
+  };
+</script>
+<script src="{{ '2gether-service-booking.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Service booking",
+  "tag": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Услугите и механиците се редактират в Content → Metaobjects (Service type / Mechanic). Работното време на всеки механик е в неговия запис." },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Background" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Сервиз · Варна" },
+    { "type": "text", "id": "hero_title", "label": "Title", "default": "ЗАПИШИ ЧАС ЗА" },
+    { "type": "text", "id": "hero_title_accent", "label": "Title accent", "default": "СЕРВИЗ" },
+    { "type": "textarea", "id": "hero_sub", "label": "Subtitle", "default": "Избираш услуга, механик и час. Без чакане, без телефонни обаждания — колелото ти е готово, когато ти е удобно." },
+    { "type": "text", "id": "hero_cta", "label": "CTA", "default": "Запази час" },
+    { "type": "header", "content": "Wizard" },
+    { "type": "text", "id": "endpoint", "label": "Worker endpoint", "default": "/apps/club" },
+    { "type": "number", "id": "lead_hours", "label": "Minimum hours ahead (display only; worker enforces)", "default": 2 },
+    { "type": "text", "id": "step1_tab", "label": "Step 1 tab", "default": "Услуга" },
+    { "type": "text", "id": "step2_tab", "label": "Step 2 tab", "default": "Механик" },
+    { "type": "text", "id": "step3_tab", "label": "Step 3 tab", "default": "Ден и час" },
+    { "type": "text", "id": "step4_tab", "label": "Step 4 tab", "default": "Данни" },
+    { "type": "text", "id": "next_label", "label": "Next", "default": "Напред" },
+    { "type": "text", "id": "back_label", "label": "Back", "default": "Назад" },
+    { "type": "text", "id": "step1_eyebrow", "label": "Step 1 eyebrow", "default": "01 · Какво ти трябва" },
+    { "type": "text", "id": "step1_title", "label": "Step 1 title", "default": "ИЗБЕРИ УСЛУГА" },
+    { "type": "textarea", "id": "step1_text", "label": "Step 1 text", "default": "Ако не си сигурен какво точно — избери „Диагностика“ и ще ти кажем на място." },
+    { "type": "text", "id": "step2_eyebrow", "label": "Step 2 eyebrow", "default": "02 · Кой да се заеме" },
+    { "type": "text", "id": "step2_title", "label": "Step 2 title", "default": "ИЗБЕРИ МЕХАНИК" },
+    { "type": "textarea", "id": "step2_text", "label": "Step 2 text", "default": "Всеки механик има собствено работно време — виждаш само неговите свободни часове." },
+    { "type": "text", "id": "any_mechanic", "label": "'Any mechanic' label", "default": "Който е свободен" },
+    { "type": "text", "id": "any_mechanic_text", "label": "'Any mechanic' text", "default": "Най-ранният свободен час при когото и да е." },
+    { "type": "text", "id": "step3_eyebrow", "label": "Step 3 eyebrow", "default": "03 · Кога" },
+    { "type": "text", "id": "step3_title", "label": "Step 3 title", "default": "ДЕН И ЧАС" },
+    { "type": "textarea", "id": "step3_text", "label": "Step 3 text", "default": "Показваме само реално свободните часове." },
+    { "type": "text", "id": "pick_day_text", "label": "Pick a day prompt", "default": "Избери ден от календара" },
+    { "type": "text", "id": "no_slots_text", "label": "No slots text", "default": "Няма свободни часове за този ден." },
+    { "type": "text", "id": "loading_text", "label": "Loading text", "default": "Зареждаме свободните часове…" },
+    { "type": "text", "id": "free_text", "label": "Free slots word", "default": "свободни часа" },
+    { "type": "text", "id": "step4_eyebrow", "label": "Step 4 eyebrow", "default": "04 · Твоите данни" },
+    { "type": "text", "id": "step4_title", "label": "Step 4 title", "default": "ПОЧТИ ГОТОВО" },
+    { "type": "text", "id": "f_name", "label": "Name label", "default": "Име" },
+    { "type": "text", "id": "f_phone", "label": "Phone label", "default": "Телефон" },
+    { "type": "text", "id": "f_email", "label": "E-mail label", "default": "Имейл (за потвърждение)" },
+    { "type": "text", "id": "f_bike", "label": "Bike label", "default": "Колело" },
+    { "type": "text", "id": "f_bike_ph", "label": "Bike placeholder", "default": "напр. Orbea Alma 2023" },
+    { "type": "text", "id": "f_note", "label": "Note label", "default": "Какъв е проблемът?" },
+    { "type": "text", "id": "f_note_ph", "label": "Note placeholder", "default": "Описание на проблема, шумове, кога се появява…" },
+    { "type": "text", "id": "submit_label", "label": "Submit", "default": "Запази часа" },
+    { "type": "text", "id": "sending_label", "label": "Sending", "default": "Изпращаме…" },
+    { "type": "textarea", "id": "form_note", "label": "Form note", "default": "Потвърждаваме по имейл и телефон. Ако закъснееш с повече от 15 минути, часът може да бъде преместен." },
+    { "type": "text", "id": "summary_title", "label": "Summary title", "default": "Резюме" },
+    { "type": "text", "id": "sum_duration", "label": "Duration label", "default": "Продължителност" },
+    { "type": "text", "id": "sum_price", "label": "Price label", "default": "Цена" },
+    { "type": "text", "id": "err_slot", "label": "Slot taken error", "default": "Този час току-що беше зает. Избери друг." },
+    { "type": "text", "id": "err_generic", "label": "Generic error", "default": "Нещо се обърка. Опитай пак или ни се обади." },
+    { "type": "text", "id": "err_fields", "label": "Fields error", "default": "Попълни име и телефон." },
+    { "type": "text", "id": "done_eyebrow", "label": "Done eyebrow", "default": "Готово" },
+    { "type": "text", "id": "done_title", "label": "Done title", "default": "ЧАСЪТ Е ЗАПАЗЕН" },
+    { "type": "textarea", "id": "done_text", "label": "Done text", "default": "[service] при [mechanic] — [when]. Изпратихме потвърждение на имейла ти." },
+    { "type": "textarea", "id": "done_fallback", "label": "Done text (e-mail fallback)", "default": "Заявката е изпратена по имейл — ще потвърдим часа до няколко часа." },
+    { "type": "text", "id": "done_cta", "label": "Done CTA", "default": "Към началото" },
+    { "type": "header", "content": "Prices" },
+    { "type": "checkbox", "id": "show_prices", "label": "Show price list", "default": true },
+    { "type": "text", "id": "prices_eyebrow", "label": "Eyebrow", "default": "Ценоразпис" },
+    { "type": "text", "id": "prices_title", "label": "Title", "default": "УСЛУГИ И ЦЕНИ" },
+    { "type": "textarea", "id": "prices_note", "label": "Note", "default": "Цените са „от“ и не включват части. Точна оферта получаваш след диагностика." }
+  ],
+  "presets": [ { "name": "Service booking" } ]
+}
+{% endschema %}

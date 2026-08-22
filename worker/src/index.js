@@ -63,6 +63,10 @@ export default {
         case 'rental-availability':
           if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
           return await handleRentalAvailability(url, env);
+        case 'service-slots':
+          return handleServiceSlots(url, env);
+        case 'service-book':
+          return handleServiceBook(request, env, customerId);
         case 'rental-book':
           if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
           return await handleRentalBook(request, env, customerId);
@@ -759,6 +763,134 @@ async function handleRentalBook(request, env, customerId) {
   await metaobjectUpsert(env, 'rental_booking', reference.toLowerCase(), fields);
   return json({ ok: true, reference });
 }
+
+/* ═══════════════════════════ SERVICE BOOKING ═══════════════════════════
+   Metaobjects: mechanic (shifts per weekday, days_off, slot_minutes, active),
+   service_type (duration_minutes, price_from, active), service_booking.
+   GET  /apps/club/service-slots?from=YYYY-MM-DD&days=28&service=<handle>&mechanic=<handle|any>
+   POST /apps/club/service-book {mechanic, service, start, name, phone, email, bike, note}
+   Calendar: SERVICE_CALENDAR_ID (events titled "[Mechanic] Service — Name"; "BLOCK <mechanic>|all" events block slots)
+   E-mail: RESEND_API_KEY + NOTIFY_FROM + NOTIFY_TO (optional; skipped when unset) */
+const TZ = 'Europe/Sofia';
+const WD = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+function tzOffsetMin(utcMs) {
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(utcMs));
+  const g = (t) => parseInt(parts.find(p => p.type === t).value, 10);
+  const asUtc = Date.UTC(g('year'), g('month') - 1, g('day'), g('hour'), g('minute'));
+  return Math.round((asUtc - utcMs) / 60000);
+}
+function localToUtc(dateStr, hhmm) {
+  const [y, m, d] = dateStr.split('-').map(Number); const [h, mi] = hhmm.split(':').map(Number);
+  const guess = Date.UTC(y, m - 1, d, h, mi);
+  return guess - tzOffsetMin(guess) * 60000;
+}
+function localDateKey(utcMs) {
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date(utcMs));
+  const g = (t) => parts.find(p => p.type === t).value; return `${g('year')}-${g('month')}-${g('day')}`;
+}
+function localHHMM(utcMs) {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hourCycle: 'h23', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(utcMs));
+  const g = (t) => parts.find(p => p.type === t).value; return `${g('hour')}:${g('minute')}`;
+}
+function parseShifts(text) {
+  // "mon=09:00-13:00,14:00-18:00" per line; also accepts Bulgarian day names
+  const map = {}; const bg = { 'пон': 'mon', 'вт': 'tue', 'ср': 'wed', 'чет': 'thu', 'пет': 'fri', 'съб': 'sat', 'нед': 'sun' };
+  for (const raw of String(text || '').split(/\r?\n/)) {
+    const line = raw.trim(); if (!line) continue;
+    const [k, v] = line.split(/[=:](?=\s*\d)/); if (!k || !v) continue;
+    let day = k.trim().toLowerCase().slice(0, 3); day = bg[day] || day; if (!WD.includes(day)) continue;
+    map[day] = v.split(',').map(r => r.trim()).filter(Boolean).map(r => { const [a, b] = r.split('-').map(x => x.trim()); return [a, b]; });
+  }
+  return map;
+}
+async function serviceContext(env) {
+  const [mechanics, services, bookings] = await Promise.all([listMetaobjects(env, 'mechanic'), listMetaobjects(env, 'service_type'), listMetaobjects(env, 'service_booking')]);
+  const m = mechanics.filter(x => x.fields.active === 'true').map(x => ({ id: x.id, handle: x.handle, name: x.fields.name, shifts: parseShifts(x.fields.shifts), daysOff: String(x.fields.days_off || '').split(/\s+/).filter(Boolean), slot: parseInt(x.fields.slot_minutes || '60', 10) || 60, sort: parseInt(x.fields.sort || '0', 10) }));
+  m.sort((a, b) => a.sort - b.sort);
+  const sv = services.filter(x => x.fields.active !== 'false').map(x => ({ id: x.id, handle: x.handle, name: x.fields.name, duration: parseInt(x.fields.duration_minutes || '60', 10) || 60, price: x.fields.price_from || '' }));
+  const busy = bookings.filter(b => b.fields.start && b.fields.end && b.fields.status !== 'cancelled').map(b => ({ mechanic: b.fields.mechanic_handle, start: new Date(b.fields.start).getTime(), end: new Date(b.fields.end).getTime() }));
+  return { mechanics: m, services: sv, busy };
+}
+async function serviceBlocks(env, fromIso, toIso) {
+  const blocks = [];
+  try {
+    const events = await gcalList(env, fromIso, toIso, env.SERVICE_CALENDAR_ID);
+    for (const ev of events) {
+      const mm = /^BLOCK\s+(\S+)/i.exec(ev.summary || ''); if (!mm) continue;
+      const s = ev.start.dateTime ? new Date(ev.start.dateTime).getTime() : localToUtc(ev.start.date, '00:00');
+      const e = ev.end.dateTime ? new Date(ev.end.dateTime).getTime() : localToUtc(ev.end.date, '00:00');
+      blocks.push({ mechanic: mm[1].toLowerCase(), start: s, end: e });
+    }
+  } catch (e) { console.warn('service gcal list skipped:', e && e.message); }
+  return blocks;
+}
+function freeStarts(mech, dateStr, durationMin, busy, blocks, nowPlusLead) {
+  if (mech.daysOff.includes(dateStr)) return [];
+  const wd = WD[new Date(dateStr + 'T12:00:00Z').getUTCDay()];
+  const ranges = mech.shifts[wd] || []; const out = [];
+  for (const [a, b] of ranges) {
+    const rs = localToUtc(dateStr, a), re = localToUtc(dateStr, b);
+    for (let t = rs; t + durationMin * 60000 <= re; t += mech.slot * 60000) {
+      const tEnd = t + durationMin * 60000;
+      if (t < nowPlusLead) continue;
+      const clash = busy.some(x => x.mechanic === mech.handle && x.start < tEnd && x.end > t) || blocks.some(x => (x.mechanic === 'all' || x.mechanic === mech.handle) && x.start < tEnd && x.end > t);
+      if (!clash) out.push(localHHMM(t));
+    }
+  }
+  return out;
+}
+async function handleServiceSlots(url, env) {
+  const from = url.searchParams.get('from') || localDateKey(Date.now());
+  const days = Math.min(parseInt(url.searchParams.get('days') || '28', 10) || 28, 60);
+  const serviceHandle = url.searchParams.get('service'); const mechanicHandle = url.searchParams.get('mechanic') || 'any';
+  const ctx = await serviceContext(env);
+  const service = ctx.services.find(s => s.handle === serviceHandle) || { duration: 60 };
+  const toMs = localToUtc(from, '00:00') + days * DAY; const to = new Date(toMs).toISOString().slice(0, 10);
+  const blocks = await serviceBlocks(env, from, to);
+  const lead = Date.now() + (parseInt(env.SERVICE_LEAD_MINUTES || '120', 10) || 120) * 60000;
+  const mechs = mechanicHandle === 'any' ? ctx.mechanics : ctx.mechanics.filter(m => m.handle === mechanicHandle);
+  const result = {};
+  for (let i = 0; i < days; i++) {
+    const d = new Date(localToUtc(from, '12:00') + i * DAY); const key = localDateKey(d.getTime());
+    const perMech = {};
+    for (const m of mechs) { const f = freeStarts(m, key, service.duration, ctx.busy, blocks, lead); if (f.length) perMech[m.handle] = f; }
+    if (Object.keys(perMech).length) result[key] = perMech;
+  }
+  return json({ from, days, duration: service.duration, mechanics: ctx.mechanics.map(m => ({ handle: m.handle, name: m.name })), slots: result }, 200, { 'Cache-Control': 'private, max-age=30' });
+}
+async function sendMail(env, { to, subject, html }) {
+  if (!env.RESEND_API_KEY || !env.NOTIFY_FROM || !to) return false;
+  const res = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: 'Bearer ' + env.RESEND_API_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify({ from: env.NOTIFY_FROM, to: Array.isArray(to) ? to : [to], subject, html }) });
+  if (!res.ok) console.warn('resend failed', res.status, await res.text()); return res.ok;
+}
+async function handleServiceBook(request, env, customerId) {
+  const body = await readJson(request); if (!body) return json({ error: 'invalid' }, 400);
+  const { mechanic, service, start, name, phone, email, bike, note } = body;
+  if (!service || !start || !name || !phone) return json({ error: 'invalid' }, 400);
+  const ctx = await serviceContext(env);
+  const sv = ctx.services.find(x => x.handle === service); if (!sv) return json({ error: 'invalid' }, 400);
+  const startMs = new Date(start).getTime(); if (!startMs || startMs < Date.now()) return json({ error: 'invalid' }, 400);
+  const dateKey = localDateKey(startMs), hhmm = localHHMM(startMs);
+  const blocks = await serviceBlocks(env, dateKey, dateKey);
+  const lead = Date.now() + (parseInt(env.SERVICE_LEAD_MINUTES || '120', 10) || 120) * 60000;
+  let candidates = mechanic && mechanic !== 'any' ? ctx.mechanics.filter(m => m.handle === mechanic) : ctx.mechanics;
+  const m = candidates.find(mm => freeStarts(mm, dateKey, sv.duration, ctx.busy, blocks, lead).includes(hhmm));
+  if (!m) return json({ error: 'slot_taken' }, 409);
+  const endMs = startMs + sv.duration * 60000;
+  const reference = 'S' + new Date().toISOString().slice(2, 10).replace(/-/g, '') + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+  let eventId = '';
+  try { eventId = await gcalInsert(env, { calendarId: env.SERVICE_CALENDAR_ID, summary: `[${m.name}] ${sv.name} — ${name}`, description: `Резервация ${reference}\nМеханик: ${m.name}\nУслуга: ${sv.name} (${sv.duration} мин)\nКлиент: ${name}\nТел: ${phone}\nИмейл: ${email || '-'}\nКолело: ${bike || '-'}\n${note || ''}`, start: new Date(startMs).toISOString(), end: new Date(endMs).toISOString(), mode: 'short' }); } catch (e) { console.warn('service gcal insert skipped:', e && e.message); }
+  const fields = [['reference', reference], ['mechanic', m.id], ['mechanic_handle', m.handle], ['service', sv.id], ['service_handle', sv.handle], ['start', new Date(startMs).toISOString()], ['end', new Date(endMs).toISOString()], ['status', 'pending'], ['customer_name', name], ['phone', phone], ['email', email || ''], ['bike', bike || ''], ['note', note || ''], ['price', sv.price || ''], ['calendar_event', eventId], ['customer_id', customerId ? String(customerId) : '']].map(([key, value]) => ({ key, value }));
+  await metaobjectUpsert(env, 'service_booking', reference.toLowerCase(), fields);
+  const when = new Intl.DateTimeFormat('bg-BG', { timeZone: TZ, dateStyle: 'full', timeStyle: 'short' }).format(new Date(startMs));
+  const html = `<p>Резервация <strong>${reference}</strong></p><p><strong>${sv.name}</strong> · ${when}<br>Механик: ${m.name}<br>Продължителност: ${sv.duration} мин${sv.price ? ' · от €' + sv.price : ''}</p><p>Клиент: ${name} · ${phone}${email ? ' · ' + email : ''}<br>Колело: ${bike || '-'}<br>${note || ''}</p>`;
+  await Promise.all([
+    sendMail(env, { to: env.NOTIFY_TO, subject: `Нов час за сервиз ${reference} — ${sv.name}, ${when}`, html }),
+    email ? sendMail(env, { to: email, subject: `2gether Bikes — потвърждение за сервиз ${reference}`, html: `<p>Здравей, ${name}!</p><p>Записахме те за сервиз. Очакваме те в магазина във Варна.</p>${html}<p>Ако трябва да промениш часа, обади се на магазина.</p>` }) : Promise.resolve(false),
+  ]);
+  return json({ ok: true, reference, mechanic: m.name, start: new Date(startMs).toISOString(), end: new Date(endMs).toISOString() });
+}
+
 /* Google service-account JWT → access token (RS256 via WebCrypto) */
 async function gcalToken(env) {
   // Path 1 — OAuth refresh token (for Workspace orgs that block service-account keys)
@@ -784,21 +916,23 @@ async function gcalToken(env) {
   if (!res.ok) throw new Error('gcal token ' + res.status);
   return (await res.json()).access_token;
 }
-async function gcalList(env, fromIso, toIso) {
-  if (!env.GOOGLE_CALENDAR_ID) return [];
+async function gcalList(env, fromIso, toIso, calendarId) {
+  calendarId = calendarId || env.GOOGLE_CALENDAR_ID;
+  if (!calendarId) return [];
   const token = await gcalToken(env);
   const q = new URLSearchParams({ timeMin: new Date(fromIso).toISOString(), timeMax: new Date(new Date(toIso).getTime() + DAY).toISOString(), singleEvents: 'true', maxResults: '500' });
-  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.GOOGLE_CALENDAR_ID)}/events?${q}`, { headers: { Authorization: 'Bearer ' + token } });
+  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?${q}`, { headers: { Authorization: 'Bearer ' + token } });
   if (!res.ok) throw new Error('gcal list ' + res.status);
   return (await res.json()).items || [];
 }
-async function gcalInsert(env, { summary, description, start, end, mode }) {
-  if (!env.GOOGLE_CALENDAR_ID) return '';
+async function gcalInsert(env, { summary, description, start, end, mode, calendarId }) {
+  calendarId = calendarId || env.GOOGLE_CALENDAR_ID;
+  if (!calendarId) return '';
   const token = await gcalToken(env);
   const body = mode === 'long'
     ? { summary, description, start: { date: dayKey(start) }, end: { date: dayKey(new Date(new Date(end).getTime() + DAY)) } }
     : { summary, description, start: { dateTime: new Date(start).toISOString() }, end: { dateTime: new Date(end).toISOString() } };
-  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(env.GOOGLE_CALENDAR_ID)}/events`, { method: 'POST', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const res = await fetch(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`, { method: 'POST', headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   if (!res.ok) throw new Error('gcal insert ' + res.status);
   return (await res.json()).id || '';
 }
