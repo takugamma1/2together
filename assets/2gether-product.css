@@ -1315,3 +1315,12 @@ body.tg-product-active .content-for-layout {
 .tg-product-usps { list-style: none; margin: var(--tg-s2) 0 0; padding: var(--tg-s3) 0 0; border-top: 1px solid var(--tg-divider); display: flex; flex-direction: column; gap: 8px; }
 .tg-product-usps li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--tg-text-secondary); }
 .tg-product-usps .tg-rp-icon { width: 18px; height: 18px; color: var(--tg-flame); flex-shrink: 0; }
+
+/* ══ Mobile: no fixed-height sticky panel (was leaving an empty block) ══ */
+@media (max-width: 1024px) {
+  .tg-product-page { min-height: 0; grid-template-columns: 1fr; }
+  .tg-product-right { position: static; height: auto; overflow: visible; border-left: 0; border-top: 1px solid var(--tg-divider); }
+  .tg-product-panel { height: auto; overflow: visible; }
+  .tg-product-left { overflow: visible; }
+  .tg-product-gallery.has-thumbs .tg-product-hero { aspect-ratio: 4 / 3; max-height: 70vh; }
+}
