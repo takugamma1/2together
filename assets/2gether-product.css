@@ -1301,3 +1301,17 @@ body.tg-product-active .content-for-layout {
   .tg-thumbs-up svg, .tg-thumbs-down svg { transform: rotate(-90deg); }
   .tg-product-gallery.has-thumbs .tg-product-hero { border-radius: 0; }
 }
+
+/* ══ Info card v2 — readable description, USPs, consistency ══ */
+.tg-product-panel { overflow-y: auto; scrollbar-width: thin; }
+.tg-product-description { font-size: 14px; line-height: 1.6; }
+.tg-product-description-wrap.is-open .tg-product-description { display: block; -webkit-line-clamp: unset; overflow: visible; }
+.tg-product-description-toggle { margin-top: 6px; background: none; border: 0; padding: 0; color: var(--tg-flame); font: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-bottom: 1px solid transparent; }
+.tg-product-description-toggle:hover { border-color: var(--tg-flame); }
+.tg-product-price-suffix { font-size: 12px; font-weight: 500; color: var(--tg-text-muted); margin-left: 6px; }
+.tg-product-availability { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--tg-text-secondary); }
+.tg-product-availability i { width: 8px; height: 8px; border-radius: 50%; background: #3DD68C; box-shadow: 0 0 10px rgba(61, 214, 140, 0.6); }
+.tg-product-availability.is-out i { background: var(--tg-flame); box-shadow: 0 0 10px var(--tg-flame-glow); }
+.tg-product-usps { list-style: none; margin: var(--tg-s2) 0 0; padding: var(--tg-s3) 0 0; border-top: 1px solid var(--tg-divider); display: flex; flex-direction: column; gap: 8px; }
+.tg-product-usps li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--tg-text-secondary); }
+.tg-product-usps .tg-rp-icon { width: 18px; height: 18px; color: var(--tg-flame); flex-shrink: 0; }

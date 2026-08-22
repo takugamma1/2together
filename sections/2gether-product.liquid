@@ -254,15 +254,15 @@
     <div class="tg-product-panel">
 
       <!-- Back link -->
-      <a href="{{ product.collections.first.url | default: '/collections/all' }}" class="tg-product-back">
+      <a href="{{ product.collections.first.url | default: '/collections' }}" class="tg-product-back">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Назад
+        {% if product.collections.first %}Назад към {{ product.collections.first.title }}{% else %}Всички категории{% endif %}
       </a>
 
       <!-- Product Header -->
       <div class="tg-product-header">
-        {% if product.type != blank %}
-          <div class="tg-product-type-label">{{ product.type }}</div>
+        {% if product.vendor != blank or product.type != blank %}
+          <div class="tg-product-type-label">{% if product.vendor != blank %}{{ product.vendor }}{% endif %}{% if section.settings.show_type and product.type != blank %}{% if product.vendor != blank %} · {% endif %}{{ product.type }}{% endif %}</div>
         {% endif %}
         <h1 class="tg-product-title">{{ product.title }}</h1>
         <div class="tg-product-price" data-product-price>
@@ -270,13 +270,20 @@
           {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
             <span class="tg-product-price-compare">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
           {% endif %}
+          {% if section.settings.price_suffix != blank %}<small class="tg-product-price-suffix">{{ section.settings.price_suffix }}</small>{% endif %}
+        </div>
+        <div class="tg-product-availability {% if product.selected_or_first_available_variant.available %}is-in{% else %}is-out{% endif %}" data-product-availability>
+          <i aria-hidden="true"></i>{% if product.selected_or_first_available_variant.available %}{{ section.settings.in_stock_text }}{% else %}{{ section.settings.out_of_stock_text }}{% endif %}
         </div>
       </div>
 
       <!-- Description -->
       {% if product.description != blank %}
-        <div class="tg-product-description">
-          {{ product.description }}
+        <div class="tg-product-description-wrap" data-tg-desc>
+          <div class="tg-product-description" data-tg-desc-body>
+            {{ product.description }}
+          </div>
+          <button type="button" class="tg-product-description-toggle" data-tg-desc-toggle hidden aria-expanded="false"><span data-more>{{ section.settings.desc_more }}</span><span data-less hidden>{{ section.settings.desc_less }}</span></button>
         </div>
       {% endif %}
 
@@ -357,6 +364,15 @@
       {%- endform -%}
 
       <!-- Compact reassurance line — full trust pills live in the support strip below -->
+      {%- assign usps = section.blocks | where: 'type', 'usp' -%}
+      {% if usps.size > 0 %}
+        <ul class="tg-product-usps">
+          {% for b in usps %}
+            <li {{ b.shopify_attributes }}>{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.text }}</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
       {% if section.settings.reassure_text != blank %}
         <div class="tg-product-reassure">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
@@ -368,6 +384,19 @@
 </div>
 
 <script>
+/* ── Description: show toggle only when clamped ── */
+(function() {
+  const wrap = document.querySelector('[data-tg-desc]'); if (!wrap) return;
+  const body = wrap.querySelector('[data-tg-desc-body]'), btn = wrap.querySelector('[data-tg-desc-toggle]');
+  const check = function() { if (wrap.classList.contains('is-open')) return; btn.hidden = !(body.scrollHeight > body.clientHeight + 2); };
+  btn.addEventListener('click', function() {
+    const open = wrap.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.querySelector('[data-more]').hidden = open; btn.querySelector('[data-less]').hidden = !open;
+  });
+  check(); window.addEventListener('resize', check);
+})();
+
 /* ── Product image gallery (thumbnails + arrows + swipe + keyboard) ── */
 (function() {
   const gallery = document.querySelector('[data-tg-gallery]');
@@ -671,6 +700,46 @@
   "settings": [
     {
       "type": "header",
+      "content": "Info card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_type",
+      "label": "Show product type next to the brand",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "price_suffix",
+      "label": "Price suffix",
+      "default": "с ДДС"
+    },
+    {
+      "type": "text",
+      "id": "in_stock_text",
+      "label": "In stock text",
+      "default": "В наличност"
+    },
+    {
+      "type": "text",
+      "id": "out_of_stock_text",
+      "label": "Out of stock text",
+      "default": "Изчерпано — поръчка по заявка"
+    },
+    {
+      "type": "text",
+      "id": "desc_more",
+      "label": "Description 'more' label",
+      "default": "Виж повече"
+    },
+    {
+      "type": "text",
+      "id": "desc_less",
+      "label": "Description 'less' label",
+      "default": "Скрий"
+    },
+    {
+      "type": "header",
       "content": "Below the gallery (all off = clean product page)"
     },
     {
@@ -736,7 +805,7 @@
       "id": "reassure_text",
       "label": "Reassurance line (small text under buttons)",
       "info": "Leave blank to hide.",
-      "default": "Lifetime warranty · Free shipping · 30-day returns"
+      "default": "Сглобено и проверено от нас · Сервиз във Варна · Гаранция на всеки продукт"
     },
     {
       "type": "header",
@@ -926,6 +995,55 @@
           "type": "text",
           "id": "note",
           "label": "Note (optional)"
+        }
+      ]
+    },
+    {
+      "type": "usp",
+      "name": "USP (info card)",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "shield",
+          "options": [
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "carry",
+              "label": "Box / delivery"
+            },
+            {
+              "value": "wrench",
+              "label": "Wrench"
+            },
+            {
+              "value": "pin",
+              "label": "Pin"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "ride",
+              "label": "Bike"
+            },
+            {
+              "value": "book",
+              "label": "Book"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "2 години гаранция"
         }
       ]
     }
