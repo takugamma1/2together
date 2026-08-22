@@ -13,7 +13,7 @@
 .tg-footer-newsletter-error {
   flex-basis: 100%;
   margin: 0;
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 13px;
   line-height: 1.5;
 }
@@ -47,7 +47,7 @@
 }
 
 .tg-footer-wordmark {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 26px;
   letter-spacing: 0.04em;

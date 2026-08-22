@@ -21,7 +21,7 @@
 }
 
 .tg-tl-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   text-transform: uppercase;
   font-size: clamp(40px, 5vw, 72px);
@@ -116,7 +116,7 @@
 .tg-timeline.visible .tg-tl-node:nth-of-type(8) { transition-delay: 560ms; }
 
 .tg-tl-year {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 28px;
   letter-spacing: 0.02em;
@@ -150,7 +150,7 @@
 .tg-tl-caption {
   display: block;
   margin-top: var(--tg-s4);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 13px;
   color: var(--tg-text-secondary);
   letter-spacing: 0.02em;
@@ -220,7 +220,7 @@
 .tg-tl-stage-year {
   position: absolute;
   left: var(--tg-s5); bottom: var(--tg-s4);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(56px, 7vw, 112px);
   line-height: 1;
@@ -241,7 +241,7 @@
 
 .tg-tl-copy .tg-label { display: block; margin-bottom: var(--tg-s4); }
 .tg-tl-copy h3 {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(26px, 2.6vw, 38px);
   line-height: 1.1;
@@ -249,7 +249,7 @@
   margin: 0 0 var(--tg-s5);
 }
 .tg-tl-copy p, .tg-tl-copy .tg-tl-text {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 16px;
   line-height: 1.7;
   color: var(--tg-text-secondary);
@@ -265,13 +265,13 @@
   border-top: 1px solid var(--tg-divider);
 }
 .tg-tl-stat strong {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 32px;
   color: var(--tg-flame);
 }
 .tg-tl-stat span {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 13px;
   color: var(--tg-text-muted);
   letter-spacing: 0.05em;

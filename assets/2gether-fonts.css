@@ -1,3 +1,8 @@
+:root {
+  --tg-font-display: 'Technor', sans-serif;
+  --tg-font-body: 'General Sans', sans-serif;
+  --tg-font-accent: 'Boska', serif;
+}
 /* === 2GETHER BIKES — CYRILLIC COMPANION FONTS ===
  *
  * The brand fonts (Technor / General Sans / Boska via Fontshare) have no

@@ -6,7 +6,7 @@
   min-height: 100vh;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   /* `clip` (not hidden) prevents horizontal page scroll WITHOUT
      creating a scroll container — keeps position: sticky working
      for the header. */
@@ -44,7 +44,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 .tg-coll-nav-brand {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 18px;
   color: var(--tg-text-primary);
@@ -152,7 +152,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 .tg-coll-sidebar-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.12em;
@@ -186,7 +186,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 .tg-filter-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -269,7 +269,7 @@ body.tg-collection-active .content-for-layout {
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 13px;
   font-weight: 500;
   text-align: center;
@@ -353,7 +353,7 @@ body.tg-collection-active .content-for-layout {
   padding: var(--tg-s3) var(--tg-s5);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -405,7 +405,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 .tg-coll-hero-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2rem, 3.6vw, 3.2rem);
   letter-spacing: -0.03em;
@@ -450,7 +450,7 @@ body.tg-collection-active .content-for-layout {
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
   color: var(--tg-text-secondary);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.04em;
@@ -546,7 +546,7 @@ body.tg-collection-active .content-for-layout {
   display: block;
   padding: 10px var(--tg-s3);
   color: var(--tg-text-secondary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 13px;
   text-decoration: none;
   white-space: nowrap;
@@ -607,7 +607,7 @@ body.tg-collection-active .content-for-layout {
   padding: 8px var(--tg-s4);
   background: transparent;
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -653,7 +653,7 @@ body.tg-collection-active .content-for-layout {
   background: transparent;
   border: none;
   color: var(--tg-text-secondary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -756,7 +756,7 @@ body.tg-collection-active .content-for-layout {
 
 .tg-coll-badge {
   padding: var(--tg-s1) var(--tg-s4) var(--tg-s1) var(--tg-s3);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -800,7 +800,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 .tg-coll-card-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 13px;
   color: var(--tg-text-primary);
@@ -816,7 +816,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 .tg-coll-card-price {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 13px;
   color: var(--tg-flame);
@@ -863,7 +863,7 @@ body.tg-collection-active .content-for-layout {
   padding: var(--tg-s3) var(--tg-s3);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -919,7 +919,7 @@ body.tg-collection-active .content-for-layout {
   padding: var(--tg-s4) var(--tg-s8);
   background: transparent;
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -981,7 +981,7 @@ body.tg-collection-active .content-for-layout {
 }
 
 .tg-coll-footer-brand {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 16px;
   color: var(--tg-text-primary);
@@ -1201,7 +1201,7 @@ body.tg-collection-active .content-for-layout {
   border: none;
   outline: none;
   color: var(--tg-text-primary, #E8ECF2);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 13px;
   width: 170px;
 }
@@ -1263,14 +1263,14 @@ body.tg-collection-active .content-for-layout {
   .tg-filter-toggle { display: none; }
 }
 .tg-coll-sidebar-head { display: flex; align-items: center; gap: var(--tg-s3); padding-bottom: var(--tg-s3); border-bottom: 1px solid var(--tg-divider); margin-bottom: var(--tg-s2); }
-.tg-coll-sidebar-title { font-family: 'Technor', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; flex: 1; }
+.tg-coll-sidebar-title { font-family: var(--tg-font-display); font-weight: 700; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; flex: 1; }
 .tg-coll-sidebar-title em { font-style: normal; color: var(--tg-ink); background: var(--tg-flame); padding: 1px 7px; margin-left: 6px; font-size: 11px; clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%); }
 .tg-coll-sidebar-head .tg-filter-clear { font-size: 12px; color: var(--tg-text-secondary); text-decoration: none; border-bottom: 1px solid var(--tg-divider); }
 .tg-coll-sidebar-head .tg-filter-clear:hover { color: var(--tg-flame); border-color: var(--tg-flame); }
 
 .tg-facet { border-bottom: 1px solid var(--tg-divider); }
 .tg-facet:last-of-type { border-bottom: 0; }
-.tg-facet-title { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: var(--tg-s4) 0; font-family: 'General Sans', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tg-text-primary); user-select: none; }
+.tg-facet-title { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: var(--tg-s4) 0; font-family: var(--tg-font-body); font-weight: 600; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tg-text-primary); user-select: none; }
 .tg-facet-title::-webkit-details-marker { display: none; }
 .tg-facet-title i { width: 18px; height: 18px; position: relative; flex-shrink: 0; }
 .tg-facet-title i::before, .tg-facet-title i::after { content: ''; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; background: var(--tg-flame); transform: translate(-50%, -50%); transition: transform var(--tg-dur-med); }

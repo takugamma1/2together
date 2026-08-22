@@ -4,7 +4,7 @@
 .tg-about-page {
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   min-height: 100vh;
 }
 
@@ -67,7 +67,7 @@ body.tg-about-active .content-for-layout {
 }
 
 .tg-about-hero-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2.2rem, 8.5vw, 5.6rem);
   letter-spacing: -0.03em;
@@ -132,7 +132,7 @@ body.tg-about-active .content-for-layout {
   position: absolute;
   top: var(--tg-s7);
   left: var(--tg-s7);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -151,7 +151,7 @@ body.tg-about-active .content-for-layout {
 }
 
 .tg-about-vision-quote {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-weight: 400;
   font-style: italic;
   font-size: clamp(1.5rem, 2.3vw, 2.1rem);
@@ -188,7 +188,7 @@ body.tg-about-active .content-for-layout {
 }
 
 .tg-about-vision-sig-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -221,7 +221,7 @@ body.tg-about-active .content-for-layout {
 }
 
 .tg-about-process-label {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -255,7 +255,7 @@ body.tg-about-active .content-for-layout {
 }
 
 .tg-process-num {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 30px;
   color: var(--tg-flame);
@@ -266,7 +266,7 @@ body.tg-about-active .content-for-layout {
 .tg-process-num::before { content: '/ '; opacity: 0.5; }
 
 .tg-process-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 16px;
   color: var(--tg-text-primary);
@@ -378,7 +378,7 @@ body.tg-about-active .content-for-layout {
 }
 
 .tg-about-community-label {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.15em;
@@ -387,7 +387,7 @@ body.tg-about-active .content-for-layout {
 }
 
 .tg-about-community-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2.2rem, 4vw, 3.4rem);
   letter-spacing: -0.03em;
@@ -409,7 +409,7 @@ body.tg-about-active .content-for-layout {
   padding: var(--tg-s3) var(--tg-s7) var(--tg-s3) var(--tg-s6);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.08em;

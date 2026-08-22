@@ -11,70 +11,7 @@
   "sections": {
     "tg_hero": {
       "type": "2gether-hero",
-      "blocks": {
-        "bento_1": {
-          "type": "bento_cell",
-          "settings": {
-            "image": "shopify://shop_images/DSC07743.webp",
-            "number": "01",
-            "title": "2GETHERBIKES Portable ramps",
-            "description": "",
-            "link": "shopify://pages/portable-ramps",
-            "icon": "tool"
-          }
-        },
-        "bento_2": {
-          "type": "bento_cell",
-          "settings": {
-            "image": "shopify://shop_images/DSP06311.jpg",
-            "number": "02",
-            "title": "Наем на велосипеди",
-            "description": "",
-            "link": "shopify://pages/bike-rental",
-            "icon": "clock"
-          }
-        },
-        "bento_3": {
-          "type": "bento_cell",
-          "settings": {
-            "image": "shopify://shop_images/DSP06509.jpg",
-            "number": "03",
-            "title": "СЕРВИЗ",
-            "description": "",
-            "link": "shopify://pages/bike-service",
-            "icon": "star"
-          }
-        },
-        "bento_4": {
-          "type": "bento_cell",
-          "settings": {
-            "image": "shopify://shop_images/santa-cruz-heckler-sl-cc-xx-axs-rsv-mx-matte-silver-xl_20_283_29.jpg",
-            "number": "04",
-            "title": "ЕЛЕКТРОНЕН МАГАЗИН",
-            "description": "",
-            "link": "shopify://collections",
-            "icon": "layers"
-          }
-        },
-        "bento_cell_QGpn83": {
-          "type": "bento_cell",
-          "settings": {
-            "image": "shopify://shop_images/Screenshot_4_5B1_5D.png",
-            "number": "05",
-            "title": "МЪРЧ",
-            "description": "",
-            "link": "shopify://collections/march-c199",
-            "icon": "star"
-          }
-        }
-      },
-      "block_order": [
-        "bento_1",
-        "bento_2",
-        "bento_3",
-        "bento_4",
-        "bento_cell_QGpn83"
-      ],
+      "block_order": [],
       "settings": {
         "hero_image": "shopify://shop_images/DSC07429.webp",
         "top_label": "2GETHER BIKES / VARNA",
@@ -85,7 +22,8 @@
         "title_line2": "BIKES",
         "hero_title_size": 80,
         "bento_shift": -40
-      }
+      },
+      "blocks": {}
     },
     "tg_statement": {
       "type": "2gether-statement",
@@ -138,6 +76,73 @@
         "pillars_label": "Какво ни движи",
         "padding_top": 136,
         "padding_bottom": 136
+      }
+    },
+    "tg_quicklinks": {
+      "type": "2gether-quicklinks",
+      "blocks": {
+        "ql_1": {
+          "type": "cell",
+          "settings": {
+            "image": "shopify://shop_images/DSC07743.webp",
+            "number": "01",
+            "title": "2GETHERBIKES Portable ramps",
+            "description": "",
+            "link": "shopify://pages/portable-ramps"
+          }
+        },
+        "ql_2": {
+          "type": "cell",
+          "settings": {
+            "image": "shopify://shop_images/DSP06311.jpg",
+            "number": "02",
+            "title": "Наем на велосипеди",
+            "description": "",
+            "link": "shopify://pages/bike-rental"
+          }
+        },
+        "ql_3": {
+          "type": "cell",
+          "settings": {
+            "image": "shopify://shop_images/DSP06509.jpg",
+            "number": "03",
+            "title": "СЕРВИЗ",
+            "description": "",
+            "link": "shopify://pages/bike-service"
+          }
+        },
+        "ql_4": {
+          "type": "cell",
+          "settings": {
+            "image": "shopify://shop_images/santa-cruz-heckler-sl-cc-xx-axs-rsv-mx-matte-silver-xl_20_283_29.jpg",
+            "number": "04",
+            "title": "ЕЛЕКТРОНЕН МАГАЗИН",
+            "description": "",
+            "link": "shopify://collections"
+          }
+        },
+        "ql_5": {
+          "type": "cell",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_4_5B1_5D.png",
+            "number": "05",
+            "title": "МЪРЧ",
+            "description": "",
+            "link": "shopify://collections/march-c199"
+          }
+        }
+      },
+      "block_order": [
+        "ql_1",
+        "ql_2",
+        "ql_3",
+        "ql_4",
+        "ql_5"
+      ],
+      "settings": {
+        "label": "Какво правим",
+        "padding_top": 0,
+        "padding_bottom": 96
       }
     },
     "tg_image_band": {
@@ -546,16 +551,17 @@
         "poll_label": "ГЛАСУВАЙ ЗА СЛЕДВАЩАТА ЛОКАЦИЯ",
         "votes_text": "гласа",
         "voters_text": "гласували",
-        "member_cta_text": "Стани член, за да гласуваш →",
-        "guest_text": "Членовете на клуба гласуват къде караме всяка неделя. Влез в профила си или се запиши, за да участваш.",
-        "member_cta_url": "/pages/sunday-club#tg-sc-join",
+        "member_cta_text": "Стани член, за да гласуваш",
+        "guest_text": "Членовете на клуба гласуват къде караме всяка неделя. Гласуването живее в профила на Rider програмата — стани член, за да участваш и да следиш историите от карането.",
+        "member_cta_url": "/blogs/тест-статии",
         "closed_text": "Гласуването е затворено",
         "msg_error": "Възникна грешка, опитайте отново",
         "msg_login": "Влезте, за да гласувате",
         "msg_members": "Само за членове",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
-        "yt_views": "128K"
+        "yt_views": "128K",
+        "poll_mode": "link"
       }
     },
     "2gether_yt_carousel_kXttfc": {
@@ -624,28 +630,29 @@
         "background_image": "shopify://shop_images/DSC07254.webp",
         "label_text": "2GETHER CYCLING TEAM",
         "title": "<p>КОЛОЕЗДАЧЕН КЛУБ 2GETHER</p>",
-        "description": "Инфо за отбора",
-        "cta_text": "рапознай се с клуба",
+        "description": "Отборът на 2GETHER събира ездачи от Варна, които тренират, състезават се и карат заедно всяка седмица — от първите скокове на рампата до старта на състезанието. Водим млади колоездачи, пътуваме по събори и трасета и споделяме всичко във влога.",
+        "cta_text": "Запознай се с клуба",
         "cta_link": "shopify://blogs/тест-статии",
         "poll": "",
         "poll_label": "ГЛАСУВАЙ ЗА СЛЕДВАЩАТА ЛОКАЦИЯ",
         "votes_text": "гласа",
         "voters_text": "гласували",
-        "member_cta_text": "Стани член, за да гласуваш →",
-        "guest_text": "Членовете на клуба гласуват къде караме всяка неделя. Влез в профила си или се запиши, за да участваш.",
-        "member_cta_url": "/pages/sunday-club#tg-sc-join",
+        "member_cta_text": "Стани член, за да гласуваш",
+        "guest_text": "Членовете на клуба гласуват къде караме всяка неделя. Гласуването живее в профила на Rider програмата — стани член, за да участваш и да следиш историите от карането.",
+        "member_cta_url": "/blogs/тест-статии",
         "closed_text": "Гласуването е затворено",
         "msg_error": "Възникна грешка, опитайте отново",
         "msg_login": "Влезте, за да гласувате",
         "msg_members": "Само за членове",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
-        "yt_views": "128K"
+        "yt_views": "128K",
+        "poll_mode": "link",
+        "content_side": "left"
       }
     },
     "2gether_blog_teaser_VUPtQy": {
       "type": "2gether-blog-teaser",
-      "disabled": true,
       "name": "2Gether Блог публикации",
       "settings": {
         "blog": "тест-статии",
@@ -726,94 +733,15 @@
         "heading": "<p><strong>КОЛЕЛА ЗА ВСЕКИ ТЕРЕН И СТИЛ</strong></p>",
         "description": "От сериозни планински спускания до ежедневни разходки по морето, намери колелото, което пасва на твоя начин на каране."
       }
-    },
-    "tg_timeline": {
-      "type": "2gether-timeline",
-      "blocks": {
-        "milestone_1": {
-          "type": "milestone",
-          "settings": {
-            "year": "2021",
-            "caption": "Първият гараж",
-            "kicker": "2021 — Началото",
-            "heading": "Две колела, един гараж, нула план.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "2",
-            "stat_label": "основатели"
-          }
-        },
-        "milestone_2": {
-          "type": "milestone",
-          "settings": {
-            "year": "2022",
-            "caption": "Ражда се Sunday Club",
-            "kicker": "2022 — Sunday Club",
-            "heading": "Първото групово каране тръгва в 8:00.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "14",
-            "stat_label": "колоездачи на първия ден"
-          }
-        },
-        "milestone_3": {
-          "type": "milestone",
-          "settings": {
-            "year": "2023",
-            "caption": "Отваряме във Варна",
-            "kicker": "2023 — Магазинът",
-            "heading": "Истинска врата, истински сервиз.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "120м²",
-            "stat_label": "площ"
-          }
-        },
-        "milestone_4": {
-          "type": "milestone",
-          "settings": {
-            "year": "2024",
-            "caption": "Към планината",
-            "kicker": "2024 — Off-road",
-            "heading": "Заведохме клуба в планината.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "38",
-            "stat_label": "картирани маршрута"
-          }
-        },
-        "milestone_5": {
-          "type": "milestone",
-          "settings": {
-            "year": "2025",
-            "caption": "1000+ колоездачи",
-            "kicker": "2025 — Днес",
-            "heading": "Хиляда от нас — и продължаваме.",
-            "text": "<p>Разкажете накратко какво се случи през тази година.</p>",
-            "stat_value": "1000+",
-            "stat_label": "членове на общността"
-          }
-        }
-      },
-      "block_order": [
-        "milestone_1",
-        "milestone_2",
-        "milestone_3",
-        "milestone_4",
-        "milestone_5"
-      ],
-      "settings": {
-        "label": "Нашата история",
-        "title_line1": "ПЕТ ГОДИНИ",
-        "title_line2": "НА ПЪТЯ",
-        "padding_top": 128,
-        "padding_bottom": 128
-      }
     }
   },
   "order": [
     "tg_hero",
     "tg_statement",
+    "tg_quicklinks",
     "tg_image_band",
     "section_iHJQMc",
     "tg_community",
-    "tg_timeline",
     "2gether_yt_carousel_kXttfc",
     "2gether_community_dhFAMt",
     "2gether_blog_teaser_VUPtQy",

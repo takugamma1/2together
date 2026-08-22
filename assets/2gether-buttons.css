@@ -8,7 +8,7 @@
 .button,
 .button-secondary,
 button.shopify-payment-button__button--unbranded {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.06em;

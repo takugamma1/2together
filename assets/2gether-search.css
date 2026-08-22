@@ -19,7 +19,7 @@
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
   padding: 6px;
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-suggest[hidden] { display: none; }
@@ -75,7 +75,7 @@
 }
 
 .tg-suggest-item-price {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 12px;
   color: var(--tg-flame, #E8601C);

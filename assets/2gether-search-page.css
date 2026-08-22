@@ -22,7 +22,7 @@
 
 /* Query rendered in the editorial serif as a brand accent */
 .tg-srch-q {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-weight: 500;
   font-style: italic;
   letter-spacing: 0;
@@ -59,7 +59,7 @@
   padding: 0 var(--tg-s6);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.06em;
@@ -86,7 +86,7 @@
 }
 
 .tg-srch-other-title {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.15em;
@@ -173,7 +173,7 @@
 }
 
 .tg-srch-empty-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   letter-spacing: -0.03em;
@@ -194,7 +194,7 @@
 }
 
 .tg-srch-empty-desc em {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   color: var(--tg-text-primary);
 }
@@ -211,7 +211,7 @@
 }
 
 .tg-srch-empty-cats-label {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.15em;
@@ -335,7 +335,7 @@
 }
 
 .tg-srch-block-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.4rem, 3vw, 2rem);
   letter-spacing: -0.02em;
@@ -424,7 +424,7 @@
 }
 
 .tg-srch-tile-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 15px;
   text-transform: uppercase;
