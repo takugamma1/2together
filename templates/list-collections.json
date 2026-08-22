@@ -11,15 +11,196 @@
   "sections": {
     "main": {
       "type": "2gether-collection-list",
+      "blocks": {
+        "dept_1": {
+          "type": "department",
+          "settings": {
+            "title": "Велосипеди",
+            "icon": "ride",
+            "color": "#E8601C",
+            "text": "Всички модели — MTB, e-bike, градски, детски.",
+            "items": "bikes-od62|Всички велосипеди|bikes mtb\nplaninski-velosipedi-c97|Планински велосипеди|mtb mountain\npalno-okachvane-c216|Пълно окачване|full suspension enduro trail\ntvarda-ramka-c217|Твърда рамка|hardtail xc\nelektricheski-velosipedi-c212|Електрически велосипеди|e-bike ebike електрически\ngradski-velosipedi-c98|Градски велосипеди|urban city\njunior-od1977|Детски (Junior)|kids junior деца"
+          }
+        },
+        "dept_2": {
+          "type": "department",
+          "settings": {
+            "title": "Гуми и колела",
+            "icon": "wheel",
+            "color": "#2F6FD6",
+            "text": "Външни и вътрешни гуми, tubeless, капли, спици, главини.",
+            "items": "tires-tubes-od20|Външни гуми|tire tyre гума\ntubes-od120|Вътрешни гуми|tube вътрешна\ntubless-od19|Tubeless и ремонт|tubeless ремонт\nvalves-od148|Tubeless вентили|valve вентил\nsealant-od157|Tubeless течност|sealant\ntubeless-repair-od158|Tubeless ремонт|plug repair\nrim-tape-od159|Лента за капли|rim tape\nrims-od18|Капли|rim капла\nwheels-od82|Колела (комплект)|wheels wheelset\nspokes-od40|Спици|spokes\nhubs-od31|Главини|hubs\ntire-levers-od26|Лостчета за гуми|levers\npumps-od22|Помпи|pump помпа\nco2-od160|CO2|co2"
+          }
+        },
+        "dept_3": {
+          "type": "department",
+          "settings": {
+            "title": "Части",
+            "icon": "fold",
+            "color": "#E8601C",
+            "text": "Спирачки, задвижване, кокпит, седла и всичко за сервиза.",
+            "items": "bike-parts-od6|Всички части|parts части\nbrake-pads-od131|Накладки|brake pads накладки\nbrake-discs-od132|Спирачни дискове|rotor disc ротор\nspirachna-sistema-c141|Спирачна система|brakes спирачки\nchainrings-od130|Плочи|chainring плоча\ncranks-od129|Курбели|crank курбел\nbottom-brackets-od43|Средни движения|bottom bracket\nbearings-od75|Лагери|bearings лагер\npedals-od27|Педали|pedals педали\nhandlebar-od29|Кормила|handlebar кормило\nstem-od28|Лапи|stem лапа\ngrips-od8|Грипове|grips гюделини\nbar-tapes-od1976|Ленти за кормило|bar tape\nsaddles-od7|Седла|saddle седло\nseatpost-od30|Колчета за седло|seatpost dropper\nseat-clamps-od163|Скоби за колче|seat clamp\naxles-od138|Оси|axle ос\nhangers-od141|Дерайльорни уши|hanger\nspacers-od153|Дистанционери|spacer\nbolts-od154|Болтове|bolts\ntop-caps-od155|Капачки|top cap\nfenders-od17|Калници|fender калник\nframe-protectors-od60|Протектори за рамка|frame protection\nspare-parts-od44|Резервни части|spare\ncockpit-spare-parts-od140|Резервни части — кокпит|cockpit\npedal-spare-parts-od139|Резервни части — педали|pedal spare"
+          }
+        },
+        "dept_4": {
+          "type": "department",
+          "settings": {
+            "title": "Екипировка и защита",
+            "icon": "shield",
+            "color": "#2F6FD6",
+            "text": "Каски, протектори, ръкавици, очила, обувки.",
+            "items": "helmets-od72|Каски|helmet каска\nfull-face-od109|Full face каски|full face\nenduro-od111|Enduro каски|enduro\nroad-od110|XC & Gravel каски|xc gravel road\nurban-od113|Urban каски|urban\nvisors-od119|Визьори|visor\nprotectors-od57|Протектори|protector\nkneeguard-od114|Наколенки|knee\nelbowguard-od115|Налакътници|elbow\nbody-protector-od118|Боди протектори|body armour\nchest-protector-od116|Гръдни протектори|chest\nback-protector-od117|Гръбни протектори|back\ngloves-od55|Ръкавици|gloves ръкавици\ngoggles-od99|Goggles|goggles очила\nmtb-googles-od165|MTB goggles|mtb goggles\nsunglasses-od123|Слънчеви очила|sunglasses\nspare-lenses-od124|Резервни стъкла|lens\nshoes-od93|Обувки|shoes обувки"
+          }
+        },
+        "dept_5": {
+          "type": "department",
+          "settings": {
+            "title": "Дрехи",
+            "icon": "carry",
+            "color": "#E8601C",
+            "text": "Джърсита, шорти, якета, casual и мърч.",
+            "items": "jerseys-od53|Джърсита|jersey джърси\nt-shirts-od54|Тениски|t-shirt тениска\nshorts-od58|Шорти|shorts\npants-od92|Панталони|pants\nbibs-od152|Клинове (bibs)|bib\njackets-od149|Якета|jacket яке\nvests-od151|Елеци|vest\nhoodies-od156|Hoodies|hoodie суитшърт\nsweatshirts-od1973|Суитшърти|sweatshirt\nbase-layer-od136|Термо бельо|base layer\nsocks-od65|Чорапи|socks\nhats-od56|Шапки|hat cap\nwinter-headwear-od1990|Зимни шапки|winter beanie\ncasual-wear-od127|Casual|casual\nride-wear-od125|Ride wear|ride wear\nmarch-c199|Мърч 2gether|merch мърч"
+          }
+        },
+        "dept_6": {
+          "type": "department",
+          "settings": {
+            "title": "Аксесоари",
+            "icon": "pin",
+            "color": "#2F6FD6",
+            "text": "Светлини, катинари, чанти, инструменти, грижа за колелото.",
+            "items": "accessories-od25|Всички аксесоари|accessories\nlights-od23|Светлини|light светлина фар\nbike-locks-od49|Катинари|lock катинар\nbottles-od133|Бутилки|bottle бутилка\nbottle-cages-od134|Държачи за бутилки|cage\nbags-backpacks-od1964|Чанти и раници|bag\nbackpacks-od50|Раници|backpack раница\nhip-packs-od1962|Хип чанти|hip pack\nsaddle-bags-od1965|Чанти за седло|saddle bag\nhandlebar-bags-od1966|Чанти за кормило|handlebar bag\ntool-bags-od1970|Чанти за инструменти|tool bag\nhydration-bladders-od1971|Резервоари за вода|bladder\ntools-od24|Инструменти|tools инструмент\ngps-sensors-od1972|GPS и сензори|gps sensor\nbike-care-od143|Грижа за велосипеда|care\nchain-lube-od146|Смазка за верига|lube\ncleaning-supplies-od144|Почистване|cleaning\ngrease-od147|Грес|grease\nbrushes-towels-od145|Четки и кърпи|brush\nenergy-and-hydration-od161|Енергия и хидратация|nutrition\ngels-bars-od108|Гелове и барове|gel bar"
+          }
+        },
+        "dept_7": {
+          "type": "department",
+          "settings": {
+            "title": "Skate & Snow",
+            "icon": "jump",
+            "color": "#E8601C",
+            "text": "Скейтборд и зимна екипировка.",
+            "items": "skateboard-od34|Скейтборд|skate\ncomplete-od38|Complete скейтове|complete\ndeck-od39|Дъски|deck\nskateboard-wheels-od35|Колела за скейт|skate wheels\ngriptape-od37|Griptape|griptape\nsnow-od1981|Snow — всичко|snow\nsnow-jackets-od1983|Snow якета|snow jacket\nsnow-pants-od1982|Snow панталони|snow pants\nsnow-gloves-od1984|Snow ръкавици|snow gloves\nsnow-hoodies-od1988|Snow hoodies|snow hoodie\nski-googles-od164|Ски очила|ski goggles\nski-snowboard-od1979|Ски и сноуборд|ski snowboard"
+          }
+        },
+        "dept_8": {
+          "type": "department",
+          "settings": {
+            "title": "Рампи 2gether",
+            "icon": "landing",
+            "color": "#C8434F",
+            "text": "Преносими рампи BREEZE и STORM — произведени в България.",
+            "items": "portable-ramps|Преносими рампи|ramp рампа breeze storm"
+          }
+        },
+        "finder_1": {
+          "type": "finder",
+          "settings": {
+            "label": "Гуми 29\"",
+            "url": "/collections/tires-tubes-od20/tyre-size-29",
+            "kicker": "Външни гуми"
+          }
+        },
+        "finder_2": {
+          "type": "finder",
+          "settings": {
+            "label": "Гуми 27.5\"",
+            "url": "/collections/tires-tubes-od20/tyre-size-27-5",
+            "kicker": "Външни гуми"
+          }
+        },
+        "finder_3": {
+          "type": "finder",
+          "settings": {
+            "label": "Гуми 26\"",
+            "url": "/collections/tires-tubes-od20/tyre-size-26",
+            "kicker": "Външни гуми"
+          }
+        },
+        "finder_4": {
+          "type": "finder",
+          "settings": {
+            "label": "Гуми 28\" / 700c",
+            "url": "/collections/tires-tubes-od20/tyre-size-28-700c",
+            "kicker": "Шосе и gravel"
+          }
+        },
+        "finder_5": {
+          "type": "finder",
+          "settings": {
+            "label": "Капли 29\"",
+            "url": "/collections/rims-od18/rim-size-29",
+            "kicker": "Капли"
+          }
+        },
+        "finder_6": {
+          "type": "finder",
+          "settings": {
+            "label": "Капли 27.5\"",
+            "url": "/collections/rims-od18/rim-size-27-5",
+            "kicker": "Капли"
+          }
+        },
+        "finder_7": {
+          "type": "finder",
+          "settings": {
+            "label": "Намаления",
+            "url": "/collections/discount-od100",
+            "kicker": "Оферти"
+          }
+        },
+        "finder_8": {
+          "type": "finder",
+          "settings": {
+            "label": "Пълно окачване",
+            "url": "/collections/palno-okachvane-c216",
+            "kicker": "Велосипеди"
+          }
+        },
+        "finder_9": {
+          "type": "finder",
+          "settings": {
+            "label": "Каски",
+            "url": "/collections/helmets-od72",
+            "kicker": "Екипировка"
+          }
+        },
+        "finder_10": {
+          "type": "finder",
+          "settings": {
+            "label": "Ръкавици",
+            "url": "/collections/gloves-od55",
+            "kicker": "Екипировка"
+          }
+        }
+      },
+      "block_order": [
+        "dept_1",
+        "dept_2",
+        "dept_3",
+        "dept_4",
+        "dept_5",
+        "dept_6",
+        "dept_7",
+        "dept_8",
+        "finder_1",
+        "finder_2",
+        "finder_3",
+        "finder_4",
+        "finder_5",
+        "finder_6",
+        "finder_7",
+        "finder_8",
+        "finder_9",
+        "finder_10"
+      ],
       "settings": {
-        "eyebrow": "Е-МАГАЗИН",
-        "title": "КАТЕГОРИИ",
-        "intro": "Велосипеди, части, екипировка и мърч — всичко за твоето каране, подбрано и тествано от нас.",
-        "featured_handles": "velosipedi-c59,planinski-velosipedi-c97,elektricheski-velosipedi-c212,march-c199",
-        "rest_heading": "Всички категории",
-        "count_singular": "продукт",
-        "count_plural": "продукта",
-        "empty_text": "Няма налични категории."
+        "eyebrow": "Е-магазин",
+        "title": "КАКВО ТЪРСИШ?",
+        "search_placeholder": "Гуми 29, каска, спирачки, джърси…",
+        "finders_title": "Бързо намиране",
+        "show_brands": true,
+        "brands_title": "Марки",
+        "brands_text": "Всички марки, които продаваме — по азбучен ред."
       }
     }
   },

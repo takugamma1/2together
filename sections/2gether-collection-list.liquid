@@ -2,196 +2,148 @@
 {{ '2gether-collection-list.css' | asset_url | stylesheet_tag }}
 {{ '2gether-search.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
-<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
 
-{% comment %} Belt-and-suspenders with the body:has() rule in 2gether-collection-list.css {% endcomment %}
 <script>document.body.classList.add('tg-collections-active');</script>
 
 {%- liquid
-  assign featured_handles = section.settings.featured_handles | default: '' | replace: ' ', '' | split: ','
+  assign st = section.settings
+  assign departments = section.blocks | where: 'type', 'department'
+  assign finders = section.blocks | where: 'type', 'finder'
 -%}
 
-{% paginate collections by 48 %}
-  {%- liquid
-    comment
-      Pre-count both groups so headings/wrappers only render when needed.
-      Featured tiles are looked up by handle (merchant order preserved) and
-      shown on page 1 only; they are excluded from the compact grid on every
-      page so a collection never appears twice.
-    endcomment
-    assign featured_count = 0
-    for handle in featured_handles
-      assign fc = collections[handle]
-      if fc != blank and fc.products_count > 0
-        assign featured_count = featured_count | plus: 1
-      endif
-    endfor
+<div class="tg-hub" data-tg-hub>
+  <div class="tg-rp-wrap">
 
-    assign rest_count = 0
-    for c in collections
-      if c.products_count > 0
-        unless featured_handles contains c.handle
-          assign rest_count = rest_count | plus: 1
-        endunless
-      endif
-    endfor
-  -%}
+    <!-- ═══ HEAD: title + instant search ═══ -->
+    <header class="tg-hub-head">
+      <div>
+        {% if st.eyebrow != blank %}<span class="tg-eyebrow">{{ st.eyebrow }}</span>{% endif %}
+        <h1 class="tg-hub-title">{{ st.title }}</h1>
+      </div>
+      <form class="tg-hub-search" action="{{ routes.search_url }}" method="get" role="search" data-tg-suggest>
+        <input type="hidden" name="type" value="product">
+        <label class="tg-search-bar tg-hub-search-bar" for="tg-hub-q">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
+          <input type="search" id="tg-hub-q" name="q" placeholder="{{ st.search_placeholder }}" autocomplete="off" data-tg-hub-q data-tg-cl-search>
+          <kbd aria-hidden="true">Enter ↵ = продукти</kbd>
+        </label>
+        <p class="tg-hub-search-hint" data-tg-hub-hint aria-live="polite"></p>
+      </form>
+    </header>
 
-  <div class="tg-collections-page tg-section">
-    <div class="tg-cl-inner">
-      <!-- ═══ PAGE HEAD ═══ -->
-      <header class="tg-cl-head">
-        {% if section.settings.eyebrow != blank %}
-          <span class="tg-eyebrow">{{ section.settings.eyebrow }}</span>
-        {% endif %}
-        {% if section.settings.title != blank %}
-          <h1 class="tg-cl-title">{{ section.settings.title }}</h1>
-        {% endif %}
-        {% if section.settings.intro != blank %}
-          <p class="tg-cl-intro">{{ section.settings.intro }}</p>
-        {% endif %}
-        <div class="tg-search-wrap tg-cl-search" data-tg-suggest>
-          <label class="tg-search-bar" for="tg-cl-search-input">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
-            <input
-              type="search"
-              id="tg-cl-search-input"
-              placeholder="{{ section.settings.search_placeholder | default: 'Търси продукт или категория…' }}"
-              autocomplete="off"
-              data-tg-cl-search
-            >
-          </label>
-        </div>
-      </header>
+    <!-- ═══ DEPARTMENT CHIPS ═══ -->
+    <nav class="tg-hub-chips" aria-label="Отдели" data-tg-hub-chips>
+      {% for b in departments %}
+        <a href="#dept-{{ b.id }}" class="tg-hub-chip" data-tg-hub-chip="dept-{{ b.id }}" style="--model: {{ b.settings.color }}">{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.title }}</span></a>
+      {% endfor %}
+      {% if st.show_brands %}<a href="#dept-brands" class="tg-hub-chip" data-tg-hub-chip="dept-brands" style="--model: #8A9BB5"><span>{{ st.brands_title }}</span></a>{% endif %}
+    </nav>
 
-      <!-- ═══ FEATURED CATEGORIES — bento tiles ═══ -->
-      {% if paginate.current_page == 1 and featured_count > 0 %}
-        <div class="tg-cl-featured">
-          {%- assign featured_i = 0 -%}
-          {% for handle in featured_handles %}
-            {%- assign c = collections[handle] -%}
-            {% if c == blank or c.products_count == 0 %}{% continue %}{% endif %}
-            {%- assign featured_i = featured_i | plus: 1 -%}
-            {%- assign tile_num = featured_i | prepend: '0' | slice: -2, 2 -%}
-            {%- capture count_label -%}
-              {%- if c.products_count == 1 -%}
-                {{ c.products_count }} {{ section.settings.count_singular | default: 'продукт' }}
-              {%- else -%}
-                {{ c.products_count }} {{ section.settings.count_plural | default: 'продукта' }}
-              {%- endif -%}
-            {%- endcapture -%}
-            <a href="{{ c.url }}" class="tg-cl-tile tg-cl-tile--featured">
-              <div class="tg-cl-tile-media">
-                {% if c.image %}
-                  {{ c.image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 100vw, 50vw' }}
-                {% elsif c.products.first.featured_image %}
-                  {{ c.products.first.featured_image | image_url: width: 1400 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 100vw, 50vw' }}
-                {% else %}
-                  <div class="tg-cl-tile-placeholder" aria-hidden="true">
-                    <span>{{ c.title | slice: 0, 1 | upcase }}</span>
-                  </div>
-                {% endif %}
-                <div class="tg-cl-tile-overlay"></div>
-              </div>
-              <span class="tg-cl-tile-count">{{ count_label }}</span>
-              <div class="tg-cl-tile-info">
-                <span class="tg-cl-tile-num">{{ tile_num }}</span>
-                <span class="tg-cl-tile-title">{{ c.title | escape }}</span>
-                <span class="tg-cl-tile-arrow" aria-hidden="true">
-                  <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
-                </span>
-              </div>
+    <!-- ═══ QUICK FINDERS ═══ -->
+    {% if finders.size > 0 %}
+      <section class="tg-hub-finders" aria-label="{{ st.finders_title | escape }}">
+        <span class="tg-hub-finders-label">{{ st.finders_title }}</span>
+        <div class="tg-hub-finders-track">
+          {% for b in finders %}
+            <a href="{{ b.settings.url }}" class="tg-hub-finder" {{ b.shopify_attributes }}>
+              <strong>{{ b.settings.label }}</strong>{% if b.settings.kicker != blank %}<small>{{ b.settings.kicker }}</small>{% endif %}
             </a>
           {% endfor %}
         </div>
-      {% endif %}
+      </section>
+    {% endif %}
 
-      <!-- ═══ ALL OTHER CATEGORIES — compact grid ═══ -->
-      {% if rest_count > 0 %}
-        {% if featured_count > 0 and paginate.current_page == 1 and section.settings.rest_heading != blank %}
-          <div class="tg-cl-rest-head">
-            <h2 class="tg-cl-rest-title">{{ section.settings.rest_heading }}</h2>
+    <!-- ═══ DEPARTMENTS ═══ -->
+    {% for b in departments %}
+      {%- assign items = b.settings.items | newline_to_br | split: '<br />' -%}
+      <section class="tg-hub-dept" id="dept-{{ b.id }}" data-tg-hub-dept style="--model: {{ b.settings.color }}" {{ b.shopify_attributes }}>
+        <header class="tg-hub-dept-head">
+          <div class="tg-hub-dept-icon">{% render '2gether-ramps-icon', name: b.settings.icon %}</div>
+          <div>
+            <h2 class="tg-hub-dept-title">{{ b.settings.title }}</h2>
+            {% if b.settings.text != blank %}<p class="tg-hub-dept-text">{{ b.settings.text }}</p>{% endif %}
           </div>
-        {% endif %}
-        <div class="tg-cl-grid">
-          {% for c in collections %}
-            {% if c.products_count == 0 %}{% continue %}{% endif %}
-            {% if featured_handles contains c.handle %}{% continue %}{% endif %}
-            {%- capture count_label -%}
-              {%- if c.products_count == 1 -%}
-                {{ c.products_count }} {{ section.settings.count_singular | default: 'продукт' }}
-              {%- else -%}
-                {{ c.products_count }} {{ section.settings.count_plural | default: 'продукта' }}
-              {%- endif -%}
-            {%- endcapture -%}
-            <a href="{{ c.url }}" class="tg-cl-tile tg-cl-tile--compact">
-              <div class="tg-cl-tile-media">
-                {% if c.image %}
-                  {{ c.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 50vw, 25vw' }}
-                {% elsif c.products.first.featured_image %}
-                  {{ c.products.first.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: c.title, sizes: '(max-width: 768px) 50vw, 25vw' }}
-                {% else %}
-                  <div class="tg-cl-tile-placeholder" aria-hidden="true">
-                    <span>{{ c.title | slice: 0, 1 | upcase }}</span>
-                  </div>
-                {% endif %}
-                <div class="tg-cl-tile-overlay"></div>
-              </div>
-              <span class="tg-cl-tile-count">{{ count_label }}</span>
-              <div class="tg-cl-tile-info">
-                <span class="tg-cl-tile-title">{{ c.title | escape }}</span>
-                <span class="tg-cl-tile-arrow" aria-hidden="true">
-                  <svg width="22" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
-                </span>
-              </div>
+        </header>
+        <div class="tg-hub-grid">
+          {% for line in items %}
+            {%- assign parts = line | strip | split: '|' -%}
+            {%- assign h = parts[0] | strip -%}
+            {%- if h == blank -%}{%- continue -%}{%- endif -%}
+            {%- assign c = collections[h] -%}
+            {%- if c == blank or c.products_count == 0 -%}{%- continue -%}{%- endif -%}
+            {%- assign label = parts[1] | default: c.title | strip -%}
+            {%- assign kw = parts[2] | default: '' -%}
+            <a href="{{ c.url }}" class="tg-hub-card" data-tg-hub-card data-search="{{ label | downcase | escape }} {{ c.title | downcase | escape }} {{ kw | downcase | escape }} {{ b.settings.title | downcase | escape }}">
+              <span class="tg-hub-card-media">
+                {% if c.image != blank %}{{ c.image | image_url: width: 480 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}{% elsif c.products.first.featured_image != blank %}{{ c.products.first.featured_image | image_url: width: 480 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}{% else %}<span class="tg-hub-card-ph">{% render '2gether-ramps-icon', name: b.settings.icon %}</span>{% endif %}
+              </span>
+              <span class="tg-hub-card-body">
+                <span class="tg-hub-card-title">{{ label }}</span>
+                {% if label != c.title %}<span class="tg-hub-card-sub">{{ c.title }}</span>{% endif %}
+                <span class="tg-hub-card-count">{{ c.products_count }} {{ c.products_count | pluralize: 'продукт', 'продукта' }}</span>
+              </span>
             </a>
           {% endfor %}
         </div>
-      {% endif %}
+        <p class="tg-hub-empty" data-tg-hub-empty hidden>Няма категории за това търсене в този отдел.</p>
+      </section>
+    {% endfor %}
 
-      {% if paginate.current_page == 1 and featured_count == 0 and rest_count == 0 and section.settings.empty_text != blank %}
-        <p class="tg-cl-empty">{{ section.settings.empty_text }}</p>
-      {% endif %}
+    <!-- ═══ BRANDS A–Z ═══ -->
+    {% if st.show_brands %}
+      <section class="tg-hub-dept tg-hub-dept--brands" id="dept-brands" data-tg-hub-dept style="--model: #8A9BB5">
+        <header class="tg-hub-dept-head">
+          <div class="tg-hub-dept-icon">{% render '2gether-ramps-icon', name: 'grip' %}</div>
+          <div><h2 class="tg-hub-dept-title">{{ st.brands_title }}</h2>{% if st.brands_text != blank %}<p class="tg-hub-dept-text">{{ st.brands_text }}</p>{% endif %}</div>
+        </header>
+        <div class="tg-hub-brands">
+          {% for c in collections %}
+            {% if c.handle contains 'brand-' and c.products_count > 0 %}
+              <a href="{{ c.url }}" class="tg-hub-brand" data-tg-hub-card data-search="{{ c.title | downcase | escape }} марка brand">{{ c.title }}<small>{{ c.products_count }}</small></a>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <p class="tg-hub-empty" data-tg-hub-empty hidden>Няма марки за това търсене.</p>
+      </section>
+    {% endif %}
 
-      {%- render 'pagination-controls', paginate: paginate -%}
-    </div>
+    <p class="tg-hub-none" data-tg-hub-none hidden>Нищо не съвпада в категориите. <button type="submit" form="tg-hub-form-proxy" class="tg-hub-none-btn" data-tg-hub-submit>Търси в продуктите →</button></p>
   </div>
-{% endpaginate %}
+</div>
 
 <script src="{{ '2gether-search.js' | asset_url }}" defer></script>
 <script>
-  // Live search over the collection tiles on this page.
-  (function () {
-    var input = document.querySelector('[data-tg-cl-search]');
-    var page = document.querySelector('.tg-collections-page');
-    if (!input || !page) return;
-
-    var tiles = Array.prototype.slice.call(page.querySelectorAll('.tg-cl-tile'));
-    var chrome = Array.prototype.slice.call(page.querySelectorAll('.tg-cl-rest-head, .pagination, .tg-cl-pagination, nav[aria-label]'));
-
-    var empty = document.createElement('p');
-    empty.className = 'tg-cl-search-empty';
-    empty.hidden = true;
-    empty.textContent = 'Няма категории за това търсене.';
-    var grid = page.querySelector('.tg-cl-grid') || page;
-    grid.parentNode.insertBefore(empty, grid.nextSibling);
-
-    function norm(s) { return s.toLowerCase().trim(); }
-
-    input.addEventListener('input', function () {
-      var q = norm(input.value);
-      var visible = 0;
-      tiles.forEach(function (t) {
-        var title = t.querySelector('.tg-cl-tile-title');
-        var hit = !q || (title && norm(title.textContent).indexOf(q) !== -1);
-        t.style.display = hit ? '' : 'none';
-        if (hit) visible++;
-      });
-      chrome.forEach(function (el) { el.style.display = q ? 'none' : ''; });
-      empty.hidden = !q || visible > 0;
-    });
-  })();
+(() => {
+  const hub = document.querySelector('[data-tg-hub]'); if (!hub) return;
+  const q = hub.querySelector('[data-tg-hub-q]'), hint = hub.querySelector('[data-tg-hub-hint]');
+  const cards = [...hub.querySelectorAll('[data-tg-hub-card]')];
+  const depts = [...hub.querySelectorAll('[data-tg-hub-dept]')];
+  const chips = [...hub.querySelectorAll('[data-tg-hub-chip]')];
+  const none = hub.querySelector('[data-tg-hub-none]');
+  const norm = (s) => (s || '').toLowerCase().replace(/ё/g, 'е').trim();
+  const lat2cyr = { a:'а', b:'б', v:'в', g:'г', d:'д', e:'е', z:'з', i:'и', k:'к', l:'л', m:'м', n:'н', o:'о', p:'п', r:'р', s:'с', t:'т', u:'у', f:'ф', h:'х', c:'ц' };
+  const filter = () => {
+    const val = norm(q.value); const terms = val.split(/\s+/).filter(Boolean);
+    let shown = 0;
+    cards.forEach(c => { const hay = c.dataset.search; const ok = terms.every(t => hay.includes(t)); c.hidden = !ok; if (ok) shown++; });
+    depts.forEach(d => { const vis = [...d.querySelectorAll('[data-tg-hub-card]')].some(c => !c.hidden); d.classList.toggle('is-empty', !vis); const e = d.querySelector('[data-tg-hub-empty]'); if (e) e.hidden = true; d.hidden = terms.length > 0 && !vis; });
+    chips.forEach(ch => { const d = document.getElementById(ch.dataset.tgHubChip); ch.classList.toggle('is-dim', !!(d && d.hidden)); });
+    if (none) none.hidden = !(terms.length && shown === 0);
+    if (hint) hint.textContent = terms.length ? (shown ? `${shown} ${shown === 1 ? 'категория' : 'категории'} · Enter за продукти` : '') : '';
+    hub.classList.toggle('is-searching', terms.length > 0);
+  };
+  q.addEventListener('input', filter);
+  q.addEventListener('keydown', (e) => { if (e.key === 'Escape') { q.value = ''; filter(); } });
+  const submitBtn = hub.querySelector('[data-tg-hub-submit]');
+  if (submitBtn) submitBtn.addEventListener('click', (e) => { e.preventDefault(); q.form.submit(); });
+  // chips: smooth scroll + active state via scroll-spy
+  chips.forEach(ch => ch.addEventListener('click', (e) => { const d = document.getElementById(ch.dataset.tgHubChip); if (!d) return; e.preventDefault(); d.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.replaceState(null, '', '#' + ch.dataset.tgHubChip); }));
+  const spy = () => { let cur = null; const line = window.innerHeight * 0.35; depts.forEach(d => { if (!d.hidden && d.getBoundingClientRect().top <= line) cur = d.id; }); chips.forEach(ch => ch.classList.toggle('is-active', ch.dataset.tgHubChip === cur)); };
+  window.addEventListener('scroll', spy, { passive: true }); spy();
+  if (location.hash) { const d = document.getElementById(location.hash.slice(1)); d && setTimeout(() => d.scrollIntoView({ block: 'start' }), 50); }
+})();
 </script>
 
 {% schema %}
@@ -199,77 +151,26 @@
   "name": "2Gether Collection List",
   "tag": "section",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow label",
-      "default": "Е-МАГАЗИН"
-    },
-    {
-      "type": "text",
-      "id": "search_placeholder",
-      "label": "Search placeholder",
-      "default": "Търси категория…"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Page title",
-      "default": "КАТЕГОРИИ"
-    },
-    {
-      "type": "textarea",
-      "id": "intro",
-      "label": "Intro text (optional)",
-      "default": "Велосипеди, части, екипировка и мърч — всичко за твоето каране, подбрано и тествано от нас."
-    },
-    {
-      "type": "header",
-      "content": "Featured categories"
-    },
-    {
-      "type": "text",
-      "id": "featured_handles",
-      "label": "Featured collection handles",
-      "info": "Comma-separated handles. These render as large bento tiles at the top, in this order. Collections with 0 products are skipped.",
-      "default": "velosipedi-c59,planinski-velosipedi-c97,elektricheski-velosipedi-c212,march-c199"
-    },
-    {
-      "type": "text",
-      "id": "rest_heading",
-      "label": "Subheading above the remaining categories",
-      "default": "Всички категории"
-    },
-    {
-      "type": "header",
-      "content": "Text strings"
-    },
-    {
-      "type": "text",
-      "id": "count_singular",
-      "label": "Product count — singular",
-      "default": "продукт"
-    },
-    {
-      "type": "text",
-      "id": "count_plural",
-      "label": "Product count — plural",
-      "default": "продукта"
-    },
-    {
-      "type": "text",
-      "id": "empty_text",
-      "label": "Empty state text",
-      "default": "Няма налични категории."
-    }
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Е-магазин" },
+    { "type": "text", "id": "title", "label": "Title", "default": "КАКВО ТЪРСИШ?" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Гуми 29, каска, спирачки, джърси…" },
+    { "type": "text", "id": "finders_title", "label": "Quick finders label", "default": "Бързо намиране" },
+    { "type": "checkbox", "id": "show_brands", "label": "Show brands A–Z (collections with handle brand-*)", "default": true },
+    { "type": "text", "id": "brands_title", "label": "Brands title", "default": "Марки" },
+    { "type": "text", "id": "brands_text", "label": "Brands text", "default": "Всички марки, които продаваме — по азбучен ред." }
   ],
-  "presets": [
-    {
-      "name": "2Gether Collection List"
-    }
+  "blocks": [
+    { "type": "department", "name": "Department", "limit": 12, "settings": [
+      { "type": "text", "id": "title", "label": "Title", "default": "Части" },
+      { "type": "textarea", "id": "text", "label": "Short text" },
+      { "type": "select", "id": "icon", "label": "Icon", "default": "fold", "options": [ { "value": "ride", "label": "Bike" }, { "value": "wheel", "label": "Wheel" }, { "value": "fold", "label": "Parts" }, { "value": "shield", "label": "Shield" }, { "value": "carry", "label": "Clothing" }, { "value": "pin", "label": "Pin" }, { "value": "jump", "label": "Jump" }, { "value": "landing", "label": "Landing" }, { "value": "grip", "label": "Grid" }, { "value": "book", "label": "Book" } ] },
+      { "type": "color", "id": "color", "label": "Accent", "default": "#E8601C" },
+      { "type": "textarea", "id": "items", "label": "Collections (one per line: handle | Bulgarian label | search keywords)", "info": "Collections with 0 products are skipped automatically." } ] },
+    { "type": "finder", "name": "Quick finder", "limit": 16, "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Гуми 29\"" },
+      { "type": "text", "id": "kicker", "label": "Kicker", "default": "Външни гуми" },
+      { "type": "text", "id": "url", "label": "URL (collection, optionally /tag-a+tag-b)", "default": "/collections/tires-tubes-od20/tyre-size-29" } ] }
   ],
-  "enabled_on": {
-    "templates": ["list-collections"]
-  }
+  "presets": [ { "name": "2Gether Collection List" } ]
 }
 {% endschema %}
