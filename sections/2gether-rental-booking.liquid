@@ -1,0 +1,161 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-rental-booking.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign bikes = shop.metaobjects.rental_bike.values
+  assign tiers_default = st.long_tiers | newline_to_br | split: '<br />'
+-%}
+
+<section class="tg-rb tg-section" id="tg-rental-booking" data-tg-rb
+  data-endpoint="{{ st.endpoint | default: '/apps/club' }}"
+  data-hourly="{{ st.hourly_rate }}" data-day="{{ st.day_rate }}" data-h24="{{ st.h24_rate }}" data-max-hours="{{ st.max_hours | default: 24 }}"
+  data-hour-start="{{ st.hour_start | default: 9 }}" data-hour-end="{{ st.hour_end | default: 19 }}"
+  data-tiers="{{ st.long_tiers | newline_to_br | replace: '<br />', ';' | escape }}"
+  data-min-days="{{ st.long_min_days | default: 2 }}" data-deposit="{{ st.deposit | escape }}">
+  <div class="tg-rb-inner">
+    <header class="tg-rb-head">
+      <span class="tg-label">{{ st.eyebrow }}</span>
+      <h2 class="tg-rb-title">{{ st.title }}</h2>
+      {% if st.intro != blank %}<p class="tg-rb-intro">{{ st.intro }}</p>{% endif %}
+    </header>
+
+    <!-- ── 1. bikes ── -->
+    <div class="tg-rb-block">
+      <div class="tg-rb-step"><span>01</span>{{ st.step_bikes }}</div>
+      {% if bikes.size > 0 %}
+        <div class="tg-rb-bikes" data-rb-bikes>
+          {% for b in bikes %}
+            {%- if b.active.value != true -%}{%- continue -%}{%- endif -%}
+            <article class="tg-rb-bike" data-rb-bike="{{ b.system.handle }}" data-name="{{ b.name.value | escape }}" data-count="{{ b.count.value | default: 0 }}"
+              data-hourly="{{ b.hourly_rate.value }}" data-day="{{ b.day_rate.value }}" data-tiers="{{ b.long_term_tiers.value | newline_to_br | replace: '<br />', ';' | escape }}">
+              <div class="tg-rb-bike-media">
+                {% if b.photo.value != blank %}{{ b.photo.value | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 33vw', alt: b.name.value }}{% else %}<div class="tg-rb-ph"></div>{% endif %}
+                {% if b.category.value != blank %}<span class="tg-rb-bike-cat">{{ b.category.value }}</span>{% endif %}
+                <span class="tg-rb-bike-avail" data-rb-avail><i></i><b data-rb-avail-n>{{ b.count.value }}</b> {{ st.available_label }}</span>
+              </div>
+              <div class="tg-rb-bike-body">
+                <h3 class="tg-rb-bike-name">{{ b.name.value }}</h3>
+                {% if b.sizes.value != blank %}<span class="tg-rb-bike-sizes">{{ st.sizes_label }} {{ b.sizes.value }}</span>{% endif %}
+                {% if b.description.value != blank %}<p class="tg-rb-bike-desc">{{ b.description.value | strip_html | truncate: 110 }}</p>{% endif %}
+                <div class="tg-rb-bike-foot">
+                  <span class="tg-rb-bike-price">{{ st.from_label }} €<b data-rb-from>{{ b.hourly_rate.value | default: st.hourly_rate }}</b>/{{ st.hour_short }}</span>
+                  <div class="tg-rb-qty"><button type="button" data-rb-dec aria-label="−">−</button><span data-rb-qty>0</span><button type="button" data-rb-inc aria-label="+">+</button></div>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="tg-rb-empty">{{ st.empty_text }}</p>
+      {% endif %}
+    </div>
+
+    <!-- ── 2. mode + time ── -->
+    <div class="tg-rb-block tg-rb-grid">
+      <div>
+        <div class="tg-rb-step"><span>02</span>{{ st.step_time }}</div>
+        <div class="tg-rb-modes" role="tablist">
+          <button type="button" class="tg-rb-mode is-active" data-rb-mode="short" role="tab" aria-selected="true"><strong>{{ st.short_title }}</strong><small>{{ st.short_sub }}</small></button>
+          <button type="button" class="tg-rb-mode" data-rb-mode="long" role="tab" aria-selected="false"><strong>{{ st.long_title }}</strong><small>{{ st.long_sub }}</small></button>
+        </div>
+
+        <div class="tg-rb-pane" data-rb-pane="short">
+          <label class="tg-rb-field"><span>{{ st.date_label }}</span><input type="date" data-rb-short-date required></label>
+          <div class="tg-rb-field"><span>{{ st.hour_label }}</span><div class="tg-rb-chips" data-rb-hours></div></div>
+          <div class="tg-rb-field"><span>{{ st.duration_label }}</span><div class="tg-rb-chips" data-rb-durations></div></div>
+          <p class="tg-rb-hint">{{ st.short_hint }}</p>
+        </div>
+
+        <div class="tg-rb-pane" data-rb-pane="long" hidden>
+          <div class="tg-rb-cal" data-rb-cal>
+            <div class="tg-rb-cal-nav"><button type="button" data-rb-cal-prev aria-label="←">‹</button><span data-rb-cal-title></span><button type="button" data-rb-cal-next aria-label="→">›</button></div>
+            <div class="tg-rb-cal-months" data-rb-cal-months></div>
+            <div class="tg-rb-cal-legend"><i class="is-free"></i>{{ st.legend_free }} <i class="is-busy"></i>{{ st.legend_busy }} <i class="is-sel"></i>{{ st.legend_selected }}</div>
+          </div>
+          <p class="tg-rb-hint" data-rb-long-hint>{{ st.long_hint }}</p>
+        </div>
+      </div>
+
+      <!-- ── 3. summary + contact ── -->
+      <aside class="tg-rb-summary" data-rb-summary>
+        <div class="tg-rb-step"><span>03</span>{{ st.step_confirm }}</div>
+        <dl class="tg-rb-lines" data-rb-lines><dd class="tg-rb-lines-empty">{{ st.summary_empty }}</dd></dl>
+        <div class="tg-rb-total"><span>{{ st.total_label }}</span><strong data-rb-total>—</strong></div>
+        {% if st.deposit != blank %}<p class="tg-rb-note">{{ st.deposit }}</p>{% endif %}
+        <form class="tg-rb-form" data-rb-form novalidate>
+          <label><span>{{ st.name_label }}</span><input type="text" name="name" required autocomplete="name"></label>
+          <label><span>{{ st.phone_label }}</span><input type="tel" name="phone" required autocomplete="tel"></label>
+          <label><span>{{ st.email_label }}</span><input type="email" name="email" autocomplete="email"></label>
+          <label><span>{{ st.note_label }}</span><textarea name="note" rows="2"></textarea></label>
+          <button type="submit" class="tg-btn-primary tg-rb-submit" data-rb-submit>{{ st.submit_label }}</button>
+          <p class="tg-rb-status" data-rb-status aria-live="polite"></p>
+        </form>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script src="{{ '2gether-rental-booking.js' | asset_url }}" defer></script>
+<script>window.tgRbI18n = {{ st | json }};</script>
+
+{% schema %}
+{
+  "name": "2Gether Rental booking",
+  "tag": "div",
+  "settings": [
+    { "type": "paragraph", "content": "Bikes come from Content → Metaobjects → Rental bike (photo, count, active, optional price overrides). Availability + bookings are served by the club worker (/apps/club)." },
+    { "type": "text", "id": "endpoint", "label": "Worker proxy base", "default": "/apps/club" },
+    { "type": "header", "content": "Prices — short term" },
+    { "type": "number", "id": "hourly_rate", "label": "€ per hour", "default": 3 },
+    { "type": "number", "id": "day_rate", "label": "€ per day (cap for up to hour_end)", "default": 12 },
+    { "type": "number", "id": "h24_rate", "label": "€ for 24 hours", "default": 20 },
+    { "type": "number", "id": "max_hours", "label": "Max hours for short term", "default": 24 },
+    { "type": "number", "id": "hour_start", "label": "First pick-up hour", "default": 9 },
+    { "type": "number", "id": "hour_end", "label": "Last return hour (same day)", "default": 19 },
+    { "type": "header", "content": "Prices — long term" },
+    { "type": "textarea", "id": "long_tiers", "label": "Price per day from day N (N|€ per line)", "info": "Each day is charged at the rate of the tier it falls in. Example: day 1 €20, days 2–3 €18 … day 7+ €13.", "default": "1|20\n2|18\n3|16\n4|15\n5|14\n7|13" },
+    { "type": "number", "id": "long_min_days", "label": "Minimum days for long term", "default": 2 },
+    { "type": "text", "id": "deposit", "label": "Deposit / terms note", "default": "Депозит €100 при взимане, връща се при връщане. Потвърждаваме по телефон до 24 ч." },
+    { "type": "header", "content": "Texts" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Наем на велосипеди" },
+    { "type": "text", "id": "title", "label": "Title", "default": "РЕЗЕРВИРАЙ КОЛЕЛО" },
+    { "type": "textarea", "id": "intro", "label": "Intro", "default": "За няколко часа или за цяла седмица — избираш колелото, часа или датите и ние потвърждаваме." },
+    { "type": "text", "id": "step_bikes", "label": "Step 1", "default": "Избери колелата" },
+    { "type": "text", "id": "step_time", "label": "Step 2", "default": "Кога" },
+    { "type": "text", "id": "step_confirm", "label": "Step 3", "default": "Потвърди" },
+    { "type": "text", "id": "short_title", "label": "Short-term title", "default": "Краткосрочно" },
+    { "type": "text", "id": "short_sub", "label": "Short-term sub", "default": "По часове · до 24 ч" },
+    { "type": "text", "id": "long_title", "label": "Long-term title", "default": "Дългосрочно" },
+    { "type": "text", "id": "long_sub", "label": "Long-term sub", "default": "По дни · цена на ден пада" },
+    { "type": "text", "id": "date_label", "label": "Date label", "default": "Дата" },
+    { "type": "text", "id": "hour_label", "label": "Pick-up hour label", "default": "Час на взимане" },
+    { "type": "text", "id": "duration_label", "label": "Duration label", "default": "За колко време" },
+    { "type": "text", "id": "short_hint", "label": "Short hint", "default": "Часова тарифа до цената за ден; 24 ч = връщане на следващия ден по същото време." },
+    { "type": "text", "id": "long_hint", "label": "Long hint", "default": "Избери първия и последния ден. Сивите дни са заети за избраните колела." },
+    { "type": "text", "id": "legend_free", "label": "Legend free", "default": "свободно" },
+    { "type": "text", "id": "legend_busy", "label": "Legend busy", "default": "заето" },
+    { "type": "text", "id": "legend_selected", "label": "Legend selected", "default": "избрано" },
+    { "type": "text", "id": "available_label", "label": "'available' word", "default": "налични" },
+    { "type": "text", "id": "sizes_label", "label": "Sizes label", "default": "Размери:" },
+    { "type": "text", "id": "from_label", "label": "'from' word", "default": "от" },
+    { "type": "text", "id": "hour_short", "label": "hour short", "default": "ч" },
+    { "type": "text", "id": "summary_empty", "label": "Summary empty", "default": "Избери колело и време, за да видиш цената." },
+    { "type": "text", "id": "total_label", "label": "Total label", "default": "Общо" },
+    { "type": "text", "id": "name_label", "label": "Name", "default": "Име" },
+    { "type": "text", "id": "phone_label", "label": "Phone", "default": "Телефон" },
+    { "type": "text", "id": "email_label", "label": "Email", "default": "Имейл (по желание)" },
+    { "type": "text", "id": "note_label", "label": "Note", "default": "Бележка" },
+    { "type": "text", "id": "submit_label", "label": "Submit", "default": "Резервирай" },
+    { "type": "text", "id": "msg_success", "label": "Success", "default": "Готово! Резервация {ref}. Ще потвърдим по телефон." },
+    { "type": "text", "id": "msg_unavailable", "label": "Unavailable", "default": "За избраните дати няма достатъчно колела. Промени датите или броя." },
+    { "type": "text", "id": "msg_error", "label": "Error", "default": "Нещо се обърка. Обади ни се на +359 888 310 500." },
+    { "type": "text", "id": "msg_incomplete", "label": "Incomplete", "default": "Избери колело, време и попълни име и телефон." },
+    { "type": "text", "id": "empty_text", "label": "No bikes", "default": "Скоро — колелата за наем се зареждат." },
+    { "type": "text", "id": "unit_hours", "label": "hours word", "default": "ч" },
+    { "type": "text", "id": "unit_days", "label": "days word", "default": "дни" },
+    { "type": "text", "id": "unit_day", "label": "day word", "default": "ден" }
+  ],
+  "presets": [ { "name": "2Gether Rental booking" } ]
+}
+{% endschema %}
