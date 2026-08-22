@@ -11,7 +11,10 @@ def gql(q, v=None):
     for _ in range(6):
         rq = urllib.request.Request(API, data=json.dumps({'query': q, 'variables': v or {}}).encode(),
                                     headers={'Content-Type': 'application/json', 'X-Shopify-Access-Token': env['SHOPIFY_ADMIN_TOKEN']})
-        r = json.load(urllib.request.urlopen(rq))
+        try:
+            r = json.load(urllib.request.urlopen(rq, timeout=60))
+        except (urllib.error.URLError, TimeoutError, ConnectionError, OSError) as e:
+            print('network retry:', e, file=sys.stderr); time.sleep(5); continue
         if r.get('errors') and 'Throttled' in str(r['errors']): time.sleep(2); continue
         if r.get('errors'): raise SystemExit(r['errors'])
         return r['data']
