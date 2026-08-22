@@ -288,6 +288,7 @@
       -%}
 
       {% for option in product.options_with_values %}
+        {% if product.has_only_default_variant %}{% continue %}{% endif %}
         <div class="tg-product-option" data-option-index="{{ forloop.index0 }}">
           <div class="tg-product-option-label">
             {{ option.name }}
