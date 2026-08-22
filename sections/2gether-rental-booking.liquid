@@ -91,6 +91,16 @@
           <button type="submit" class="tg-btn-primary tg-rb-submit" data-rb-submit>{{ st.submit_label }}</button>
           <p class="tg-rb-status" data-rb-status aria-live="polite"></p>
         </form>
+        {%- comment -%} Fallback when the booking worker is unreachable: send the request by e-mail via Shopify's contact form {%- endcomment -%}
+        {%- form 'contact', id: 'tg-rb-fallback', class: 'tg-rb-fallback' -%}
+          <input type="hidden" name="contact[type]" value="Резервация наем">
+          <input type="hidden" name="contact[name]" data-fb-name>
+          <input type="hidden" name="contact[phone]" data-fb-phone>
+          <input type="hidden" name="contact[email]" data-fb-email>
+          <input type="hidden" name="contact[body]" data-fb-body>
+          {% if form.posted_successfully? %}<p class="tg-rb-status is-ok">{{ st.msg_success | remove: 'Резервация' | remove: '.' | strip }} — по имейл.</p>{% endif %}
+          {% if form.errors %}<p class="tg-rb-status">{{ form.errors | default_errors }}</p>{% endif %}
+        {%- endform -%}
       </aside>
     </div>
   </div>
