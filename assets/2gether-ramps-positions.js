@@ -19,7 +19,7 @@
     const setSeg = (btns, active) => btns.forEach(b => { const on = b === active; b.classList.toggle('is-active', on); b.setAttribute('aria-selected', on); });
     const target = () => {
       const L = parseFloat(model.dataset.length) || 130;
-      const hs = (model.dataset.heights || '').split(',').map(v => parseFloat(v)).filter(n => !isNaN(n));
+      const hs = (model.dataset.heights || '').split(/[,\/|;]/).map(v => parseFloat(v)).filter(n => !isNaN(n));
       return { L, h: hs[Math.min(pos, Math.max(hs.length - 1, 0))] || 0 };
     };
     const render = ({ L, h }) => {
