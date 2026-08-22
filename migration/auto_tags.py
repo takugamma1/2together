@@ -21,7 +21,7 @@ def gql(q, v=None):
 
 MANAGED = {'Clothes Size','Helmet Size','Shoe Size','Gender','Diameter','Width','Length','Clamp','Travel','Mount','Compatibility',
            'Compound','Standard','Spacing','Holes','Position','Type','Lumens','Volume','Deck Width','Shape','Offset','Number Of Teeth',
-           'Frame Size','Wheel Size','Bearing Size','Spoke Type','Rise','Lens','Crank Length'}
+           'Frame Size','Wheel Size','Bearing Size','Spoke Type','Rise','Lens','Crank Length','Size'}
 
 CLOTHING = {'Jerseys','T-shirts','Shorts','Pants','Hoodies','Jackets','Gloves','Socks','Vests','Bibs','Base Layer','Sweatshirts','Snow Gloves',
             'Snow Jackets','Snow Pants','Snow Hoodies','Winter Headwear','Riding Hoodie','Other Ride Wear','Casual Wear','Winter Casual','Ride Kit','Hats'}
@@ -164,8 +164,11 @@ def rules(p):
         if m: out.add(t('Deck Width', f'{m.group(1)}"'))
     if typ == 'Skateboard Wheels' or ('wheel' in tl and 'skate' in ' '.join(colls)):
         out |= mm(title, r'\b(5[0-9]|6[0-9])\s*mm\b', 'Diameter')
-    # normalise feed-provided Frame Size / Wheel Size / Rise values (any category)
+    # normalise feed-provided Frame Size / Wheel Size / Rise / Size values (any category)
     for x in p['tags']:
+        if x.startswith('Size: '):
+            v = x[6:].strip(); fam = 'Shoe Size' if typ == 'Shoes' else ('Helmet Size' if typ in HELMETS else 'Clothes Size')
+            out.add(t(fam, SIZE_MAP.get(v.upper(), v)))
         if x.startswith('Frame Size: '):
             v = x[12:].strip().upper()
             if re.fullmatch(r'\d{2}', v): out.add(t('Frame Size', f'{v} cm'))
