@@ -261,8 +261,16 @@
 
       <!-- Product Header -->
       <div class="tg-product-header">
-        {% if product.vendor != blank or product.type != blank %}
-          <div class="tg-product-type-label">{% if product.vendor != blank %}{{ product.vendor }}{% endif %}{% if section.settings.show_type and product.type != blank %}{% if product.vendor != blank %} · {% endif %}{{ product.type }}{% endif %}</div>
+        {%- liquid
+          assign brand = product.vendor
+          assign brand_down = brand | downcase
+          assign shop_down = shop.name | downcase
+          if brand_down == shop_down or brand_down == '2togetherb' or brand_down == '2getherbikes'
+            assign brand = ''
+          endif
+        -%}
+        {% if brand != blank or product.type != blank %}
+          <div class="tg-product-type-label">{% if brand != blank %}{{ brand }}{% endif %}{% if section.settings.show_type and product.type != blank %}{% if brand != blank %} · {% endif %}{{ product.type }}{% endif %}</div>
         {% endif %}
         <h1 class="tg-product-title">{{ product.title }}</h1>
         <div class="tg-product-price" data-product-price>
