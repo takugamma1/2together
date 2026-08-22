@@ -761,6 +761,16 @@ async function handleRentalBook(request, env, customerId) {
 }
 /* Google service-account JWT → access token (RS256 via WebCrypto) */
 async function gcalToken(env) {
+  // Path 1 — OAuth refresh token (for Workspace orgs that block service-account keys)
+  if (env.GOOGLE_OAUTH_CLIENT_ID && env.GOOGLE_OAUTH_CLIENT_SECRET && env.GOOGLE_OAUTH_REFRESH_TOKEN) {
+    const r = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ client_id: env.GOOGLE_OAUTH_CLIENT_ID, client_secret: env.GOOGLE_OAUTH_CLIENT_SECRET, refresh_token: env.GOOGLE_OAUTH_REFRESH_TOKEN, grant_type: 'refresh_token' }),
+    });
+    if (!r.ok) throw new Error('google oauth refresh failed ' + r.status);
+    return (await r.json()).access_token;
+  }
+  // Path 2 — service account (GOOGLE_SA_EMAIL + GOOGLE_SA_KEY)
   if (!env.GOOGLE_SA_EMAIL || !env.GOOGLE_SA_KEY) throw new Error('gcal not configured');
   const now = Math.floor(Date.now() / 1000);
   const enc = (o) => btoa(JSON.stringify(o)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');

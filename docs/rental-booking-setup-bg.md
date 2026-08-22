@@ -29,3 +29,25 @@ Google Calendar (по желание, препоръчително):
 
 ## 5. Резервации
 Content → Metaobjects → **Rental booking** — статус `pending` → `confirmed` / `cancelled` (отказаните освобождават датите). Имейл известие: Shopify Flow → trigger „Metaobject entry created“ → Send internal email.
+
+## Ако Google не позволява ключ за service account („Service account key creation is disabled“)
+
+Това е Workspace политика (`iam.disableServiceAccountKeyCreation`). Три варианта:
+
+**А. Разреши ключове само за този проект** (ако си администратор): IAM & Admin → Organization Policies → „Disable service account key creation“ → Manage policy → Override parent's policy → *Not enforced* → Set policy (с избран проект). После създай JSON ключа.
+
+**Б. Направи проекта с личен Gmail** (без организация — ключовете са разрешени). Календарът остава този на магазина: просто го споделяш с имейла на service account-а.
+
+**В. OAuth refresh token вместо ключ** (без политики):
+1. APIs & Services → OAuth consent screen → User type **Internal** (за Workspace; тогава токенът не изтича) → запази.
+2. Credentials → Create credentials → **OAuth client ID** → Application type **Desktop app** → копирай Client ID и Client secret.
+3. На компютъра: `node worker/google-oauth-token.mjs <CLIENT_ID> <CLIENT_SECRET>` → отвори линка, влез с Google акаунта на магазина, потвърди → скриптът отпечатва `GOOGLE_OAUTH_REFRESH_TOKEN`.
+4. ```
+   cd worker
+   npx wrangler secret put GOOGLE_OAUTH_CLIENT_ID
+   npx wrangler secret put GOOGLE_OAUTH_CLIENT_SECRET
+   npx wrangler secret put GOOGLE_OAUTH_REFRESH_TOKEN
+   npx wrangler secret put GOOGLE_CALENDAR_ID
+   npx wrangler deploy
+   ```
+   При наличие на OAuth тайните worker-ът ги ползва с предимство пред service account-а.
