@@ -797,9 +797,9 @@ function parseShifts(text) {
   const map = {}; const bg = { 'пон': 'mon', 'вт': 'tue', 'ср': 'wed', 'чет': 'thu', 'пет': 'fri', 'съб': 'sat', 'нед': 'sun' };
   for (const raw of String(text || '').split(/\r?\n/)) {
     const line = raw.trim(); if (!line) continue;
-    const [k, v] = line.split(/[=:](?=\s*\d)/); if (!k || !v) continue;
-    let day = k.trim().toLowerCase().slice(0, 3); day = bg[day] || day; if (!WD.includes(day)) continue;
-    map[day] = v.split(',').map(r => r.trim()).filter(Boolean).map(r => { const [a, b] = r.split('-').map(x => x.trim()); return [a, b]; });
+    const mm = /^([^\s=:]+)\s*[=:]\s*(.+)$/.exec(line); if (!mm) continue;
+    let day = mm[1].toLowerCase().slice(0, 3); day = bg[day] || day; if (!WD.includes(day)) continue;
+    map[day] = mm[2].split(',').map(r => r.trim()).filter(Boolean).map(r => { const p = r.split('-').map(x => x.trim()); return [p[0], p[1]]; }).filter(([a, b]) => /^\d{1,2}:\d{2}$/.test(a || '') && /^\d{1,2}:\d{2}$/.test(b || ''));
   }
   return map;
 }
