@@ -1942,3 +1942,10 @@ body header-component {
 .tg-pool-link-title { font-family: var(--tg-font-display); font-weight: 700; font-size: clamp(1.1rem, 1.6vw, 1.4rem); letter-spacing: 0.04em; text-transform: uppercase; color: var(--tg-text-primary); margin: 0 0 var(--tg-s3); }
 .tg-pool-link-btn { align-self: flex-start; margin-top: var(--tg-s4); }
 .tg-community-pool-right { display: flex; flex-direction: column; }
+
+/* Community — mirrored variant: content on the left, image/diagonal on the right */
+.tg-community--left .tg-community-image { left: auto; right: 0; }
+.tg-community--left .tg-community-diagonal { transform: scaleX(-1); left: auto; right: 0; }
+.tg-community--left .tg-community-overlay { background: linear-gradient(270deg, rgba(11, 18, 32, 0) 0%, rgba(11, 18, 32, 0.55) 45%, var(--tg-ink) 100%); }
+.tg-community--left .tg-community-top, .tg-community--left .tg-community-pool { direction: rtl; }
+.tg-community--left .tg-community-top > *, .tg-community--left .tg-community-pool > * { direction: ltr; }
