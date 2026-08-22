@@ -85,9 +85,9 @@
               {% endfor %}
             {% when 'price_range' %}
               <div class="tg-filter-price-inputs">
-                <input type="number" class="tg-filter-price-input" name="{{ filter.min_value.param_name }}" id="tg-price-min" value="{{ filter.min_value.value | default: 0 | money_without_currency | replace: ',', '' }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="{{ 0 | money }}">
+                <input type="number" class="tg-filter-price-input" name="{{ filter.min_value.param_name }}" id="tg-price-min" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100 }}{% endif %}" min="0" max="{{ filter.range_max | divided_by: 100 | ceil }}" placeholder="0">
                 <span class="tg-filter-price-sep">—</span>
-                <input type="number" class="tg-filter-price-input" name="{{ filter.max_value.param_name }}" id="tg-price-max" value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', '' }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="{{ filter.range_max | money }}">
+                <input type="number" class="tg-filter-price-input" name="{{ filter.max_value.param_name }}" id="tg-price-max" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100 }}{% endif %}" min="0" max="{{ filter.range_max | divided_by: 100 | ceil }}" placeholder="{{ filter.range_max | divided_by: 100 | ceil }}">
                 <button type="button" class="tg-filter-price-go" onclick="tgApplyFilters()">OK</button>
               </div>
           {% endcase %}
