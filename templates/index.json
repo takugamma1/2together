@@ -11,7 +11,6 @@
   "sections": {
     "tg_hero": {
       "type": "2gether-hero",
-      "block_order": [],
       "settings": {
         "hero_image": "shopify://shop_images/DSC07429.webp",
         "top_label": "2GETHER BIKES / VARNA",
@@ -22,8 +21,7 @@
         "title_line2": "BIKES",
         "hero_title_size": 80,
         "bento_shift": -40
-      },
-      "blocks": {}
+      }
     },
     "tg_statement": {
       "type": "2gether-statement",
@@ -548,6 +546,7 @@
         "cta_text": "виж програмата",
         "cta_link": "shopify://pages/sunday-club",
         "poll": "",
+        "poll_mode": "link",
         "poll_label": "ГЛАСУВАЙ ЗА СЛЕДВАЩАТА ЛОКАЦИЯ",
         "votes_text": "гласа",
         "voters_text": "гласували",
@@ -560,8 +559,7 @@
         "msg_members": "Само за членове",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
-        "yt_views": "128K",
-        "poll_mode": "link"
+        "yt_views": "128K"
       }
     },
     "2gether_yt_carousel_kXttfc": {
@@ -634,6 +632,7 @@
         "cta_text": "Запознай се с клуба",
         "cta_link": "shopify://blogs/тест-статии",
         "poll": "",
+        "poll_mode": "link",
         "poll_label": "ГЛАСУВАЙ ЗА СЛЕДВАЩАТА ЛОКАЦИЯ",
         "votes_text": "гласа",
         "voters_text": "гласували",
@@ -646,9 +645,7 @@
         "msg_members": "Само за членове",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
-        "yt_views": "128K",
-        "poll_mode": "link",
-        "content_side": "left"
+        "yt_views": "128K"
       }
     },
     "2gether_blog_teaser_VUPtQy": {
