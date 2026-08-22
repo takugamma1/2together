@@ -213,7 +213,7 @@
     background: var(--tg-ink, #0B1220);
     color: var(--tg-text-primary, #E8ECF2);
     padding: var(--tg-s8, 64px) var(--tg-s7, 48px);
-    font-family: 'General Sans', sans-serif;
+    font-family: var(--tg-font-body);
   }
 
   .tg-reviews-head {
@@ -227,7 +227,7 @@
   }
 
   .tg-reviews-title {
-    font-family: 'Technor', sans-serif;
+    font-family: var(--tg-font-display);
     font-weight: 700;
     font-size: clamp(1.8rem, 4vw, 3rem);
     letter-spacing: -0.02em;
@@ -254,7 +254,7 @@
   .tg-reviews-summary[hidden] { display: none; }
 
   .tg-reviews-rating {
-    font-family: 'Technor', sans-serif;
+    font-family: var(--tg-font-display);
     font-weight: 700;
     font-size: 26px;
     color: var(--tg-text-primary, #E8ECF2);
@@ -338,7 +338,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Technor', sans-serif;
+    font-family: var(--tg-font-display);
     font-weight: 700;
     font-size: 16px;
     color: var(--tg-flame, #E8601C);
@@ -348,7 +348,7 @@
   .tg-review-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 
   .tg-review-author {
-    font-family: 'Technor', sans-serif;
+    font-family: var(--tg-font-display);
     font-weight: 600;
     font-size: 14px;
     color: var(--tg-text-primary, #E8ECF2);

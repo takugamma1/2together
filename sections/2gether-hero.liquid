@@ -28,6 +28,7 @@
     </div>
   </div>
 
+  {% if section.blocks.size > 0 %}
   <div class="tg-hero-bento">
     {% for block in section.blocks %}
       {% if block.type == 'bento_cell' %}
@@ -60,6 +61,7 @@
       {% endif %}
     {% endfor %}
   </div>
+  {% endif %}
 </section>
 
 {% schema %}

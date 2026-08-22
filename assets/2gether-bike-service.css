@@ -13,7 +13,7 @@ body.tg-service-active .content-for-layout {
 .tg-service-page {
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   overflow-x: clip;
 }
 
@@ -77,7 +77,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-service-hero-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2.4rem, 5.5vw, 4.4rem);
   letter-spacing: -0.03em;
@@ -105,7 +105,7 @@ body.tg-service-active .content-for-layout {
   padding: var(--tg-s3) var(--tg-s6) var(--tg-s3) var(--tg-s5);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -193,7 +193,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-service-book-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.6rem, 2.6vw, 2.2rem);
   letter-spacing: -0.02em;
@@ -249,7 +249,7 @@ body.tg-service-active .content-for-layout {
   display: inline-flex;
   align-items: center;
   gap: var(--tg-s2);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.1em;
@@ -269,7 +269,7 @@ body.tg-service-active .content-for-layout {
   border: 1.5px solid var(--tg-divider);
   background: transparent;
   color: inherit;
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   flex-shrink: 0;
@@ -329,7 +329,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-wizard-step-num {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -337,7 +337,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-wizard-step-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.2rem, 1.8vw, 1.6rem);
   letter-spacing: -0.01em;
@@ -364,7 +364,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-booking-date input[type="date"] {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -444,7 +444,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-slot-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 13px;
   color: var(--tg-text-primary);
@@ -474,7 +474,7 @@ body.tg-service-active .content-for-layout {
   align-items: center;
   gap: var(--tg-s2);
   padding: var(--tg-s3) var(--tg-s5);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -543,7 +543,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-cal-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.06em;
@@ -583,7 +583,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-cal-weekdays span {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -608,7 +608,7 @@ body.tg-service-active .content-for-layout {
   background: transparent;
   border: 1px solid transparent;
   color: var(--tg-text-secondary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 500;
   font-size: 13px;
   cursor: pointer;
@@ -835,7 +835,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-service-field-label {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -851,7 +851,7 @@ body.tg-service-active .content-for-layout {
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 14px;
   border-radius: 0;
   outline: none;
@@ -862,7 +862,7 @@ body.tg-service-active .content-for-layout {
 
 .tg-service-field textarea {
   resize: vertical;
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   line-height: 1.5;
 }
 
@@ -898,7 +898,7 @@ body.tg-service-active .content-for-layout {
   padding: var(--tg-s4) var(--tg-s7) var(--tg-s4) var(--tg-s6);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -979,7 +979,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-service-prices-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -0.02em;
@@ -1029,7 +1029,7 @@ body.tg-service-active .content-for-layout {
 .tg-price-cat-head::-webkit-details-marker { display: none; }
 
 .tg-price-cat-num {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -1039,7 +1039,7 @@ body.tg-service-active .content-for-layout {
 
 .tg-price-cat-name {
   flex: 1 1 auto;
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(13px, 1.4vw, 16px);
   letter-spacing: 0.02em;
@@ -1109,7 +1109,7 @@ body.tg-service-active .content-for-layout {
 }
 
 .tg-price-row-bgn {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 13px;
   color: var(--tg-text-primary);
@@ -1241,7 +1241,7 @@ button.tg-price-svc-head:focus-visible {
 }
 
 .tg-service-cta-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.4rem, 2.2vw, 2rem);
   letter-spacing: -0.02em;
@@ -1257,7 +1257,7 @@ button.tg-price-svc-head:focus-visible {
   padding: var(--tg-s4) var(--tg-s7) var(--tg-s4) var(--tg-s6);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;

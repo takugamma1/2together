@@ -7,7 +7,7 @@
 .tg-blog {
   background: var(--tg-ink, #0B1220);
   color: var(--tg-text-primary, #E8ECF2);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   padding: var(--tg-s8, 64px) var(--tg-s7, 48px) var(--tg-s9, 96px);
   min-height: 60vh;
 }
@@ -26,7 +26,7 @@
 }
 
 .tg-blog-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
   letter-spacing: -0.03em;
@@ -177,7 +177,7 @@
 .tg-bcard-meta .tg-bcard-tag { color: var(--tg-flame, #E8601C); }
 
 .tg-bcard-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 20px;
   line-height: 1.15;
@@ -250,7 +250,7 @@
   justify-content: center;
   gap: var(--tg-s2, 8px);
   margin-top: var(--tg-s8, 64px);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
 }
 
 .tg-blog-pagination a,
@@ -284,7 +284,7 @@
 .tg-article {
   background: var(--tg-ink, #0B1220);
   color: var(--tg-text-primary, #E8ECF2);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-article-hero {
@@ -346,7 +346,7 @@
 }
 
 .tg-article-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2rem, 5.5vw, 4.2rem);
   letter-spacing: -0.03em;
@@ -395,7 +395,7 @@
 .tg-article-body h2,
 .tg-article-body h3,
 .tg-article-body h4 {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.1;
@@ -427,7 +427,7 @@
 .tg-article-body li::marker { color: var(--tg-flame, #E8601C); }
 
 .tg-article-body blockquote {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-size: 22px;
   line-height: 1.4;
@@ -522,7 +522,7 @@
   left: var(--tg-s4, 16px);
   bottom: var(--tg-s4, 16px);
   z-index: 2;
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -580,7 +580,7 @@
 }
 
 .tg-article-more-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   letter-spacing: -0.02em;
@@ -602,7 +602,7 @@
 .tg-ytc {
   background: var(--tg-ink, #0B1220);
   color: var(--tg-text-primary, #E8ECF2);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   padding: var(--tg-s8, 64px) 0 var(--tg-s9, 96px);
 }
 
@@ -629,7 +629,7 @@
 }
 
 .tg-ytc-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   letter-spacing: -0.02em;
@@ -768,7 +768,7 @@
 }
 
 .tg-ytc-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 15px;
   line-height: 1.3;

@@ -47,21 +47,21 @@
 
 /* === TYPOGRAPHY === */
 .tg-f-display {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 0.95;
 }
 
 .tg-f-editorial {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-weight: 400;
   font-style: italic;
   line-height: 1.2;
 }
 
 .tg-label {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.15em;
@@ -77,7 +77,7 @@
   padding: var(--tg-s2) var(--tg-s8) var(--tg-s2) var(--tg-s6);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.06em;
@@ -102,7 +102,7 @@
   padding: var(--tg-s4) 0;
   background: none;
   color: var(--tg-text-secondary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 500;
   font-size: 13px;
   letter-spacing: 0.04em;
@@ -124,7 +124,7 @@
   overflow: hidden;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-hero-image {
@@ -202,7 +202,7 @@
 }
 
 .tg-hero-title-main {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: var(--tg-hero-title-size, 6.5rem);
   letter-spacing: -0.04em;
@@ -316,7 +316,7 @@
 }
 
 .tg-bento-num {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   color: var(--tg-flame);
@@ -332,7 +332,7 @@
 }
 
 .tg-bento-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.03em;
@@ -347,7 +347,7 @@
 }
 
 .tg-bento-desc {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 12px;
   color: rgba(138, 155, 181, 0.85);
   line-height: 1.55;
@@ -388,14 +388,14 @@
   align-items: center;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-statement-divider { display: none; }
 
 /* Manifesto: display caps, slash-prefixed stanzas, slash-highlight accents */
 .tg-statement-quote {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-style: normal;
   font-weight: 600;
   text-transform: uppercase;
@@ -470,7 +470,7 @@
   position: absolute;
   right: 16px;
   top: 14px;
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -491,7 +491,7 @@
 }
 
 .tg-pillar-word {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 19px;
   line-height: 1.1;
@@ -572,7 +572,7 @@
   min-height: 100vh;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-products-header {
@@ -686,7 +686,7 @@
 .tg-product-card--hero .tg-product-tag { font-size: 12px; }
 
 .tg-product-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 18px;
   color: var(--tg-text-primary);
@@ -730,7 +730,7 @@
   padding: var(--tg-s2) var(--tg-s5) var(--tg-s2) var(--tg-s4);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -765,7 +765,7 @@
   background: rgba(11, 18, 32, 0.3);
   backdrop-filter: blur(8px);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -794,7 +794,7 @@
   overflow: hidden;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-community-image {
@@ -851,7 +851,10 @@
 }
 
 .tg-community-title {
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-size: clamp(2.2rem, 3.8vw, 3.8rem);
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
   color: var(--tg-text-primary);
   line-height: 0.9;
   letter-spacing: -0.04em;
@@ -961,7 +964,7 @@
 .tg-pool-option > * { position: relative; z-index: 1; }
 
 .tg-pool-destination {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 13px;
   color: var(--tg-text-primary);
@@ -1055,7 +1058,7 @@
 .tg-yt-info { display: flex; flex-direction: column; gap: 1px; }
 
 .tg-yt-subscribe {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 12px;
   color: var(--tg-ink);
@@ -1085,7 +1088,7 @@
   align-items: start;
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-services-left {
@@ -1148,7 +1151,7 @@
 }
 
 .tg-service-card-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: clamp(13px, 1.2vw, 18px);
   color: var(--tg-text-primary);
@@ -1183,7 +1186,7 @@
   border-top: 1px solid var(--tg-divider);
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
 }
 
 .tg-footer-newsletter {
@@ -1229,7 +1232,7 @@
 }
 
 .tg-footer-newsletter-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 20px;
   color: #fff;
@@ -1257,7 +1260,7 @@
   border-right: none;
   color: var(--tg-text-primary);
   font-size: 13px;
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   outline: none;
   transition: border-color var(--tg-dur-fast) var(--tg-ease-out);
 }
@@ -1270,7 +1273,7 @@
   background: var(--tg-flame);
   border: 1px solid var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -1360,7 +1363,7 @@
 }
 
 .tg-footer-jumbo {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 900;
   font-size: clamp(5rem, 14vw, 12rem);
   letter-spacing: 0.06em;
@@ -1376,7 +1379,7 @@
 }
 
 .tg-footer-jumbo-sub {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-size: clamp(1rem, 2.2vw, 1.6rem);
   color: var(--tg-text-muted);
@@ -1934,3 +1937,8 @@ body header-component {
   .tg-community-top { flex: 0 0 auto; }
   .tg-community-pool { padding-top: var(--tg-s6); }
 }
+
+/* community — voting block as a link */
+.tg-pool-link-title { font-family: var(--tg-font-display); font-weight: 700; font-size: clamp(1.1rem, 1.6vw, 1.4rem); letter-spacing: 0.04em; text-transform: uppercase; color: var(--tg-text-primary); margin: 0 0 var(--tg-s3); }
+.tg-pool-link-btn { align-self: flex-start; margin-top: var(--tg-s4); }
+.tg-community-pool-right { display: flex; flex-direction: column; }

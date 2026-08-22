@@ -2284,5 +2284,86 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "2gether — Шрифтове",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Сменяйте шрифтовете на целия сайт. Всички са безплатни от Fontshare и се зареждат автоматично."
+      },
+      {
+        "type": "select",
+        "id": "tg_font_display",
+        "label": "Заглавия (display)",
+        "default": "technor",
+        "options": [
+          {
+            "value": "technor",
+            "label": "Technor (текущ)"
+          },
+          {
+            "value": "clash-display",
+            "label": "Clash Display"
+          },
+          {
+            "value": "cabinet-grotesk",
+            "label": "Cabinet Grotesk"
+          },
+          {
+            "value": "chillax",
+            "label": "Chillax"
+          },
+          {
+            "value": "excon",
+            "label": "Excon"
+          },
+          {
+            "value": "panchang",
+            "label": "Panchang"
+          },
+          {
+            "value": "khand",
+            "label": "Khand"
+          },
+          {
+            "value": "zodiak",
+            "label": "Zodiak (serif)"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "tg_font_body",
+        "label": "Основен текст (body)",
+        "default": "general-sans",
+        "options": [
+          {
+            "value": "general-sans",
+            "label": "General Sans (текущ)"
+          },
+          {
+            "value": "satoshi",
+            "label": "Satoshi"
+          },
+          {
+            "value": "switzer",
+            "label": "Switzer"
+          },
+          {
+            "value": "synonym",
+            "label": "Synonym"
+          },
+          {
+            "value": "supreme",
+            "label": "Supreme"
+          },
+          {
+            "value": "sentient",
+            "label": "Sentient (serif)"
+          }
+        ]
+      }
+    ]
   }
 ]

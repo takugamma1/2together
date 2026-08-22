@@ -13,7 +13,7 @@ body.tg-rental-active .content-for-layout {
 .tg-rental-page {
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   overflow-x: clip;
 }
 
@@ -71,7 +71,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-rental-hero-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2.4rem, 6vw, 4.8rem);
   letter-spacing: -0.04em;
@@ -99,7 +99,7 @@ body.tg-rental-active .content-for-layout {
   padding: var(--tg-s3) var(--tg-s6) var(--tg-s3) var(--tg-s5);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -192,7 +192,7 @@ body.tg-rental-active .content-for-layout {
   display: inline-flex;
   align-items: center;
   gap: var(--tg-s2);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.14em;
@@ -260,7 +260,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-step-num {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -268,7 +268,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-step-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   letter-spacing: -0.02em;
@@ -374,7 +374,7 @@ body.tg-rental-active .content-for-layout {
   padding: 4px var(--tg-s3) 4px var(--tg-s2);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -431,7 +431,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-bike-card-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 16px;
   letter-spacing: 0.02em;
@@ -463,7 +463,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-bike-card-price {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 14px;
   color: var(--tg-flame);
@@ -510,7 +510,7 @@ body.tg-rental-active .content-for-layout {
   justify-content: center;
   min-width: 28px;
   height: 28px;
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 13px;
   color: var(--tg-text-primary);
@@ -557,7 +557,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-roster-summary-count {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 22px;
   color: var(--tg-flame);
@@ -565,7 +565,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-roster-summary-label {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 500;
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -594,7 +594,7 @@ body.tg-rental-active .content-for-layout {
   padding: 4px var(--tg-s3);
   background: rgba(232, 96, 28, 0.12);
   color: var(--tg-flame);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.04em;
@@ -621,7 +621,7 @@ body.tg-rental-active .content-for-layout {
 .tg-r-field--full { grid-column: 1 / -1; }
 
 .tg-r-field-label {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -639,7 +639,7 @@ body.tg-rental-active .content-for-layout {
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 14px;
   border-radius: 0;
   outline: none;
@@ -739,7 +739,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-slot-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -785,7 +785,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-days-num {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 20px;
   color: var(--tg-text-primary);
@@ -848,7 +848,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-pkg-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.1em;
@@ -857,7 +857,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-pkg-price {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 28px;
   color: var(--tg-text-primary);
@@ -906,7 +906,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-delivery-name {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.06em;
@@ -915,7 +915,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-delivery-price {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 16px;
   color: var(--tg-flame);
@@ -935,7 +935,7 @@ body.tg-rental-active .content-for-layout {
   padding: var(--tg-s3) var(--tg-s4);
   background: var(--tg-surface);
   border-left: 2px solid var(--tg-divider);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   transition: border-color 200ms ease;
 }
 
@@ -950,7 +950,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-summary-value {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 16px;
   color: var(--tg-text-primary);
@@ -978,7 +978,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-final-summary h4 {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -1035,7 +1035,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-r-final-list__total dd {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 16px !important;
   color: var(--tg-text-primary);
@@ -1059,7 +1059,7 @@ body.tg-rental-active .content-for-layout {
   align-items: center;
   gap: var(--tg-s2);
   padding: var(--tg-s3) var(--tg-s5);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -1149,7 +1149,7 @@ body.tg-rental-active .content-for-layout {
 }
 
 .tg-rental-info-card strong {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 18px;
   color: var(--tg-text-primary);

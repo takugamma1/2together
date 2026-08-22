@@ -1,0 +1,48 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-quicklinks.css' | asset_url | stylesheet_tag }}
+
+<section class="tg-ql tg-section" style="--tg-ql-pt: {{ section.settings.padding_top }}px; --tg-ql-pb: {{ section.settings.padding_bottom }}px;">
+  <div class="tg-ql-inner">
+    {% if section.settings.label != blank or section.settings.title != blank %}
+      <header class="tg-ql-head">
+        {% if section.settings.label != blank %}<span class="tg-label">{{ section.settings.label }}</span>{% endif %}
+        {% if section.settings.title != blank %}<h2 class="tg-ql-title">{{ section.settings.title }}</h2>{% endif %}
+      </header>
+    {% endif %}
+    <div class="tg-ql-row" style="--cols: {{ section.blocks.size | at_least: 1 }}">
+      {% for block in section.blocks %}
+        <a class="tg-ql-cell{% if block.settings.image != blank %} has-image{% endif %}" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <span class="tg-ql-img" aria-hidden="true">{{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 50vw, 20vw' }}</span>
+          {% endif %}
+          <span class="tg-ql-num">{{ block.settings.number }}</span>
+          <span class="tg-ql-name">{{ block.settings.title }}</span>
+          {% if block.settings.description != blank %}<span class="tg-ql-desc">{{ block.settings.description }}</span>{% endif %}
+          <span class="tg-ql-arrow" aria-hidden="true">→</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "2Gether Quick links (row)",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Какво правим" },
+    { "type": "text", "id": "title", "label": "Title (optional)" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    { "type": "cell", "name": "Link", "limit": 8, "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "number", "label": "Number", "default": "01" },
+      { "type": "text", "id": "title", "label": "Title", "default": "Сервиз" },
+      { "type": "text", "id": "description", "label": "Description" },
+      { "type": "url", "id": "link", "label": "Link" } ] }
+  ],
+  "presets": [ { "name": "2Gether Quick links (row)", "blocks": [ { "type": "cell" }, { "type": "cell" }, { "type": "cell" }, { "type": "cell" }, { "type": "cell" } ] } ]
+}
+{% endschema %}

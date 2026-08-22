@@ -12,13 +12,13 @@ body.tg-sc-active { overflow-x: clip; }
 .tg-sc-page {
   background: var(--tg-ink);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   overflow-x: clip;
 }
 
 /* Eyebrow — defined here because this page does not load 2gether-product.css */
 .tg-sc .tg-eyebrow {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -109,7 +109,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-since {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-weight: 400;
   font-size: 16px;
@@ -118,7 +118,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-hero-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(3.4rem, 11vw, 9rem);
   letter-spacing: -0.06em;
@@ -129,7 +129,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-hero-title em {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-weight: 700;
   color: var(--tg-flame);
@@ -138,7 +138,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-hero-sub {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-weight: 400;
   font-size: clamp(1rem, 1.3vw, 1.25rem);
@@ -162,7 +162,7 @@ body.tg-sc-active { overflow-x: clip; }
   padding: var(--tg-s4) var(--tg-s7) var(--tg-s4) var(--tg-s5);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -183,7 +183,7 @@ body.tg-sc-active { overflow-x: clip; }
   align-items: center;
   padding: var(--tg-s4) var(--tg-s5);
   border: 1px solid var(--tg-divider);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -219,7 +219,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-meta-item strong {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 28px;
   letter-spacing: -0.03em;
@@ -228,7 +228,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-meta-item span {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 500;
   font-size: 10px;
   letter-spacing: 0.18em;
@@ -248,7 +248,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-section-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.8rem, 4vw, 3rem);
   letter-spacing: -0.03em;
@@ -314,7 +314,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-event-month {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.2em;
@@ -323,7 +323,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-event-day {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 44px;
   letter-spacing: -0.05em;
@@ -332,7 +332,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-event-weekday {
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-size: 12px;
   letter-spacing: 0.04em;
@@ -359,7 +359,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-event-level {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -373,20 +373,20 @@ body.tg-sc-active { overflow-x: clip; }
 .tg-sc-level--hard { background: #FF6B6B; }
 
 .tg-sc-event-distance {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   color: var(--tg-text-secondary);
 }
 
 .tg-sc-event-time {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: none;
 }
 
 .tg-sc-event-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 18px;
   letter-spacing: 0.02em;
@@ -429,7 +429,7 @@ body.tg-sc-active { overflow-x: clip; }
   border: 1px solid var(--tg-divider);
   border-radius: 0;
   color: var(--tg-text-secondary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -464,7 +464,7 @@ body.tg-sc-active { overflow-x: clip; }
   display: inline-flex;
   align-items: baseline;
   gap: 5px;
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 11px;
   color: var(--tg-text-muted);
   letter-spacing: 0.06em;
@@ -472,7 +472,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-count {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 16px;
   color: var(--tg-text-primary);
@@ -533,7 +533,7 @@ body.tg-sc-active { overflow-x: clip; }
   align-items: center;
   padding: 4px var(--tg-s3);
   border: 1px solid var(--tg-divider);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.16em;
@@ -562,7 +562,7 @@ body.tg-sc-active { overflow-x: clip; }
   border-radius: 0;
   color: var(--tg-text-secondary);
   text-decoration: none;
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -594,7 +594,7 @@ body.tg-sc-active { overflow-x: clip; }
 
 .tg-sc-events-empty p {
   margin: 0;
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   color: var(--tg-text-secondary);
@@ -615,7 +615,7 @@ body.tg-sc-active { overflow-x: clip; }
   border-top: 3px solid var(--tg-flame);
   background: var(--tg-surface-raised);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   overflow: hidden;
   z-index: 60;
 }
@@ -692,7 +692,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-dialog-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
   letter-spacing: 0.01em;
@@ -723,7 +723,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-dialog-facts dt {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.16em;
@@ -783,7 +783,7 @@ body.tg-sc-active { overflow-x: clip; }
   position: absolute;
   top: var(--tg-s3);
   right: var(--tg-s4);
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 10px;
   letter-spacing: 0.2em;
@@ -791,7 +791,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-benefit-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 16px;
   letter-spacing: 0.02em;
@@ -876,7 +876,7 @@ body.tg-sc-active { overflow-x: clip; }
   padding: var(--tg-s3) var(--tg-s4) var(--tg-s4);
   background: linear-gradient(to top, rgba(11, 18, 32, 0.92) 0%, rgba(11, 18, 32, 0.3) 80%, transparent 100%);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 11px;
   letter-spacing: 0.04em;
 }
@@ -908,7 +908,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-join-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: clamp(2rem, 4vw, 3rem);
   letter-spacing: -0.03em;
@@ -947,7 +947,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-join-bullets li span:first-child {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.16em;
@@ -976,7 +976,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-member-title {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 18px;
   letter-spacing: 0.02em;
@@ -1035,7 +1035,7 @@ body.tg-sc-active { overflow-x: clip; }
 .tg-sc-field--full { grid-column: 1 / -1; }
 
 .tg-sc-field-label {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 600;
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -1051,7 +1051,7 @@ body.tg-sc-active { overflow-x: clip; }
   background: var(--tg-surface-raised);
   border: 1px solid var(--tg-divider);
   color: var(--tg-text-primary);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 14px;
   border-radius: 0;
   outline: none;
@@ -1125,7 +1125,7 @@ body.tg-sc-active { overflow-x: clip; }
   padding: var(--tg-s4) var(--tg-s7) var(--tg-s4) var(--tg-s5);
   background: var(--tg-flame);
   color: var(--tg-ink);
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -1194,7 +1194,7 @@ body.tg-sc-active { overflow-x: clip; }
   position: relative;
   max-width: 880px;
   margin: 0 auto;
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-style: italic;
   font-weight: 400;
   font-size: clamp(1.3rem, 2.6vw, 2.2rem);
@@ -1205,7 +1205,7 @@ body.tg-sc-active { overflow-x: clip; }
 
 .tg-sc-quote-mark {
   display: block;
-  font-family: 'Boska', serif;
+  font-family: var(--tg-font-accent);
   font-weight: 700;
   font-size: clamp(3.5rem, 6.5vw, 6rem);
   line-height: 0.5;
@@ -1224,7 +1224,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-quote-cite span {
-  font-family: 'Technor', sans-serif;
+  font-family: var(--tg-font-display);
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.2em;
@@ -1233,7 +1233,7 @@ body.tg-sc-active { overflow-x: clip; }
 }
 
 .tg-sc-quote-cite small {
-  font-family: 'General Sans', sans-serif;
+  font-family: var(--tg-font-body);
   font-size: 11px;
   color: var(--tg-text-muted);
   letter-spacing: 0.06em;

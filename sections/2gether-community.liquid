@@ -77,12 +77,17 @@
       <div class="tg-community-pool">
         <div class="tg-community-pool-left"></div>
         <div class="tg-community-pool-right">
+          {% if section.settings.poll_mode == 'link' %}
+            <h3 class="tg-pool-link-title">{{ section.settings.poll_label }}</h3>
+            <p class="tg-pool-guest" style="margin:0;font-size:14px;line-height:1.6;color:var(--tg-text-secondary);max-width:48ch;">{{ section.settings.guest_text }}</p>
+            <a class="tg-btn-primary tg-pool-link-btn" href="{{ section.settings.member_cta_url | default: '/pages/sunday-club#tg-sc-join' }}">{{ section.settings.member_cta_text | remove: '→' | strip }} →</a>
+          {% else %}
           <div class="tg-pool-header">
             <span class="tg-label">{{ section.settings.poll_label }}</span>
           </div>
           {% if customer %}
           {% if poll.question.value != blank %}
-            <p class="tg-pool-question" style="margin:0;font-family:'Technor',sans-serif;font-weight:600;font-size:16px;color:var(--tg-text-primary);">{{ poll.question.value }}</p>
+            <p class="tg-pool-question" style="margin:0;font-family:var(--tg-font-display);font-weight:600;font-size:16px;color:var(--tg-text-primary);">{{ poll.question.value }}</p>
           {% endif %}
           <div style="display:flex;align-items:center;gap:var(--tg-s3);">
             <div class="tg-pool-avatars">
@@ -135,6 +140,7 @@
               href="{{ section.settings.member_cta_url | default: '/pages/sunday-club#tg-sc-join' }}"
               style="align-self:flex-start;font-size:12px;font-weight:600;color:var(--tg-flame);text-decoration:none;border-bottom:1px solid var(--tg-flame);padding-bottom:2px;"
             >{{ section.settings.member_cta_text }}</a>
+          {% endif %}
           {% endif %}
         </div>
       </div>
@@ -210,6 +216,13 @@
       "id": "poll",
       "metaobject_type": "destination_poll",
       "label": "Анкета (метаобект)"
+    },
+    {
+      "type": "select",
+      "id": "poll_mode",
+      "label": "Voting block",
+      "default": "link",
+      "options": [ { "value": "link", "label": "Link (title + text + button)" }, { "value": "vote", "label": "Live voting (members)" } ]
     },
     {
       "type": "text",
