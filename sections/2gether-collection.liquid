@@ -110,14 +110,15 @@
       {%- unless facet_map contains pfx -%}{%- assign extra_prefixes = extra_prefixes | append: pfx | append: '||' -%}{%- endunless -%}
     {% endfor %}
     {%- assign extra_prefixes = extra_prefixes | split: '||' | uniq -%}
-    {%- for pfx in extra_prefixes -%}{%- if pfx != blank -%}{%- assign facet_defs = facet_defs | concat: pfx | split: '|' -%}{%- endif -%}{%- endfor -%}
+    {%- for pfx in extra_prefixes -%}{%- if pfx != blank -%}{%- assign pfx_arr = pfx | split: '|' -%}{%- assign facet_defs = facet_defs | concat: pfx_arr -%}{%- endif -%}{%- endfor -%}
     {% for def in facet_defs %}
-      {%- assign def_parts = def | split: '=' -%}
-      {%- assign prefixes = def_parts[0] | split: '|' -%}
-      {%- assign label = def_parts[1] -%}
+      {%- assign def_parts = def | strip | split: '=' -%}
+      {%- assign prefixes = def_parts[0] | strip | split: '|' -%}
+      {%- assign label = def_parts[1] | strip -%}
       {%- assign values = '' -%}
       {% for tag in facet_tags %}
         {%- assign tag_prefix = tag | split: ': ' | first -%}
+        {%- assign tag_prefix = tag_prefix | strip -%}
         {%- if prefixes contains tag_prefix -%}
           {%- assign values = values | append: tag | append: '||' -%}
         {%- endif -%}
