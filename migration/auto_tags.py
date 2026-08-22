@@ -164,6 +164,22 @@ def rules(p):
         if m: out.add(t('Deck Width', f'{m.group(1)}"'))
     if typ == 'Skateboard Wheels' or ('wheel' in tl and 'skate' in ' '.join(colls)):
         out |= mm(title, r'\b(5[0-9]|6[0-9])\s*mm\b', 'Diameter')
+    # normalise feed-provided Frame Size / Wheel Size / Rise values (any category)
+    for x in p['tags']:
+        if x.startswith('Frame Size: '):
+            v = x[12:].strip().upper()
+            if re.fullmatch(r'\d{2}', v): out.add(t('Frame Size', f'{v} cm'))
+            elif v in SIZE_MAP: out.add(t('Frame Size', SIZE_MAP[v]))
+            else: out.add(t('Frame Size', x[12:].strip()))
+        elif x.startswith('Wheel Size: '):
+            v = x[12:].strip().upper().replace('"', '')
+            if v in ('700C', '700', '28'): out.add(t('Wheel Size', '28" / 700c'))
+            elif v == 'MX': out.add(t('Wheel Size', 'MX (29/27.5)'))
+            elif re.fullmatch(r'\d{2}(\.\d)?', v): out.add(t('Wheel Size', f'{v}"'))
+            else: out.add(t('Wheel Size', x[12:].strip()))
+        elif x.startswith('Rise: '):
+            m = re.search(r'(-?\d{1,2})', x)
+            if m: out.add(t('Rise', f'{m.group(1)} mm'))
     if typ == 'Bikes' or 'bikes-od62' in colls or 'velosipedi-c59' in colls:
         m = re.search(r'\b(XS|SM|MD|LG|XL|XXL|S|M|L)\b(?=[^A-Za-z]|$)', title)
         if m: out.add(t('Frame Size', SIZE_MAP.get(m.group(1).upper(), m.group(1))))
@@ -198,8 +214,7 @@ def main(apply=False):
         c = d['pageInfo']['endCursor']
     changes, fam_stats = [], collections.Counter()
     for p in prods:
-        keep = [x for x in p['tags'] if not (': ' in x and x.split(': ')[0] in MANAGED and x.split(': ')[0] not in ('Number Of Teeth','Frame Size','Wheel Size','Rise'))]
-        # keep sync-provided Number Of Teeth / Frame Size / Wheel Size / Rise; add ours on top
+        keep = [x for x in p['tags'] if not (': ' in x and x.split(': ')[0] in MANAGED and x.split(': ')[0] != 'Number Of Teeth')]
         new = sorted(set(keep) | rules(p))
         if new != sorted(p['tags']): changes.append((p['id'], p['title'], new))
         for x in rules(p): fam_stats[x.split(': ')[0]] += 1
