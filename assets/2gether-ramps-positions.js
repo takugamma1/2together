@@ -14,7 +14,7 @@
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const posWord = root.dataset.posWord || 'позиция';
     let model = modelBtns.find(b => b.classList.contains('is-active')) || modelBtns[0], pos = 0;
-    let cur = { L: 0, h: 0 }, from = null, to = null, t0 = 0, raf = 0;
+    let cur = { L: 0, h: 0 }, from = null, to = null, t0 = 0, raf = 0, safety = 0;
 
     const setSeg = (btns, active) => btns.forEach(b => { const on = b === active; b.classList.toggle('is-active', on); b.setAttribute('aria-selected', on); });
     const target = () => {
@@ -46,7 +46,7 @@
       const p = Math.min(1, (now - t0) / 600), e = ease(p);
       cur = { L: from.L + (to.L - from.L) * e, h: from.h + (to.h - from.h) * e };
       render(cur);
-      if (p < 1) raf = requestAnimationFrame(tick);
+      if (p < 1) raf = requestAnimationFrame(tick); else clearTimeout(safety);
     };
     const draw = (animate = true) => {
       to = target();
@@ -55,9 +55,11 @@
       if (caption) caption.textContent = `${name} · ${posWord} ${pos + 1}`;
       if (readout) readout.textContent = `${name} · ${posWord} ${pos + 1} · ${h} cm`;
       root.style.setProperty('--model', model.dataset.color || '#E8601C');
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(raf); clearTimeout(safety);
       if (!animate || reduce || !cur.L) { cur = { ...to }; render(cur); return; }
       from = { ...cur }; t0 = performance.now(); raf = requestAnimationFrame(tick);
+      // background tabs pause rAF — guarantee the final state regardless
+      safety = setTimeout(() => { cancelAnimationFrame(raf); cur = { ...to }; render(cur); }, 700);
     };
     modelBtns.forEach(b => b.addEventListener('click', () => { model = b; setSeg(modelBtns, b); draw(); }));
     posBtns.forEach(b => b.addEventListener('click', () => { pos = +b.dataset.rpPos; setSeg(posBtns, b); draw(); }));
