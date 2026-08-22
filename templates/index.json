@@ -23,59 +23,6 @@
         "bento_shift": -40
       }
     },
-    "tg_statement": {
-      "type": "2gether-statement",
-      "blocks": {
-        "pillar_1": {
-          "type": "pillar",
-          "settings": {
-            "number": "01",
-            "icon": "users",
-            "word": "ОБЩНОСТТА",
-            "note": "ОТ КАРАНЕТО ЗАПОЧВА ВСИЧКО"
-          }
-        },
-        "pillar_2": {
-          "type": "pillar",
-          "settings": {
-            "number": "02",
-            "icon": "layers",
-            "word": "ТАЛАНТИТЕ",
-            "note": "РАЗВИВАМЕ СЛЕДВАЩО ПОКОЛЕНИЕ КОЛОЕЗДАЧИ"
-          }
-        },
-        "pillar_3": {
-          "type": "pillar",
-          "settings": {
-            "number": "03",
-            "icon": "users",
-            "word": "ПРОГРЕСЪТ",
-            "note": "НАШИЯТ И НА ХОРАТА ОКОЛО НАС"
-          }
-        },
-        "pillar_4": {
-          "type": "pillar",
-          "settings": {
-            "number": "04",
-            "icon": "star",
-            "word": "ИДЕИТЕ",
-            "note": "ПРЕВРЪЩАМЕ ГИ В РЕАЛНИ ПРОДУКТИ"
-          }
-        }
-      },
-      "block_order": [
-        "pillar_1",
-        "pillar_2",
-        "pillar_3",
-        "pillar_4"
-      ],
-      "settings": {
-        "quote": "<p>Започнахме през 2017 г. като <em>отбор</em> и малък <em>велосервиз</em> във Варна.</p><p>Не сме просто част от колоезденето. Ние го<em><strong> движим напред.</strong></em></p><p>С хората, които <em>развиваме</em>, и продуктите, които <em>създаваме</em>.</p>",
-        "pillars_label": "Какво ни движи",
-        "padding_top": 136,
-        "padding_bottom": 136
-      }
-    },
     "tg_quicklinks": {
       "type": "2gether-quicklinks",
       "blocks": {
@@ -138,9 +85,63 @@
         "ql_5"
       ],
       "settings": {
-        "label": "Какво правим",
+        "label": "МЕНЮ",
+        "title": "",
         "padding_top": 0,
         "padding_bottom": 96
+      }
+    },
+    "tg_statement": {
+      "type": "2gether-statement",
+      "blocks": {
+        "pillar_1": {
+          "type": "pillar",
+          "settings": {
+            "number": "01",
+            "icon": "users",
+            "word": "ОБЩНОСТТА",
+            "note": "ОТ КАРАНЕТО ЗАПОЧВА ВСИЧКО"
+          }
+        },
+        "pillar_2": {
+          "type": "pillar",
+          "settings": {
+            "number": "02",
+            "icon": "layers",
+            "word": "ТАЛАНТИТЕ",
+            "note": "РАЗВИВАМЕ СЛЕДВАЩО ПОКОЛЕНИЕ КОЛОЕЗДАЧИ"
+          }
+        },
+        "pillar_3": {
+          "type": "pillar",
+          "settings": {
+            "number": "03",
+            "icon": "users",
+            "word": "ПРОГРЕСЪТ",
+            "note": "НАШИЯТ И НА ХОРАТА ОКОЛО НАС"
+          }
+        },
+        "pillar_4": {
+          "type": "pillar",
+          "settings": {
+            "number": "04",
+            "icon": "star",
+            "word": "ИДЕИТЕ",
+            "note": "ПРЕВРЪЩАМЕ ГИ В РЕАЛНИ ПРОДУКТИ"
+          }
+        }
+      },
+      "block_order": [
+        "pillar_1",
+        "pillar_2",
+        "pillar_3",
+        "pillar_4"
+      ],
+      "settings": {
+        "quote": "<p>Започнахме през 2017 г. като <em>отбор</em> и малък <em>велосервиз</em> във Варна.</p><p>Не сме просто част от колоезденето. Ние го<em><strong> движим напред.</strong></em></p><p>С хората, които <em>развиваме</em>, и продуктите, които <em>създаваме</em>.</p>",
+        "pillars_label": "Какво ни движи",
+        "padding_top": 136,
+        "padding_bottom": 136
       }
     },
     "tg_image_band": {
@@ -539,6 +540,7 @@
         "avatar_UYQtWm"
       ],
       "settings": {
+        "content_side": "right",
         "background_image": "shopify://shop_images/DSC07338.webp",
         "label_text": "2GETHER SUPPORT PROGRAM",
         "title": "<p>СЛЕДВАЩОТО ПОКОЛЕНИЕ НЕ СЕ ИЗГРАЖДА С ДУМИ.</p><p></p>",
@@ -625,6 +627,7 @@
         "avatar_xFmBBC"
       ],
       "settings": {
+        "content_side": "left",
         "background_image": "shopify://shop_images/DSC07254.webp",
         "label_text": "2GETHER CYCLING TEAM",
         "title": "<p>КОЛОЕЗДАЧЕН КЛУБ 2GETHER</p>",
@@ -645,8 +648,7 @@
         "msg_members": "Само за членове",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
-        "yt_views": "128K",
-        "content_side": "left"
+        "yt_views": "128K"
       }
     },
     "2gether_blog_teaser_VUPtQy": {
@@ -735,8 +737,8 @@
   },
   "order": [
     "tg_hero",
-    "tg_statement",
     "tg_quicklinks",
+    "tg_statement",
     "tg_image_band",
     "section_iHJQMc",
     "tg_community",
