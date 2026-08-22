@@ -27,11 +27,43 @@
             "title": "НАЕМ И ПРОДАЖБА",
             "description": "Искаш да пробваш преди да купиш? Или просто ти трябва колело за ден? Имаме решение."
           }
+        },
+        "usp_1": {
+          "type": "usp",
+          "settings": {
+            "icon": "carry",
+            "text": "Безплатна доставка в България над €100"
+          }
+        },
+        "usp_2": {
+          "type": "usp",
+          "settings": {
+            "icon": "shield",
+            "text": "2 години гаранция на всеки продукт"
+          }
+        },
+        "usp_3": {
+          "type": "usp",
+          "settings": {
+            "icon": "wrench",
+            "text": "Сглобено и проверено в сервиза ни във Варна"
+          }
+        },
+        "usp_4": {
+          "type": "usp",
+          "settings": {
+            "icon": "pin",
+            "text": "Може да се тества в магазина преди покупка"
+          }
         }
       },
       "block_order": [
         "feature_card_PNM7p8",
-        "feature_card_UYHYHb"
+        "feature_card_UYHYHb",
+        "usp_1",
+        "usp_2",
+        "usp_3",
+        "usp_4"
       ],
       "settings": {
         "features_label": "2GETHER",
@@ -54,7 +86,12 @@
         "brand_title": "RIDE 2GETHER",
         "brand_description": "Всяка седмица излизаме заедно. Различни темпа, различни маршрути, едно усещане. Клубът на 2gether е отворен за всеки, без значение дали си ветеран или тепърва се качваш на колело.",
         "brand_image": "shopify://shop_images/Screenshot_2026-05-06_at_20.12.17.png",
-        "show_dynamic_checkout": false
+        "show_dynamic_checkout": false,
+        "price_suffix": "с ДДС",
+        "in_stock_text": "В наличност",
+        "out_of_stock_text": "Изчерпано — поръчка по заявка",
+        "desc_more": "Виж повече",
+        "desc_less": "Скрий"
       }
     }
   },
