@@ -233,6 +233,34 @@
     </div>
   </section>
 
+  <!-- ═══ 05b VIDEO ═══ -->
+  {%- capture rv_id %}{% render '2gether-yt-id', content: st.rv_url %}{% endcapture -%}
+  {%- assign rv_id = rv_id | strip -%}
+  {% if st.rv_url != blank %}
+  <section id="tg-ramps-video" class="tg-rp-section tg-rp-section--line">
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head">
+        {% if st.rv_eyebrow != blank %}<span class="tg-eyebrow">{{ st.rv_eyebrow }}</span>{% endif %}
+        {% if st.rv_title != blank %}<h2 class="tg-rp-h2">{{ st.rv_title }}</h2>{% endif %}
+        {% if st.rv_text != blank %}<p class="tg-rp-text">{{ st.rv_text }}</p>{% endif %}
+      </header>
+      <a class="tg-rp-video" href="{{ st.rv_url }}" target="_blank" rel="noopener" aria-label="{{ st.rv_title | default: 'YouTube' | escape }}">
+        <span class="tg-rp-video-media">
+          {% if st.rv_image != blank %}
+            {{ st.rv_image | image_url: width: 1600 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}
+          {% elsif rv_id != blank %}
+            <img src="https://i.ytimg.com/vi/{{ rv_id }}/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/{{ rv_id }}/hqdefault.jpg'" alt="" width="1280" height="720" loading="lazy" class="tg-rp-cover">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'tg-rp-cover' }}
+          {% endif %}
+        </span>
+        <span class="tg-rp-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="tg-rp-video-cap"><strong>{{ st.rv_caption | default: 'Гледай в YouTube' }}</strong><em>youtube.com ↗</em></span>
+      </a>
+    </div>
+  </section>
+  {% endif %}
+
   <!-- ═══ 06 TERRAINS ═══ -->
   {% if terrains.size > 0 %}
   <section class="tg-rp-section tg-rp-section--line">
@@ -415,6 +443,13 @@
     { "type": "text", "id": "tf_title", "label": "Title", "default": "СКАЧАШ. СГЪВАШ. ТРЪГВАШ." },
     { "type": "textarea", "id": "tf_text", "label": "Text", "default": "Всичко остава свързано в един заключен пакет. Слагаш презрамките, качваш се на колелото и местиш спота с теб." },
 
+    { "type": "header", "content": "05b · YouTube clip" },
+    { "type": "text", "id": "rv_url", "label": "YouTube link (watch / youtu.be / shorts)", "info": "Thumbnail is pulled from YouTube automatically; click opens YouTube in a new tab." },
+    { "type": "image_picker", "id": "rv_image", "label": "Custom cover (optional)" },
+    { "type": "text", "id": "rv_eyebrow", "label": "Eyebrow", "default": "Видео" },
+    { "type": "text", "id": "rv_title", "label": "Title", "default": "ВИЖ РАМПИТЕ В ДЕЙСТВИЕ" },
+    { "type": "textarea", "id": "rv_text", "label": "Text", "default": "Сглобяване, позиции и първите скокове — всичко в един клип." },
+    { "type": "text", "id": "rv_caption", "label": "Caption on the card", "default": "Гледай в YouTube" },
     { "type": "header", "content": "06 · Terrains" },
     { "type": "text", "id": "ter_eyebrow", "label": "Eyebrow", "default": "Спотът е там, където го създадеш" },
     { "type": "text", "id": "ter_title", "label": "Title", "default": "ЕДНА РАМПА. МНОГО ТЕРЕНИ." },
