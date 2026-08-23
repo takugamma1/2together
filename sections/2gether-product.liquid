@@ -522,6 +522,7 @@
 (function() {
   const drawer = document.querySelector('.tg-product-right');
   if (!drawer) return;
+  return; // drawer disabled — on mobile the panel flows inline and .tg-product-stickybar provides the sticky CTA
 
   const mq = window.matchMedia('(max-width: 1024px)');
   const panel = drawer.querySelector('.tg-product-panel');
@@ -699,6 +700,29 @@
     });
   });
 })();
+</script>
+
+<div class="tg-product-stickybar" data-tg-stickybar hidden aria-hidden="true">
+  <div class="tg-product-stickybar-info">
+    <span class="tg-product-stickybar-title">{{ product.title | escape | truncate: 48 }}</span>
+    <span class="tg-product-stickybar-price" data-tg-stickybar-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+  </div>
+  <button type="submit" form="tg-product-form" name="add" class="tg-btn-add-cart tg-product-stickybar-btn" data-tg-stickybar-btn {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+    {% if product.selected_or_first_available_variant.available %}{{ section.settings.add_to_cart_text | default: 'Добави в количката' }}{% else %}{{ section.settings.sold_out_text | default: 'Изчерпано' }}{% endif %}
+  </button>
+</div>
+<script>
+  (function () {
+    var bar = document.querySelector('[data-tg-stickybar]'); var cta = document.querySelector('.tg-product-actions .tg-btn-add-cart'); if (!bar || !cta) return;
+    var mq = window.matchMedia('(max-width: 1024px)'); var ctaVisible = true;
+    function update() { var show = mq.matches && !ctaVisible; bar.hidden = !show; bar.setAttribute('aria-hidden', String(!show)); document.body.classList.toggle('tg-has-stickybar', show); }
+    new IntersectionObserver(function (en) { ctaVisible = en[0].isIntersecting; update(); }, { threshold: 0.01 }).observe(cta);
+    mq.addEventListener ? mq.addEventListener('change', update) : mq.addListener(update);
+    var price = document.querySelector('[data-product-price]'); var bp = bar.querySelector('[data-tg-stickybar-price]');
+    if (price && bp) new MutationObserver(function () { bp.innerHTML = price.innerHTML; }).observe(price, { childList: true, subtree: true, characterData: true });
+    var bb = bar.querySelector('[data-tg-stickybar-btn]');
+    new MutationObserver(function () { bb.disabled = cta.disabled; bb.textContent = cta.textContent.trim(); }).observe(cta, { attributes: true, childList: true, subtree: true });
+  })();
 </script>
 
 {% schema %}

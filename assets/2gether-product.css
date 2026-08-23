@@ -1318,9 +1318,23 @@ body.tg-product-active .content-for-layout {
 
 /* ══ Mobile: no fixed-height sticky panel (was leaving an empty block) ══ */
 @media (max-width: 1024px) {
-  .tg-product-page { min-height: 0; grid-template-columns: 1fr; }
+  .tg-product-page { min-height: 0; grid-template-columns: 1fr; padding-bottom: 0; }
+  .tg-product-right { transform: none; border-radius: 0; box-shadow: none; z-index: auto; max-height: none; }
+  .tg-product-right::before { content: none; }
+  .tg-product-right:not(.tg-drawer-open) .tg-product-back { display: inline-flex; }
   .tg-product-right { position: static; height: auto; overflow: visible; border-left: 0; border-top: 1px solid var(--tg-divider); }
   .tg-product-panel { height: auto; overflow: visible; }
   .tg-product-left { overflow: visible; }
   .tg-product-gallery.has-thumbs .tg-product-hero { aspect-ratio: 4 / 3; max-height: 70vh; }
 }
+
+/* ══ Mobile sticky add-to-cart bar ══ */
+.tg-product-stickybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: flex; align-items: center; gap: 12px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(11, 18, 32, 0.96); backdrop-filter: blur(10px); border-top: 2px solid var(--tg-flame); box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.4); }
+.tg-product-stickybar[hidden] { display: none; }
+.tg-product-stickybar-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.tg-product-stickybar-title { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tg-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tg-product-stickybar-price { font-family: var(--tg-font-display); font-weight: 700; font-size: 18px; color: var(--tg-text-primary); }
+.tg-product-stickybar-price .tg-product-price-compare { font-size: 12px; margin-left: 6px; }
+.tg-product-stickybar-btn { flex: 0 0 auto; width: auto; padding: 12px 22px 12px 18px; }
+body.tg-has-stickybar { padding-bottom: 72px; }
+@media (min-width: 1025px) { .tg-product-stickybar { display: none !important; } }
