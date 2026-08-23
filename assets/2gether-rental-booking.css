@@ -79,3 +79,11 @@
 
 .tg-rb-fallback { margin-top: var(--tg-s3); }
 .tg-rb-status.is-ok { color: #3DD68C; }
+
+.tg-rb-rescue { display: flex; gap: 12px; align-items: flex-start; margin: 14px 0; padding: 12px; border: 1px dashed var(--tg-divider); cursor: pointer; }
+.tg-rb-rescue[hidden] { display: none; }
+.tg-rb-rescue input { accent-color: var(--tg-flame); margin-top: 3px; }
+.tg-rb-rescue span { display: flex; flex-direction: column; gap: 2px; font-size: 13px; }
+.tg-rb-rescue em { font-style: normal; color: var(--tg-flame-soft); font-weight: 700; margin-left: 6px; }
+.tg-rb-rescue small { color: var(--tg-text-muted); line-height: 1.5; }
+.tg-rb-note--warn { border-left: 2px solid var(--tg-flame); padding-left: 10px; }

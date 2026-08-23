@@ -5,7 +5,7 @@
   const EP = root.dataset.endpoint || '/apps/club';
   const D = { hourly: +root.dataset.hourly || 3, day: +root.dataset.day || 12, h24: +root.dataset.h24 || 20, maxHours: +root.dataset.maxHours || 24, hStart: +root.dataset.hourStart || 9, hEnd: +root.dataset.hourEnd || 19, minDays: +root.dataset.minDays || 2 };
   const parseTiers = (s) => (s || '').split(';').map(x => x.split('|').map(v => parseFloat(v))).filter(a => a.length === 2 && !isNaN(a[0]) && !isNaN(a[1])).sort((a, b) => a[0] - b[0]);
-  const tiersDefault = parseTiers(root.dataset.tiers);
+  const tiersDefault = parseTiers(root.dataset.tiers); const tiersEbike = parseTiers(root.dataset.tiersEbike || ''); const RESCUE = parseFloat(root.dataset.rescue) || 0;
   const bikes = [...root.querySelectorAll('[data-rb-bike]')];
   const sel = {};                       // handle → qty
   let mode = 'short', avail = { booked: {}, bikes: [] }, range = { start: null, end: null }, shortDate = '', shortHour = null, shortDur = null;
@@ -14,7 +14,7 @@
   const fmt = (n) => '€' + (Math.round(n * 100) / 100).toLocaleString('bg-BG');
 
   /* ── availability ── */
-  const bikeCfg = (h) => { const el = bikes.find(b => b.dataset.rbBike === h); return { count: +el.dataset.count || 0, hourly: parseFloat(el.dataset.hourly) || D.hourly, day: parseFloat(el.dataset.day) || D.day, tiers: parseTiers(el.dataset.tiers).length ? parseTiers(el.dataset.tiers) : tiersDefault, name: el.dataset.name }; };
+  const bikeCfg = (h) => { const el = bikes.find(b => b.dataset.rbBike === h); return { count: +el.dataset.count || 0, hourly: parseFloat(el.dataset.hourly) || D.hourly, day: parseFloat(el.dataset.day) || D.day, tiers: parseTiers(el.dataset.tiers).length ? parseTiers(el.dataset.tiers) : (el.dataset.electric && tiersEbike.length ? tiersEbike : tiersDefault), electric: !!el.dataset.electric, name: el.dataset.name }; };
   const freeOn = (h, day) => { const c = bikeCfg(h).count; const used = ((avail.booked[h] || {})[day] || 0) + ((avail.booked['*'] || {})[day] || 0); return Math.max(0, c - used); };
   const loadAvail = async () => {
     const from = new Date(); const to = new Date(); to.setMonth(to.getMonth() + 4);
@@ -87,7 +87,9 @@
     else { const days = daysIn(range.start, k); if (days.some(d => !dayFree(d))) { range = { start: k, end: null }; } else range.end = k; }
     renderCal(); renderBikeAvail(); renderSummary();
   };
-  const longPrice = (h, nDays) => { const t = bikeCfg(h).tiers; let total = 0; for (let d = 1; d <= nDays; d++) { let rate = t.length ? t[0][1] : D.day; for (const [from, price] of t) if (d >= from) rate = price; total += rate; } return total; };
+  // flat rate per day chosen by the total rental length (e.g. 3 days → €18 × 3)
+  const longRate = (h, nDays) => { const t = bikeCfg(h).tiers; let rate = t.length ? t[0][1] : D.day; for (const [from, price] of t) if (nDays >= from) rate = price; return rate; };
+  const longPrice = (h, nDays) => longRate(h, nDays) * nDays;
 
   /* ── summary ── */
   const lines = root.querySelector('[data-rb-lines]'), totalEl = root.querySelector('[data-rb-total]'), status = root.querySelector('[data-rb-status]');
@@ -97,10 +99,15 @@
     if (!range.start || !range.end) return null; const n = daysIn(range.start, range.end).length; if (n < D.minDays) return null;
     return { mode, start: new Date(range.start + 'T' + pad(D.hStart) + ':00:00'), end: new Date(range.end + 'T' + pad(D.hEnd) + ':00:00'), items: hs.map(h => ({ h, qty: sel[h], price: longPrice(h, n) * sel[h], label: `${n} ${n === 1 ? (I.unit_day || 'ден') : (I.unit_days || 'дни')}` })) };
   };
+  root.addEventListener('change', (e) => { if (e.target.matches('[data-rb-rescue]')) renderSummary(); });
   function renderSummary() {
     const p = plan(); lines.innerHTML = '';
     if (!p) { lines.innerHTML = `<dd class="tg-rb-lines-empty">${I.summary_empty || ''}</dd>`; totalEl.textContent = '—'; return; }
     let total = 0; p.items.forEach(it => { total += it.price; lines.insertAdjacentHTML('beforeend', `<div><dt>${bikeCfg(it.h).name} ×${it.qty} · ${it.label}</dt><dd>${fmt(it.price)}</dd></div>`); });
+    const rescueWrap = root.querySelector('[data-rb-rescue-wrap]'), rescueBox = root.querySelector('[data-rb-rescue]');
+    const rDays = p.mode === 'short' ? 1 : Math.max(1, Math.round((p.end - p.start) / 86400000)); const qty = p.items.reduce((n, it) => n + it.qty, 0);
+    if (rescueWrap) { rescueWrap.hidden = !RESCUE; if (RESCUE && rescueBox && rescueBox.checked) { const r = RESCUE * rDays * qty; total += r; p.rescue = r; lines.insertAdjacentHTML('beforeend', `<div><dt>Bike Rescue · ${rDays} × ${qty}</dt><dd>${fmt(r)}</dd></div>`); } }
+    const anyE = p.items.some(it => bikeCfg(it.h).electric); const dn = root.querySelector('[data-rb-deposit-normal]'), de = root.querySelector('[data-rb-deposit-ebike]'); if (de) de.hidden = !anyE; if (dn) dn.hidden = anyE && p.items.every(it => bikeCfg(it.h).electric);
     const when = p.mode === 'short' ? `${p.start.toLocaleDateString('bg-BG')} ${pad(p.start.getHours())}:00 → ${p.end.toLocaleDateString('bg-BG')} ${pad(p.end.getHours())}:00` : `${p.start.toLocaleDateString('bg-BG')} → ${p.end.toLocaleDateString('bg-BG')}`;
     lines.insertAdjacentHTML('beforeend', `<div class="tg-rb-when"><dt>${when}</dt><dd></dd></div>`); totalEl.textContent = fmt(total); p.total = total; return p;
   }
@@ -113,7 +120,7 @@
     try {
       const refs = [];
       for (const it of p.items) {
-        const r = await fetch(`${EP}/rental-book`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ bike: it.h, quantity: it.qty, mode: p.mode, start: p.start.toISOString(), end: p.end.toISOString(), name, phone, email: f.email.value.trim(), note: f.note.value.trim(), price: Math.round(it.price * 100) / 100 }) });
+        const r = await fetch(`${EP}/rental-book`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ bike: it.h, quantity: it.qty, mode: p.mode, start: p.start.toISOString(), end: p.end.toISOString(), name, phone, email: f.email.value.trim(), note: (p.rescue ? 'Bike Rescue: да. ' : '') + f.note.value.trim(), price: Math.round((it.price + (p.rescue ? p.rescue / p.items.length : 0)) * 100) / 100 }) });
         const j = await r.json().catch(() => ({}));
         if (r.status === 409) { status.textContent = I.msg_unavailable || ''; btn.disabled = false; loadAvail(); return; }
         if (!r.ok) throw new Error('book ' + r.status); refs.push(j.reference);

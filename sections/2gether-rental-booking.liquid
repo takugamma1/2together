@@ -12,7 +12,8 @@
   data-hourly="{{ st.hourly_rate }}" data-day="{{ st.day_rate }}" data-h24="{{ st.h24_rate }}" data-max-hours="{{ st.max_hours | default: 24 }}"
   data-hour-start="{{ st.hour_start | default: 9 }}" data-hour-end="{{ st.hour_end | default: 19 }}"
   data-tiers="{{ st.long_tiers | newline_to_br | replace: '<br />', ';' | escape }}"
-  data-min-days="{{ st.long_min_days | default: 2 }}" data-deposit="{{ st.deposit | escape }}">
+  data-min-days="{{ st.long_min_days | default: 2 }}" data-deposit="{{ st.deposit | escape }}"
+  data-tiers-ebike="{{ st.long_tiers_ebike | newline_to_br | replace: '<br />', ';' | escape }}" data-rescue="{{ st.rescue_price | default: 5 }}">
   <div class="tg-rb-inner">
     <header class="tg-rb-head">
       <span class="tg-label">{{ st.eyebrow }}</span>
@@ -28,7 +29,7 @@
           {% for b in bikes %}
             {%- if b.active.value != true -%}{%- continue -%}{%- endif -%}
             <article class="tg-rb-bike" data-rb-bike="{{ b.system.handle }}" data-name="{{ b.name.value | escape }}" data-count="{{ b.count.value | default: 0 }}"
-              data-hourly="{{ b.hourly_rate.value }}" data-day="{{ b.day_rate.value }}" data-tiers="{{ b.long_term_tiers.value | newline_to_br | replace: '<br />', ';' | escape }}">
+              data-hourly="{{ b.hourly_rate.value }}" data-day="{{ b.day_rate.value }}" data-tiers="{{ b.long_term_tiers.value | newline_to_br | replace: '<br />', ';' | escape }}"{% assign rb_cat = b.category.value | downcase %}{% if rb_cat contains 'e-bike' or rb_cat contains 'ebike' or rb_cat contains 'електр' or rb_cat contains 'electric' %} data-electric="1"{% endif %}>
               <div class="tg-rb-bike-media">
                 {% if b.photo.value != blank %}{{ b.photo.value | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(max-width: 768px) 100vw, 33vw', alt: b.name.value }}{% else %}<div class="tg-rb-ph"></div>{% endif %}
                 {% if b.category.value != blank %}<span class="tg-rb-bike-cat">{{ b.category.value }}</span>{% endif %}
@@ -81,8 +82,10 @@
       <aside class="tg-rb-summary" data-rb-summary>
         <div class="tg-rb-step"><span>03</span>{{ st.step_confirm }}</div>
         <dl class="tg-rb-lines" data-rb-lines><dd class="tg-rb-lines-empty">{{ st.summary_empty }}</dd></dl>
+        <label class="tg-rb-rescue" data-rb-rescue-wrap hidden><input type="checkbox" data-rb-rescue><span><strong>{{ st.rescue_label }}</strong> <em>+€{{ st.rescue_price | default: 5 }}/{{ st.unit_day | default: 'ден' }}</em><small>{{ st.rescue_text }}</small></span></label>
         <div class="tg-rb-total"><span>{{ st.total_label }}</span><strong data-rb-total>—</strong></div>
-        {% if st.deposit != blank %}<p class="tg-rb-note">{{ st.deposit }}</p>{% endif %}
+        <p class="tg-rb-note" data-rb-deposit-normal>{{ st.deposit }}</p>
+        <p class="tg-rb-note tg-rb-note--warn" data-rb-deposit-ebike hidden>{{ st.deposit_ebike }}</p>
         <form class="tg-rb-form" data-rb-form novalidate>
           <label><span>{{ st.name_label }}</span><input type="text" name="name" required autocomplete="name"></label>
           <label><span>{{ st.phone_label }}</span><input type="tel" name="phone" required autocomplete="tel"></label>
@@ -124,9 +127,14 @@
     { "type": "number", "id": "hour_start", "label": "First pick-up hour", "default": 9 },
     { "type": "number", "id": "hour_end", "label": "Last return hour (same day)", "default": 19 },
     { "type": "header", "content": "Prices — long term" },
-    { "type": "textarea", "id": "long_tiers", "label": "Price per day from day N (N|€ per line)", "info": "Each day is charged at the rate of the tier it falls in. Example: day 1 €20, days 2–3 €18 … day 7+ €13.", "default": "1|20\n2|18\n3|16\n4|15\n5|14\n7|13" },
+    { "type": "textarea", "id": "long_tiers", "label": "Normal bikes: € per day for a rental of N+ days (N|€ per line)", "info": "The whole rental is charged at the rate of the matching tier × days.", "default": "1|20\n3|18\n4|16\n5|15\n7|12\n15|10" },
+    { "type": "textarea", "id": "long_tiers_ebike", "label": "E-bikes: € per day for a rental of N+ days (N|€ per line)", "default": "1|35\n3|32\n4|28\n5|25\n7|20\n15|15" },
+    { "type": "text", "id": "deposit_ebike", "label": "E-bike deposit / terms note", "default": "Електрически велосипеди: задължителен депозит €500 (с карта или в брой). При наем над 1 ден зарядното е включено в цената." },
+    { "type": "number", "id": "rescue_price", "label": "Bike Rescue € per day", "default": 5 },
+    { "type": "text", "id": "rescue_label", "label": "Bike Rescue label", "default": "Bike Rescue" },
+    { "type": "text", "id": "rescue_text", "label": "Bike Rescue text", "default": "Ремонт или замяна на велосипеда на място при технически проблем." },
     { "type": "number", "id": "long_min_days", "label": "Minimum days for long term", "default": 2 },
-    { "type": "text", "id": "deposit", "label": "Deposit / terms note", "default": "Депозит €100 при взимане, връща се при връщане. Потвърждаваме по телефон до 24 ч." },
+    { "type": "text", "id": "deposit", "label": "Deposit / terms note", "default": "Обикновени велосипеди: без депозит. Потвърждаваме по телефон до 24 ч." },
     { "type": "header", "content": "Texts" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Наем на велосипеди" },
     { "type": "text", "id": "title", "label": "Title", "default": "РЕЗЕРВИРАЙ КОЛЕЛО" },
