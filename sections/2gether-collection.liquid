@@ -210,6 +210,10 @@
     <!-- Hero Banner -->
     <div class="tg-coll-hero">
       <div class="tg-coll-hero-left">
+        <a class="tg-coll-back" href="{{ section.settings.back_url | default: routes.collections_url }}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          <span>{{ section.settings.back_label | default: 'Всички колекции' }}</span>
+        </a>
         <h1 class="tg-coll-hero-title">
           {% if section.settings.hero_title != blank %}
             {{ section.settings.hero_title }}
@@ -620,6 +624,8 @@
       "label": "Hero title override",
       "info": "Leave blank to auto-generate from collection title"
     },
+    { "type": "text", "id": "back_label", "label": "Back link label", "default": "Всички колекции" },
+    { "type": "url", "id": "back_url", "label": "Back link URL (default: /collections)" },
     {
       "type": "text",
       "id": "search_placeholder",
