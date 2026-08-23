@@ -1338,3 +1338,10 @@ body.tg-product-active .content-for-layout {
 .tg-product-stickybar-btn { flex: 0 0 auto; width: auto; padding: 12px 22px 12px 18px; }
 body.tg-has-stickybar { padding-bottom: 72px; }
 @media (min-width: 1025px) { .tg-product-stickybar { display: none !important; } }
+
+/* ══ Imported descriptions carry inline colours/fonts from the old site — neutralise them ══ */
+.tg-product-description, .tg-product-description * { color: var(--tg-text-secondary) !important; font-family: var(--tg-font-body) !important; background: transparent !important; }
+.tg-product-description h1, .tg-product-description h2, .tg-product-description h3, .tg-product-description h4, .tg-product-description strong, .tg-product-description b { color: var(--tg-text-primary) !important; }
+.tg-product-description h1, .tg-product-description h2, .tg-product-description h3, .tg-product-description h4 { font-family: var(--tg-font-display) !important; font-size: 15px !important; letter-spacing: 0.04em; text-transform: uppercase; margin: 14px 0 6px !important; }
+.tg-product-description p, .tg-product-description span, .tg-product-description font, .tg-product-description li { font-size: 14px !important; line-height: 1.6 !important; }
+.tg-product-description a { color: var(--tg-flame) !important; }
