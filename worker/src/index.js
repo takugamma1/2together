@@ -807,7 +807,7 @@ async function serviceContext(env) {
   const [mechanics, services, bookings] = await Promise.all([listMetaobjects(env, 'mechanic'), listMetaobjects(env, 'service_type'), listMetaobjects(env, 'service_booking')]);
   const m = mechanics.filter(x => x.fields.active === 'true').map(x => ({ id: x.id, handle: x.handle, name: x.fields.name, shifts: parseShifts(x.fields.shifts), daysOff: String(x.fields.days_off || '').split(/\s+/).filter(Boolean), slot: parseInt(x.fields.slot_minutes || '60', 10) || 60, sort: parseInt(x.fields.sort || '0', 10) }));
   m.sort((a, b) => a.sort - b.sort);
-  const sv = services.filter(x => x.fields.active !== 'false').map(x => ({ id: x.id, handle: x.handle, name: x.fields.name, duration: parseInt(x.fields.duration_minutes || '60', 10) || 60, price: x.fields.price_from || '' }));
+  const sv = services.filter(x => x.fields.active !== 'false' && x.fields.bookable !== 'false').map(x => ({ id: x.id, handle: x.handle, name: x.fields.name, duration: parseInt(x.fields.duration_minutes || '60', 10) || 60, price: x.fields.price_from || '' }));
   const busy = bookings.filter(b => b.fields.start && b.fields.end && b.fields.status !== 'cancelled').map(b => ({ mechanic: b.fields.mechanic_handle, start: new Date(b.fields.start).getTime(), end: new Date(b.fields.end).getTime() }));
   return { mechanics: m, services: sv, busy };
 }

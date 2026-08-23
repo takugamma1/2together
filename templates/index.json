@@ -11,6 +11,17 @@
   "sections": {
     "tg_hero": {
       "type": "2gether-hero",
+      "settings": {
+        "hero_image": "shopify://shop_images/DSC07429.webp",
+        "top_label": "2GETHER BIKES / VARNA",
+        "subtitle": "Не продаваме просто велосипеди.\nСъздаваме средата, в която се изгражда следващото поколение колоездачи.\n От 2017 г. насам.",
+        "cta_text": "разбери повече",
+        "cta_link": "shopify://pages/about",
+        "title_line1": "2GETHER",
+        "title_line2": "BIKES",
+        "hero_title_size": 80,
+        "bento_shift": -40
+      },
       "blocks": {
         "bento_1": {
           "type": "bento_cell",
@@ -20,7 +31,7 @@
             "title": "2GETHERBIKES Portable ramps",
             "description": "",
             "link": "shopify://pages/portable-ramps",
-            "icon": "layers"
+            "icon": "tool"
           }
         },
         "bento_2": {
@@ -42,18 +53,18 @@
             "title": "СЕРВИЗ",
             "description": "",
             "link": "shopify://pages/bike-service",
-            "icon": "tool"
+            "icon": "star"
           }
         },
         "bento_4": {
           "type": "bento_cell",
           "settings": {
-            "image": "shopify://shop_images/od-9672-25006.jpg",
+            "image": "shopify://shop_images/santa-cruz-heckler-sl-cc-xx-axs-rsv-mx-matte-silver-xl_20_283_29.jpg",
             "number": "04",
             "title": "ЕЛЕКТРОНЕН МАГАЗИН",
             "description": "",
             "link": "shopify://collections",
-            "icon": "star"
+            "icon": "layers"
           }
         },
         "bento_cell_QGpn83": {
@@ -74,18 +85,7 @@
         "bento_3",
         "bento_4",
         "bento_cell_QGpn83"
-      ],
-      "settings": {
-        "hero_image": "shopify://shop_images/DSC07429.webp",
-        "top_label": "2GETHER BIKES / VARNA",
-        "subtitle": "Не продаваме просто велосипеди.\nСъздаваме средата, в която се изгражда следващото поколение колоездачи.\n От 2017 г. насам.",
-        "cta_text": "разбери повече",
-        "cta_link": "shopify://pages/about",
-        "title_line1": "2GETHER",
-        "title_line2": "BIKES",
-        "hero_title_size": 80,
-        "bento_shift": -40
-      }
+      ]
     },
     "tg_statement": {
       "type": "2gether-statement",
@@ -545,11 +545,6 @@
         "cta_link": "shopify://pages/sunday-club",
         "poll": "",
         "poll_mode": "link",
-        "coming_soon": true,
-        "soon_badge": "Скоро",
-        "soon_title": "СКОРО!",
-        "soon_text": "Работим по програмата. Следете ни — ще обявим старта в блога и в Instagram.",
-        "soon_close": "Добре",
         "poll_label": "",
         "votes_text": "",
         "voters_text": "",
@@ -562,7 +557,8 @@
         "msg_members": "",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
-        "yt_views": "128K"
+        "yt_views": "128K",
+        "coming_soon": true
       }
     },
     "2gether_yt_carousel_kXttfc": {
@@ -637,11 +633,6 @@
         "cta_link": "shopify://blogs/тест-статии",
         "poll": "",
         "poll_mode": "off",
-        "coming_soon": false,
-        "soon_badge": "Скоро",
-        "soon_title": "СКОРО!",
-        "soon_text": "Работим по програмата. Следете ни — ще обявим старта в блога и в Instagram.",
-        "soon_close": "Добре",
         "poll_label": "ГЛАСУВАЙ ЗА СЛЕДВАЩАТА ЛОКАЦИЯ",
         "votes_text": "гласа",
         "voters_text": "гласували",
