@@ -318,12 +318,23 @@
   <!-- ═══ 08 STORY ═══ -->
   <section id="tg-ramps-story" class="tg-rp-section tg-rp-section--line">
     <div class="tg-rp-wrap tg-rp-split">
+      {%- capture sv_id %}{% render '2gether-yt-id', content: st.story_video_url %}{% endcapture -%}
+      {%- assign sv_id = sv_id | strip -%}
+      {% if st.story_video_url != blank %}
+        <a class="tg-rp-media tg-rp-video tg-rp-video--story" href="{{ st.story_video_url }}" target="_blank" rel="noopener" aria-label="{{ st.story_video_label | default: 'YouTube' | escape }}">
+          <span class="tg-rp-video-media">
+            {% if st.story_image != blank %}{{ st.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', class: 'tg-rp-cover' }}
+            {% elsif sv_id != blank %}<img src="https://i.ytimg.com/vi/{{ sv_id }}/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/{{ sv_id }}/hqdefault.jpg'" alt="" width="1280" height="720" loading="lazy" class="tg-rp-cover">
+            {% else %}{{ 'lifestyle-1' | placeholder_svg_tag: 'tg-rp-cover' }}{% endif %}
+          </span>
+          <span class="tg-rp-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <span class="tg-rp-video-cap"><strong>{{ st.story_video_label | default: 'Гледай влога' }}</strong><em>youtube.com ↗</em></span>
+        </a>
+      {% else %}
       <figure class="tg-rp-media">
-        {% if st.story_image != blank %}{{ st.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-placeholder"></div>{% endif %}
-        {% if st.story_video_label != blank and st.story_video_url != blank %}
-          <a class="tg-rp-play" href="{{ st.story_video_url }}" {% if st.story_video_url contains 'http' %}target="_blank" rel="noopener"{% endif %}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>{{ st.story_video_label }}</a>
-        {% endif %}
+        {% if st.story_image != blank %}{{ st.story_image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(max-width: 1024px) 100vw, 55vw', class: 'tg-rp-cover' }}{% else %}<div class="tg-rp-media-ph"></div>{% endif %}
       </figure>
+      {% endif %}
       <div class="tg-rp-split-copy">
         <span class="tg-eyebrow">{{ st.story_eyebrow }}</span>
         <h2 class="tg-rp-h2">{{ st.story_title }}</h2>
@@ -466,7 +477,7 @@
     { "type": "header", "content": "08 · Story" },
     { "type": "image_picker", "id": "story_image", "label": "Image" },
     { "type": "text", "id": "story_video_label", "label": "Play button label", "default": "Гледай влога" },
-    { "type": "url", "id": "story_video_url", "label": "Video link" },
+    { "type": "text", "id": "story_video_url", "label": "YouTube link (fills the story media box; thumbnail auto from YouTube)" },
     { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Цялата история" },
     { "type": "text", "id": "story_title", "label": "Title", "default": "КАК СЪЗДАДОХМЕ РАМПИТЕ." },
     { "type": "textarea", "id": "story_text", "label": "Text", "default": "Производството в цеха, тридневният лагер с отбора и първото градско каране с рампите в Ботевград — събрани в един влог." },
