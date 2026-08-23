@@ -821,8 +821,27 @@
   position: absolute;
   inset: 0;
   z-index: 3;
-  clip-path: polygon(48% 0, 100% 0, 100% 100%, 38% 100%);
-  background: var(--tg-ink);
+  /* soft slash: the photo fades out along the brand diagonal instead of a hard clip */
+  background: none;
+  overflow: hidden;
+}
+.tg-community-diagonal::before {
+  content: '';
+  position: absolute;
+  inset: -10% auto -10% 0;
+  width: 100%;
+  background: linear-gradient(104deg, rgba(11, 18, 32, 0) 0%, rgba(11, 18, 32, 0) 38%, rgba(11, 18, 32, 0.75) 47%, var(--tg-ink) 60%);
+  transform: none;
+}
+.tg-community-diagonal::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: 46%;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(232, 96, 28, 0), rgba(232, 96, 28, 0.35) 30%, rgba(232, 96, 28, 0.35) 70%, rgba(232, 96, 28, 0));
+  transform: skewX(-14deg);
   opacity: 0.6;
 }
 
@@ -1946,6 +1965,17 @@ body header-component {
 /* Community — mirrored variant: content on the left, image/diagonal on the right */
 .tg-community--left .tg-community-image { left: auto; right: 0; }
 .tg-community--left .tg-community-diagonal { transform: scaleX(-1); left: auto; right: 0; }
+.tg-community.is-coming-soon .tg-community-image img { filter: grayscale(1) brightness(0.55); }
+.tg-community.is-coming-soon .tg-community-title { color: var(--tg-text-secondary); }
+.tg-soon-badge { align-self: flex-start; display: inline-block; margin-bottom: 14px; padding: 6px 14px 6px 10px; font-family: var(--tg-font-body); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tg-ink); background: var(--tg-text-secondary); clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%); }
+.tg-btn-soon { cursor: pointer; font: inherit; border: 0; filter: grayscale(1) brightness(1.1); }
+.tg-btn-soon:hover { filter: none; }
+.tg-soon-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(11, 18, 32, 0.78); backdrop-filter: blur(6px); }
+.tg-soon-modal[hidden] { display: none; }
+.tg-soon-modal-card { max-width: 460px; width: 100%; padding: 36px 32px; background: var(--tg-ink); border: 1px solid var(--tg-divider); border-top: 3px solid var(--tg-flame); display: flex; flex-direction: column; gap: 14px; align-items: flex-start; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
+.tg-soon-modal-card h3 { margin: 0; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--tg-text-primary); }
+.tg-soon-modal-card p { margin: 0; color: var(--tg-text-secondary); line-height: 1.6; }
+body.tg-soon-open { overflow: hidden; }
 .tg-community--left .tg-community-overlay { background: linear-gradient(270deg, rgba(11, 18, 32, 0) 0%, rgba(11, 18, 32, 0.55) 45%, var(--tg-ink) 100%); }
 .tg-community--left .tg-community-top, .tg-community--left .tg-community-pool { direction: rtl; }
 .tg-community--left .tg-community-top > *, .tg-community--left .tg-community-pool > * { direction: ltr; }

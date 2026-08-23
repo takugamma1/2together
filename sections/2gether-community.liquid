@@ -1,5 +1,5 @@
 <section
-  class="tg-community tg-section{% if section.settings.content_side == 'left' %} tg-community--left{% endif %}"
+  class="tg-community tg-section{% if section.settings.content_side == 'left' %} tg-community--left{% endif %}{% if section.settings.coming_soon %} is-coming-soon{% endif %}"
   id="community"
   data-club-section
   data-msg-error="{{ section.settings.msg_error | escape }}"
@@ -22,7 +22,12 @@
         <span class="tg-label">{{ section.settings.label_text }}</span>
         <h2 class="tg-f-display tg-community-title">{{ section.settings.title }}</h2>
         <p class="tg-community-text">{{ section.settings.description }}</p>
-        {% if section.settings.cta_text != blank %}
+        {% if section.settings.coming_soon %}
+          <span class="tg-soon-badge">{{ section.settings.soon_badge | default: 'Скоро' }}</span>
+          {% if section.settings.cta_text != blank %}
+            <button type="button" class="tg-btn-primary tg-btn-soon" data-tg-soon style="align-self:flex-start;">{{ section.settings.cta_text }} &rarr;</button>
+          {% endif %}
+        {% elsif section.settings.cta_text != blank %}
           <a href="{{ section.settings.cta_link }}" class="tg-btn-primary" style="align-self:flex-start;">{{ section.settings.cta_text }} &rarr;</a>
         {% endif %}
       </div>
@@ -47,7 +52,7 @@
         endif
       endif
     -%}
-    {% if poll != blank %}
+    {% if poll != blank and section.settings.poll_mode != 'off' %}
       {% comment %}
         '2gether-member' determines membership for the current customer
         and echoes the boolean (render isolates assigns, so we capture).
@@ -164,6 +169,28 @@
   {% endif %}
 </section>
 
+{% if section.settings.coming_soon %}
+  <div class="tg-soon-modal" data-tg-soon-modal hidden role="dialog" aria-modal="true" aria-labelledby="tg-soon-title-{{ section.id }}">
+    <div class="tg-soon-modal-card">
+      <span class="tg-label">{{ section.settings.label_text }}</span>
+      <h3 id="tg-soon-title-{{ section.id }}" class="tg-f-display">{{ section.settings.soon_title | default: 'СКОРО!' }}</h3>
+      <p>{{ section.settings.soon_text | default: 'Работим по програмата. Следете ни — ще обявим старта в блога и в Instagram.' }}</p>
+      <button type="button" class="tg-btn-primary" data-tg-soon-close>{{ section.settings.soon_close | default: 'Добре' }}</button>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var sec = document.getElementById('shopify-section-{{ section.id }}') || document;
+      var modal = sec.querySelector('[data-tg-soon-modal]'); if (!modal) return;
+      sec.querySelectorAll('[data-tg-soon]').forEach(function (b) { b.addEventListener('click', function () { modal.hidden = false; document.body.classList.add('tg-soon-open'); }); });
+      function close() { modal.hidden = true; document.body.classList.remove('tg-soon-open'); }
+      modal.querySelector('[data-tg-soon-close]').addEventListener('click', close);
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+    })();
+  </script>
+{% endif %}
+
 {% if poll != blank and customer %}
   <script type="module" src="{{ '2gether-club.js' | asset_url }}" defer></script>
 {% endif %}
@@ -246,9 +273,19 @@
         {
           "value": "vote",
           "label": "Live voting (members)"
+        },
+        {
+          "value": "off",
+          "label": "Hidden"
         }
       ]
     },
+    { "type": "header", "content": "Coming soon mode" },
+    { "type": "checkbox", "id": "coming_soon", "label": "Coming soon (grey image, button opens a popup)", "default": false },
+    { "type": "text", "id": "soon_badge", "label": "Badge", "default": "Скоро" },
+    { "type": "text", "id": "soon_title", "label": "Popup title", "default": "СКОРО!" },
+    { "type": "textarea", "id": "soon_text", "label": "Popup text", "default": "Работим по програмата. Следете ни — ще обявим старта в блога и в Instagram." },
+    { "type": "text", "id": "soon_close", "label": "Popup button", "default": "Добре" },
     {
       "type": "text",
       "id": "poll_label",

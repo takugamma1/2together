@@ -9,12 +9,45 @@
   const stepEl = (n) => root.querySelector(`[data-sb-step="${n}"]`);
   const fmtDate = (iso) => { const d = new Date(iso + 'T12:00:00'); return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
 
-  // step 1
-  root.querySelectorAll('[data-sb-service]').forEach(b => b.addEventListener('click', () => {
+  // step 1 — select
+  const sticky = root.querySelector('[data-sb-sticky]');
+  function selectService(b) {
     root.querySelectorAll('[data-sb-service]').forEach(x => x.classList.toggle('is-selected', x === b));
-    state.service = { handle: b.dataset.sbService, name: b.dataset.name, duration: +b.dataset.duration, price: b.dataset.price };
+    state.service = { handle: b.dataset.sbService, name: b.dataset.name, duration: +b.dataset.duration, price: b.dataset.price, priceTo: b.dataset.priceTo || '' };
     stepEl(1).querySelector('[data-sb-next]').disabled = false; state.loaded.clear(); state.slots = {}; state.date = state.time = null;
+    if (sticky) { sticky.hidden = false; sticky.querySelector('[data-sb-sticky-name]').textContent = state.service.name; }
+  }
+  root.querySelectorAll('[data-sb-service]').forEach(b => b.addEventListener('click', () => selectService(b)));
+  // step 1 — filter (chips + search)
+  const search = root.querySelector('[data-sb-search]'); const chips = root.querySelectorAll('[data-sb-cat]'); let cat = '';
+  function applyFilter() {
+    const q = (search ? search.value : '').trim().toLowerCase(); let any = false;
+    root.querySelectorAll('[data-sb-group]').forEach(g => {
+      let n = 0; g.querySelectorAll('[data-sb-service]').forEach(b => { const ok = (!cat || b.dataset.cat === cat) && (!q || b.dataset.search.includes(q)); b.hidden = !ok; if (ok) n++; });
+      g.hidden = n === 0; any = any || n > 0;
+    });
+    const empty = root.querySelector('[data-sb-empty]'); if (empty) empty.hidden = any;
+  }
+  chips.forEach(c => c.addEventListener('click', () => { cat = c.dataset.sbCat; chips.forEach(x => x.classList.toggle('is-active', x === c)); applyFilter(); }));
+  if (search) search.addEventListener('input', applyFilter);
+  // price list → pick a service
+  root.querySelectorAll('[data-sb-pick]').forEach(b => b.addEventListener('click', () => {
+    const target = root.querySelector(`[data-sb-service="${b.dataset.sbPick}"]`); if (!target) return;
+    cat = ''; chips.forEach(x => x.classList.toggle('is-active', x.dataset.sbCat === '')); if (search) search.value = ''; applyFilter();
+    selectService(target); show(2);
   }));
+  // price list — expand + search + counts
+  root.querySelectorAll('[data-sb-pl-toggle]').forEach(b => b.addEventListener('click', () => { const d = b.closest('[data-sb-pl-item]').querySelector('.tg-sb-pl-desc'); const open = d.hidden; d.hidden = !open; b.setAttribute('aria-expanded', String(open)); }));
+  const plSearch = root.querySelector('[data-sb-price-search]');
+  function applyPlFilter() {
+    const q = (plSearch ? plSearch.value : '').trim().toLowerCase(); let any = false;
+    root.querySelectorAll('[data-sb-pl-cat]').forEach(d => {
+      let n = 0; d.querySelectorAll('[data-sb-pl-item]').forEach(it => { const ok = !q || it.dataset.search.includes(q); it.hidden = !ok; if (ok) n++; });
+      d.hidden = n === 0; d.querySelector('[data-sb-pl-count]').textContent = n; if (q && n) d.open = true; any = any || n > 0;
+    });
+    const e = root.querySelector('[data-sb-pl-empty]'); if (e) e.hidden = any;
+  }
+  if (plSearch) plSearch.addEventListener('input', applyPlFilter); applyPlFilter();
   // step 2
   root.querySelectorAll('[data-sb-mechanic]').forEach(b => b.addEventListener('click', () => {
     root.querySelectorAll('[data-sb-mechanic]').forEach(x => x.classList.toggle('is-selected', x === b));
@@ -76,7 +109,7 @@
     const s = root.querySelector('[data-sb-summary]'); const mechName = state.mechanic === 'any' ? (state.mechNames && state.mechNames[state.slotMech]) || T.anyMech : state.mechanicName;
     s.querySelector('[data-sum="service"]').textContent = state.service.name; s.querySelector('[data-sum="mechanic"]').textContent = mechName;
     s.querySelector('[data-sum="when"]').textContent = `${fmtDate(state.date)}, ${state.time}`; s.querySelector('[data-sum="duration"]').textContent = `${state.service.duration} мин`;
-    s.querySelector('[data-sum="price"]').textContent = state.service.price ? `от €${state.service.price}` : '—';
+    s.querySelector('[data-sum="price"]').textContent = state.service.price ? (state.service.priceTo ? `€${state.service.price} – ${state.service.priceTo}` : `€${state.service.price}`) : '—';
   }
   const form = root.querySelector('[data-sb-form]'), err = root.querySelector('[data-sb-error]');
   form.addEventListener('submit', async (e) => {
