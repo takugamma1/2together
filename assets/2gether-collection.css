@@ -1325,3 +1325,10 @@ input.tg-filter-price-input:focus { border-color: var(--tg-flame) !important; }
 input.tg-filter-price-input::placeholder { color: var(--tg-text-muted) !important; opacity: 1; }
 .tg-filter-price-sep { flex: 0 0 auto; }
 .tg-filter-price-go { flex: 0 0 auto; }
+
+/* sibling switcher (brand / type chips) */
+.tg-coll-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 14px; }
+.tg-coll-switch + .tg-coll-switch { margin-top: 8px; }
+.tg-coll-switch-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tg-text-muted); min-width: 48px; }
+.tg-coll-switch-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.tg-coll-switch .tg-rp-seg-btn { text-decoration: none; font-size: 11px; padding: 7px 14px; }

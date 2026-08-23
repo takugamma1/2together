@@ -224,6 +224,29 @@
         {% if collection.description != blank %}
           <p class="tg-coll-hero-desc">{{ collection.description | strip_html }}</p>
         {% endif %}
+        {%- comment -%} Sibling switcher: groups of collections (Label=handle1,handle2,…) — shown when the current collection is in a group {%- endcomment -%}
+        {%- assign sw_groups = section.settings.switcher_groups | newline_to_br | split: '<br />' -%}
+        {%- for sw_line in sw_groups -%}
+          {%- assign sw_parts = sw_line | strip | split: '=' -%}
+          {%- if sw_parts.size < 2 %}{% continue %}{% endif -%}
+          {%- assign sw_handles = sw_parts[1] | split: ',' -%}
+          {%- assign sw_in = false -%}
+          {%- for sw_h in sw_handles -%}{%- assign sw_hh = sw_h | strip -%}{%- if sw_hh == collection.handle -%}{%- assign sw_in = true -%}{%- endif -%}{%- endfor -%}
+          {%- if sw_in -%}
+            <nav class="tg-coll-switch" aria-label="{{ sw_parts[0] | strip | escape }}">
+              <span class="tg-coll-switch-label">{{ sw_parts[0] | strip }}</span>
+              <div class="tg-coll-switch-chips">
+                {%- for sw_h in sw_handles -%}
+                  {%- assign sw_hh = sw_h | strip -%}
+                  {%- assign sw_c = collections[sw_hh] -%}
+                  {%- if sw_c != blank and sw_c.all_products_count > 0 or sw_hh == collection.handle -%}
+                    <a href="{{ sw_c.url | default: '#' }}" class="tg-rp-seg-btn{% if sw_hh == collection.handle %} is-active{% endif %}">{{ sw_c.title | default: sw_hh | remove: 'Велосипеди ' }}</a>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </nav>
+          {%- endif -%}
+        {%- endfor -%}
       </div>
     </div>
 
@@ -628,6 +651,7 @@
       "info": "Leave blank to auto-generate from collection title"
     },
     { "type": "text", "id": "back_label", "label": "Back link label", "default": "Всички колекции" },
+    { "type": "textarea", "id": "switcher_groups", "label": "Switcher groups (Label=handle,handle,… per line)", "info": "When the current collection is in a group, a chip row with the other members is shown under the title.", "default": "Марка=bikes-od62,bikes-orbea,bikes-santa-cruz,bikes-pivot,bikes-nukeproof,bikes-cervelo,bikes-ridley\nТип=bikes-od62,bikes-mtb,bikes-ebike,bikes-road,bikes-kids,bikes-urban" },
     { "type": "url", "id": "back_url", "label": "Back link URL (default: /collections)" },
     {
       "type": "text",
