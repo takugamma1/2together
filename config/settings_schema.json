@@ -2404,5 +2404,26 @@
         "default": "Добре"
       }
     ]
+  },
+  {
+    "name": "SEO · Начална страница",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Заглавие и описание за Google на началната страница (заместват полетата от Online Store → Preferences)."
+      },
+      {
+        "type": "text",
+        "id": "home_meta_title",
+        "label": "SEO заглавие",
+        "default": "2gether Bikes – велосипеден магазин и сервиз във Варна"
+      },
+      {
+        "type": "textarea",
+        "id": "home_meta_description",
+        "label": "Meta описание (до ~160 знака)",
+        "default": "Велосипеди Orbea и Santa Cruz, части, екипировка и аксесоари. Сервиз със записване онлайн, наем на колела, портативни рампи и колоездачен клуб във Варна."
+      }
+    ]
   }
 ]
