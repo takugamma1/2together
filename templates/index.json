@@ -42,7 +42,7 @@
             "title": "СЕРВИЗ",
             "description": "",
             "link": "shopify://pages/bike-service",
-            "icon": "star"
+            "icon": "tool"
           }
         },
         "bento_4": {
@@ -675,9 +675,9 @@
       "settings": {
         "label_text": "ЕЛЕКТРОНЕН МАГАЗИН",
         "heading": "НАЙ-ПРОДАВАНИ",
-        "product_1": "orbea-alma-h20-m-metallic-dark-red-chic-white-p476",
-        "product_2": "orbea-alma-h20-m-metallic-dark-red-chic-white-p476",
-        "product_3": "orbea-alma-h20-m-metallic-dark-red-chic-white-p476",
+        "product_1": "",
+        "product_2": "",
+        "product_3": "",
         "collection": "velosipedi-c59",
         "view_all_text": "Виж всички",
         "view_all_link": "shopify://collections"
