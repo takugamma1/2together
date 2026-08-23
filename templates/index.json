@@ -384,7 +384,7 @@
                   "name": "t:names.button",
                   "settings": {
                     "label": "Разгледай рампите",
-                    "link": "shopify://collections/all",
+                    "link": "shopify://pages/portable-ramps",
                     "open_in_new_tab": false,
                     "style_class": "button",
                     "width": "fit-content",
