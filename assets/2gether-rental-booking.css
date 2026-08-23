@@ -87,3 +87,17 @@
 .tg-rb-rescue em { font-style: normal; color: var(--tg-flame-soft); font-weight: 700; margin-left: 6px; }
 .tg-rb-rescue small { color: var(--tg-text-muted); line-height: 1.5; }
 .tg-rb-note--warn { border-left: 2px solid var(--tg-flame); padding-left: 10px; }
+
+.tg-rb-prices { margin-top: var(--tg-s8); }
+.tg-rb-prices-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--tg-s4); }
+.tg-rb-price-card { padding: var(--tg-s5); background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); border-radius: 4px; display: flex; flex-direction: column; gap: 8px; }
+.tg-rb-price-card--e { border-top: 3px solid var(--tg-flame); }
+.tg-rb-price-card h3 { margin: 0; font-family: var(--tg-font-display); font-size: 18px; letter-spacing: 0.04em; text-transform: uppercase; }
+.tg-rb-price-card h3 em { font-style: normal; color: var(--tg-flame-soft); font-size: 14px; margin-left: 6px; }
+.tg-rb-price-card > p { margin: 0; font-size: 13px; color: var(--tg-text-secondary); line-height: 1.5; }
+.tg-rb-price-card dl { margin: 8px 0 0; }
+.tg-rb-price-card dl div { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--tg-divider); font-size: 14px; }
+.tg-rb-price-card dd { margin: 0; font-family: var(--tg-font-display); font-weight: 700; color: var(--tg-flame-soft); }
+.tg-rb-price-card dd small { font-family: var(--tg-font-body); font-weight: 400; color: var(--tg-text-muted); font-size: 11px; }
+.tg-rb-price-card .tg-rb-note { margin-top: auto; }
+@media (max-width: 900px) { .tg-rb-prices-grid { grid-template-columns: 1fr; } }
