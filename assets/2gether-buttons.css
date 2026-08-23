@@ -100,7 +100,7 @@ summary:hover .tg-facet-title,
 #shopify-pc__banner #shopify-pc__banner__btn-accept:hover { filter: brightness(1.12); }
 #shopify-pc__banner #shopify-pc__banner__btn-decline { background: transparent !important; color: #fff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important; }
 #shopify-pc__banner #shopify-pc__banner__btn-decline:hover { border-color: var(--tg-flame, #E8601C) !important; color: var(--tg-flame, #E8601C) !important; }
-#shopify-pc__banner #shopify-pc__banner__btn-manage-prefs { color: rgba(255, 255, 255, 0.7) !important; text-decoration: none !important; }
+#shopify-pc__banner #shopify-pc__banner__btn-manage-prefs { color: rgba(255, 255, 255, 0.7) !important; text-decoration: none !important; white-space: nowrap; letter-spacing: 0.08em !important; }
 #shopify-pc__banner #shopify-pc__banner__btn-manage-prefs:hover { color: var(--tg-flame, #E8601C) !important; }
 #shopify-pc__prefs .shopify-pc__prefs__dialog { font-family: var(--tg-font-body, 'General Sans', sans-serif) !important; border-top: 3px solid var(--tg-flame, #E8601C) !important; border-radius: 0 !important; }
 #shopify-pc__prefs h2 { font-family: var(--tg-font-display, 'Technor', sans-serif) !important; text-transform: uppercase; letter-spacing: 0.06em; }
