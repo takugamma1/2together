@@ -7,28 +7,6 @@
 
 {%- liquid
   assign st = section.settings
-  comment
-    Liquid caps metaobjects.X.values at 50 entries, so the list of handles lives in a setting
-    (one per line, in display order). Empty setting = fall back to the first 50.
-  endcomment
-  assign sb_handle_text = st.service_handles | default: ''
-  assign sb_handles = sb_handle_text | strip | newline_to_br | split: '<br />'
-  assign services = '' | split: ''
-  if sb_handle_text != blank
-    for sb_h in sb_handles
-      assign sb_hh = sb_h | strip
-      if sb_hh == blank
-        continue
-      endif
-      assign sb_obj = shop.metaobjects.service_type[sb_hh]
-      if sb_obj
-        assign sb_one = sb_obj | sort: 'name'
-        assign services = services | concat: sb_one
-      endif
-    endfor
-  else
-    assign services = shop.metaobjects.service_type.values | sort: 'sort'
-  endif
   assign cat_list = 'Пакетно обслужване,Капли и гуми,Трансмисия,Спирачна система,Окачване,Други' | split: ','
   assign mechanics = shop.metaobjects.mechanic.values | sort: 'sort'
 -%}
@@ -65,22 +43,12 @@
         </div>
         <div class="tg-sb-list" data-sb-list>
           {% for c in cat_list %}
-            <div class="tg-sb-group" data-sb-group="{{ c }}">
+            <div class="tg-sb-group" data-sb-group="{{ c }}" hidden>
               <h3 class="tg-sb-group-title"><span>//</span> {{ c }}</h3>
-              <div class="tg-sb-group-items{% if forloop.first %} tg-sb-cards{% else %} tg-sb-rows{% endif %}">
-                {% for sv in services %}
-                  {% if sv.active and sv.category == c and sv.bookable != false %}
-                    {%- assign sb_price = sv.price_from -%}
-                    <button type="button" class="{% if forloop.parentloop.first %}tg-sb-card{% else %}tg-sb-row{% endif %}" data-sb-service="{{ sv.system.handle }}" data-name="{{ sv.name | escape }}" data-duration="{{ sv.duration_minutes }}" data-price="{{ sb_price }}" data-price-to="{{ sv.price_to }}" data-cat="{{ c }}" data-search="{{ sv.name | downcase | escape }}">
-                      <span class="tg-sb-card-top"><strong>{{ sv.name }}</strong></span>
-                      {% if forloop.parentloop.first and sv.description != blank %}{%- assign sb_lines = sv.description | newline_to_br | split: '<br />' -%}{%- assign sb_first = sb_lines | first | strip_html | strip -%}<span class="tg-sb-card-desc">{% if sb_first contains '1.' and sb_lines.size > 2 %}{{ sb_lines.size }} {{ st.steps_word | default: 'стъпки' }} · {{ st.steps_hint | default: 'пълно описание в ценоразписа' }}{% else %}{{ sb_first | truncate: 110 }}{% endif %}</span>{% endif %}
-                      <span class="tg-sb-card-price">{% if sv.price_to != blank %}€{{ sb_price }} – {{ sv.price_to }}{% else %}€{{ sb_price }}{% endif %}</span>
-                    </button>
-                  {% endif %}
-                {% endfor %}
-              </div>
+              <div class="tg-sb-group-items{% if forloop.first %} tg-sb-cards{% else %} tg-sb-rows{% endif %}" data-sb-group-items></div>
             </div>
           {% endfor %}
+          <p class="tg-sb-loading" data-sb-loading>{{ st.loading_text }}</p>
           <p class="tg-sb-empty" data-sb-empty hidden>{{ st.no_results }}</p>
         </div>
         <div class="tg-sb-sticky" data-sb-sticky hidden>
@@ -182,24 +150,9 @@
       </header>
       <div class="tg-sb-pricelist" data-sb-pricelist>
         {% for c in cat_list %}
-          <details class="tg-sb-pl-cat" data-sb-pl-cat{% if forloop.first %} open{% endif %}>
+          <details class="tg-sb-pl-cat" data-sb-pl-cat data-cat="{{ c }}"{% if forloop.first %} open{% endif %} hidden>
             <summary><span class="tg-sb-pl-cat-name"><i>0{{ forloop.index }}</i>{{ c }}</span><span class="tg-sb-pl-cat-meta"><span data-sb-pl-count></span><b aria-hidden="true"></b></span></summary>
-            <div class="tg-sb-pl-items">
-              {% for sv in services %}
-                {% if sv.active and sv.category == c %}
-                  <div class="tg-sb-pl-item" data-sb-pl-item data-search="{{ sv.name | downcase | escape }}">
-                    <div class="tg-sb-pl-row">
-                      <button type="button" class="tg-sb-pl-name" {% if sv.description != blank %}data-sb-pl-toggle aria-expanded="false"{% endif %}>
-                        <span>{{ sv.name }}</span>{% if sv.description != blank %}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>{% endif %}
-                      </button>
-                      <span class="tg-sb-pl-price"><strong>{% if sv.price_to != blank %}€{{ sv.price_from }} – {{ sv.price_to }}{% else %}€{{ sv.price_from }}{% endif %}</strong></span>
-                      {% if sv.bookable != false %}<button type="button" class="tg-sb-pl-book" data-sb-pick="{{ sv.system.handle }}">{{ st.book_label }}</button>{% else %}<span class="tg-sb-pl-book tg-sb-pl-book--na">{{ st.ask_label }}</span>{% endif %}
-                    </div>
-                    {% if sv.description != blank %}<div class="tg-sb-pl-desc" hidden>{{ sv.description | newline_to_br }}</div>{% endif %}
-                  </div>
-                {% endif %}
-              {% endfor %}
-            </div>
+            <div class="tg-sb-pl-items" data-sb-pl-items></div>
           </details>
         {% endfor %}
         <p class="tg-sb-empty" data-sb-pl-empty hidden>{{ st.no_results }}</p>
@@ -213,7 +166,7 @@
 <script>
   window.TG_SB = {
     months: {{ 'януари,февруари,март,април,май,юни,юли,август,септември,октомври,ноември,декември' | split: ',' | json }},
-    t: { pickDay: {{ st.pick_day_text | json }}, noSlots: {{ st.no_slots_text | json }}, loading: {{ st.loading_text | json }}, free: {{ st.free_text | json }}, anyMech: {{ st.any_mechanic | json }}, errSlot: {{ st.err_slot | json }}, errGeneric: {{ st.err_generic | json }}, errFields: {{ st.err_fields | json }}, doneText: {{ st.done_text | json }}, doneFallback: {{ st.done_fallback | json }}, sending: {{ st.sending_label | json }} }
+    t: { steps: {{ st.steps_word | json }}, stepsHint: {{ st.steps_hint | json }}, book: {{ st.book_label | json }}, ask: {{ st.ask_label | json }}, pickDay: {{ st.pick_day_text | json }}, noSlots: {{ st.no_slots_text | json }}, loading: {{ st.loading_text | json }}, free: {{ st.free_text | json }}, anyMech: {{ st.any_mechanic | json }}, errSlot: {{ st.err_slot | json }}, errGeneric: {{ st.err_generic | json }}, errFields: {{ st.err_fields | json }}, doneText: {{ st.done_text | json }}, doneFallback: {{ st.done_fallback | json }}, sending: {{ st.sending_label | json }} }
   };
 </script>
 <script src="{{ '2gether-service-booking.js' | asset_url }}" defer></script>
@@ -239,7 +192,7 @@
     { "type": "text", "id": "step3_tab", "label": "Step 3 tab", "default": "Ден и час" },
     { "type": "text", "id": "step4_tab", "label": "Step 4 tab", "default": "Данни" },
     { "type": "text", "id": "next_label", "label": "Next", "default": "Напред" },
-    { "type": "textarea", "id": "service_handles", "label": "Service handles (one per line, display order)", "info": "Metaobjects → Service type → handle. Needed because themes only see 50 entries.", "default": "paket-prigotvyane-za-sahranenie\npaket-podgotvyane-za-sezona\npaket-tsyalostna-profilaktika\npaket-premium-tsyalostna-profilaktika\npaket-okachvane\npaket-folirane-na-velosiped\npaket-pochistvane\npaket-premium-pochistvane\npaket-skorostna-sistema\npaket-spirachna-sistema-v-brake\npaket-spirachna-sistema-mehanichni-diskovi-spirachki\npaket-spirachna-sistema-hidravlichni-diskovi-spirachki\npaket-lageri-na-ramka\nsmyana-na-guma\nlepene-na-guma\nmontazh-na-tubularna-guma\nmontazh-na-bezkamerna-guma\nsmyana-na-guma-na-el-trotinetka\nsmyana-na-guma-na-el-motor\nsmyana-na-zadna-kapla-na-velosiped-s-disk\nsmyana-na-predna-kapla-na-velosiped-s-disk\nprofilaktika-na-zadna-glavina-s-nekapsulovani-lageri\nprofilaktika-na-glavina-s-kapsulovani-lageri\nprofilaktika-na-predna-glavina-s-nekapsulovani-lageri\ntsentrovka-na-kapla\nnaplitane-na-kapla-i-tsentrovka\nrazplitane-na-predna-kapla\nrazplitane-na-zadna-kapla\nrazplitane-naplitane-i-tsentrovka\nsmyana-na-komanda\nsmyana-na-zadni-ventsi\nsmyana-na-lyav-kurbel\nsmyana-na-kurbeli\nsmyana-na-plocha\nsmyana-na-veriga\nmontazh-na-vodach-za-veriga\nsmazvane-na-veriga\nsmyana-na-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti-s-vatreshno-okabelyavan\nsmyana-na-sredno-dvizhenie\nprofilaktika-na-sredno-dvizhenie-pri-srednite-s-nekapsulovan\nremont-na-rezba-na-ramka-pri-srednoto-dvizhenie\nvazstanovyavane-na-rezba-na-kurbel\nregulirane-na-skorosti\nizpravyane-na-uho-za-skorosti-i-nastroyvane\nsmyana-na-uho-i-nastroyvane-na-skorosti\nsmyana-na-zaden-deraylor\nsmyana-na-preden-deraylor\nmontazh-na-pedali\nsmyana-na-pedali\nmontazh-i-nastroyvane-na-parcheta-i-shpaykove\nprofilaktika-na-pedali-s-kapsulovani-lageri\nsmyana-na-spirachno-lostche-mehanichno\nsmyana-na-spirachno-lostche-hidravlichno\nsmyana-na-v-brake-spirachka\nsmyana-na-diskova-mehanichna-spirachka\nsmyana-na-diskova-hidravlichna-spirachka\nsmyana-na-diskova-spirachka-s-vatreshno-okabelyavane\nsmyana-na-rotor\nsmyana-na-zhilo-na-spirachka-v-brake-u-brake-chelyustna-meha\nsmyana-na-bronya-i-zhilo-na-spirachka-v-brake-u-brake-chelyu\nsmyana-na-bronya-i-zhilo-na-spirachka-s-vatreshno-okabelyava\nsmyana-na-nakladki-na-diskova-spirachka\nsmyana-na-kalodki-na-v-brake-spirachka\nreglazh-na-spirachka-v-brake-u-brake-chelyustna-mehanichna-d\nizpravyane-na-rotor\nskasyavane-na-spirachen-hidravlichen-markuch\nsmyana-na-chashki-chelni-lageri\nmontazh-na-chashki-chelni-lageri\nobirane-na-luft-v-chashki-na-rezba\nobirane-na-luft-v-chashki\nprofilaktika-na-vilka-shok\ndemontazh-i-montazh-na-vilka\ndemontazh-i-montazh-na-shok\npodmyana-na-vsichki-lageri-na-ramka\nprofilaktika-na-chashki\nsmyana-na-kormilo\nsmyana-na-lapa\nsmyana-na-sedlo\nsmyana-na-gyudelin\nsmyana-na-gripove\nsmyana-na-sedlovo-kolche\nmontazh-na-bagazhnik\nmontazh-na-chip-za-elektricheski-velosiped\ndiagnostika-na-elektricheski-velosiped-s-elektrodvigatel-bos\nsglobyavane-na-nov-velosiped\nsglobyavane-na-velosiped\nhotel-za-velosipedi" },
+    { "type": "textarea", "id": "service_handles_unused", "label": "(unused) legacy handle list", "default": "paket-prigotvyane-za-sahranenie\npaket-podgotvyane-za-sezona\npaket-tsyalostna-profilaktika\npaket-premium-tsyalostna-profilaktika\npaket-okachvane\npaket-folirane-na-velosiped\npaket-pochistvane\npaket-premium-pochistvane\npaket-skorostna-sistema\npaket-spirachna-sistema-v-brake\npaket-spirachna-sistema-mehanichni-diskovi-spirachki\npaket-spirachna-sistema-hidravlichni-diskovi-spirachki\npaket-lageri-na-ramka\nsmyana-na-guma\nlepene-na-guma\nmontazh-na-tubularna-guma\nmontazh-na-bezkamerna-guma\nsmyana-na-guma-na-el-trotinetka\nsmyana-na-guma-na-el-motor\nsmyana-na-zadna-kapla-na-velosiped-s-disk\nsmyana-na-predna-kapla-na-velosiped-s-disk\nprofilaktika-na-zadna-glavina-s-nekapsulovani-lageri\nprofilaktika-na-glavina-s-kapsulovani-lageri\nprofilaktika-na-predna-glavina-s-nekapsulovani-lageri\ntsentrovka-na-kapla\nnaplitane-na-kapla-i-tsentrovka\nrazplitane-na-predna-kapla\nrazplitane-na-zadna-kapla\nrazplitane-naplitane-i-tsentrovka\nsmyana-na-komanda\nsmyana-na-zadni-ventsi\nsmyana-na-lyav-kurbel\nsmyana-na-kurbeli\nsmyana-na-plocha\nsmyana-na-veriga\nmontazh-na-vodach-za-veriga\nsmazvane-na-veriga\nsmyana-na-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti-s-vatreshno-okabelyavan\nsmyana-na-sredno-dvizhenie\nprofilaktika-na-sredno-dvizhenie-pri-srednite-s-nekapsulovan\nremont-na-rezba-na-ramka-pri-srednoto-dvizhenie\nvazstanovyavane-na-rezba-na-kurbel\nregulirane-na-skorosti\nizpravyane-na-uho-za-skorosti-i-nastroyvane\nsmyana-na-uho-i-nastroyvane-na-skorosti\nsmyana-na-zaden-deraylor\nsmyana-na-preden-deraylor\nmontazh-na-pedali\nsmyana-na-pedali\nmontazh-i-nastroyvane-na-parcheta-i-shpaykove\nprofilaktika-na-pedali-s-kapsulovani-lageri\nsmyana-na-spirachno-lostche-mehanichno\nsmyana-na-spirachno-lostche-hidravlichno\nsmyana-na-v-brake-spirachka\nsmyana-na-diskova-mehanichna-spirachka\nsmyana-na-diskova-hidravlichna-spirachka\nsmyana-na-diskova-spirachka-s-vatreshno-okabelyavane\nsmyana-na-rotor\nsmyana-na-zhilo-na-spirachka-v-brake-u-brake-chelyustna-meha\nsmyana-na-bronya-i-zhilo-na-spirachka-v-brake-u-brake-chelyu\nsmyana-na-bronya-i-zhilo-na-spirachka-s-vatreshno-okabelyava\nsmyana-na-nakladki-na-diskova-spirachka\nsmyana-na-kalodki-na-v-brake-spirachka\nreglazh-na-spirachka-v-brake-u-brake-chelyustna-mehanichna-d\nizpravyane-na-rotor\nskasyavane-na-spirachen-hidravlichen-markuch\nsmyana-na-chashki-chelni-lageri\nmontazh-na-chashki-chelni-lageri\nobirane-na-luft-v-chashki-na-rezba\nobirane-na-luft-v-chashki\nprofilaktika-na-vilka-shok\ndemontazh-i-montazh-na-vilka\ndemontazh-i-montazh-na-shok\npodmyana-na-vsichki-lageri-na-ramka\nprofilaktika-na-chashki\nsmyana-na-kormilo\nsmyana-na-lapa\nsmyana-na-sedlo\nsmyana-na-gyudelin\nsmyana-na-gripove\nsmyana-na-sedlovo-kolche\nmontazh-na-bagazhnik\nmontazh-na-chip-za-elektricheski-velosiped\ndiagnostika-na-elektricheski-velosiped-s-elektrodvigatel-bos\nsglobyavane-na-nov-velosiped\nsglobyavane-na-velosiped\nhotel-za-velosipedi" },
     { "type": "text", "id": "all_label", "label": "'All' chip", "default": "Всички" },
     { "type": "text", "id": "steps_word", "label": "Package steps word", "default": "стъпки" },
     { "type": "text", "id": "steps_hint", "label": "Package steps hint", "default": "пълно описание в ценоразписа" },

@@ -1,5 +1,5 @@
 /* 2GETHER — service booking wizard (metaobjects + worker) */
-(() => {
+(async () => {
   const root = document.querySelector('[data-tg-sb]'); if (!root) return;
   const T = (window.TG_SB && window.TG_SB.t) || {}; const MONTHS = (window.TG_SB && window.TG_SB.months) || [];
   const EP = root.dataset.endpoint || '/apps/club';
@@ -9,6 +9,28 @@
   const stepEl = (n) => root.querySelector(`[data-sb-step="${n}"]`);
   const fmtDate = (iso) => { const d = new Date(iso + 'T12:00:00'); return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
 
+  // catalog (worker) → render picker + price list
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const priceTxt = (s) => s.price_from ? (s.price_to ? `€${s.price_from} – ${s.price_to}` : `€${s.price_from}`) : '—';
+  function renderCatalog(list) {
+    const groups = {}; list.forEach(s => { (groups[s.category] = groups[s.category] || []).push(s); });
+    root.querySelectorAll('[data-sb-group]').forEach((g, gi) => {
+      const items = (groups[g.dataset.sbGroup] || []).filter(s => s.bookable); const wrap = g.querySelector('[data-sb-group-items]'); g.hidden = !items.length;
+      wrap.innerHTML = items.map(s => {
+        const lines = (s.description || '').split(/\n/).filter(Boolean); const first = lines[0] || '';
+        const teaser = gi === 0 && first ? `<span class="tg-sb-card-desc">${/^1\./.test(first) && lines.length > 2 ? `${lines.length} ${esc(T.steps || 'стъпки')} · ${esc(T.stepsHint || '')}` : esc(first.slice(0, 110))}</span>` : '';
+        return `<button type="button" class="${gi === 0 ? 'tg-sb-card' : 'tg-sb-row'}" data-sb-service="${esc(s.handle)}" data-name="${esc(s.name)}" data-duration="${s.duration}" data-price="${esc(s.price_from)}" data-price-to="${esc(s.price_to)}" data-cat="${esc(s.category)}" data-search="${esc(s.name.toLowerCase())}"><span class="tg-sb-card-top"><strong>${esc(s.name)}</strong></span>${teaser}<span class="tg-sb-card-price">${priceTxt(s)}</span></button>`;
+      }).join('');
+    });
+    root.querySelectorAll('[data-sb-pl-cat]').forEach(d => {
+      const items = groups[d.dataset.cat] || []; d.hidden = !items.length;
+      d.querySelector('[data-sb-pl-items]').innerHTML = items.map(s => `<div class="tg-sb-pl-item" data-sb-pl-item data-search="${esc(s.name.toLowerCase())}"><div class="tg-sb-pl-row"><button type="button" class="tg-sb-pl-name" ${s.description ? 'data-sb-pl-toggle aria-expanded="false"' : ''}><span>${esc(s.name)}</span>${s.description ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>' : ''}</button><span class="tg-sb-pl-price"><strong>${priceTxt(s)}</strong></span>${s.bookable ? `<button type="button" class="tg-sb-pl-book" data-sb-pick="${esc(s.handle)}">${esc(T.book || 'Запиши')}</button>` : `<span class="tg-sb-pl-book tg-sb-pl-book--na">${esc(T.ask || 'Попитай')}</span>`}</div>${s.description ? `<div class="tg-sb-pl-desc" hidden>${esc(s.description).replace(/\n/g, '<br>')}</div>` : ''}</div>`).join('');
+    });
+    const ld = root.querySelector('[data-sb-loading]'); if (ld) ld.remove();
+  }
+  let catalogReady = Promise.resolve();
+  catalogReady = fetch(`${EP}/service-catalog`, { headers: { Accept: 'application/json' } }).then(r => r.json()).then(j => renderCatalog(j.services || [])).catch(() => { const ld = root.querySelector('[data-sb-loading]'); if (ld) ld.textContent = T.errGeneric; });
+  await catalogReady;
   // step 1 — select
   const sticky = root.querySelector('[data-sb-sticky]');
   function selectService(b) {
