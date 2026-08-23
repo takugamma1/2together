@@ -26,8 +26,9 @@
   </div>
   <div class="tg-pcard-badges-right">
     {%- for tag in product.tags -%}
-      {%- if tag contains '#' -%}
-        <span class="tg-product-badge tg-product-badge--tag">{{ tag | remove: '#' }}</span>
+      {%- assign tag_first = tag | slice: 0, 1 -%}
+      {%- if tag_first == '#' -%}
+        <span class="tg-product-badge tg-product-badge--tag">{{ tag | remove_first: '#' }}</span>
       {%- endif -%}
     {%- endfor -%}
   </div>
