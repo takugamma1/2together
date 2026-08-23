@@ -109,7 +109,7 @@ Warranty' | newline_to_br | split: '<br />' -%}
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <div class="tg-contact-info-text">
             <strong>{{ section.settings.address_label | default: 'Адрес' }}</strong>
-            {{ section.settings.address | default: 'ул. „Генерал Цимерман“ 18<br>9002 Варна' }}
+            {{ section.settings.address | default: 'ул. „Генерал Цимерман“ 18<br>9002 Варна' | newline_to_br }}
           </div>
         </div>
 
@@ -133,7 +133,7 @@ Warranty' | newline_to_br | split: '<br />' -%}
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <div class="tg-contact-info-text">
             <strong>{{ section.settings.hours_label | default: 'Работно време' }}</strong>
-            {{ section.settings.hours | default: 'Понеделник – Петък: 10:30 – 19:00' }}
+            {{ section.settings.hours | default: 'Понеделник – Петък: 10:30 – 19:00' | newline_to_br }}
           </div>
         </div>
       </div>
@@ -343,9 +343,9 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "default": "Работно време"
     },
     {
-      "type": "html",
+      "type": "textarea",
       "id": "address",
-      "label": "Address (HTML allowed)"
+      "label": "Адрес (нов ред = нов ред)"
     },
     {
       "type": "text",
@@ -360,9 +360,9 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "default": "signal@2gether.cc"
     },
     {
-      "type": "html",
+      "type": "textarea",
       "id": "hours",
-      "label": "Business hours (HTML allowed)"
+      "label": "Работно време (по един ред за всеки ден)"
     },
     {
       "type": "header",
