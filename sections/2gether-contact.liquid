@@ -39,7 +39,7 @@
         {% if form.posted_successfully? %}
           <div style="padding:var(--tg-s5);background:var(--tg-flame-glow);border-left:2px solid var(--tg-flame);margin-bottom:var(--tg-s4);">
             <p style="color:var(--tg-flame);font-weight:600;font-size:14px;">{{ section.settings.success_title | default: 'Message transmitted successfully.' }}</p>
-            <p style="color:var(--tg-text-secondary);font-size:13px;margin-top:4px;">{{ section.settings.success_text | default: "We'll respond within 24 hours." }}</p>
+            <p style="color:var(--tg-text-secondary);font-size:13px;margin-top:4px;">{{ section.settings.success_text | default: 'Ще отговорим до 24 часа.' }}</p>
           </div>
         {% endif %}
 
@@ -63,7 +63,7 @@
 
           <div class="tg-contact-form-row">
             <div class="tg-contact-field">
-              <label for="tg-email">{{ section.settings.email_label | default: 'Email' }}</label>
+              <label for="tg-email">{{ section.settings.email_label | default: 'Имейл' }}</label>
               <input type="email" id="tg-email" name="contact[email]" placeholder="your@email.com" required autocomplete="email">
             </div>
             <div class="tg-contact-field">
@@ -103,37 +103,37 @@ Warranty' | newline_to_br | split: '<br />' -%}
 
       <!-- The Studio -->
       <div class="tg-contact-info-block">
-        <div class="tg-contact-info-title">{{ section.settings.info_title | default: 'The Studio' }}</div>
+        <div class="tg-contact-info-title">{{ section.settings.info_title | default: 'Магазинът' }}</div>
 
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <div class="tg-contact-info-text">
-            <strong>{{ section.settings.address_label | default: 'Address' }}</strong>
-            {{ section.settings.address | default: '42 Trakiya Centre St.<br>Sofia 1172, Bulgaria' }}
+            <strong>{{ section.settings.address_label | default: 'Адрес' }}</strong>
+            {{ section.settings.address | default: 'ул. „Генерал Цимерман“ 18<br>9002 Варна' }}
           </div>
         </div>
 
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
           <div class="tg-contact-info-text">
-            <strong>{{ section.settings.phone_label | default: 'Phone' }}</strong>
-            <a href="tel:{{ section.settings.phone | default: '+359 2 000 0000' | remove: ' ' }}">{{ section.settings.phone | default: '+359 2 000 0000' }}</a>
+            <strong>{{ section.settings.phone_label | default: 'Телефон' }}</strong>
+            <a href="tel:{{ section.settings.phone | default: '088 285 8774' | remove: ' ' }}">{{ section.settings.phone | default: '088 285 8774' }}</a>
           </div>
         </div>
 
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <div class="tg-contact-info-text">
-            <strong>{{ section.settings.email_label_text | default: 'Email' }}</strong>
-            <a href="mailto:{{ section.settings.email | default: 'signal@2gether.cc' }}">{{ section.settings.email | default: 'signal@2gether.cc' }}</a>
+            <strong>{{ section.settings.email_label_text | default: 'Имейл' }}</strong>
+            <a href="mailto:{{ section.settings.email | default: 'info@2getherbikes.bg' }}">{{ section.settings.email | default: 'info@2getherbikes.bg' }}</a>
           </div>
         </div>
 
         <div class="tg-contact-info-item">
           <svg class="tg-contact-info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           <div class="tg-contact-info-text">
-            <strong>{{ section.settings.hours_label | default: 'Hours' }}</strong>
-            {{ section.settings.hours | default: 'Mon – Fri: 09:00 – 18:00<br>Sat: 10:00 – 15:00' }}
+            <strong>{{ section.settings.hours_label | default: 'Работно време' }}</strong>
+            {{ section.settings.hours | default: 'Понеделник – Петък: 10:30 – 19:00' }}
           </div>
         </div>
       </div>
@@ -263,7 +263,7 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "type": "text",
       "id": "email_label",
       "label": "Email label",
-      "default": "Email"
+      "default": "Имейл"
     },
     {
       "type": "text",
@@ -306,7 +306,7 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "type": "text",
       "id": "success_text",
       "label": "Success subtext",
-      "default": "We'll respond within 24 hours."
+      "default": "Ще отговорим до 24 часа."
     },
     {
       "type": "header",
@@ -316,31 +316,31 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "type": "text",
       "id": "info_title",
       "label": "Info block heading",
-      "default": "The Studio"
+      "default": "Магазинът"
     },
     {
       "type": "text",
       "id": "address_label",
       "label": "Address row label",
-      "default": "Address"
+      "default": "Адрес"
     },
     {
       "type": "text",
       "id": "phone_label",
       "label": "Phone row label",
-      "default": "Phone"
+      "default": "Телефон"
     },
     {
       "type": "text",
       "id": "email_label_text",
       "label": "Email row label",
-      "default": "Email"
+      "default": "Имейл"
     },
     {
       "type": "text",
       "id": "hours_label",
       "label": "Hours row label",
-      "default": "Hours"
+      "default": "Работно време"
     },
     {
       "type": "html",
