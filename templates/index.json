@@ -653,6 +653,7 @@
     },
     "2gether_blog_teaser_VUPtQy": {
       "type": "2gether-blog-teaser",
+      "disabled": true,
       "name": "2Gether Блог публикации",
       "settings": {
         "blog": "тест-статии",
