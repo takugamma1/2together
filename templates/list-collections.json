@@ -18,8 +18,8 @@
             "title": "Велосипеди",
             "icon": "ride",
             "color": "#E8601C",
-            "text": "Всички модели — MTB, e-bike, градски, детски.",
-            "items": "bikes-od62|Всички велосипеди|bikes mtb\nplaninski-velosipedi-c97|Планински велосипеди|mtb mountain\npalno-okachvane-c216|Пълно окачване|full suspension enduro trail\ntvarda-ramka-c217|Твърда рамка|hardtail xc\nelektricheski-velosipedi-c212|Електрически велосипеди|e-bike ebike електрически\ngradski-velosipedi-c98|Градски велосипеди|urban city\njunior-od1977|Детски (Junior)|kids junior деца"
+            "text": "Всички модели — MTB, e-bike, шосейни, градски, детски.",
+            "items": "bikes-od62|Всички велосипеди|bikes всички\nbikes-mtb|Планински велосипеди|mtb mountain планински\nbikes-ebike|Електрически велосипеди|e-bike ebike електрически\nbikes-road|Шосейни и Gravel|road gravel шосе\nbikes-kids|Детски велосипеди|kids деца детски\nbikes-urban|Градски велосипеди|urban city градски"
           }
         },
         "dept_2": {
@@ -49,7 +49,7 @@
             "icon": "shield",
             "color": "#2F6FD6",
             "text": "Каски, протектори, ръкавици, очила, обувки.",
-            "items": "helmets-od72|Каски|helmet каска\nfull-face-od109|Full face каски|full face\nenduro-od111|Enduro каски|enduro\nroad-od110|XC & Gravel каски|xc gravel road\nurban-od113|Urban каски|urban\nvisors-od119|Визьори|visor\nprotectors-od57|Протектори|protector\nkneeguard-od114|Наколенки|knee\nelbowguard-od115|Налакътници|elbow\nbody-protector-od118|Боди протектори|body armour\nchest-protector-od116|Гръдни протектори|chest\nback-protector-od117|Гръбни протектори|back\ngloves-od55|Ръкавици|gloves ръкавици\ngoggles-od99|Goggles|goggles очила\nmtb-googles-od165|MTB goggles|mtb goggles\nsunglasses-od123|Слънчеви очила|sunglasses\nspare-lenses-od124|Резервни стъкла|lens\nshoes-od93|Обувки|shoes обувки"
+            "items": "helmets-od72|Каски|helmet каска\njunior-od1977|Junior — детска екипировка|junior kids деца каски\nfull-face-od109|Full face каски|full face\nenduro-od111|Enduro каски|enduro\nroad-od110|XC & Gravel каски|xc gravel road\nurban-od113|Urban каски|urban\nvisors-od119|Визьори|visor\nprotectors-od57|Протектори|protector\nkneeguard-od114|Наколенки|knee\nelbowguard-od115|Налакътници|elbow\nbody-protector-od118|Боди протектори|body armour\nchest-protector-od116|Гръдни протектори|chest\nback-protector-od117|Гръбни протектори|back\ngloves-od55|Ръкавици|gloves ръкавици\ngoggles-od99|Goggles|goggles очила\nmtb-googles-od165|MTB goggles|mtb goggles\nsunglasses-od123|Слънчеви очила|sunglasses\nspare-lenses-od124|Резервни стъкла|lens\nshoes-od93|Обувки|shoes обувки"
           }
         },
         "dept_5": {
