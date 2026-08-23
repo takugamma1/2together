@@ -163,7 +163,21 @@
       data-product-transition="{{ settings.transition_to_main_product }}"
       data-template="{{ template }}"
     >
+      {%- liquid
+      assign tg_gated = false
+      assign tg_soon_list = settings.soon_paths | default: '' | split: ','
+      for tg_sp in tg_soon_list
+        assign tg_spp = tg_sp | strip
+        if tg_spp != blank and request.path contains tg_spp
+          assign tg_gated = true
+        endif
+      endfor
+    -%}
+    {%- if tg_gated -%}
+      {% render '2gether-coming-soon-page' %}
+    {%- else -%}
       {{ content_for_layout }}
+    {%- endif -%}
     </main>
 
     <footer>

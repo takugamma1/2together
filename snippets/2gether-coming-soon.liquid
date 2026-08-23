@@ -45,7 +45,7 @@
     }
     mark(document);
     new MutationObserver(function (m) { m.forEach(function (r) { r.addedNodes.forEach(function (n) { if (n.nodeType === 1) mark(n); }); }); }).observe(document.body, { childList: true, subtree: true });
-    {% if request.path contains '/pages/sunday-club' %}open();{% endif %}
+    if (paths.some(function (p) { return location.pathname.indexOf(p) !== -1; })) open();
   })();
 </script>
 {%- endif -%}
