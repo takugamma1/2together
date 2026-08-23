@@ -107,6 +107,35 @@
       </aside>
     </div>
   </div>
+
+  {% if st.show_prices %}
+  {%- assign pt_n = st.long_tiers | newline_to_br | split: '<br />' -%}
+  {%- assign pt_e = st.long_tiers_ebike | newline_to_br | split: '<br />' -%}
+  <div class="tg-rb-prices" id="tg-rb-prices">
+    <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.prices_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.prices_title }}</h2></header>
+    <div class="tg-rb-prices-grid">
+      <div class="tg-rb-price-card">
+        <h3>{{ st.prices_normal_title }}</h3><p>{{ st.prices_normal_sub }}</p>
+        <dl>
+          <div><dt>{{ st.prices_24h_label }}</dt><dd>€{{ st.h24_rate | default: 20 }}</dd></div>
+          {% for row in pt_n %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 and r[0] != '1' %}<div><dt>{% if forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_n[nxt] | strip | split: '|' %}{% assign upto = nr[0] | minus: 1 %}{% if upto > r[0] %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
+        </dl>
+        <p class="tg-rb-note">{{ st.deposit }}</p>
+      </div>
+      <div class="tg-rb-price-card tg-rb-price-card--e">
+        <h3>{{ st.prices_ebike_title }}</h3><p>{{ st.prices_ebike_sub }}</p>
+        <dl>
+          {% for row in pt_e %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 %}<div><dt>{% if r[0] == '1' %}{{ st.prices_1d_label }}{% elsif forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_e[nxt] | strip | split: '|' %}{% assign upto = nr[0] | minus: 1 %}{% if upto > r[0] %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
+        </dl>
+        <p class="tg-rb-note tg-rb-note--warn">{{ st.deposit_ebike }}</p>
+      </div>
+      <div class="tg-rb-price-card tg-rb-price-card--extra">
+        <h3>{{ st.rescue_label }} <em>+€{{ st.rescue_price | default: 5 }}/{{ st.unit_day | default: 'ден' }}</em></h3><p>{{ st.rescue_text }}</p>
+        <p class="tg-rb-note">{{ st.prices_hourly_note | replace: '[h]', st.hourly_rate | replace: '[day]', st.day_rate }}</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </section>
 
 <script src="{{ '2gether-rental-booking.js' | asset_url }}" defer></script>
@@ -121,7 +150,7 @@
     { "type": "text", "id": "endpoint", "label": "Worker proxy base", "default": "/apps/club" },
     { "type": "header", "content": "Prices — short term" },
     { "type": "number", "id": "hourly_rate", "label": "€ per hour", "default": 3 },
-    { "type": "number", "id": "day_rate", "label": "€ per day (cap for up to hour_end)", "default": 12 },
+    { "type": "number", "id": "day_rate", "label": "€ per day (cap for up to hour_end)", "default": 20 },
     { "type": "number", "id": "h24_rate", "label": "€ for 24 hours", "default": 20 },
     { "type": "number", "id": "max_hours", "label": "Max hours for short term", "default": 24 },
     { "type": "number", "id": "hour_start", "label": "First pick-up hour", "default": 9 },
@@ -131,6 +160,17 @@
     { "type": "textarea", "id": "long_tiers_ebike", "label": "E-bikes: € per day for a rental of N+ days (N|€ per line)", "default": "1|35\n3|32\n4|28\n5|25\n7|20\n15|15" },
     { "type": "text", "id": "deposit_ebike", "label": "E-bike deposit / terms note", "default": "Електрически велосипеди: задължителен депозит €500 (с карта или в брой). При наем над 1 ден зарядното е включено в цената." },
     { "type": "number", "id": "rescue_price", "label": "Bike Rescue € per day", "default": 5 },
+    { "type": "header", "content": "Price table" },
+    { "type": "checkbox", "id": "show_prices", "label": "Show price table", "default": true },
+    { "type": "text", "id": "prices_eyebrow", "label": "Eyebrow", "default": "Цени" },
+    { "type": "text", "id": "prices_title", "label": "Title", "default": "ЦЕНИ ЗА НАЕМ" },
+    { "type": "text", "id": "prices_normal_title", "label": "Normal bikes title", "default": "Нормално колело" },
+    { "type": "text", "id": "prices_normal_sub", "label": "Normal bikes sub", "default": "Всички велосипеди без електродвигател" },
+    { "type": "text", "id": "prices_ebike_title", "label": "E-bike title", "default": "Електрически" },
+    { "type": "text", "id": "prices_ebike_sub", "label": "E-bike sub", "default": "При наем над 1 ден зарядното е включено в цената" },
+    { "type": "text", "id": "prices_24h_label", "label": "24h row label", "default": "24 часа" },
+    { "type": "text", "id": "prices_1d_label", "label": "1 day row label", "default": "1 ден" },
+    { "type": "text", "id": "prices_hourly_note", "label": "Hourly note ([h], [day])", "default": "Краткосрочно: €[h]/час, максимум €[day] за 24 часа." },
     { "type": "text", "id": "rescue_label", "label": "Bike Rescue label", "default": "Bike Rescue" },
     { "type": "text", "id": "rescue_text", "label": "Bike Rescue text", "default": "Ремонт или замяна на велосипеда на място при технически проблем." },
     { "type": "number", "id": "long_min_days", "label": "Minimum days for long term", "default": 2 },
