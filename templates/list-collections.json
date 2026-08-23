@@ -19,7 +19,7 @@
             "icon": "ride",
             "color": "#E8601C",
             "text": "Всички модели — MTB, e-bike, шосейни, градски, детски.",
-            "items": "bikes-od62|Всички велосипеди|bikes всички\nbikes-mtb|Планински велосипеди|mtb mountain планински\nbikes-ebike|Електрически велосипеди|e-bike ebike електрически\nbikes-road|Шосейни и Gravel|road gravel шосе\nbikes-kids|Детски велосипеди|kids деца детски\nbikes-urban|Градски велосипеди|urban city градски"
+            "items": "bikes-od62|Всички велосипеди|bikes всички\nbikes-mtb|Планински велосипеди|mtb mountain планински\nbikes-ebike|Електрически велосипеди|e-bike ebike електрически\nbikes-road|Шосейни и Gravel|road gravel шосе\nbikes-kids|Детски велосипеди|kids деца детски\nbikes-urban|Градски велосипеди|urban city градски\nbikes-orbea|Orbea|orbea марка\nbikes-santa-cruz|Santa Cruz|santa cruz марка\nbikes-pivot|Pivot|pivot марка\nbikes-nukeproof|Nukeproof|nukeproof марка\nbikes-cervelo|Cervélo|cervelo марка\nbikes-ridley|Ridley|ridley марка"
           }
         },
         "dept_2": {
