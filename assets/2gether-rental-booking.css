@@ -101,3 +101,10 @@
 .tg-rb-price-card dd small { font-family: var(--tg-font-body); font-weight: 400; color: var(--tg-text-muted); font-size: 11px; }
 .tg-rb-price-card .tg-rb-note { margin-top: auto; }
 @media (max-width: 900px) { .tg-rb-prices-grid { grid-template-columns: 1fr; } }
+.tg-rb-prices { padding-top: var(--tg-s6); border-top: 1px solid var(--tg-divider); }
+.tg-rb-prices .tg-rp-head { margin-bottom: var(--tg-s5); }
+.tg-rb-prices .tg-rp-head .tg-rp-h2 { margin: 6px 0 0; }
+.tg-rb-price-card dl div { align-items: baseline; }
+.tg-rb-price-card dd { white-space: nowrap; }
+.tg-rb-price-card dd small { margin-left: 3px; }
+.tg-rb-price-card--extra > p { margin-bottom: 6px; }
