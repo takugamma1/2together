@@ -11,6 +11,7 @@
   "sections": {
     "main": {
       "type": "2gether-blog",
+      "disabled": true,
       "settings": {
         "eyebrow": "2getherbikes cycling team",
         "title": "Колоездачен клуб 2gether",
