@@ -22,7 +22,7 @@
         "kpi_2": {
           "type": "kpi",
           "settings": {
-            "value": "4позиции",
+            "value": "4 нива",
             "label": "височина и ъгъл"
           }
         },
@@ -342,7 +342,7 @@
         "hero_cta1_link": "",
         "hero_cta2_text": "Виж ги в действие",
         "hero_cta2_link": "#tg-ramps-transform",
-        "hero_image": "shopify://shop_images/DSC07489.webp",
+        "hero_image": "shopify://shop_images/DSC07251.webp",
         "hero_badge": "Произведени в България",
         "lineup_eyebrow": "Избери своята",
         "lineup_title": "ДВА МОДЕЛА. РАЗЛИЧЕН ХАРАКТЕР.",
