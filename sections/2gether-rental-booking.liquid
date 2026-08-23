@@ -118,14 +118,14 @@
         <h3>{{ st.prices_normal_title }}</h3><p>{{ st.prices_normal_sub }}</p>
         <dl>
           <div><dt>{{ st.prices_24h_label }}</dt><dd>€{{ st.h24_rate | default: 20 }}</dd></div>
-          {% for row in pt_n %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 and r[0] != '1' %}<div><dt>{% if forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_n[nxt] | strip | split: '|' %}{% assign upto = nr[0] | minus: 1 %}{% if upto > r[0] %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
+          {% for row in pt_n %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 and r[0] != '1' %}<div><dt>{% if forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_n[nxt] | strip | split: '|' %}{% assign upto = nr[0] | plus: 0 | minus: 1 %}{% assign from_n = r[0] | plus: 0 %}{% if upto > from_n %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
         </dl>
         <p class="tg-rb-note">{{ st.deposit }}</p>
       </div>
       <div class="tg-rb-price-card tg-rb-price-card--e">
         <h3>{{ st.prices_ebike_title }}</h3><p>{{ st.prices_ebike_sub }}</p>
         <dl>
-          {% for row in pt_e %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 %}<div><dt>{% if r[0] == '1' %}{{ st.prices_1d_label }}{% elsif forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_e[nxt] | strip | split: '|' %}{% assign upto = nr[0] | minus: 1 %}{% if upto > r[0] %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
+          {% for row in pt_e %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 %}<div><dt>{% if r[0] == '1' %}{{ st.prices_1d_label }}{% elsif forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_e[nxt] | strip | split: '|' %}{% assign upto = nr[0] | plus: 0 | minus: 1 %}{% assign from_n = r[0] | plus: 0 %}{% if upto > from_n %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
         </dl>
         <p class="tg-rb-note tg-rb-note--warn">{{ st.deposit_ebike }}</p>
       </div>
