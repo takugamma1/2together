@@ -72,9 +72,9 @@
                   {% if sv.active and sv.category == c and sv.bookable != false %}
                     {%- assign sb_price = sv.price_from -%}
                     <button type="button" class="{% if forloop.parentloop.first %}tg-sb-card{% else %}tg-sb-row{% endif %}" data-sb-service="{{ sv.system.handle }}" data-name="{{ sv.name | escape }}" data-duration="{{ sv.duration_minutes }}" data-price="{{ sb_price }}" data-price-to="{{ sv.price_to }}" data-cat="{{ c }}" data-search="{{ sv.name | downcase | escape }}">
-                      <span class="tg-sb-card-top"><strong>{{ sv.name }}</strong><em>{{ sv.duration_minutes }} мин</em></span>
+                      <span class="tg-sb-card-top"><strong>{{ sv.name }}</strong></span>
                       {% if forloop.parentloop.first and sv.description != blank %}{%- assign sb_lines = sv.description | newline_to_br | split: '<br />' -%}{%- assign sb_first = sb_lines | first | strip_html | strip -%}<span class="tg-sb-card-desc">{% if sb_first contains '1.' and sb_lines.size > 2 %}{{ sb_lines.size }} {{ st.steps_word | default: 'стъпки' }} · {{ st.steps_hint | default: 'пълно описание в ценоразписа' }}{% else %}{{ sb_first | truncate: 110 }}{% endif %}</span>{% endif %}
-                      <span class="tg-sb-card-price">{% if sv.price_to != blank %}€{{ sb_price }} – {{ sv.price_to }}{% else %}€{{ sb_price }}{% endif %}{% if sv.price_bgn != blank %} <small>{{ sv.price_bgn }}</small>{% endif %}</span>
+                      <span class="tg-sb-card-price">{% if sv.price_to != blank %}€{{ sb_price }} – {{ sv.price_to }}{% else %}€{{ sb_price }}{% endif %}</span>
                     </button>
                   {% endif %}
                 {% endfor %}
@@ -148,7 +148,6 @@
               <div><dt>{{ st.step1_tab }}</dt><dd data-sum="service">—</dd></div>
               <div><dt>{{ st.step2_tab }}</dt><dd data-sum="mechanic">—</dd></div>
               <div><dt>{{ st.step3_tab }}</dt><dd data-sum="when">—</dd></div>
-              <div><dt>{{ st.sum_duration }}</dt><dd data-sum="duration">—</dd></div>
               <div class="tg-sb-sum-total"><dt>{{ st.sum_price }}</dt><dd data-sum="price">—</dd></div>
             </dl>
           </aside>
@@ -193,7 +192,7 @@
                       <button type="button" class="tg-sb-pl-name" {% if sv.description != blank %}data-sb-pl-toggle aria-expanded="false"{% endif %}>
                         <span>{{ sv.name }}</span>{% if sv.description != blank %}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>{% endif %}
                       </button>
-                      <span class="tg-sb-pl-price"><strong>{% if sv.price_to != blank %}€{{ sv.price_from }} – {{ sv.price_to }}{% else %}€{{ sv.price_from }}{% endif %}</strong>{% if sv.price_bgn != blank %}<small>{{ sv.price_bgn }}</small>{% endif %}</span>
+                      <span class="tg-sb-pl-price"><strong>{% if sv.price_to != blank %}€{{ sv.price_from }} – {{ sv.price_to }}{% else %}€{{ sv.price_from }}{% endif %}</strong></span>
                       {% if sv.bookable != false %}<button type="button" class="tg-sb-pl-book" data-sb-pick="{{ sv.system.handle }}">{{ st.book_label }}</button>{% else %}<span class="tg-sb-pl-book tg-sb-pl-book--na">{{ st.ask_label }}</span>{% endif %}
                     </div>
                     {% if sv.description != blank %}<div class="tg-sb-pl-desc" hidden>{{ sv.description | newline_to_br }}</div>{% endif %}
@@ -292,7 +291,7 @@
     { "type": "checkbox", "id": "show_prices", "label": "Show price list", "default": true },
     { "type": "text", "id": "prices_eyebrow", "label": "Eyebrow", "default": "Ценоразпис" },
     { "type": "text", "id": "prices_title", "label": "Title", "default": "УСЛУГИ И ЦЕНИ" },
-    { "type": "textarea", "id": "prices_note", "label": "Note", "default": "Цените са за труд и не включват части. Цените в лв. са информативни по фиксирания курс 1.95583." }
+    { "type": "textarea", "id": "prices_note", "label": "Note", "default": "Цените са за труд и не включват части." }
   ],
   "presets": [ { "name": "Service booking" } ]
 }
