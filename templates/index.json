@@ -544,7 +544,7 @@
         "cta_text": "виж програмата",
         "cta_link": "shopify://pages/sunday-club",
         "poll": "",
-        "poll_mode": "link",
+        "poll_mode": "off",
         "poll_label": "",
         "votes_text": "",
         "voters_text": "",

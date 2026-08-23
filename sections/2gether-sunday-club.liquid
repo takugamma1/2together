@@ -1,3 +1,15 @@
+{%- assign tg_soon_paths = settings.soon_paths | default: '' -%}
+{%- if tg_soon_paths contains 'sunday-club' -%}
+  {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+  <section class="tg-section" style="min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px;">
+    <div style="max-width:640px;display:flex;flex-direction:column;gap:18px;align-items:center;">
+      <span class="tg-label">2GETHER SUPPORT PROGRAM</span>
+      <h1 class="tg-f-display" style="margin:0;font-size:clamp(40px,7vw,88px);line-height:0.95;">{{ settings.soon_title | default: 'Скоро!' }}</h1>
+      <p style="margin:0;color:var(--tg-text-secondary);line-height:1.6;">{{ settings.soon_text }}</p>
+      <a href="{{ routes.root_url }}" class="tg-btn-primary">{{ section.settings.soon_back | default: 'Към началото' }} &rarr;</a>
+    </div>
+  </section>
+{%- else -%}
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {{ '2gether-sunday-club.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
@@ -558,11 +570,14 @@
   })();
 </script>
 
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Sunday Club",
   "tag": "section",
   "settings": [
+    { "type": "text", "id": "soon_back", "label": "Coming-soon back button", "default": "Към началото" },
     { "type": "header", "content": "Герой (hero)" },
     { "type": "image_picker", "id": "hero_image", "label": "Снимка" },
     { "type": "text", "id": "since", "label": "Етикет „от …“", "default": "От 2019" },
