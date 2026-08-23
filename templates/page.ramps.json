@@ -190,6 +190,7 @@
         "gallery_1": {
           "type": "gallery",
           "settings": {
+            "image": "shopify://shop_images/DSC07678.webp",
             "title": "ГУМЕНИТЕ КРАЧЕТА",
             "text": "Кадър отблизо показва контакта с терена и лесната подмяна при износване."
           }
@@ -197,6 +198,7 @@
         "gallery_2": {
           "type": "gallery",
           "settings": {
+            "image": "shopify://shop_images/DSC07690.webp",
             "title": "ЛАСТИЦИ И ШАЙБИ",
             "text": "Вижда се как еластичната система държи конструкцията свързана и обира вибрациите."
           }
@@ -204,6 +206,7 @@
         "gallery_3": {
           "type": "gallery",
           "settings": {
+            "image": "shopify://shop_images/DSC07705.webp",
             "title": "ЗАКЛЮЧВАНЕТО",
             "text": "Показваме механизма, който държи сгънатия пакет затворен при носене."
           }
@@ -211,6 +214,7 @@
         "gallery_4": {
           "type": "gallery",
           "settings": {
+            "image": "shopify://shop_images/DSC07684asdaasdasdasdasdasd.webp",
             "title": "СПЕЦИАЛНОТО ПОКРИТИЕ",
             "text": "Макро кадър на повърхността, която осигурява допълнително сцепление."
           }
