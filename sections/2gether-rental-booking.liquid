@@ -111,7 +111,7 @@
   {% if st.show_prices %}
   {%- assign pt_n = st.long_tiers | newline_to_br | split: '<br />' -%}
   {%- assign pt_e = st.long_tiers_ebike | newline_to_br | split: '<br />' -%}
-  <div class="tg-rb-prices" id="tg-rb-prices">
+  <div class="tg-rb-inner tg-rb-prices" id="tg-rb-prices">
     <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.prices_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.prices_title }}</h2></header>
     <div class="tg-rb-prices-grid">
       <div class="tg-rb-price-card">
