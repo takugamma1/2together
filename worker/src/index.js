@@ -63,6 +63,8 @@ export default {
         case 'rental-availability':
           if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
           return await handleRentalAvailability(url, env);
+        case 'service-catalog':
+          return handleServiceCatalog(env);
         case 'service-slots':
           return handleServiceSlots(url, env);
         case 'service-book':
@@ -838,6 +840,12 @@ function freeStarts(mech, dateStr, durationMin, busy, blocks, nowPlusLead) {
     }
   }
   return out;
+}
+async function handleServiceCatalog(env) {
+  const services = await listMetaobjects(env, 'service_type');
+  const list = services.filter(x => x.fields.active !== 'false').map(x => ({ handle: x.handle, name: x.fields.name || '', category: x.fields.category || '', description: x.fields.description || '', duration: parseInt(x.fields.duration_minutes || '60', 10) || 60, price_from: x.fields.price_from || '', price_to: x.fields.price_to || '', price_bgn: x.fields.price_bgn || '', bookable: x.fields.bookable !== 'false', sort: parseInt(x.fields.sort || '0', 10) }));
+  list.sort((a, b) => a.sort - b.sort || a.name.localeCompare(b.name));
+  return json({ services: list }, 200, { 'Cache-Control': 'public, max-age=300' });
 }
 async function handleServiceSlots(url, env) {
   const from = url.searchParams.get('from') || localDateKey(Date.now());
