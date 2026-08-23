@@ -7,7 +7,29 @@
 
 {%- liquid
   assign st = section.settings
-  assign services = shop.metaobjects.service_type.values | sort: 'sort'
+  comment
+    Liquid caps metaobjects.X.values at 50 entries, so the list of handles lives in a setting
+    (one per line, in display order). Empty setting = fall back to the first 50.
+  endcomment
+  assign sb_handle_text = st.service_handles | default: ''
+  assign sb_handles = sb_handle_text | strip | newline_to_br | split: '<br />'
+  assign services = '' | split: ''
+  if sb_handle_text != blank
+    for sb_h in sb_handles
+      assign sb_hh = sb_h | strip
+      if sb_hh == blank
+        continue
+      endif
+      assign sb_obj = shop.metaobjects.service_type[sb_hh]
+      if sb_obj
+        assign sb_one = sb_obj | sort: 'name'
+        assign services = services | concat: sb_one
+      endif
+    endfor
+  else
+    assign services = shop.metaobjects.service_type.values | sort: 'sort'
+  endif
+  assign cat_list = 'Пакетно обслужване,Капли и гуми,Трансмисия,Спирачна система,Окачване,Други' | split: ','
   assign mechanics = shop.metaobjects.mechanic.values | sort: 'sort'
 -%}
 
@@ -34,18 +56,37 @@
       <!-- STEP 1: service -->
       <div class="tg-sb-step is-active" data-sb-step="1">
         <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.step1_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.step1_title }}</h2><p class="tg-rp-text">{{ st.step1_text }}</p></header>
-        <div class="tg-sb-cards">
-          {% for s in services %}
-            {% if s.active %}
-              <button type="button" class="tg-sb-card" data-sb-service="{{ s.system.handle }}" data-name="{{ s.name | escape }}" data-duration="{{ s.duration_minutes }}" data-price="{{ s.price_from }}">
-                <span class="tg-sb-card-top"><strong>{{ s.name }}</strong><em>{{ s.duration_minutes }} мин</em></span>
-                {% if s.description != blank %}<span class="tg-sb-card-desc">{{ s.description }}</span>{% endif %}
-                {% if s.price_from != blank %}<span class="tg-sb-card-price">от €{{ s.price_from }}</span>{% endif %}
-              </button>
-            {% endif %}
-          {% endfor %}
+        <div class="tg-sb-filter">
+          <label class="tg-sb-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg><input type="search" placeholder="{{ st.search_ph | escape }}" data-sb-search autocomplete="off"></label>
+          <div class="tg-sb-chips" data-sb-chips>
+            <button type="button" class="tg-rp-seg-btn is-active" data-sb-cat="">{{ st.all_label }}</button>
+            {% for c in cat_list %}<button type="button" class="tg-rp-seg-btn" data-sb-cat="{{ c }}">{{ c }}</button>{% endfor %}
+          </div>
         </div>
-        <div class="tg-sb-nav"><button type="button" class="tg-rp-btn tg-rp-btn--primary" data-sb-next disabled>{{ st.next_label }}</button></div>
+        <div class="tg-sb-list" data-sb-list>
+          {% for c in cat_list %}
+            <div class="tg-sb-group" data-sb-group="{{ c }}">
+              <h3 class="tg-sb-group-title"><span>//</span> {{ c }}</h3>
+              <div class="tg-sb-group-items{% if forloop.first %} tg-sb-cards{% else %} tg-sb-rows{% endif %}">
+                {% for sv in services %}
+                  {% if sv.active and sv.category == c and sv.bookable != false %}
+                    {%- assign sb_price = sv.price_from -%}
+                    <button type="button" class="{% if forloop.parentloop.first %}tg-sb-card{% else %}tg-sb-row{% endif %}" data-sb-service="{{ sv.system.handle }}" data-name="{{ sv.name | escape }}" data-duration="{{ sv.duration_minutes }}" data-price="{{ sb_price }}" data-price-to="{{ sv.price_to }}" data-cat="{{ c }}" data-search="{{ sv.name | downcase | escape }}">
+                      <span class="tg-sb-card-top"><strong>{{ sv.name }}</strong><em>{{ sv.duration_minutes }} мин</em></span>
+                      {% if forloop.parentloop.first and sv.description != blank %}{%- assign sb_lines = sv.description | newline_to_br | split: '<br />' -%}{%- assign sb_first = sb_lines | first | strip_html | strip -%}<span class="tg-sb-card-desc">{% if sb_first contains '1.' and sb_lines.size > 2 %}{{ sb_lines.size }} {{ st.steps_word | default: 'стъпки' }} · {{ st.steps_hint | default: 'пълно описание в ценоразписа' }}{% else %}{{ sb_first | truncate: 110 }}{% endif %}</span>{% endif %}
+                      <span class="tg-sb-card-price">{% if sv.price_to != blank %}€{{ sb_price }} – {{ sv.price_to }}{% else %}€{{ sb_price }}{% endif %}{% if sv.price_bgn != blank %} <small>{{ sv.price_bgn }}</small>{% endif %}</span>
+                    </button>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+          <p class="tg-sb-empty" data-sb-empty hidden>{{ st.no_results }}</p>
+        </div>
+        <div class="tg-sb-sticky" data-sb-sticky hidden>
+          <span class="tg-sb-sticky-sel"><em>{{ st.selected_label }}</em><strong data-sb-sticky-name></strong></span>
+          <button type="button" class="tg-rp-btn tg-rp-btn--primary" data-sb-next disabled>{{ st.next_label }}</button>
+        </div>
       </div>
 
       <!-- STEP 2: mechanic -->
@@ -136,12 +177,35 @@
   <!-- PRICES -->
   {% if st.show_prices %}
   <section id="tg-sb-prices" class="tg-rp-section tg-rp-section--line">
-    <div class="tg-rp-wrap tg-rp-wrap--narrow">
-      <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.prices_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.prices_title }}</h2></header>
-      <div class="tg-rp-table-wrap"><table class="tg-rp-table tg-sb-prices"><thead><tr><th>{{ st.step1_tab }}</th><th>{{ st.sum_duration }}</th><th>{{ st.sum_price }}</th></tr></thead><tbody>
-        {% for s in services %}{% if s.active %}<tr><th scope="row">{{ s.name }}{% if s.description != blank %}<small>{{ s.description }}</small>{% endif %}</th><td>{{ s.duration_minutes }} мин</td><td>{% if s.price_from != blank %}от €{{ s.price_from }}{% else %}—{% endif %}</td></tr>{% endif %}{% endfor %}
-      </tbody></table></div>
-      <p class="tg-rp-text">{{ st.prices_note }}</p>
+    <div class="tg-rp-wrap">
+      <header class="tg-rp-head tg-sb-prices-head"><div><span class="tg-eyebrow">{{ st.prices_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.prices_title }}</h2></div>
+        <label class="tg-sb-search tg-sb-search--prices"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg><input type="search" placeholder="{{ st.search_ph | escape }}" data-sb-price-search autocomplete="off"></label>
+      </header>
+      <div class="tg-sb-pricelist" data-sb-pricelist>
+        {% for c in cat_list %}
+          <details class="tg-sb-pl-cat" data-sb-pl-cat{% if forloop.first %} open{% endif %}>
+            <summary><span class="tg-sb-pl-cat-name"><i>0{{ forloop.index }}</i>{{ c }}</span><span class="tg-sb-pl-cat-meta"><span data-sb-pl-count></span><b aria-hidden="true"></b></span></summary>
+            <div class="tg-sb-pl-items">
+              {% for sv in services %}
+                {% if sv.active and sv.category == c %}
+                  <div class="tg-sb-pl-item" data-sb-pl-item data-search="{{ sv.name | downcase | escape }}">
+                    <div class="tg-sb-pl-row">
+                      <button type="button" class="tg-sb-pl-name" {% if sv.description != blank %}data-sb-pl-toggle aria-expanded="false"{% endif %}>
+                        <span>{{ sv.name }}</span>{% if sv.description != blank %}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>{% endif %}
+                      </button>
+                      <span class="tg-sb-pl-price"><strong>{% if sv.price_to != blank %}€{{ sv.price_from }} – {{ sv.price_to }}{% else %}€{{ sv.price_from }}{% endif %}</strong>{% if sv.price_bgn != blank %}<small>{{ sv.price_bgn }}</small>{% endif %}</span>
+                      {% if sv.bookable != false %}<button type="button" class="tg-sb-pl-book" data-sb-pick="{{ sv.system.handle }}">{{ st.book_label }}</button>{% else %}<span class="tg-sb-pl-book tg-sb-pl-book--na">{{ st.ask_label }}</span>{% endif %}
+                    </div>
+                    {% if sv.description != blank %}<div class="tg-sb-pl-desc" hidden>{{ sv.description | newline_to_br }}</div>{% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </details>
+        {% endfor %}
+        <p class="tg-sb-empty" data-sb-pl-empty hidden>{{ st.no_results }}</p>
+      </div>
+      <p class="tg-rp-text tg-sb-prices-note">{{ st.prices_note }}</p>
     </div>
   </section>
   {% endif %}
@@ -176,10 +240,19 @@
     { "type": "text", "id": "step3_tab", "label": "Step 3 tab", "default": "Ден и час" },
     { "type": "text", "id": "step4_tab", "label": "Step 4 tab", "default": "Данни" },
     { "type": "text", "id": "next_label", "label": "Next", "default": "Напред" },
+    { "type": "textarea", "id": "service_handles", "label": "Service handles (one per line, display order)", "info": "Metaobjects → Service type → handle. Needed because themes only see 50 entries.", "default": "paket-prigotvyane-za-sahranenie\npaket-podgotvyane-za-sezona\npaket-tsyalostna-profilaktika\npaket-premium-tsyalostna-profilaktika\npaket-okachvane\npaket-folirane-na-velosiped\npaket-pochistvane\npaket-premium-pochistvane\npaket-skorostna-sistema\npaket-spirachna-sistema-v-brake\npaket-spirachna-sistema-mehanichni-diskovi-spirachki\npaket-spirachna-sistema-hidravlichni-diskovi-spirachki\npaket-lageri-na-ramka\nsmyana-na-guma\nlepene-na-guma\nmontazh-na-tubularna-guma\nmontazh-na-bezkamerna-guma\nsmyana-na-guma-na-el-trotinetka\nsmyana-na-guma-na-el-motor\nsmyana-na-zadna-kapla-na-velosiped-s-disk\nsmyana-na-predna-kapla-na-velosiped-s-disk\nprofilaktika-na-zadna-glavina-s-nekapsulovani-lageri\nprofilaktika-na-glavina-s-kapsulovani-lageri\nprofilaktika-na-predna-glavina-s-nekapsulovani-lageri\ntsentrovka-na-kapla\nnaplitane-na-kapla-i-tsentrovka\nrazplitane-na-predna-kapla\nrazplitane-na-zadna-kapla\nrazplitane-naplitane-i-tsentrovka\nsmyana-na-komanda\nsmyana-na-zadni-ventsi\nsmyana-na-lyav-kurbel\nsmyana-na-kurbeli\nsmyana-na-plocha\nsmyana-na-veriga\nmontazh-na-vodach-za-veriga\nsmazvane-na-veriga\nsmyana-na-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti-s-vatreshno-okabelyavan\nsmyana-na-sredno-dvizhenie\nprofilaktika-na-sredno-dvizhenie-pri-srednite-s-nekapsulovan\nremont-na-rezba-na-ramka-pri-srednoto-dvizhenie\nvazstanovyavane-na-rezba-na-kurbel\nregulirane-na-skorosti\nizpravyane-na-uho-za-skorosti-i-nastroyvane\nsmyana-na-uho-i-nastroyvane-na-skorosti\nsmyana-na-zaden-deraylor\nsmyana-na-preden-deraylor\nmontazh-na-pedali\nsmyana-na-pedali\nmontazh-i-nastroyvane-na-parcheta-i-shpaykove\nprofilaktika-na-pedali-s-kapsulovani-lageri\nsmyana-na-spirachno-lostche-mehanichno\nsmyana-na-spirachno-lostche-hidravlichno\nsmyana-na-v-brake-spirachka\nsmyana-na-diskova-mehanichna-spirachka\nsmyana-na-diskova-hidravlichna-spirachka\nsmyana-na-diskova-spirachka-s-vatreshno-okabelyavane\nsmyana-na-rotor\nsmyana-na-zhilo-na-spirachka-v-brake-u-brake-chelyustna-meha\nsmyana-na-bronya-i-zhilo-na-spirachka-v-brake-u-brake-chelyu\nsmyana-na-bronya-i-zhilo-na-spirachka-s-vatreshno-okabelyava\nsmyana-na-nakladki-na-diskova-spirachka\nsmyana-na-kalodki-na-v-brake-spirachka\nreglazh-na-spirachka-v-brake-u-brake-chelyustna-mehanichna-d\nizpravyane-na-rotor\nskasyavane-na-spirachen-hidravlichen-markuch\nsmyana-na-chashki-chelni-lageri\nmontazh-na-chashki-chelni-lageri\nobirane-na-luft-v-chashki-na-rezba\nobirane-na-luft-v-chashki\nprofilaktika-na-vilka-shok\ndemontazh-i-montazh-na-vilka\ndemontazh-i-montazh-na-shok\npodmyana-na-vsichki-lageri-na-ramka\nprofilaktika-na-chashki\nsmyana-na-kormilo\nsmyana-na-lapa\nsmyana-na-sedlo\nsmyana-na-gyudelin\nsmyana-na-gripove\nsmyana-na-sedlovo-kolche\nmontazh-na-bagazhnik\nmontazh-na-chip-za-elektricheski-velosiped\ndiagnostika-na-elektricheski-velosiped-s-elektrodvigatel-bos\nsglobyavane-na-nov-velosiped\nsglobyavane-na-velosiped\nhotel-za-velosipedi" },
+    { "type": "text", "id": "all_label", "label": "'All' chip", "default": "Всички" },
+    { "type": "text", "id": "steps_word", "label": "Package steps word", "default": "стъпки" },
+    { "type": "text", "id": "steps_hint", "label": "Package steps hint", "default": "пълно описание в ценоразписа" },
+    { "type": "text", "id": "search_ph", "label": "Search placeholder", "default": "Търси услуга… напр. верига, спирачки" },
+    { "type": "text", "id": "no_results", "label": "No results", "default": "Нищо не намерихме. Избери „Диагностика“ или ни се обади." },
+    { "type": "text", "id": "selected_label", "label": "Selected label", "default": "Избрано" },
+    { "type": "text", "id": "book_label", "label": "Price list book button", "default": "Запиши" },
+    { "type": "text", "id": "ask_label", "label": "Price list non-bookable label", "default": "Попитай" },
     { "type": "text", "id": "back_label", "label": "Back", "default": "Назад" },
     { "type": "text", "id": "step1_eyebrow", "label": "Step 1 eyebrow", "default": "01 · Какво ти трябва" },
     { "type": "text", "id": "step1_title", "label": "Step 1 title", "default": "ИЗБЕРИ УСЛУГА" },
-    { "type": "textarea", "id": "step1_text", "label": "Step 1 text", "default": "Ако не си сигурен какво точно — избери „Диагностика“ и ще ти кажем на място." },
+    { "type": "textarea", "id": "step1_text", "label": "Step 1 text", "default": "Пакетите са най-изгодни за пълна грижа; за конкретен проблем избери отделна услуга. Не си сигурен? Запиши „Пакет почистване“ + бележка и ще те насочим." },
     { "type": "text", "id": "step2_eyebrow", "label": "Step 2 eyebrow", "default": "02 · Кой да се заеме" },
     { "type": "text", "id": "step2_title", "label": "Step 2 title", "default": "ИЗБЕРИ МЕХАНИК" },
     { "type": "textarea", "id": "step2_text", "label": "Step 2 text", "default": "Всеки механик има собствено работно време — виждаш само неговите свободни часове." },
@@ -219,7 +292,7 @@
     { "type": "checkbox", "id": "show_prices", "label": "Show price list", "default": true },
     { "type": "text", "id": "prices_eyebrow", "label": "Eyebrow", "default": "Ценоразпис" },
     { "type": "text", "id": "prices_title", "label": "Title", "default": "УСЛУГИ И ЦЕНИ" },
-    { "type": "textarea", "id": "prices_note", "label": "Note", "default": "Цените са „от“ и не включват части. Точна оферта получаваш след диагностика." }
+    { "type": "textarea", "id": "prices_note", "label": "Note", "default": "Цените са за труд и не включват части. Цените в лв. са информативни по фиксирания курс 1.95583." }
   ],
   "presets": [ { "name": "Service booking" } ]
 }

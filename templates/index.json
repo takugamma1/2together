@@ -21,75 +21,71 @@
         "title_line2": "BIKES",
         "hero_title_size": 80,
         "bento_shift": -40
-      }
-    },
-    "tg_quicklinks": {
-      "type": "2gether-quicklinks",
+      },
       "blocks": {
-        "ql_1": {
-          "type": "cell",
+        "bento_1": {
+          "type": "bento_cell",
           "settings": {
             "image": "shopify://shop_images/DSC07743.webp",
             "number": "01",
             "title": "2GETHERBIKES Portable ramps",
             "description": "",
-            "link": "shopify://pages/portable-ramps"
+            "link": "shopify://pages/portable-ramps",
+            "icon": "tool"
           }
         },
-        "ql_2": {
-          "type": "cell",
+        "bento_2": {
+          "type": "bento_cell",
           "settings": {
             "image": "shopify://shop_images/DSP06311.jpg",
             "number": "02",
             "title": "Наем на велосипеди",
             "description": "",
-            "link": "shopify://pages/bike-rental"
+            "link": "shopify://pages/bike-rental",
+            "icon": "clock"
           }
         },
-        "ql_3": {
-          "type": "cell",
+        "bento_3": {
+          "type": "bento_cell",
           "settings": {
             "image": "shopify://shop_images/DSP06509.jpg",
             "number": "03",
             "title": "СЕРВИЗ",
             "description": "",
-            "link": "shopify://pages/bike-service"
+            "link": "shopify://pages/bike-service",
+            "icon": "star"
           }
         },
-        "ql_4": {
-          "type": "cell",
+        "bento_4": {
+          "type": "bento_cell",
           "settings": {
             "image": "shopify://shop_images/santa-cruz-heckler-sl-cc-xx-axs-rsv-mx-matte-silver-xl_20_283_29.jpg",
             "number": "04",
             "title": "ЕЛЕКТРОНЕН МАГАЗИН",
             "description": "",
-            "link": "shopify://collections"
+            "link": "shopify://collections",
+            "icon": "layers"
           }
         },
-        "ql_5": {
-          "type": "cell",
+        "bento_cell_QGpn83": {
+          "type": "bento_cell",
           "settings": {
             "image": "shopify://shop_images/Screenshot_4_5B1_5D.png",
             "number": "05",
             "title": "МЪРЧ",
             "description": "",
-            "link": "shopify://collections/march-c199"
+            "link": "shopify://collections/march-c199",
+            "icon": "star"
           }
         }
       },
       "block_order": [
-        "ql_1",
-        "ql_2",
-        "ql_3",
-        "ql_4",
-        "ql_5"
-      ],
-      "settings": {
-        "label": "МЕНЮ",
-        "title": "",
-        "padding_top": 0,
-        "padding_bottom": 96
-      }
+        "bento_1",
+        "bento_2",
+        "bento_3",
+        "bento_4",
+        "bento_cell_QGpn83"
+      ]
     },
     "tg_statement": {
       "type": "2gether-statement",
@@ -561,7 +557,8 @@
         "msg_members": "",
         "youtube_url": "",
         "yt_subscribers": "2.4K",
-        "yt_views": "128K"
+        "yt_views": "128K",
+        "coming_soon": true
       }
     },
     "2gether_yt_carousel_kXttfc": {
@@ -635,7 +632,7 @@
         "cta_text": "Запознай се с клуба",
         "cta_link": "shopify://blogs/тест-статии",
         "poll": "",
-        "poll_mode": "link",
+        "poll_mode": "off",
         "poll_label": "ГЛАСУВАЙ ЗА СЛЕДВАЩАТА ЛОКАЦИЯ",
         "votes_text": "гласа",
         "voters_text": "гласували",
@@ -768,7 +765,6 @@
   },
   "order": [
     "tg_hero",
-    "tg_quicklinks",
     "tg_statement",
     "tg_image_band",
     "section_iHJQMc",

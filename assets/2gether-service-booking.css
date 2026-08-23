@@ -62,3 +62,57 @@
 .tg-sb-fallback { display: none; }
 .tg-sb-prices th small { display: block; font-weight: 400; font-size: 12px; color: var(--tg-text-muted); margin-top: 2px; letter-spacing: 0; text-transform: none; font-family: 'General Sans', sans-serif; }
 @media (max-width: 900px) { .tg-sb-datetime, .tg-sb-final, .tg-sb-form { grid-template-columns: 1fr; } .tg-sb-steps { grid-template-columns: repeat(2, 1fr); } .tg-sb-summary { position: static; } }
+
+/* step 1 — filter, groups, rows, sticky */
+.tg-sb-filter { display: flex; flex-wrap: wrap; gap: var(--tg-s3); align-items: center; margin-bottom: var(--tg-s5); }
+.tg-sb-search { display: flex; align-items: center; gap: 10px; flex: 1 1 280px; padding: 10px 14px; background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); color: var(--tg-text-muted); }
+.tg-sb-search:focus-within { border-color: var(--tg-flame); }
+.tg-sb-search input { flex: 1; background: none; border: 0; color: var(--tg-text-primary); font: inherit; font-size: 14px; outline: none; min-width: 0; }
+.tg-sb-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.tg-sb-group[hidden], .tg-sb-row[hidden], .tg-sb-card[hidden], .tg-sb-pl-item[hidden], .tg-sb-pl-cat[hidden] { display: none !important; }
+.tg-sb-group + .tg-sb-group { margin-top: var(--tg-s6); }
+.tg-sb-group-title { margin: 0 0 var(--tg-s3); font-family: var(--tg-font-display); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tg-text-secondary); }
+.tg-sb-group-title span { color: var(--tg-flame); margin-right: 6px; }
+.tg-sb-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 6px; }
+.tg-sb-row { text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 12px 40px 12px 14px; background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); border-radius: 3px; color: var(--tg-text-primary); font: inherit; cursor: pointer; position: relative; transition: border-color var(--tg-dur-fast), background var(--tg-dur-fast); }
+.tg-sb-row:hover { border-color: rgba(232, 96, 28, 0.5); }
+.tg-sb-row .tg-sb-card-top strong { font-family: var(--tg-font-body); font-size: 14px; font-weight: 600; text-transform: none; letter-spacing: 0; }
+.tg-sb-row .tg-sb-card-price { font-size: 13px; }
+.tg-sb-row.is-selected { border-color: var(--tg-flame); box-shadow: inset 0 0 0 1px var(--tg-flame); }
+.tg-sb-row.is-selected::after { content: '✓'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; display: grid; place-items: center; background: var(--tg-flame); color: var(--tg-ink); font-size: 11px; font-weight: 700; clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%); }
+.tg-sb-card-price small, .tg-sb-pl-price small { display: block; font-family: var(--tg-font-body); font-weight: 400; font-size: 11px; color: var(--tg-text-muted); }
+.tg-sb-empty { margin: var(--tg-s5) 0 0; color: var(--tg-text-muted); }
+.tg-sb-sticky { position: sticky; bottom: 0; z-index: 5; margin-top: var(--tg-s6); display: flex; align-items: center; justify-content: space-between; gap: var(--tg-s4); padding: 12px 16px; background: rgba(11, 18, 32, 0.92); backdrop-filter: blur(8px); border-top: 2px solid var(--tg-flame); }
+.tg-sb-sticky[hidden] { display: none; }
+.tg-sb-sticky-sel { display: flex; flex-direction: column; min-width: 0; }
+.tg-sb-sticky-sel em { font-style: normal; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tg-text-muted); }
+.tg-sb-sticky-sel strong { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* price list */
+.tg-sb-prices-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--tg-s5); flex-wrap: wrap; }
+.tg-sb-search--prices { flex: 0 1 360px; }
+.tg-sb-pricelist { display: flex; flex-direction: column; gap: 8px; }
+.tg-sb-pl-cat { background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); border-radius: 4px; }
+.tg-sb-pl-cat > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: var(--tg-s4); padding: 18px 20px; cursor: pointer; font-family: var(--tg-font-display); font-weight: 700; font-size: 17px; letter-spacing: 0.04em; text-transform: uppercase; }
+.tg-sb-pl-cat > summary::-webkit-details-marker { display: none; }
+.tg-sb-pl-cat > summary:hover { color: var(--tg-flame); }
+.tg-sb-pl-cat-name i { font-style: normal; color: var(--tg-flame); margin-right: 12px; font-size: 13px; }
+.tg-sb-pl-cat-meta { display: flex; align-items: center; gap: 12px; font-family: var(--tg-font-body); font-size: 12px; font-weight: 600; color: var(--tg-text-muted); letter-spacing: 0.08em; }
+.tg-sb-pl-cat-meta b { width: 26px; height: 26px; position: relative; border: 1px solid var(--tg-divider); clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 0 100%); }
+.tg-sb-pl-cat-meta b::before, .tg-sb-pl-cat-meta b::after { content: ''; position: absolute; left: 50%; top: 50%; width: 10px; height: 2px; background: var(--tg-flame); transform: translate(-60%, -50%); }
+.tg-sb-pl-cat-meta b::after { transform: translate(-60%, -50%) rotate(90deg); transition: transform var(--tg-dur-med); }
+.tg-sb-pl-cat[open] .tg-sb-pl-cat-meta b::after { transform: translate(-60%, -50%) rotate(0); }
+.tg-sb-pl-items { border-top: 1px solid var(--tg-divider); }
+.tg-sb-pl-item + .tg-sb-pl-item { border-top: 1px solid var(--tg-divider); }
+.tg-sb-pl-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: var(--tg-s4); padding: 12px 20px; }
+.tg-sb-pl-name { display: flex; align-items: center; gap: 8px; text-align: left; background: none; border: 0; color: var(--tg-text-primary); font: inherit; font-size: 15px; cursor: default; padding: 0; }
+.tg-sb-pl-name[data-sb-pl-toggle] { cursor: pointer; }
+.tg-sb-pl-name[data-sb-pl-toggle]:hover { color: var(--tg-flame); }
+.tg-sb-pl-name svg { color: var(--tg-text-muted); transition: transform var(--tg-dur-med); flex-shrink: 0; }
+.tg-sb-pl-name[aria-expanded="true"] svg { transform: rotate(180deg); }
+.tg-sb-pl-price { text-align: right; font-family: var(--tg-font-display); font-weight: 700; color: var(--tg-flame-soft); white-space: nowrap; }
+.tg-sb-pl-book { font: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tg-ink); background: var(--tg-flame); border: 0; padding: 9px 18px 9px 14px; cursor: pointer; clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%); transition: filter var(--tg-dur-fast); }
+.tg-sb-pl-book:hover { filter: brightness(1.12); }
+.tg-sb-pl-book--na { background: transparent; color: var(--tg-text-muted); border: 1px solid var(--tg-divider); clip-path: none; cursor: default; }
+.tg-sb-pl-desc { padding: 0 20px 16px 20px; font-size: 14px; line-height: 1.65; color: var(--tg-text-secondary); max-width: 900px; }
+.tg-sb-prices-note { margin-top: var(--tg-s5); font-size: 13px; color: var(--tg-text-muted); }
+@media (max-width: 700px) { .tg-sb-pl-row { grid-template-columns: 1fr auto; } .tg-sb-pl-book { grid-column: 1 / -1; justify-self: start; } .tg-sb-rows { grid-template-columns: 1fr; } .tg-sb-prices-head { align-items: flex-start; } }
