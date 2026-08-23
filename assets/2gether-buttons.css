@@ -1,0 +1,37 @@
+
+/* === Accordion / filter titles: Horizon's summary:hover resolves to black on the dark scheme — use flame === */
+summary:hover,
+summary:hover .tg-facet-title,
+.tg-facet-title:hover,
+.tg-rp-faq-item summary:hover,
+.tg-price-cat-head:hover { color: var(--tg-flame, #E8601C); }
+
+/* === Shopify native cookie banner (colours set in Settings → Customer privacy; this adds the brand detailing) === */
+#shopify-pc__banner.shopify-pc__banner__dialog {
+  font-family: var(--tg-font-body, 'General Sans', sans-serif) !important;
+  border-top: 3px solid var(--tg-flame, #E8601C) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55) !important;
+}
+#shopify-pc__banner .shopify-pc__banner__body h2 {
+  font-family: var(--tg-font-display, 'Technor', sans-serif) !important;
+  font-weight: 700 !important; text-transform: uppercase; letter-spacing: 0.06em; font-size: 18px !important;
+}
+#shopify-pc__banner .shopify-pc__banner__body h2::before { content: '//'; color: var(--tg-flame, #E8601C); margin-right: 8px; }
+#shopify-pc__banner .shopify-pc__banner__body p { font-size: 14px !important; line-height: 1.55 !important; opacity: 0.85; }
+#shopify-pc__banner .shopify-pc__banner__body a { color: var(--tg-flame, #E8601C) !important; }
+#shopify-pc__banner .shopify-pc__banner__btns button {
+  font-family: var(--tg-font-body, 'General Sans', sans-serif) !important;
+  font-weight: 700 !important; font-size: 12px !important; letter-spacing: 0.12em !important; text-transform: uppercase;
+  border-radius: 0 !important; transition: filter 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+}
+#shopify-pc__banner #shopify-pc__banner__btn-accept { clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); padding-right: 26px !important; }
+#shopify-pc__banner #shopify-pc__banner__btn-accept:hover { filter: brightness(1.12); }
+#shopify-pc__banner #shopify-pc__banner__btn-decline { background: transparent !important; color: #fff !important; border: 1px solid rgba(255, 255, 255, 0.35) !important; }
+#shopify-pc__banner #shopify-pc__banner__btn-decline:hover { border-color: var(--tg-flame, #E8601C) !important; color: var(--tg-flame, #E8601C) !important; }
+#shopify-pc__banner #shopify-pc__banner__btn-manage-prefs { color: rgba(255, 255, 255, 0.7) !important; text-decoration: none !important; }
+#shopify-pc__banner #shopify-pc__banner__btn-manage-prefs:hover { color: var(--tg-flame, #E8601C) !important; }
+#shopify-pc__prefs .shopify-pc__prefs__dialog { font-family: var(--tg-font-body, 'General Sans', sans-serif) !important; border-top: 3px solid var(--tg-flame, #E8601C) !important; border-radius: 0 !important; }
+#shopify-pc__prefs h2 { font-family: var(--tg-font-display, 'Technor', sans-serif) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+#shopify-pc__prefs button { border-radius: 0 !important; font-weight: 700 !important; letter-spacing: 0.08em; text-transform: uppercase; font-size: 12px !important; }
+#shopify-pc__prefs input[type="checkbox"]:checked { accent-color: var(--tg-flame, #E8601C); }
