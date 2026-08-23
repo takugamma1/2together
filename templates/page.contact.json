@@ -40,7 +40,7 @@
         "hero_image": "shopify://shop_images/DSP06150.jpg",
         "hero_line1": "Свържи се",
         "hero_line2": "С НАС",
-        "hero_subtitle": "Пишете ни, ще се радваме да отговорим на всичките ви въпроси.",
+        "hero_subtitle": "Пишете ни, ще се радваме да отговорим на всички въпроси.",
         "form_label": "Изпрати съобщение",
         "first_name_label": "Име",
         "last_name_label": "Фамилия",
@@ -58,12 +58,12 @@
         "email_label_text": "Имейл",
         "hours_label": "Работно време",
         "address": "",
-        "phone": "+359 2 000 0000",
-        "email": "signal@2gether.cc",
+        "phone": "+359 888 310 500",
+        "email": "sales@2getherbikes.bg",
         "hours": "",
         "support_title": "Техническа поддръжка",
         "support_text": "За гаранционни рекламации, проблеми с компоненти или механични въпроси, нашият екип ще ви отговари в рамките на 12 часа.",
-        "support_email": "support@2gether.cc",
+        "support_email": "sales@2getherbikes.bg",
         "quote": "„Карай колело. Карай колело. <em>Карай още малко колело.“</em>"
       }
     }
