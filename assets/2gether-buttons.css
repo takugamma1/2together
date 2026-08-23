@@ -1,3 +1,74 @@
+/* === 2GETHER BIKES — GLOBAL BUTTON OVERRIDE ===
+ * Gives every stock theme button (cart, product forms, newsletter,
+ * search, pagination CTAs…) the brand geometry: cut corner, uppercase
+ * General Sans, flame accent. Loaded after base.css from theme.liquid.
+ * Filled  = .button / payment button
+ * Outline = .button-secondary                                        */
+
+.button,
+.button-secondary,
+button.shopify-payment-button__button--unbranded {
+  font-family: var(--tg-font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  border-radius: 0;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+  padding-block: 14px;
+  padding-inline: 24px 30px;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Filled — flame with dark ink text */
+.button,
+button.shopify-payment-button__button--unbranded {
+  --button-color: #0B1220;
+  --button-background-color: #E8601C;
+  --button-border-width: 0;
+}
+
+.button:hover:not([aria-disabled='true'], :disabled),
+button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  --button-color: #0B1220;
+  --button-background-color: #F47B3E;
+  transform: translateY(-2px);
+}
+
+/* Outlined — same geometry, flame outline via inset shadow */
+.button-secondary {
+  --button-color: #E8601C;
+  --button-background-color: transparent;
+  --button-border-color: #E8601C;
+  --button-border-width: 1px;
+}
+
+.button-secondary:hover:not([aria-disabled='true'], :disabled) {
+  --button-color: #F47B3E;
+  --button-background-color: rgba(232, 96, 28, 0.12);
+  --button-border-color: #F47B3E;
+  transform: translateY(-2px);
+}
+
+.button[aria-disabled='true'],
+.button-secondary[aria-disabled='true'],
+.button:disabled {
+  transform: none;
+}
+
+/* Unstyled buttons (icons, close buttons…) keep their look */
+.button-unstyled,
+.button-unstyled:hover {
+  clip-path: none;
+  text-transform: none;
+  letter-spacing: normal;
+  transform: none;
+}
 
 /* === Accordion / filter titles: Horizon's summary:hover resolves to black on the dark scheme — use flame === */
 summary:hover,
