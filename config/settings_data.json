@@ -360,7 +360,8 @@
           "selected_variant_hover_border_color": "#1a1a1a"
         }
       }
-    }
+    },
+    "soon_paths": "/pages/sunday-club,/blogs"
   },
   "presets": {
     "Horizon": {

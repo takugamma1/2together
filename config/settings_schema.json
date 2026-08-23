@@ -2377,7 +2377,7 @@
         "type": "text",
         "id": "soon_paths",
         "label": "Paths (comma-separated)",
-        "default": "/pages/sunday-club"
+        "default": "/pages/sunday-club,/blogs"
       },
       {
         "type": "text",
@@ -2395,13 +2395,19 @@
         "type": "textarea",
         "id": "soon_text",
         "label": "Popup text",
-        "default": "Работим по програмата за подкрепа. Ще обявим старта в блога и в Instagram."
+        "default": "Работим по тази част от сайта. Ще обявим старта в Instagram."
       },
       {
         "type": "text",
         "id": "soon_close",
         "label": "Popup button",
         "default": "Добре"
+      },
+      {
+        "type": "text",
+        "id": "soon_back",
+        "label": "Back button",
+        "default": "Към началото"
       }
     ]
   },

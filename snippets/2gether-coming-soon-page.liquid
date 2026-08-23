@@ -1,0 +1,10 @@
+{%- comment -%} Full-page coming-soon screen for gated paths (settings.soon_paths) {%- endcomment -%}
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+<section class="tg-section" style="min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px;background:var(--tg-ink);">
+  <div style="max-width:640px;display:flex;flex-direction:column;gap:18px;align-items:center;">
+    <span class="tg-label">{{ settings.soon_badge | default: 'Скоро' }}</span>
+    <h1 class="tg-f-display" style="margin:0;font-size:clamp(40px,7vw,88px);line-height:0.95;color:var(--tg-text-primary);">{{ settings.soon_title | default: 'Скоро!' }}</h1>
+    <p style="margin:0;color:var(--tg-text-secondary);line-height:1.6;">{{ settings.soon_text }}</p>
+    <a href="{{ routes.root_url }}" class="tg-btn-primary">{{ settings.soon_back | default: 'Към началото' }} &rarr;</a>
+  </div>
+</section>
