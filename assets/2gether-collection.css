@@ -1332,3 +1332,6 @@ input.tg-filter-price-input::placeholder { color: var(--tg-text-muted) !importan
 .tg-coll-switch-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tg-text-muted); min-width: 48px; }
 .tg-coll-switch-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .tg-coll-switch .tg-rp-seg-btn { text-decoration: none; font-size: 11px; padding: 7px 14px; }
+.tg-coll-switch .tg-rp-seg-btn { display: inline-flex; align-items: center; padding: 7px 16px 7px 12px; background: var(--tg-surface-raised); border: 1px solid var(--tg-divider); color: var(--tg-text-secondary); font-family: var(--tg-font-body); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; clip-path: polygon(0 0, 100% 0, calc(100% - 7px) 100%, 0 100%); transition: color 150ms, border-color 150ms, background 150ms; }
+.tg-coll-switch .tg-rp-seg-btn:hover { color: var(--tg-text-primary); border-color: rgba(232, 96, 28, 0.5); }
+.tg-coll-switch .tg-rp-seg-btn.is-active { background: var(--tg-flame); border-color: var(--tg-flame); color: var(--tg-ink); }
