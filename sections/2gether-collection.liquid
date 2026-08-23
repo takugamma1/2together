@@ -91,9 +91,9 @@
               {% endfor %}
             {% when 'price_range' %}
               <div class="tg-filter-price-inputs">
-                <input type="number" class="tg-filter-price-input" name="{{ filter.min_value.param_name }}" id="tg-price-min" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100 }}{% endif %}" min="0" max="{{ filter.range_max | divided_by: 100 | ceil }}" placeholder="0">
+                <input type="number" class="tg-filter-price-input" name="{{ filter.min_value.param_name }}" id="tg-price-min" value="{% if filter.min_value.value %}{{ filter.min_value.value | divided_by: 100.0 | round: 2 }}{% endif %}" min="0" step="any" max="{{ filter.range_max | divided_by: 100.0 | ceil }}" placeholder="0">
                 <span class="tg-filter-price-sep">—</span>
-                <input type="number" class="tg-filter-price-input" name="{{ filter.max_value.param_name }}" id="tg-price-max" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100 }}{% endif %}" min="0" max="{{ filter.range_max | divided_by: 100 | ceil }}" placeholder="{{ filter.range_max | divided_by: 100 | ceil }}">
+                <input type="number" class="tg-filter-price-input" name="{{ filter.max_value.param_name }}" id="tg-price-max" value="{% if filter.max_value.value %}{{ filter.max_value.value | divided_by: 100.0 | round: 2 }}{% endif %}" min="0" step="any" max="{{ filter.range_max | divided_by: 100.0 | ceil }}" placeholder="{{ filter.range_max | divided_by: 100.0 | ceil }}">
                 <button type="button" class="tg-filter-price-go" onclick="tgApplyFilters()">OK</button>
               </div>
           {% endcase %}
@@ -525,14 +525,17 @@
     var minInput = document.getElementById('tg-price-min');
     var maxInput = document.getElementById('tg-price-max');
     if (minInput && minInput.value) {
-      url.searchParams.set(minInput.name, (parseFloat(minInput.value) * 100).toString());
+      url.searchParams.set(minInput.name, String(parseFloat(minInput.value)));
     }
     if (maxInput && maxInput.value) {
-      url.searchParams.set(maxInput.name, (parseFloat(maxInput.value) * 100).toString());
+      url.searchParams.set(maxInput.name, String(parseFloat(maxInput.value)));
     }
 
     window.location = url.toString();
   }
+
+  // Enter in a price field applies the filters
+  document.querySelectorAll('.tg-filter-price-input').forEach(function(i) { i.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); tgApplyFilters(); } }); });
 
   // Quick add to cart via AJAX → refresh the header cart count and open the drawer
   document.querySelectorAll('.tg-coll-card-form').forEach(function(form) {
