@@ -108,7 +108,7 @@
   function fillSummary() {
     const s = root.querySelector('[data-sb-summary]'); const mechName = state.mechanic === 'any' ? (state.mechNames && state.mechNames[state.slotMech]) || T.anyMech : state.mechanicName;
     s.querySelector('[data-sum="service"]').textContent = state.service.name; s.querySelector('[data-sum="mechanic"]').textContent = mechName;
-    s.querySelector('[data-sum="when"]').textContent = `${fmtDate(state.date)}, ${state.time}`; s.querySelector('[data-sum="duration"]').textContent = `${state.service.duration} мин`;
+    s.querySelector('[data-sum="when"]').textContent = `${fmtDate(state.date)}, ${state.time}`; 
     s.querySelector('[data-sum="price"]').textContent = state.service.price ? (state.service.priceTo ? `€${state.service.price} – ${state.service.priceTo}` : `€${state.service.price}`) : '—';
   }
   const form = root.querySelector('[data-sb-form]'), err = root.querySelector('[data-sb-error]');
