@@ -2365,5 +2365,44 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Coming soon",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Links to these paths are greyed out with a badge and open a popup instead of navigating."
+      },
+      {
+        "type": "text",
+        "id": "soon_paths",
+        "label": "Paths (comma-separated)",
+        "default": "/pages/sunday-club"
+      },
+      {
+        "type": "text",
+        "id": "soon_badge",
+        "label": "Badge",
+        "default": "Скоро"
+      },
+      {
+        "type": "text",
+        "id": "soon_title",
+        "label": "Popup title",
+        "default": "Скоро!"
+      },
+      {
+        "type": "textarea",
+        "id": "soon_text",
+        "label": "Popup text",
+        "default": "Работим по програмата за подкрепа. Ще обявим старта в блога и в Instagram."
+      },
+      {
+        "type": "text",
+        "id": "soon_close",
+        "label": "Popup button",
+        "default": "Добре"
+      }
+    ]
   }
 ]

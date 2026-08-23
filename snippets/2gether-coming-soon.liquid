@@ -1,0 +1,51 @@
+{%- comment -%}
+  Global "coming soon" gate. Any link whose URL contains one of the paths in settings.soon_paths
+  (comma-separated, default "/pages/sunday-club") is greyed out with a "Скоро" badge; clicking it
+  opens a popup instead of navigating. Rendered once from layout/theme.liquid.
+{%- endcomment -%}
+{%- assign soon_paths = settings.soon_paths | default: '/pages/sunday-club' -%}
+{%- if soon_paths != blank -%}
+<style>
+  .tg-soon-link { position: relative; filter: grayscale(1) brightness(0.8); opacity: 0.8; cursor: pointer; }
+  .tg-soon-link::after { content: '{{ settings.soon_badge | default: 'Скоро' | escape }}'; position: absolute; top: 10px; right: 10px; z-index: 3; padding: 4px 10px 4px 8px; font-family: var(--tg-font-body, 'General Sans', sans-serif); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #0B1220; background: #E8601C; clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); filter: none; }
+  .tg-soon-link.tg-soon-link--inline::after { position: static; display: inline-block; margin-left: 8px; vertical-align: middle; }
+  .tg-soon-global { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(11, 18, 32, 0.8); backdrop-filter: blur(6px); }
+  .tg-soon-global[hidden] { display: none; }
+  .tg-soon-global-card { max-width: 460px; width: 100%; padding: 36px 32px; background: #0B1220; border: 1px solid rgba(255,255,255,0.12); border-top: 3px solid #E8601C; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; color: #fff; box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
+  .tg-soon-global-card h3 { margin: 0; font-family: var(--tg-font-display, 'Technor', sans-serif); font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; text-transform: uppercase; }
+  .tg-soon-global-card p { margin: 0; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .tg-soon-global-card button { font: inherit; font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #0B1220; background: #E8601C; border: 0; padding: 12px 26px 12px 20px; cursor: pointer; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+</style>
+<div class="tg-soon-global" data-tg-soon-global hidden role="dialog" aria-modal="true">
+  <div class="tg-soon-global-card">
+    <h3>{{ settings.soon_title | default: 'Скоро!' }}</h3>
+    <p>{{ settings.soon_text | default: 'Работим по програмата. Ще обявим старта в блога и в Instagram.' }}</p>
+    <button type="button" data-tg-soon-global-close>{{ settings.soon_close | default: 'Добре' }}</button>
+  </div>
+</div>
+<script>
+  (function () {
+    var paths = {{ soon_paths | split: ',' | json }}.map(function (p) { return p.trim(); }).filter(Boolean);
+    var modal = document.querySelector('[data-tg-soon-global]');
+    function open() { modal.hidden = false; }
+    function close() { modal.hidden = true; }
+    modal.querySelector('[data-tg-soon-global-close]').addEventListener('click', close);
+    modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+    function mark(root) {
+      root.querySelectorAll('a[href]').forEach(function (a) {
+        if (a.classList.contains('tg-soon-link')) return;
+        var href = a.getAttribute('href') || '';
+        if (!paths.some(function (p) { return href.indexOf(p) !== -1; })) return;
+        a.classList.add('tg-soon-link');
+        if (!a.querySelector('img, picture, .tg-takeover-tile-media, .tg-bento-cell-img')) a.classList.add('tg-soon-link--inline');
+        a.setAttribute('aria-disabled', 'true');
+        a.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); open(); });
+      });
+    }
+    mark(document);
+    new MutationObserver(function (m) { m.forEach(function (r) { r.addedNodes.forEach(function (n) { if (n.nodeType === 1) mark(n); }); }); }).observe(document.body, { childList: true, subtree: true });
+    {% if request.path contains '/pages/sunday-club' %}open();{% endif %}
+  })();
+</script>
+{%- endif -%}
