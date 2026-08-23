@@ -87,7 +87,7 @@
         "row_5": {
           "type": "row",
           "settings": {
-            "label": "4 позиции",
+            "label": "4 позиции на кикъра",
             "value_1": "29 / 32 / 35 / 38 cm",
             "value_2": "53 / 57 / 60 / 62 cm",
             "use_product_price": false
@@ -159,6 +159,7 @@
         "title": "BREEZE ИЛИ STORM?",
         "ramps_page": "portable-ramps",
         "support_page": "",
+        "set_page": "",
         "back_text": "Назад към рампите",
         "back_link": "",
         "chooser_title": "КОЕ Е НАЙ-ВАЖНО ЗА ТЕБ?",
