@@ -1311,3 +1311,17 @@ body.tg-collection-active .content-for-layout {
 .tg-coll-back:hover { color: var(--tg-flame); border-color: var(--tg-flame); background: rgba(232, 96, 28, 0.08); }
 .tg-coll-back svg { transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); }
 .tg-coll-back:hover svg { transform: translateX(-3px); }
+
+/* price inputs: beat base.css input styling (was rendering white / overflowing) */
+.tg-filter-price-inputs { display: flex; align-items: center; gap: 8px; min-width: 0; }
+input.tg-filter-price-input, input.tg-filter-price-input:hover, input.tg-filter-price-input:focus {
+  flex: 1 1 0; width: auto; min-width: 0; max-width: none; box-sizing: border-box;
+  padding: 8px 10px; font-size: 13px; text-align: center;
+  background: var(--tg-surface-raised) !important; background-color: var(--tg-surface-raised) !important;
+  color: var(--tg-text-primary) !important; border: 1px solid var(--tg-divider) !important; border-radius: 3px !important;
+  box-shadow: none !important; outline: none !important; color-scheme: dark; -moz-appearance: textfield; appearance: textfield;
+}
+input.tg-filter-price-input:focus { border-color: var(--tg-flame) !important; }
+input.tg-filter-price-input::placeholder { color: var(--tg-text-muted) !important; opacity: 1; }
+.tg-filter-price-sep { flex: 0 0 auto; }
+.tg-filter-price-go { flex: 0 0 auto; }
