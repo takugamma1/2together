@@ -1,0 +1,184 @@
+key,kind,parent,source_title,title,description,publish
+cat:6,category,,Bike Parts,Bike Parts,,1
+cat:25,category,,Accessories,Accessories,,1
+cat:34,category,,Skateboard,Skateboard,,1
+cat:46,category,,Helmets - Protectors - Gloves - Bike Wear,Helmets - Protectors - Gloves - Bike Wear,,1
+cat:62,category,,Bikes,Bikes,,1
+cat:95,category,,Goggles & Glasses,Goggles & Glasses,,1
+cat:100,category,,Discount,Discount,,1
+cat:122,category,,Helmets - Protectors - Gloves,Helmets - Protectors - Gloves,,1
+cat:126,category,,Tires & Tubes,Tires & Tubes,,1
+cat:143,category,,Bike Care,Bike Care,,1
+cat:161,category,,Energy And Hydration,Energy And Hydration,,1
+cat:162,category,,Clothing,Clothing,,1
+cat:1964,category,,Bags & Backpacks,Bags & Backpacks,,1
+cat:7,category,Bike Parts,Saddles,Saddles,,1
+cat:8,category,Bike Parts,Grips,Grips,,1
+cat:17,category,Bike Parts,Fenders,Fenders,,1
+cat:18,category,Bike Parts,Rims,Rims,,1
+cat:19,category,Tires & Tubes,Tire Repair,Tire Repair,,1
+cat:20,category,Tires & Tubes,Tires,Tires,,1
+cat:22,category,Accessories,Pumps,Pumps,,1
+cat:23,category,Accessories,Lights,Lights,,1
+cat:24,category,Accessories,Tools,Tools,,1
+cat:27,category,Bike Parts,Pedals,Pedals,,1
+cat:28,category,Bike Parts,Stem,Stem,,1
+cat:29,category,Bike Parts,Handlebar,Handlebar,,1
+cat:30,category,Bike Parts,Seatpost,Seatpost,,1
+cat:31,category,Bike Parts,Hubs,Hubs,,1
+cat:35,category,Skateboard,Skateboard Wheels,Skateboard Wheels,,1
+cat:36,category,Skateboard,Longboards,Longboards,,1
+cat:37,category,Skateboard,Griptape,Griptape,,1
+cat:38,category,Skateboard,Complete,Complete,,1
+cat:39,category,Skateboard,Deck,Deck,,1
+cat:40,category,Bike Parts,Spokes,Spokes,,1
+cat:43,category,Bike Parts,Bottom Brackets,Bottom Brackets,,1
+cat:44,category,Bike Parts,Spare Parts,Spare Parts,,1
+cat:49,category,Accessories,Bike Locks,Bike Locks,,1
+cat:50,category,Bags & Backpacks,Backpacks,Backpacks,,1
+cat:55,category,Helmets - Protectors - Gloves,Gloves,Gloves,,1
+cat:57,category,Helmets - Protectors - Gloves,Protectors,Protectors,,1
+cat:60,category,Accessories,Frame Protectors,Frame Protectors,,1
+cat:72,category,Helmets - Protectors - Gloves,Helmets,Helmets,,1
+cat:75,category,Bike Parts,Bearings,Bearings,,1
+cat:82,category,Bike Parts,Wheels,Wheels,,1
+cat:99,category,Goggles & Glasses,Goggles,Goggles,,1
+cat:107,category,Energy And Hydration,Hydration,Hydration,,1
+cat:108,category,Energy And Hydration,Gels & Bars,Gels & Bars,,1
+cat:120,category,Tires & Tubes,Tubes,Tubes,,1
+cat:123,category,Goggles & Glasses,Sunglasses,Sunglasses,,1
+cat:124,category,Goggles & Glasses,Spare Lenses,Spare Lenses,,1
+cat:125,category,Clothing,Ride Wear,Ride Wear,,1
+cat:127,category,Clothing,Casual Wear,Casual Wear,,1
+cat:129,category,Bike Parts,Cranks,Cranks,,1
+cat:130,category,Bike Parts,Chainrings,Chainrings,,1
+cat:131,category,Bike Parts,Brake Pads,Brake Pads,,1
+cat:132,category,Bike Parts,Brake Discs,Brake Discs,,1
+cat:133,category,Accessories,Bottles,Bottles,,1
+cat:134,category,Accessories,Bottle Cages,Bottle Cages,,1
+cat:135,category,Accessories,Other Accessories,Other Accessories,,1
+cat:144,category,Bike Care,Cleaning Supplies,Cleaning Supplies,,1
+cat:145,category,Bike Care,Brushes & Towels,Brushes & Towels,,1
+cat:146,category,Bike Care,Chain Lube,Chain Lube,,1
+cat:147,category,Bike Care,Grease,Grease,,1
+cat:160,category,Accessories,CO2,CO2,,1
+cat:1962,category,Bags & Backpacks,Hip Packs,Hip Packs,,1
+cat:1963,category,Bags & Backpacks,Frame Bags,Frame Bags,,1
+cat:1965,category,Bags & Backpacks,Saddle Bags,Saddle Bags,,1
+cat:1966,category,Bags & Backpacks,Handlebar Bags,Handlebar Bags,,1
+cat:1967,category,Bags & Backpacks,Bike Bags,Bike Bags,,1
+cat:1968,category,Bags & Backpacks,Toiletry Bags,Toiletry Bags,,1
+cat:1969,category,Bags & Backpacks,Others,Others,,1
+cat:1970,category,Bags & Backpacks,Tool Bags,Tool Bags,,1
+cat:1971,category,Bags & Backpacks,Hydration Bladders,Hydration Bladders,,1
+cat:1972,category,Accessories,GPS & Sensors,GPS & Sensors,,1
+cat:1976,category,Bike Parts,Bar Tapes,Bar Tapes,,1
+cat:1981,category,Clothing,Snow,Snow,,1
+cat:26,category,Tire Repair,Tire Levers,Tire Levers,,1
+cat:53,category,Ride Wear,Jerseys,Jerseys,,1
+cat:54,category,Casual Wear,T-shirts,T-shirts,,1
+cat:56,category,Casual Wear,Hats,Hats,,1
+cat:58,category,Ride Wear,Shorts,Shorts,,1
+cat:65,category,Casual Wear,Socks,Socks,,1
+cat:92,category,Ride Wear,Pants,Pants,,1
+cat:93,category,Ride Wear,Shoes,Shoes,,1
+cat:109,category,Helmets,Full Face,Full Face,,1
+cat:110,category,Helmets,XC & Gravel,XC & Gravel,,1
+cat:111,category,Helmets,Enduro,Enduro,,1
+cat:112,category,Helmets,Trail,Trail,,1
+cat:113,category,Helmets,Urban,Urban,,1
+cat:114,category,Protectors,Kneeguard,Kneeguard,,1
+cat:115,category,Protectors,Elbowguard,Elbowguard,,1
+cat:116,category,Protectors,Chest Protector,Chest Protector,,1
+cat:117,category,Protectors,Back Protector,Back Protector,,1
+cat:118,category,Protectors,Body Protector,Body Protector,,1
+cat:119,category,Helmets,Visors,Visors,,1
+cat:136,category,Ride Wear,Base Layer,Base Layer,,1
+cat:137,category,Ride Wear,Riding Hoodie,Riding Hoodie,,1
+cat:138,category,Spare Parts,Axles,Axles,,1
+cat:139,category,Spare Parts,Pedal Spare Parts,Pedal Spare Parts,,1
+cat:140,category,Spare Parts,Cockpit Spare Parts,Cockpit Spare Parts,,1
+cat:141,category,Spare Parts,Hangers,Hangers,,1
+cat:142,category,Spare Parts,Other Spare Parts,Other Spare Parts,,1
+cat:148,category,Tire Repair,Tubeless Valves,Tubeless Valves,,1
+cat:149,category,Ride Wear,Jackets,Jackets,,1
+cat:150,category,Ride Wear,Other Ride Wear,Other Ride Wear,,1
+cat:151,category,Ride Wear,Vests,Vests,,1
+cat:152,category,Ride Wear,Bibs,Bibs,,1
+cat:156,category,Casual Wear,Hoodies,Hoodies,,1
+cat:157,category,Tire Repair,Tubeless Sealant,Tubeless Sealant,,1
+cat:158,category,Tire Repair,Tubeless Repair,Tubeless Repair,,1
+cat:159,category,Tire Repair,Rim Tape,Rim Tape,,1
+cat:163,category,Spare Parts,Seat Clamps,Seat Clamps,,1
+cat:164,category,Goggles,Ski Goggles,Ski Goggles,,1
+cat:165,category,Goggles,MTB Goggles,MTB Goggles,,1
+cat:1973,category,Casual Wear,Sweatshirts,Sweatshirts,,1
+cat:1977,category,Helmets,Junior,Junior,,1
+cat:1979,category,Helmets,Ski & Snowboard,Ski & Snowboard,,1
+cat:1982,category,Snow,Snow Pants,Snow Pants,,1
+cat:1983,category,Snow,Snow Jackets,Snow Jackets,,1
+cat:1984,category,Snow,Snow Gloves,Snow Gloves,,1
+cat:1988,category,Snow,Snow Hoodies,Snow Hoodies,,1
+cat:1989,category,Snow,Winter Casual,Winter Casual,,1
+cat:1990,category,Snow,Winter Headwear,Winter Headwear,,1
+cat:1991,category,Snow,Snow Socks,Snow Socks,,1
+cat:1993,category,Casual Wear,Pants,Pants,,1
+cat:153,category,Cockpit Spare Parts,Spacers,Spacers,,1
+cat:154,category,Cockpit Spare Parts,Bolts,Bolts,,1
+cat:155,category,Cockpit Spare Parts,Top Caps,Top Caps,,1
+cat:1974,category,Tubeless Repair,KIT,KIT,,1
+cat:1975,category,Tubeless Repair,Plugs,Plugs,,1
+brand:686,brand,Brands,686,686,,1
+brand:7-protection,brand,Brands,7 PROTECTION,7 PROTECTION,,1
+brand:almost,brand,Brands,ALMOST,ALMOST,,1
+brand:black-peak,brand,Brands,BLACK PEAK,BLACK PEAK,,1
+brand:blind,brand,Brands,BLIND,BLIND,,1
+brand:brake-authority,brand,Brands,BRAKE AUTHORITY,BRAKE AUTHORITY,,1
+brand:burgtec,brand,Brands,BURGTEC,BURGTEC,,1
+brand:cervelo,brand,Brands,CERVELO,CERVELO,,1
+brand:cliche,brand,Brands,CLICHE,CLICHE,,1
+brand:darkstar,brand,Brands,DARKSTAR,DARKSTAR,,1
+brand:demon,brand,Brands,DEMON,DEMON,,1
+brand:duster,brand,Brands,DUSTER,DUSTER,,1
+brand:easton,brand,Brands,EASTON,EASTON,,1
+brand:enduro-bearings,brand,Brands,ENDURO BEARINGS,ENDURO BEARINGS,,1
+brand:enjoi,brand,Brands,ENJOI,ENJOI,,1
+brand:evoc,brand,Brands,EVOC,EVOC,,1
+brand:fidlock,brand,Brands,FIDLOCK,FIDLOCK,,1
+brand:fpd,brand,Brands,FPD,FPD,,1
+brand:galfer,brand,Brands,GALFER,GALFER,,1
+brand:hiru,brand,Brands,HIRU,HIRU,,1
+brand:kore,brand,Brands,KORE,KORE,,1
+brand:leatt,brand,Brands,LEATT,LEATT,,1
+brand:lezyne,brand,Brands,Lezyne,Lezyne,,1
+brand:magicshine,brand,Brands,MAGICSHINE,MAGICSHINE,,1
+brand:meow,brand,Brands,MEOW,MEOW,,1
+brand:nukeproof,brand,Brands,NUKEPROOF,NUKEPROOF,,1
+brand:ocean-pacific,brand,Brands,OCEAN PACIFIC,OCEAN PACIFIC,,1
+brand:odi-grips,brand,Brands,ODI Grips,ODI Grips,,1
+brand:oneup-components,brand,Brands,ONEUP COMPONENTS,ONEUP COMPONENTS,,1
+brand:oquo,brand,Brands,OQUO,OQUO,,1
+brand:orbea,brand,Brands,ORBEA,ORBEA,,1
+brand:pirelli,brand,Brands,PIRELLI,PIRELLI,,1
+brand:pit-viper,brand,Brands,PIT VIPER,PIT VIPER,,1
+brand:pivot,brand,Brands,PIVOT,PIVOT,,1
+brand:precision-fuel-hydration,brand,Brands,PRECISION Fuel & Hydration,PRECISION Fuel & Hydration,,1
+brand:prime-8,brand,Brands,PRIME 8,PRIME 8,,1
+brand:prologo,brand,Brands,PROLOGO,PROLOGO,,1
+brand:peaty-s-products,brand,Brands,Peaty's Products,Peaty's Products,,1
+brand:reserve,brand,Brands,RESERVE,RESERVE,,1
+brand:ridley,brand,Brands,RIDLEY,RIDLEY,,1
+brand:royal,brand,Brands,ROYAL,ROYAL,,1
+brand:rrp,brand,Brands,RRP ,RRP ,,1
+brand:race-face,brand,Brands,Race Face,Race Face,,1
+brand:santa-cruz,brand,Brands,SANTA CRUZ,SANTA CRUZ,,1
+brand:sapim-spokes,brand,Brands,SAPIM Spokes,SAPIM Spokes,,1
+brand:speed-demons,brand,Brands,SPEED DEMONS,SPEED DEMONS,,1
+brand:tag-metals,brand,Brands,TAG METALS,TAG METALS,,1
+brand:troy-lee-designs,brand,Brands,TROY LEE DESIGNS,TROY LEE DESIGNS,,1
+brand:ulac,brand,Brands,ULAC,ULAC,,1
+brand:urge,brand,Brands,URGE,URGE,,1
+brand:vittoria,brand,Brands,VITTORIA,VITTORIA,,1
+brand:world-industries,brand,Brands,WORLD INDUSTRIES,WORLD INDUSTRIES,,1
+brand:wtb,brand,Brands,WTB,WTB,,1
+brand:zoo-york,brand,Brands,ZOO YORK,ZOO YORK,,1

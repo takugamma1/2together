@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- macOS launchd alternative: copy to ~/Library/LaunchAgents/ and run
+     launchctl load ~/Library/LaunchAgents/com.2gether.onedist-inventory.plist
+     Uses the .env file in onedist-sync/ for credentials. -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.2gether.onedist-inventory</string>
+  <key>ProgramArguments</key><array>
+    <string>/usr/bin/python3</string>
+    <string>/Users/vladov/Desktop/2togetherbikes/onedist-sync/sync.py</string>
+    <string>all</string>
+  </array>
+  <key>StartInterval</key><integer>900</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/Users/vladov/Desktop/2togetherbikes/onedist-sync/state/sync.log</string>
+  <key>StandardErrorPath</key><string>/Users/vladov/Desktop/2togetherbikes/onedist-sync/state/sync.log</string>
+</dict></plist>

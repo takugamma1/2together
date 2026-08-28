@@ -2,3 +2,7 @@
 .env.*
 !.env.example
 .DS_Store
+onedist-sync/data/
+onedist-sync/state/sync.log
+onedist-sync/state/*.log
+onedist-sync/**/__pycache__/

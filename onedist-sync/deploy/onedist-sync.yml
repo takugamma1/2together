@@ -1,0 +1,41 @@
+# GitHub Actions: run from the repo that contains onedist-sync/ (copy to .github/workflows/).
+# Secrets needed: ONEDIST_API_KEY, SHOPIFY_STORE, SHOPIFY_ACCESS_TOKEN.
+# The state file is committed back so every run knows what is already in Shopify.
+name: onedist-sync
+on:
+  schedule:
+    - cron: "*/15 * * * *"     # inventory every 15 min
+    - cron: "17 3 * * *"       # full catalog + collections pass nightly 03:17 UTC
+  workflow_dispatch:
+    inputs:
+      command: { description: "sync.py command", default: "all", required: true }
+      full: { description: "add --full", type: boolean, default: false }
+concurrency: { group: onedist-sync, cancel-in-progress: false }
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions: { contents: write }
+    env:
+      ONEDIST_API_KEY: ${{ secrets.ONEDIST_API_KEY }}
+      SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+      SHOPIFY_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Decide command
+        id: cmd
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "cmd=${{ inputs.command }} ${{ inputs.full && '--full' || '' }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.schedule }}" = "17 3 * * *" ]; then
+            echo "cmd=all" >> $GITHUB_OUTPUT
+          else
+            echo "cmd=inventory" >> $GITHUB_OUTPUT
+          fi
+      - run: cd onedist-sync && python3 sync.py ${{ steps.cmd.outputs.cmd }}
+      - name: Commit state
+        run: |
+          git config user.name "onedist-sync bot" && git config user.email "bot@users.noreply.github.com"
+          git add onedist-sync/state/state.json
+          git diff --cached --quiet || (git commit -m "onedist-sync: state $(date -u +%FT%TZ)" && git push)
