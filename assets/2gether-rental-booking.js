@@ -105,7 +105,7 @@
     if (!p) { lines.innerHTML = `<dd class="tg-rb-lines-empty">${I.summary_empty || ''}</dd>`; totalEl.textContent = '—'; return; }
     let total = 0; p.items.forEach(it => { total += it.price; lines.insertAdjacentHTML('beforeend', `<div><dt>${bikeCfg(it.h).name} ×${it.qty} · ${it.label}</dt><dd>${fmt(it.price)}</dd></div>`); });
     const rescueWrap = root.querySelector('[data-rb-rescue-wrap]'), rescueBox = root.querySelector('[data-rb-rescue]');
-    const rDays = p.mode === 'short' ? 1 : Math.max(1, Math.round((p.end - p.start) / 86400000)); const qty = p.items.reduce((n, it) => n + it.qty, 0);
+    const rDays = p.mode === 'short' ? 1 : daysIn(range.start, range.end).length; // same inclusive day count the bikes are billed for const qty = p.items.reduce((n, it) => n + it.qty, 0);
     if (rescueWrap) { rescueWrap.hidden = !RESCUE; if (RESCUE && rescueBox && rescueBox.checked) { const r = RESCUE * rDays * qty; total += r; p.rescue = r; lines.insertAdjacentHTML('beforeend', `<div><dt>Bike Rescue · ${rDays} × ${qty}</dt><dd>${fmt(r)}</dd></div>`); } }
     const anyE = p.items.some(it => bikeCfg(it.h).electric); const dn = root.querySelector('[data-rb-deposit-normal]'), de = root.querySelector('[data-rb-deposit-ebike]'); if (de) de.hidden = !anyE; if (dn) dn.hidden = anyE && p.items.every(it => bikeCfg(it.h).electric);
     const when = p.mode === 'short' ? `${p.start.toLocaleDateString('bg-BG')} ${pad(p.start.getHours())}:00 → ${p.end.toLocaleDateString('bg-BG')} ${pad(p.end.getHours())}:00` : `${p.start.toLocaleDateString('bg-BG')} → ${p.end.toLocaleDateString('bg-BG')}`;
