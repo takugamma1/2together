@@ -108,3 +108,28 @@
 .tg-rb-price-card dd { white-space: nowrap; }
 .tg-rb-price-card dd small { margin-left: 3px; }
 .tg-rb-price-card--extra > p { margin-bottom: 6px; }
+
+/* === MOBILE OVERFLOW FIX ===
+   Grid tracks and flex/grid children need min-width:0, otherwise an
+   intrinsically-wide descendant (the 7-col calendar, hour chips, long
+   hint text) forces a column past the viewport. */
+.tg-rb-grid > *,
+.tg-rb-pane,
+.tg-rb-summary,
+.tg-rb-cal,
+.tg-rb-cal-months,
+.tg-rb-cal-months > *,
+.tg-rb-mode { min-width: 0; }
+
+.tg-rb-days button, .tg-rb-days i,
+.tg-rb-dow span { min-width: 0; overflow: hidden; }
+
+@media (max-width: 600px) {
+  .tg-rb { padding-left: var(--tg-s4); padding-right: var(--tg-s4); }
+  .tg-rb-modes { grid-template-columns: 1fr; }        /* stack short/long mode cards */
+  .tg-rb-field input[type=date] { max-width: 100%; }  /* date field was capped at 260px, fine, but let it fill */
+  .tg-rb-cal { padding: var(--tg-s3); }
+  .tg-rb-cal-months { gap: var(--tg-s4); }
+  .tg-rb-days { gap: 2px; }
+  .tg-rb-days button, .tg-rb-days i { font-size: 12px; }
+}
