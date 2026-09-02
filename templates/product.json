@@ -28,13 +28,6 @@
             "description": "Искаш да пробваш преди да купиш? Или просто ти трябва колело за ден? Имаме решение."
           }
         },
-        "usp_1": {
-          "type": "usp",
-          "settings": {
-            "icon": "carry",
-            "text": "Безплатна доставка в България над €100"
-          }
-        },
         "usp_2": {
           "type": "usp",
           "settings": {
@@ -60,18 +53,29 @@
       "block_order": [
         "feature_card_PNM7p8",
         "feature_card_UYHYHb",
-        "usp_1",
         "usp_2",
         "usp_3",
         "usp_4"
       ],
       "settings": {
-        "features_label": "2GETHER",
-        "features_title": "ОЩЕ ОТ НАС",
+        "show_type": false,
+        "price_suffix": "с ДДС",
+        "in_stock_text": "В наличност",
+        "out_of_stock_text": "Изчерпано — поръчка по заявка",
+        "desc_more": "Виж повече",
+        "desc_less": "Скрий",
+        "show_stats": false,
+        "show_features": false,
+        "show_included": false,
+        "show_support": false,
+        "show_related": false,
+        "show_brand": false,
         "add_to_cart_text": "Добави в количката",
         "buy_now_text": "Купи сега",
         "sold_out_text": "Изчерпано",
         "reassure_text": "",
+        "features_label": "2GETHER",
+        "features_title": "ОЩЕ ОТ НАС",
         "included_label": "В комплекта",
         "included_title": "КАКВО ПОЛУЧАВАШ",
         "support_1_title": "КЛУБ",
@@ -86,12 +90,7 @@
         "brand_title": "RIDE 2GETHER",
         "brand_description": "Всяка седмица излизаме заедно. Различни темпа, различни маршрути, едно усещане. Клубът на 2gether е отворен за всеки, без значение дали си ветеран или тепърва се качваш на колело.",
         "brand_image": "shopify://shop_images/Screenshot_2026-05-06_at_20.12.17.png",
-        "show_dynamic_checkout": false,
-        "price_suffix": "с ДДС",
-        "in_stock_text": "В наличност",
-        "out_of_stock_text": "Изчерпано — поръчка по заявка",
-        "desc_more": "Виж повече",
-        "desc_less": "Скрий"
+        "show_dynamic_checkout": false
       }
     }
   },
