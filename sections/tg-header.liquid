@@ -45,6 +45,21 @@
   endif
 -%}
 
+<script>
+  window.tgI18n = window.tgI18n || {};
+  window.tgI18n.header = {
+    close_menu: {{ 'tg.header.close_menu' | t | json }},
+    open_menu: {{ 'tg.header.open_menu' | t | json }},
+    items_word_one: {{ 'tg.header.items_word' | t: count: 1 | json }},
+    items_word_other: {{ 'tg.header.items_word' | t: count: 2 | json }},
+    cart_empty: {{ 'tg.header.cart_empty' | t | json }},
+    to_shop: {{ 'tg.common.to_shop' | t | json }},
+    qty_decrease: {{ 'tg.header.qty_decrease' | t | json }},
+    qty_increase: {{ 'tg.header.qty_increase' | t | json }},
+    remove: {{ 'tg.header.remove' | t | json }},
+    locale: {{ request.locale.iso_code | json }}
+  };
+</script>
 <tg-header class="tg-header" data-sticky="{{ section.settings.sticky }}" style="--tg-logo-size: {{ section.settings.logo_size | default: 36 }}px;">
   <div class="tg-header-inner">
     <a href="{{ routes.root_url }}" class="tg-header-brand" aria-label="{{ shop.name }}">
@@ -1535,6 +1550,7 @@
 
 {% javascript %}
 (function () {
+  const HI = (window.tgI18n && window.tgI18n.header) || {};
   const header = document.querySelector('tg-header');
   if (!header) return;
 
@@ -1563,7 +1579,7 @@
     takeover.setAttribute('data-open', 'true');
     takeover.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
-    burger.setAttribute('aria-label', {{ 'tg.header.close_menu' | t | json }});
+    burger.setAttribute('aria-label', (HI.close_menu || "Затвори менюто"));
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     // Focus the close button for keyboard nav
@@ -1575,7 +1591,7 @@
     takeover.removeAttribute('data-open');
     takeover.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', {{ 'tg.header.open_menu' | t | json }});
+    burger.setAttribute('aria-label', (HI.open_menu || "Отвори менюто"));
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     clearTimeout(hideTimer);
@@ -1647,7 +1663,7 @@
 
   function moneyFormat(cents) {
     try {
-      return new Intl.NumberFormat({{ request.locale.iso_code | json }}, { style: 'currency', currency: cartCurrency }).format(cents / 100);
+      return new Intl.NumberFormat((HI.locale || 'bg'), { style: 'currency', currency: cartCurrency }).format(cents / 100);
     } catch (err) {
       return (cents / 100).toFixed(2) + ' ' + cartCurrency;
     }
@@ -1667,7 +1683,7 @@
     const countLine = cartDrawer ? cartDrawer.querySelector('.tg-cart-drawer-count') : null;
     if (countLine) {
       const n = itemCount;
-      countLine.innerHTML = '<span data-tg-cart-drawer-count>' + n + '</span> ' + pluralize(n, {{ 'tg.header.items_word' | t: count: 1 | json }}, {{ 'tg.header.items_word' | t: count: 2 | json }});
+      countLine.innerHTML = '<span data-tg-cart-drawer-count>' + n + '</span> ' + pluralize(n, (HI.items_word_one || "артикул"), (HI.items_word_other || "артикула"));
     }
   }
 
@@ -1686,8 +1702,8 @@
             '<line x1="3" y1="6" x2="21" y2="6"/>' +
             '<path d="M16 10a4 4 0 0 1-8 0"/>' +
           '</svg>' +
-          '<p>' + {{ 'tg.header.cart_empty' | t | json }} + '</p>' +
-          '<a href="' + collectionsUrl + '">' + {{ 'tg.common.to_shop' | t | json }} + '</a>' +
+          '<p>' + (HI.cart_empty || "Количката е празна") + '</p>' +
+          '<a href="' + collectionsUrl + '">' + (HI.to_shop || "Към магазина") + '</a>' +
         '</div>';
       if (cartFoot) cartFoot.hidden = true;
       document.dispatchEvent(new CustomEvent('tg:cart-rendered', { detail: cart }));
@@ -1713,11 +1729,11 @@
             variant +
             '<div class="tg-cart-item-controls">' +
               '<div class="tg-cart-item-qty">' +
-                '<button type="button" data-tg-qty-dec aria-label="' + {{ 'tg.header.qty_decrease' | t | json }} + '">−</button>' +
+                '<button type="button" data-tg-qty-dec aria-label="' + (HI.qty_decrease || "Намали количеството") + '">−</button>' +
                 '<span>' + item.quantity + '</span>' +
-                '<button type="button" data-tg-qty-inc aria-label="' + {{ 'tg.header.qty_increase' | t | json }} + '">+</button>' +
+                '<button type="button" data-tg-qty-inc aria-label="' + (HI.qty_increase || "Увеличи количеството") + '">+</button>' +
               '</div>' +
-              '<button type="button" class="tg-cart-item-remove" data-tg-remove>' + {{ 'tg.header.remove' | t | json }} + '</button>' +
+              '<button type="button" class="tg-cart-item-remove" data-tg-remove>' + (HI.remove || "Премахни") + '</button>' +
             '</div>' +
           '</div>' +
           '<span class="tg-cart-item-price">' + moneyFormat(item.final_line_price) + '</span>' +

@@ -339,5 +339,328 @@
       "success_moderated": "Коментарът е публикуван, в очакване на модериране",
       "success": "Коментарът е публикуван"
     }
+  },
+  "tg": {
+    "common": {
+      "search": "Търсене",
+      "cart": "Количка",
+      "close": "Затвори",
+      "all": "Всички",
+      "categories": "Категории",
+      "all_categories": "Всички категории",
+      "view_all": "Виж всички",
+      "all_posts": "Всички публикации",
+      "to_shop": "Към магазина",
+      "video": "Видео",
+      "filters": "Филтри",
+      "close_filters": "Затвори филтрите",
+      "clear_all": "Изчисти всички",
+      "sort_label": "Подреди:",
+      "sort_price_asc": "Цена: ниска → висока",
+      "sort_price_desc": "Цена: висока → ниска",
+      "badge_new": "Ново",
+      "badge_sold_out": "Изчерпан",
+      "add_to_cart": "Добави в количката",
+      "adding": "Добавяне...",
+      "prev_page": "Предишна страница",
+      "next_page": "Следваща страница",
+      "quoted": "„{{ text }}“",
+      "products_count": {
+        "one": "{{ count }} продукт",
+        "other": "{{ count }} продукта"
+      },
+      "results_count": {
+        "one": "{{ count }} резултат",
+        "other": "{{ count }} резултата"
+      },
+      "results_word": {
+        "one": "резултат",
+        "other": "резултата"
+      },
+      "bgn": "лв.",
+      "prev_month": "Предишен месец",
+      "next_month": "Следващ месец",
+      "weekdays_short": "Пн,Вт,Ср,Чт,Пт,Сб,Нд",
+      "day": "ден",
+      "days": "дни",
+      "hours_short": "ч",
+      "position": "позиция"
+    },
+    "search": {
+      "apply_filters": "Приложи филтрите",
+      "eyebrow": "Магазин",
+      "results_for": "Резултати за",
+      "hero_title": "ТЪРСЕНЕ",
+      "placeholder": "Какво търсиш?",
+      "submit": "Търси",
+      "suggest_eyebrow": "Подбрани",
+      "suggest_title": "ПРЕДЛОЖЕНИ ПРОДУКТИ",
+      "sort_relevance": "Най-подходящи",
+      "other_title": "Статии и страници",
+      "kind_article": "Статия",
+      "kind_page": "Страница",
+      "showing_html": "Показани <strong>{{ from }}–{{ to }}</strong> от <strong>{{ total }}</strong> {{ unit }}",
+      "empty_title": "Нищо не намерихме",
+      "empty_desc_html": "Няма резултати за <em>„{{ terms }}“</em>. Провери изписването или опитай с по-кратка дума.",
+      "browse_all_products": "Разгледай всички продукти",
+      "popular_categories": "Популярни категории",
+      "idle_text": "Започни да пишеш и ще ти покажем предложения на момента — или разгледай директно:",
+      "popular_label": "Често търсени",
+      "cats_eyebrow": "Е-магазин",
+      "cats_title": "КАТЕГОРИИ",
+      "blog_title": "ОТ БЛОГА",
+      "suggest_empty": "Няма съвпадения за „{{ query }}”",
+      "suggest_products": "Продукти",
+      "suggest_all": "Виж всички резултати"
+    },
+    "collection": {
+      "facet_map_default": "Tyre Size|Tire Size=Размер гума",
+      "filter_labels": "Наличност,В наличност,Изчерпано,Цена,Марка,Марка,Тип продукт,Тип,Размер,Цвят,Цвят,Материал,Пол,Възраст",
+      "clear": "Изчисти",
+      "show_all_count": "Покажи всички ({{ count }})",
+      "show_all": "Покажи всички",
+      "show_less": "Покажи по-малко",
+      "back_label": "Всички колекции",
+      "switcher_strip_prefix": "Велосипеди ",
+      "search_placeholder": "Търси в колекцията…",
+      "sort_manual": "Препоръчани",
+      "sort_best_selling": "Най-продавани",
+      "sort_title_asc": "А–Я",
+      "sort_title_desc": "Я–А",
+      "sort_newest": "Най-нови",
+      "view_label": "Изглед",
+      "columns_3": "3 колони",
+      "columns_4": "4 колони",
+      "showing_html": "Показани <strong>{{ from }}–{{ to }}</strong> от <strong>{{ total }}</strong> продукта",
+      "load_more": "Зареди още",
+      "search_empty_html": "Няма продукти за това търсене на страницата. <a href=\"#\" data-tg-search-all>Търси в целия магазин &rarr;</a>",
+      "visible_of_total": "{{ visible }} от {{ total }}"
+    },
+    "header": {
+      "lang_switch": "Език / Language",
+      "lang_preview_hint": "Публикувайте английски в Settings → Languages, за да стане активен превключвателят",
+      "account": "Профил",
+      "open_menu": "Отвори менюто",
+      "close_menu": "Затвори менюто",
+      "main_nav": "Основна навигация",
+      "tile_shop_title": "Е-МАГАЗИН",
+      "tile_shop_desc": "Велосипеди, аксесоари и мърч",
+      "tile_service_title": "СЕРВИЗ",
+      "tile_service_desc": "Ремонт, профилактика, настройка",
+      "tile_rental_title": "НАЕМ НА КОЛЕЛА",
+      "tile_rental_desc": "Дневен и седмичен наем",
+      "tile_merch_title": "МЪРЧ",
+      "tile_merch_desc": "Тениски, джърсита, аксесоари",
+      "tile_ramps_title": "РАМПИ",
+      "tile_ramps_desc": "Преносими рампи 2GETHER",
+      "tile_club_desc": "Неделни групови карания",
+      "items_word": {
+        "one": "артикул",
+        "other": "артикула"
+      },
+      "close_cart": "Затвори количката",
+      "subtotal": "Междинна сума",
+      "checkout": "Към плащане",
+      "view_cart": "Виж цялата количка",
+      "cart_empty": "Количката е празна",
+      "qty_decrease": "Намали количеството",
+      "qty_increase": "Увеличи количеството",
+      "remove": "Премахни"
+    },
+    "cart_delivery": {
+      "delivery": "Доставка",
+      "brand_aria": "Еконт Експрес",
+      "brand": "ЕКОНТ",
+      "edit": "Промени",
+      "mode_label": "Начин на доставка",
+      "to_office": "До офис",
+      "to_address": "До адрес",
+      "city_label": "Град / населено място",
+      "city_placeholder": "Започни да пишеш…",
+      "office_label": "Офис на Еконт",
+      "pick_city_first": "Първо избери град",
+      "address_label": "Адрес",
+      "street_placeholder": "ул. / бул. и номер",
+      "other_placeholder": "вход, етаж, апартамент (по избор)",
+      "other_aria": "Допълнение към адреса",
+      "name_label": "Име и фамилия",
+      "name_placeholder": "Иван Иванов",
+      "phone_label": "Телефон",
+      "total": "Общо",
+      "err_city": "Избери град или населено място.",
+      "err_office": "Избери офис на Еконт.",
+      "err_address": "Въведи адрес за доставка.",
+      "err_name": "Въведи име и фамилия.",
+      "err_phone": "Въведи валиден телефон — куриерът ще се свърже с теб.",
+      "no_offices": "Няма офиси в този град",
+      "pick_office": "Избери офис…",
+      "econtomat": "Еконтомат · ",
+      "calculating": "изчислява се…",
+      "free": "Безплатна",
+      "summary_office": "Еконт до офис · ",
+      "summary_address": "Еконт до адрес · ",
+      "cities_unavailable": "Списъкът с градове не е достъпен в момента.",
+      "no_cities": "Няма намерени населени места.",
+      "loading": "Зареждане…",
+      "quote_error": "Цената ще се изчисли при плащане"
+    },
+    "collection_list": {
+      "enter_hint": "Enter ↵ = продукти",
+      "departments": "Отдели",
+      "empty_department": "Няма категории за това търсене в този отдел.",
+      "empty_brands": "Няма марки за това търсене.",
+      "none_match": "Нищо не съвпада в категориите.",
+      "search_products": "Търси в продуктите",
+      "category_word": {
+        "one": "категория",
+        "other": "категории"
+      },
+      "enter_for_products": "· Enter за продукти"
+    },
+    "product": {
+      "prev_photo": "Предишна снимка",
+      "next_photo": "Следваща снимка",
+      "gallery_label": "Снимки на продукта",
+      "photo_n_of": "Снимка {{ n }} от {{ total }}",
+      "related_title": "Подобни продукти",
+      "back_to": "Назад към {{ title }}",
+      "sold_out": "Изчерпано",
+      "buy_now": "Купи сега"
+    },
+    "products": {
+      "more": "Повече"
+    },
+    "404": {
+      "eyebrow": "Грешка 404",
+      "title": "СТРАНИЦАТА НЕ Е НАМЕРЕНА",
+      "tagline": "Изгубихме следата — тази пътека не води доникъде.",
+      "text": "Връзката може да е грешна или страницата да е преместена. Върни се на познат маршрут:",
+      "primary_label": "Начална страница"
+    },
+    "password": {
+      "eyebrow": "Велосипеден магазин · Варна",
+      "title_html": "ОТВАРЯМЕ <strong>СКОРО</strong>",
+      "tagline": "Нещо ново се задава по пътеката.",
+      "text": "Работим по новия ни онлайн магазин. Междувременно ни намерете в магазина във Варна или в социалните мрежи.",
+      "password_label": "Имаш парола?",
+      "password_placeholder": "Парола",
+      "password_button": "Влез",
+      "password_error": "Грешна парола — опитайте отново."
+    },
+    "coming_soon": {
+      "badge": "Скоро",
+      "title": "Скоро!",
+      "text": "Работим по програмата. Ще обявим старта в блога и в Instagram.",
+      "close": "Добре",
+      "back": "Към началото"
+    },
+    "blog": {
+      "empty_text": "Очаквайте скоро първите истории от клуба."
+    },
+    "blog_teaser": {
+      "title": "ИСТОРИИ ОТ КЛУБА",
+      "pick_blog_hint": "Изберете блог от настройките на секцията (или създайте блог с публикации), за да се покажат публикациите тук."
+    },
+    "blog_card": {
+      "read_more": "Прочети"
+    },
+    "article": {
+      "read_time": "мин четене",
+      "play_label": "Гледай клипа",
+      "more_title": "Още от клуба"
+    },
+    "club": {
+      "full": "Местата са запълнени",
+      "error": "Възникна грешка, опитайте отново",
+      "login": "Влезте, за да се запишете",
+      "members": "Само за членове"
+    },
+    "yt_carousel": {
+      "title": "ПОСЛЕДНИ КЛИПОВЕ",
+      "cta_label": "Всички клипове",
+      "prev": "Назад",
+      "next": "Напред",
+      "track_label": "Последни клипове",
+      "views": "гледания",
+      "likes": "харесвания"
+    },
+    "bike_service": {
+      "timeslot": "Час",
+      "problem_areas": "Brakes / Спирачки\nDrivetrain — gears, chain / Трансмисия\nWheels & tires / Капли и гуми\nSuspension — fork or shock / Окачване\nFrame & bearings / Рамка и лагери\nElectric system (e-bike) / Електрика\nFull service package / Пакетно обслужване\nOther / I am not sure / Друго"
+    },
+    "service_booking": {
+      "categories": "Пакетно обслужване,Капли и гуми,Трансмисия,Спирачна система,Окачване,Други",
+      "months": "януари,февруари,март,април,май,юни,юли,август,септември,октомври,ноември,декември",
+      "steps": "стъпки",
+      "book": "Запиши",
+      "ask": "Попитай"
+    },
+    "rental_booking": {
+      "by_email": "по имейл.",
+      "months": "Януари,Февруари,Март,Април,Май,Юни,Юли,Август,Септември,Октомври,Ноември,Декември"
+    },
+    "bike_rental": {
+      "pickup_time": "Час на взимане",
+      "days_label": "За колко дни?",
+      "days_hint": "При наем за повече от един ден дневната тарифа важи за всеки ден.",
+      "fewer_days": "По-малко дни",
+      "more_days": "Повече дни"
+    },
+    "rental_bikes": {
+      "eyebrow": "Наем на велосипеди",
+      "title": "НАЛИЧНИ ВЕЛОСИПЕДИ",
+      "busy": "ЗАЕТО",
+      "free": "СВОБОДНО",
+      "price_suffix": " / ден",
+      "cta": "Запази"
+    },
+    "ramps": {
+      "model": "Модел",
+      "weight": "Тегло",
+      "range": "Диапазон",
+      "length": "Дължина",
+      "price_vat": "Цена с ДДС",
+      "position": "Позиция",
+      "watch_youtube": "Гледай в YouTube",
+      "watch_vlog": "Гледай влога"
+    },
+    "ramps_compare": {
+      "col_label": "Характеристика"
+    },
+    "ramps_tabs": {
+      "aria": "Навигация в страницата"
+    },
+    "sunday_club": {
+      "soon_title": "Скоро!",
+      "soon_back": "Към началото",
+      "months_short": "ЯНУ,ФЕВ,МАР,АПР,МАЙ,ЮНИ,ЮЛИ,АВГ,СЕП,ОКТ,НОЕ,ДЕК",
+      "weekdays_short": "НЕД,ПОН,ВТО,СРЯ,ЧЕТ,ПЕТ,СЪБ"
+    },
+    "contact": {
+      "success_text": "Ще отговорим до 24 часа.",
+      "email": "Имейл",
+      "info_title": "Магазинът",
+      "address_label": "Адрес",
+      "address": "ул. „Генерал Цимерман“ 18<br>9002 Варна",
+      "phone_label": "Телефон",
+      "hours_label": "Работно време",
+      "hours": "Понеделник – Петък: 10:30 – 19:00"
+    },
+    "community": {
+      "soon_badge": "Скоро",
+      "soon_title": "СКОРО!",
+      "soon_text": "Работим по програмата. Следете ни — ще обявим старта в блога и в Instagram.",
+      "soon_close": "Добре"
+    },
+    "reviews": {
+      "eyebrow": "Отзиви",
+      "title": "КАКВО КАЗВАТ ХОРАТА",
+      "prev": "Назад",
+      "next": "Напред"
+    },
+    "timeline": {
+      "prev_year": "Предишна година",
+      "next_year": "Следваща година"
+    }
   }
 }

@@ -1,3 +1,7 @@
 # Email notification templates live in docs/, they are not theme files.
 ignore:
   - docs/**
+# The custom tg.* keys exist in bg.json + en.default.json only; every other locale
+# falls back to English, which is the intended behaviour for this shop.
+MatchingTranslations:
+  enabled: false
