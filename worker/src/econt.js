@@ -25,7 +25,36 @@
  *   ECONT_DEFAULT_WEIGHT_KG      — used when the cart has no product weights
  *   SHIP_FREE_OVER               — order subtotal (EUR) from which delivery is free (0 = never)
  *   ECONT_FALLBACK_OFFICE/ADDRESS — flat prices (EUR) used at checkout when Econt is unreachable
+ *   ECONT_PRICING                — "table" (default): price from the built-in Econt tariff table,
+ *                                  no API call; "api": live calculation through ee.econt.com
  */
+
+/**
+ * Econt national tariff (EUR incl. VAT) for a parcel, sender = office drop-off.
+ * Flat across Bulgaria — only the weight bracket and office/address matter.
+ * Sampled from Econt's calculator on 2026-09-07; update when Econt changes prices.
+ */
+const TARIFF = [
+  // [max kg, to office, to address]
+  [1, 3.44, 4.55],
+  [2, 3.78, 5.62],
+  [5, 4.13, 7.14],
+  [10, 6.59, 10.61],
+  [15, 7.41, 14.29],
+  [20, 9.07, 16.66],
+  [30, 12.67, 21.06],
+  [50, 19.87, 29.86],
+];
+
+export function tariffPrice(mode, weightKg) {
+  const w = Math.max(0.1, weightKg);
+  const row = TARIFF.find((r) => w <= r[0]) || TARIFF[TARIFF.length - 1];
+  const base = mode === 'office' ? row[1] : row[2];
+  if (w <= TARIFF[TARIFF.length - 1][0]) return { price: base, service: `Еконт · до ${row[0]} кг` };
+  // Above 50 kg: extra 50 kg brackets on top of the last row.
+  const extra = Math.ceil((w - 50) / 50);
+  return { price: Math.round((base + extra * base) * 100) / 100, service: 'Еконт · над 50 кг' };
+}
 
 const BGN_PER_EUR = 1.95583;
 const CITIES_TTL_S = 24 * 3600;
@@ -49,6 +78,7 @@ export function econtConfig(env) {
       num: env.ECONT_SENDER_NUM || '',
     },
     defaultWeightKg: num(env.ECONT_DEFAULT_WEIGHT_KG, 1),
+    pricing: env.ECONT_PRICING === 'api' ? 'api' : 'table',
     freeOver: num(env.SHIP_FREE_OVER, 0),
     fallback: {
       office: num(env.ECONT_FALLBACK_OFFICE, 0),
@@ -213,6 +243,10 @@ function senderBlock(cfg) {
  * Returns { price (EUR), currency, service, weight }.
  */
 export async function econtQuote(cfg, dest, weightKg, receiver = {}) {
+  if (cfg.pricing !== 'api') {
+    const t = tariffPrice(dest.mode === 'office' ? 'office' : 'address', weightKg);
+    return { price: t.price, currency: 'EUR', service: t.service, weight: Math.round(weightKg * 100) / 100, source: 'table' };
+  }
   const label = {
     ...senderBlock(cfg),
     receiverClient: { name: receiver.name || 'Клиент', phones: [receiver.phone || '0888000000'] },

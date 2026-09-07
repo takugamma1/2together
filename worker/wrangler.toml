@@ -21,6 +21,8 @@ ECONT_SENDER_CITY = "Варна"
 ECONT_SENDER_POSTCODE = "9000"
 ECONT_SENDER_STREET = ""
 ECONT_SENDER_NUM = ""
+# "table" = built-in Econt tariff (no API call for prices); "api" = live ee.econt.com calculation.
+ECONT_PRICING = "table"
 # Weight (kg) assumed when products have no weight set.
 ECONT_DEFAULT_WEIGHT_KG = "1"
 # Free delivery from this order subtotal in EUR (0 = never).
