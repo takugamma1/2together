@@ -10,6 +10,10 @@
  *   POST /vote   {poll, option}
  *   GET  /reviews            -> { name, rating, total, mapsUrl, reviews:[...] } (Google, cached 12h)
  *   GET  /youtube            -> { channelTitle, channelUrl, videos:[...] } (YouTube RSS, cached 30m)
+ *   GET  /econt-cities?q=    -> Econt city search        (see econt.js)
+ *   GET  /econt-offices?city -> Econt offices in a city  (see econt.js)
+ *   POST /econt-quote        -> live Econt delivery price (see econt.js)
+ *   POST /carrier-rates      -> Shopify CarrierService callback (HMAC, see econt.js)
  *
  * Secrets (wrangler secret put):
  *   SHOPIFY_API_SECRET  — app proxy app's client secret (signature verification)
@@ -22,6 +26,8 @@
  *   YOUTUBE_CHANNEL_ID  — channel ID (UC...); public; for /youtube
  */
 
+import { handleEcontCities, handleEcontOffices, handleEcontQuote, handleCarrierRates } from './econt.js';
+
 const ADMIN_API_VERSION = '2025-10';
 const TIMESTAMP_TOLERANCE_S = 300;
 
@@ -29,6 +35,12 @@ export default {
   async fetch(request, env, ctx) {
     try {
       const url = new URL(request.url);
+
+      // Shopify's CarrierService callback is server-to-server (no proxy
+      // signature); it carries its own HMAC header, verified inside.
+      if (url.pathname.split('/').filter(Boolean).pop() === 'carrier-rates') {
+        return await handleCarrierRates(request, env);
+      }
 
       // --- Authenticate EVERY request (Shopify app proxy signature) ---
       const authError = await verifyProxyRequest(url, env);
@@ -72,6 +84,15 @@ export default {
         case 'rental-book':
           if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
           return await handleRentalBook(request, env, customerId);
+        case 'econt-cities':
+          if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+          return await handleEcontCities(url, env, ctx);
+        case 'econt-offices':
+          if (request.method !== 'GET') return json({ error: 'method_not_allowed' }, 405);
+          return await handleEcontOffices(url, env, ctx);
+        case 'econt-quote':
+          if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
+          return await handleEcontQuote(request, env);
         default:
           return json({ error: 'not_found' }, 404);
       }

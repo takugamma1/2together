@@ -1,4 +1,8 @@
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.cart_delivery -%}
+  {{ '2gether-cart-delivery.css' | asset_url | stylesheet_tag }}
+  <script src="{{ '2gether-cart-delivery.js' | asset_url }}" defer></script>
+{%- endif -%}
 {% # theme-check-disable RemoteAsset %}
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
@@ -235,6 +239,9 @@
       </div>
 
       <footer class="tg-cart-drawer-foot" data-tg-cart-foot>
+        {%- if section.settings.cart_delivery -%}
+          {%- render '2gether-cart-delivery', endpoint: section.settings.cart_delivery_endpoint, checkout_url: '/checkout' -%}
+        {%- endif -%}
         <div class="tg-cart-drawer-subtotal">
           <span>{{ section.settings.cart_subtotal_label | default: 'Междинна сума' }}</span>
           <strong data-tg-cart-subtotal>{{ cart.total_price | money }}</strong>
@@ -351,6 +358,23 @@
       "id": "cart_view_label",
       "label": "View full cart link",
       "default": "Виж цялата количка"
+    },
+    {
+      "type": "header",
+      "content": "Доставка в количката (Еконт)"
+    },
+    {
+      "type": "checkbox",
+      "id": "cart_delivery",
+      "label": "Избор на доставка в количката",
+      "info": "Офис / адрес на Еконт, цена на живо, име и задължителен телефон. Данните се подават към checkout-а.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_delivery_endpoint",
+      "label": "App proxy endpoint",
+      "default": "/apps/club"
     }
   ],
   "blocks": [
@@ -1302,8 +1326,16 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
-    flex-shrink: 0;
+    flex: 0 1 auto;
+    min-height: 0;
+    max-height: 72%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(138, 155, 181, 0.2) transparent;
   }
+
+  .tg-cart-drawer-body { min-height: 120px; }
 
   .tg-cart-drawer-foot[hidden] { display: none; }
 
@@ -1543,6 +1575,7 @@
           '<a href="' + collectionsUrl + '">Към магазина</a>' +
         '</div>';
       if (cartFoot) cartFoot.hidden = true;
+      document.dispatchEvent(new CustomEvent('tg:cart-rendered', { detail: cart }));
       return;
     }
 
@@ -1577,6 +1610,7 @@
       );
     }).join('');
     cartBody.innerHTML = html;
+    document.dispatchEvent(new CustomEvent('tg:cart-rendered', { detail: cart }));
   }
 
   function escapeHtml(s) {
