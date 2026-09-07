@@ -3,7 +3,9 @@
  * Queries Shopify's suggest API for products + collections and renders
  * a dropdown bubble; Enter opens the full search results page. */
 (function () {
-  var ENDPOINT = '/search/suggest.json';
+  var I = (window.tgI18n && window.tgI18n.search) || {};
+  var SEARCH_URL = I.searchUrl || '/search';
+  var ENDPOINT = SEARCH_URL + '/suggest.json';
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -32,10 +34,10 @@
       var h = '';
 
       if (!prods.length && !colls.length) {
-        h = '<div class="tg-suggest-empty">Няма съвпадения за „' + esc(q) + '”</div>';
+        h = '<div class="tg-suggest-empty">' + (I.suggestEmpty || 'Няма съвпадения за „{q}”').replace('{q}', esc(q)) + '</div>';
       } else {
         if (prods.length) {
-          h += '<div class="tg-suggest-group">Продукти</div>';
+          h += '<div class="tg-suggest-group">' + esc(I.products || 'Продукти') + '</div>';
           h += prods.map(function (p) {
             var img = p.featured_image && p.featured_image.url
               ? '<img src="' + esc(p.featured_image.url) + '" alt="" loading="lazy" width="44" height="44">'
@@ -51,7 +53,7 @@
           }).join('');
         }
         if (colls.length) {
-          h += '<div class="tg-suggest-group">Категории</div>';
+          h += '<div class="tg-suggest-group">' + esc(I.collections || 'Категории') + '</div>';
           h += colls.map(function (c) {
             return (
               '<a class="tg-suggest-item tg-suggest-item--coll" href="' + esc(c.url) + '">' +
@@ -61,7 +63,7 @@
             );
           }).join('');
         }
-        h += '<a class="tg-suggest-all" href="/search?type=product&q=' + encodeURIComponent(q) + '">Виж всички резултати &rarr;</a>';
+        h += '<a class="tg-suggest-all" href="' + SEARCH_URL + '?type=product&q=' + encodeURIComponent(q) + '">' + esc(I.viewAll || 'Виж всички резултати') + ' &rarr;</a>';
       }
 
       bubble.innerHTML = h;
@@ -92,7 +94,7 @@
         var q = input.value.trim();
         if (q) {
           e.preventDefault();
-          window.location.href = '/search?type=product&q=' + encodeURIComponent(q);
+          window.location.href = SEARCH_URL + '?type=product&q=' + encodeURIComponent(q);
         }
       }
     });

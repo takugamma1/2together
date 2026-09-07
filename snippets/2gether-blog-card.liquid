@@ -7,6 +7,8 @@
     read_more_text — optional "read more" text
 {%- endcomment -%}
 {%- liquid
+  assign d_video_label = 'tg.common.video' | t
+  assign d_read_more_text = 'tg.blog_card.read_more' | t
   assign tg_has_video = false
   if article.content contains 'youtube.com' or article.content contains 'youtu.be'
     assign tg_has_video = true
@@ -36,7 +38,7 @@
     {%- if tg_has_video -%}
       <span class="tg-bcard-play">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>
-        {{ video_label | default: 'Видео' }}
+        {{ video_label | default: d_video_label }}
       </span>
     {%- endif -%}
   </a>
@@ -51,6 +53,6 @@
     {%- if tg_excerpt != blank -%}
       <p class="tg-bcard-excerpt">{{ tg_excerpt }}</p>
     {%- endif -%}
-    <span class="tg-bcard-more">{{ read_more_text | default: 'Прочети' }} &rarr;</span>
+    <span class="tg-bcard-more">{{ read_more_text | default: d_read_more_text }} &rarr;</span>
   </div>
 </article>

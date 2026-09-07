@@ -192,6 +192,15 @@
 {% endif %}
 
 {% if poll != blank and customer %}
+  <script>
+    window.tgI18n = window.tgI18n || {};
+    window.tgI18n.club = {
+      full: {{ 'tg.club.full' | t | json }},
+      error: {{ 'tg.club.error' | t | json }},
+      login: {{ 'tg.club.login' | t | json }},
+      members: {{ 'tg.club.members' | t | json }}
+    };
+  </script>
   <script type="module" src="{{ '2gether-club.js' | asset_url }}" defer></script>
 {% endif %}
 

@@ -2,6 +2,29 @@
 {%- if section.settings.cart_delivery -%}
   {{ '2gether-cart-delivery.css' | asset_url | stylesheet_tag }}
   <script src="{{ '2gether-cart-delivery.js' | asset_url }}" defer></script>
+  <script>
+    window.tgI18n = window.tgI18n || {};
+    window.tgI18n.cartDelivery = {
+      locale: {{ request.locale.iso_code | json }},
+      errCity: {{ 'tg.cart_delivery.err_city' | t | json }},
+      errOffice: {{ 'tg.cart_delivery.err_office' | t | json }},
+      errAddress: {{ 'tg.cart_delivery.err_address' | t | json }},
+      errName: {{ 'tg.cart_delivery.err_name' | t | json }},
+      errPhone: {{ 'tg.cart_delivery.err_phone' | t | json }},
+      noOffices: {{ 'tg.cart_delivery.no_offices' | t | json }},
+      pickCityFirst: {{ 'tg.cart_delivery.pick_city_first' | t | json }},
+      pickOffice: {{ 'tg.cart_delivery.pick_office' | t | json }},
+      econtomat: {{ 'tg.cart_delivery.econtomat' | t | json }},
+      calculating: {{ 'tg.cart_delivery.calculating' | t | json }},
+      free: {{ 'tg.cart_delivery.free' | t | json }},
+      summaryOffice: {{ 'tg.cart_delivery.summary_office' | t | json }},
+      summaryAddress: {{ 'tg.cart_delivery.summary_address' | t | json }},
+      citiesUnavailable: {{ 'tg.cart_delivery.cities_unavailable' | t | json }},
+      noCities: {{ 'tg.cart_delivery.no_cities' | t | json }},
+      loading: {{ 'tg.cart_delivery.loading' | t | json }},
+      quoteError: {{ 'tg.cart_delivery.quote_error' | t | json }}
+    };
+  </script>
 {%- endif -%}
 {% # theme-check-disable RemoteAsset %}
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
@@ -9,6 +32,11 @@
 
 {%- liquid
   assign logo_text = section.settings.logo_text | default: shop.name
+  assign d_close = 'tg.common.close' | t
+  assign d_cart_title = 'tg.common.cart' | t
+  assign d_subtotal = 'tg.header.subtotal' | t
+  assign d_checkout = 'tg.header.checkout' | t
+  assign d_view_cart = 'tg.header.view_cart' | t
   assign current_path = request.path
   assign nav_menu = linklists[section.settings.menu]
   assign menu_links_count = 0
@@ -32,7 +60,7 @@
         {%- if localization.available_languages.size > 1 -%}
           {%- form 'localization', id: 'tg-lang-form', class: 'tg-lang' -%}
             <input type="hidden" name="return_to" value="{{ request.path }}">
-            <div class="tg-lang-switch" role="group" aria-label="Език / Language">
+            <div class="tg-lang-switch" role="group" aria-label="{{ 'tg.header.lang_switch' | t }}">
               {%- for language in localization.available_languages -%}
                 {%- assign is_current = false -%}
                 {%- if language.iso_code == localization.language.iso_code -%}{%- assign is_current = true -%}{%- endif -%}
@@ -43,40 +71,40 @@
           {%- endform -%}
         {%- elsif request.design_mode -%}
           {%- comment -%} Only one language is published — preview the widget in the editor and explain how to activate it. {%- endcomment -%}
-          <div class="tg-lang tg-lang--preview" title="Публикувайте английски в Settings → Languages, за да стане активен превключвателят">
+          <div class="tg-lang tg-lang--preview" title="{{ 'tg.header.lang_preview_hint' | t | escape }}">
             <div class="tg-lang-switch"><span class="tg-lang-btn is-active">BG</span><span class="tg-lang-sep">/</span><span class="tg-lang-btn">EN</span></div>
           </div>
         {%- endif -%}
       {%- endif -%}
       {% if section.settings.show_search %}
-        <a href="{{ routes.search_url }}" class="tg-header-icon" aria-label="Търсене">
+        <a href="{{ routes.search_url }}" class="tg-header-icon" aria-label="{{ 'tg.common.search' | t }}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
         </a>
       {% endif %}
       {% if section.settings.show_account %}
-        <a href="{{ routes.account_url }}" class="tg-header-icon" aria-label="Профил">
+        <a href="{{ routes.account_url }}" class="tg-header-icon" aria-label="{{ 'tg.header.account' | t }}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </a>
       {% endif %}
       {%- comment -%} Real link so the cart stays reachable without JS — the click handler upgrades it to the drawer. {%- endcomment -%}
-      <a href="{{ routes.cart_url }}" class="tg-header-icon tg-header-cart" aria-label="Количка" aria-controls="tg-cart-drawer" data-tg-cart-open>
+      <a href="{{ routes.cart_url }}" class="tg-header-icon tg-header-cart" aria-label="{{ 'tg.common.cart' | t }}" aria-controls="tg-cart-drawer" data-tg-cart-open>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         <span class="tg-header-cart-count" data-tg-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
       </a>
-      <button type="button" class="tg-header-burger" aria-label="Отвори менюто" aria-expanded="false" aria-controls="tg-takeover" data-tg-burger>
+      <button type="button" class="tg-header-burger" aria-label="{{ 'tg.header.open_menu' | t }}" aria-expanded="false" aria-controls="tg-takeover" data-tg-burger>
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 
   <!-- Full-screen navigation takeover -->
-  <div id="tg-takeover" class="tg-takeover" data-tg-takeover hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Основна навигация">
+  <div id="tg-takeover" class="tg-takeover" data-tg-takeover hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ 'tg.header.main_nav' | t }}">
     <div class="tg-takeover-backdrop" data-tg-takeover-close></div>
 
     <div class="tg-takeover-inner">
       <div class="tg-takeover-head">
-        <button type="button" class="tg-takeover-close" data-tg-takeover-close aria-label="Затвори менюто">
-          <span>{{ section.settings.close_label | default: 'Затвори' }}</span>
+        <button type="button" class="tg-takeover-close" data-tg-takeover-close aria-label="{{ 'tg.header.close_menu' | t }}">
+          <span>{{ section.settings.close_label | default: d_close }}</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -205,7 +233,15 @@
           {% endfor %}
         {% else %}
           {%- comment -%} Fallback so the menu works before the merchant configures anything {%- endcomment -%}
-          {%- assign default_tiles = 'Е-МАГАЗИН|Велосипеди, аксесоари и мърч|/collections||СЕРВИЗ|Ремонт, профилактика, настройка|/pages/bike-service||НАЕМ НА КОЛЕЛА|Дневен и седмичен наем|/pages/bike-rental||МЪРЧ|Тениски, джърсита, аксесоари|/collections/march-c199||РАМПИ|Преносими рампи 2GETHER|/pages/portable-ramps||SUNDAY CLUB|Неделни групови карания|/pages/sunday-club' | split: '||' -%}
+          {%- capture default_tiles_str -%}
+            {{- 'tg.header.tile_shop_title' | t }}|{{ 'tg.header.tile_shop_desc' | t }}|/collections||
+            {{- 'tg.header.tile_service_title' | t }}|{{ 'tg.header.tile_service_desc' | t }}|/pages/bike-service||
+            {{- 'tg.header.tile_rental_title' | t }}|{{ 'tg.header.tile_rental_desc' | t }}|/pages/bike-rental||
+            {{- 'tg.header.tile_merch_title' | t }}|{{ 'tg.header.tile_merch_desc' | t }}|/collections/march-c199||
+            {{- 'tg.header.tile_ramps_title' | t }}|{{ 'tg.header.tile_ramps_desc' | t }}|/pages/portable-ramps||
+            {{- 'SUNDAY CLUB' }}|{{ 'tg.header.tile_club_desc' | t }}|/pages/sunday-club
+          {%- endcapture -%}
+          {%- assign default_tiles = default_tiles_str | split: '||' -%}
           {% for entry in default_tiles %}
             {%- assign parts = entry | split: '|' -%}
             {%- assign t_num = forloop.index | prepend: '0' | slice: -2, 2 -%}
@@ -239,15 +275,15 @@
   </div>
 
   <!-- ── Cart drawer (sliced) ── -->
-  <div id="tg-cart-drawer" class="tg-cart-drawer" data-tg-cart-drawer data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-collections-url="{{ routes.collections_url }}" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ section.settings.cart_title | default: 'Количка' }}">
+  <div id="tg-cart-drawer" class="tg-cart-drawer" data-tg-cart-drawer data-currency="{{ cart.currency.iso_code | default: shop.currency }}" data-collections-url="{{ routes.collections_url }}" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ section.settings.cart_title | default: d_cart_title }}">
     <div class="tg-cart-drawer-backdrop" data-tg-cart-close></div>
     <aside class="tg-cart-drawer-panel">
       <header class="tg-cart-drawer-head">
         <div class="tg-cart-drawer-head-text">
-          <span class="tg-cart-drawer-eyebrow">{{ section.settings.cart_title | default: 'Количка' }}</span>
-          <span class="tg-cart-drawer-count"><span data-tg-cart-drawer-count>{{ cart.item_count }}</span> {{ cart.item_count | pluralize: 'артикул', 'артикула' }}</span>
+          <span class="tg-cart-drawer-eyebrow">{{ section.settings.cart_title | default: d_cart_title }}</span>
+          <span class="tg-cart-drawer-count"><span data-tg-cart-drawer-count>{{ cart.item_count }}</span> {{ 'tg.header.items_word' | t: count: cart.item_count }}</span>
         </div>
-        <button type="button" class="tg-cart-drawer-close" data-tg-cart-close aria-label="Затвори количката">
+        <button type="button" class="tg-cart-drawer-close" data-tg-cart-close aria-label="{{ 'tg.header.close_cart' | t }}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </header>
@@ -263,14 +299,14 @@
           {%- render '2gether-cart-delivery', endpoint: section.settings.cart_delivery_endpoint, checkout_url: '/checkout' -%}
         {%- endif -%}
         <div class="tg-cart-drawer-subtotal">
-          <span>{{ section.settings.cart_subtotal_label | default: 'Междинна сума' }}</span>
+          <span>{{ section.settings.cart_subtotal_label | default: d_subtotal }}</span>
           <strong data-tg-cart-subtotal>{{ cart.total_price | money }}</strong>
         </div>
         <a href="{{ routes.cart_url }}/checkout" class="tg-cart-drawer-checkout" data-tg-cart-checkout>
-          {{ section.settings.cart_checkout_label | default: 'Към плащане' }}
+          {{ section.settings.cart_checkout_label | default: d_checkout }}
           <svg width="14" height="10" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
         </a>
-        <a href="{{ routes.cart_url }}" class="tg-cart-drawer-view">{{ section.settings.cart_view_label | default: 'Виж цялата количка' }}</a>
+        <a href="{{ routes.cart_url }}" class="tg-cart-drawer-view">{{ section.settings.cart_view_label | default: d_view_cart }}</a>
       </footer>
     </aside>
   </div>
@@ -1527,7 +1563,7 @@
     takeover.setAttribute('data-open', 'true');
     takeover.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
-    burger.setAttribute('aria-label', 'Затвори менюто');
+    burger.setAttribute('aria-label', {{ 'tg.header.close_menu' | t | json }});
     document.documentElement.style.overflow = 'hidden';
     document.body.style.overflow = 'hidden';
     // Focus the close button for keyboard nav
@@ -1539,7 +1575,7 @@
     takeover.removeAttribute('data-open');
     takeover.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Отвори менюто');
+    burger.setAttribute('aria-label', {{ 'tg.header.open_menu' | t | json }});
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     clearTimeout(hideTimer);
@@ -1611,7 +1647,7 @@
 
   function moneyFormat(cents) {
     try {
-      return new Intl.NumberFormat('bg-BG', { style: 'currency', currency: cartCurrency }).format(cents / 100);
+      return new Intl.NumberFormat({{ request.locale.iso_code | json }}, { style: 'currency', currency: cartCurrency }).format(cents / 100);
     } catch (err) {
       return (cents / 100).toFixed(2) + ' ' + cartCurrency;
     }
@@ -1631,7 +1667,7 @@
     const countLine = cartDrawer ? cartDrawer.querySelector('.tg-cart-drawer-count') : null;
     if (countLine) {
       const n = itemCount;
-      countLine.innerHTML = '<span data-tg-cart-drawer-count>' + n + '</span> ' + pluralize(n, 'артикул', 'артикула');
+      countLine.innerHTML = '<span data-tg-cart-drawer-count>' + n + '</span> ' + pluralize(n, {{ 'tg.header.items_word' | t: count: 1 | json }}, {{ 'tg.header.items_word' | t: count: 2 | json }});
     }
   }
 
@@ -1650,8 +1686,8 @@
             '<line x1="3" y1="6" x2="21" y2="6"/>' +
             '<path d="M16 10a4 4 0 0 1-8 0"/>' +
           '</svg>' +
-          '<p>Количката е празна</p>' +
-          '<a href="' + collectionsUrl + '">Към магазина</a>' +
+          '<p>' + {{ 'tg.header.cart_empty' | t | json }} + '</p>' +
+          '<a href="' + collectionsUrl + '">' + {{ 'tg.common.to_shop' | t | json }} + '</a>' +
         '</div>';
       if (cartFoot) cartFoot.hidden = true;
       document.dispatchEvent(new CustomEvent('tg:cart-rendered', { detail: cart }));
@@ -1677,11 +1713,11 @@
             variant +
             '<div class="tg-cart-item-controls">' +
               '<div class="tg-cart-item-qty">' +
-                '<button type="button" data-tg-qty-dec aria-label="Намали количеството">−</button>' +
+                '<button type="button" data-tg-qty-dec aria-label="' + {{ 'tg.header.qty_decrease' | t | json }} + '">−</button>' +
                 '<span>' + item.quantity + '</span>' +
-                '<button type="button" data-tg-qty-inc aria-label="Увеличи количеството">+</button>' +
+                '<button type="button" data-tg-qty-inc aria-label="' + {{ 'tg.header.qty_increase' | t | json }} + '">+</button>' +
               '</div>' +
-              '<button type="button" class="tg-cart-item-remove" data-tg-remove>Премахни</button>' +
+              '<button type="button" class="tg-cart-item-remove" data-tg-remove>' + {{ 'tg.header.remove' | t | json }} + '</button>' +
             '</div>' +
           '</div>' +
           '<span class="tg-cart-item-price">' + moneyFormat(item.final_line_price) + '</span>' +

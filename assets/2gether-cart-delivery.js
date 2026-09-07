@@ -11,6 +11,8 @@
 (function () {
   'use strict';
 
+  const I = (window.tgI18n && window.tgI18n.cartDelivery) || {};
+
   const root = document.querySelector('[data-tg-cd]');
   if (!root) return;
 
@@ -47,7 +49,7 @@
   const currency = (drawer && drawer.getAttribute('data-currency')) || 'EUR';
   function money(cents) {
     try {
-      return new Intl.NumberFormat('bg-BG', { style: 'currency', currency }).format(cents / 100);
+      return new Intl.NumberFormat(I.locale || 'bg-BG', { style: 'currency', currency }).format(cents / 100);
     } catch (err) {
       return (cents / 100).toFixed(2) + ' ' + currency;
     }
@@ -129,11 +131,11 @@
   }
 
   function firstProblem() {
-    if (!state.city) return 'Избери град или населено място.';
-    if (state.mode === 'office' && !state.office) return 'Избери офис на Еконт.';
-    if (state.mode === 'address' && state.street.trim().length < 3) return 'Въведи адрес за доставка.';
-    if (!nameValid()) return 'Въведи име и фамилия.';
-    if (!phoneValid(state.phone)) return 'Въведи валиден телефон — куриерът ще се свърже с теб.';
+    if (!state.city) return I.errCity || 'Избери град или населено място.';
+    if (state.mode === 'office' && !state.office) return I.errOffice || 'Избери офис на Еконт.';
+    if (state.mode === 'address' && state.street.trim().length < 3) return I.errAddress || 'Въведи адрес за доставка.';
+    if (!nameValid()) return I.errName || 'Въведи име и фамилия.';
+    if (!phoneValid(state.phone)) return I.errPhone || 'Въведи валиден телефон — куриерът ще се свърже с теб.';
     return '';
   }
 
@@ -166,14 +168,14 @@
     const sel = ui.office;
     sel.innerHTML = '';
     if (!list || !list.length) {
-      sel.appendChild(new Option(state.city ? 'Няма офиси в този град' : 'Първо избери град', ''));
+      sel.appendChild(new Option(state.city ? (I.noOffices || 'Няма офиси в този град') : (I.pickCityFirst || 'Първо избери град'), ''));
       sel.disabled = true;
       ui.officeAddr.textContent = '';
       return;
     }
-    sel.appendChild(new Option('Избери офис…', ''));
+    sel.appendChild(new Option(I.pickOffice || 'Избери офис…', ''));
     list.forEach((o) => {
-      const label = (o.isAPS ? 'Еконтомат · ' : '') + o.name;
+      const label = (o.isAPS ? (I.econtomat || 'Еконтомат · ') : '') + o.name;
       const opt = new Option(label, o.code);
       opt.dataset.address = o.address || '';
       opt.dataset.name = o.name || '';
@@ -203,12 +205,12 @@
       return;
     }
     if (!state.quote) {
-      p.textContent = 'изчислява се…'; p.dataset.state = 'loading';
+      p.textContent = I.calculating || 'изчислява се…'; p.dataset.state = 'loading';
       ui.total.textContent = money(subtotal);
       return;
     }
     if (state.quote.free || state.quote.price === 0) {
-      p.textContent = 'Безплатна'; p.dataset.state = 'free';
+      p.textContent = I.free || 'Безплатна'; p.dataset.state = 'free';
       ui.total.textContent = money(subtotal);
       return;
     }
@@ -224,10 +226,10 @@
     ui.summary.hidden = !collapsed;
     if (collapsed) {
       if (state.mode === 'office') {
-        ui.summaryMain.textContent = 'Еконт до офис · ' + state.office.name;
+        ui.summaryMain.textContent = (I.summaryOffice || 'Еконт до офис · ') + state.office.name;
         ui.summarySub.textContent = [state.city.name, state.office.address].filter(Boolean).join(' · ');
       } else {
-        ui.summaryMain.textContent = 'Еконт до адрес · ' + state.city.name;
+        ui.summaryMain.textContent = (I.summaryAddress || 'Еконт до адрес · ') + state.city.name;
         ui.summarySub.textContent = [state.street, state.other].filter(Boolean).join(', ');
       }
       ui.summarySub.textContent += (ui.summarySub.textContent ? ' · ' : '') + state.name + ' · ' + normalizePhone(state.phone);
@@ -277,7 +279,7 @@
     if (!list.length) {
       const li = document.createElement('li');
       li.className = 'tg-cd-list-empty';
-      li.textContent = failed ? 'Списъкът с градове не е достъпен в момента.' : 'Няма намерени населени места.';
+      li.textContent = failed ? (I.citiesUnavailable || 'Списъкът с градове не е достъпен в момента.') : (I.noCities || 'Няма намерени населени места.');
       ul.appendChild(li);
     } else {
       list.forEach((c, i) => {
@@ -315,7 +317,7 @@
     const id = ++officeReq;
     if (!state.city) { renderOffices([]); return; }
     ui.office.innerHTML = '';
-    ui.office.appendChild(new Option('Зареждане…', ''));
+    ui.office.appendChild(new Option(I.loading || 'Зареждане…', ''));
     ui.office.disabled = true;
     api('/econt-offices?city=' + encodeURIComponent(state.city.id))
       .then(({ ok, data }) => {
@@ -359,14 +361,14 @@
         if (ok && data && typeof data.price === 'number') {
           state.quote = data;
         } else {
-          state.quoteError = 'Цената ще се изчисли при плащане';
+          state.quoteError = I.quoteError || 'Цената ще се изчисли при плащане';
         }
         render();
         syncAttributes();
       })
       .catch(() => {
         if (id !== quoteReq) return;
-        state.quoteError = 'Цената ще се изчисли при плащане';
+        state.quoteError = I.quoteError || 'Цената ще се изчисли при плащане';
         render();
       });
   }

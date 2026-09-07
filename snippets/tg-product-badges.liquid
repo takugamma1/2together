@@ -18,10 +18,10 @@
     {%- if discount_pct > 0 -%}
       <span class="tg-product-badge tg-product-badge--sale">-{{ discount_pct }}%</span>
     {%- elsif product.tags contains 'new' or product.tags contains 'НОВО' -%}
-      <span class="tg-product-badge">Ново</span>
+      <span class="tg-product-badge">{{ 'tg.common.badge_new' | t }}</span>
     {%- endif -%}
     {%- unless product.available -%}
-      <span class="tg-product-badge tg-product-badge--sold-out">Изчерпан</span>
+      <span class="tg-product-badge tg-product-badge--sold-out">{{ 'tg.common.badge_sold_out' | t }}</span>
     {%- endunless -%}
   </div>
   <div class="tg-pcard-badges-right">

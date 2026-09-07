@@ -10,6 +10,20 @@
 <script>document.body.classList.add('tg-collection-active');</script>
 
 {%- liquid
+  assign d_eyebrow = 'tg.search.eyebrow' | t
+  assign d_hero_title = 'tg.search.hero_title' | t
+  assign d_placeholder = 'tg.search.placeholder' | t
+  assign d_suggest_eyebrow = 'tg.search.suggest_eyebrow' | t
+  assign d_suggest_title = 'tg.search.suggest_title' | t
+  assign d_idle_text = 'tg.search.idle_text' | t
+  assign d_popular_label = 'tg.search.popular_label' | t
+  assign d_cats_eyebrow = 'tg.search.cats_eyebrow' | t
+  assign d_cats_title = 'tg.search.cats_title' | t
+  assign d_blog_title = 'tg.search.blog_title' | t
+  assign search_terms_esc = search.terms | escape
+-%}
+
+{%- liquid
   assign sort_by = search.sort_by | default: search.default_sort_by | default: 'relevance'
   assign products_per_page = section.settings.products_per_page | default: 24
 
@@ -38,8 +52,8 @@
   {% if search.performed and search.filters.size > 0 %}
     <aside class="tg-coll-sidebar" id="tg-filter-sidebar" aria-hidden="true">
       <div class="tg-coll-sidebar-head">
-        <span class="tg-coll-sidebar-title">Филтри</span>
-        <button class="tg-filter-close" type="button" data-tg-filter-close aria-label="Затвори филтрите">
+        <span class="tg-coll-sidebar-title">{{ 'tg.common.filters' | t }}</span>
+        <button class="tg-filter-close" type="button" data-tg-filter-close aria-label="{{ 'tg.common.close_filters' | t }}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -95,9 +109,9 @@
 
       <div class="tg-filter-actions">
         {% if active_filter_count > 0 %}
-          <a href="{{ routes.search_url }}?type=product&q={{ search.terms | url_encode }}" class="tg-filter-clear">Изчисти всички</a>
+          <a href="{{ routes.search_url }}?type=product&q={{ search.terms | url_encode }}" class="tg-filter-clear">{{ 'tg.common.clear_all' | t }}</a>
         {% endif %}
-        <button class="tg-filter-apply" type="button" onclick="tgApplyFilters()">Приложи филтрите</button>
+        <button class="tg-filter-apply" type="button" onclick="tgApplyFilters()">{{ 'tg.search.apply_filters' | t }}</button>
       </div>
     </aside>
   {% endif %}
@@ -108,13 +122,13 @@
     <!-- Hero: title + big branded search bar -->
     <div class="tg-coll-hero tg-srch-hero">
       <div class="tg-coll-hero-left">
-        <span class="tg-label">{{ section.settings.eyebrow | default: 'Магазин' }}</span>
+        <span class="tg-label">{{ section.settings.eyebrow | default: d_eyebrow }}</span>
         {% if search.performed and search.terms != blank %}
           <h1 class="tg-coll-hero-title tg-srch-hero-title">
-            Резултати за <em class="tg-srch-q">„{{ search.terms | escape }}“</em>
+            {{ 'tg.search.results_for' | t }} <em class="tg-srch-q">{{ 'tg.common.quoted' | t: text: search_terms_esc }}</em>
           </h1>
         {% else %}
-          <h1 class="tg-coll-hero-title">{{ section.settings.hero_title | default: 'ТЪРСЕНЕ' }}<span>.</span></h1>
+          <h1 class="tg-coll-hero-title">{{ section.settings.hero_title | default: d_hero_title }}<span>.</span></h1>
         {% endif %}
 
         <form action="{{ routes.search_url }}" method="get" role="search" class="tg-srch-form">
@@ -127,12 +141,12 @@
                 id="tg-srch-input"
                 name="q"
                 value="{{ search.terms | escape }}"
-                placeholder="{{ section.settings.search_placeholder | default: 'Какво търсиш?' }}"
+                placeholder="{{ section.settings.search_placeholder | default: d_placeholder }}"
                 autocomplete="off"
                 {% unless search.performed %}autofocus{% endunless %}
               >
             </label>
-            <button type="submit" class="tg-srch-submit">Търси</button>
+            <button type="submit" class="tg-srch-submit">{{ 'tg.search.submit' | t }}</button>
           </div>
         </form>
       </div>
@@ -158,10 +172,10 @@
           <div class="tg-srch-block">
             <div class="tg-srch-block-head">
               <div>
-                <span class="tg-label">{{ section.settings.suggest_eyebrow | default: 'Подбрани' }}</span>
-                <h2 class="tg-srch-block-title">{{ section.settings.suggest_title | default: 'ПРЕДЛОЖЕНИ ПРОДУКТИ' }}</h2>
+                <span class="tg-label">{{ section.settings.suggest_eyebrow | default: d_suggest_eyebrow }}</span>
+                <h2 class="tg-srch-block-title">{{ section.settings.suggest_title | default: d_suggest_title }}</h2>
               </div>
-              <a class="tg-srch-block-link" href="{{ sugg_coll.url | default: routes.all_products_collection_url }}">Виж всички &rarr;</a>
+              <a class="tg-srch-block-link" href="{{ sugg_coll.url | default: routes.all_products_collection_url }}">{{ 'tg.common.view_all' | t }} &rarr;</a>
             </div>
             <div class="tg-coll-grid tg-srch-products">
               {%- for product in sugg_coll.products limit: sugg_limit -%}
@@ -198,21 +212,21 @@
             {% if search.filters.size > 0 %}
               <button type="button" class="tg-filter-toggle" data-tg-filter-open aria-expanded="false" aria-controls="tg-filter-sidebar">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21v-7m0-4V3m8 18v-9m0-4V3m8 18v-5m0-4V3M1 14h6M9 8h6M17 16h6"/></svg>
-                <span>Филтри</span>
+                <span>{{ 'tg.common.filters' | t }}</span>
                 {% if active_filter_count > 0 %}
                   <span class="tg-filter-toggle-count">{{ active_filter_count }}</span>
                 {% endif %}
               </button>
             {% endif %}
-            <div class="tg-coll-count">{{ search.results_count }} {{ search.results_count | pluralize: 'резултат', 'резултата' }}</div>
+            <div class="tg-coll-count">{{ 'tg.common.results_count' | t: count: search.results_count }}</div>
           </div>
           <div class="tg-coll-toolbar-right">
             <div class="tg-coll-sort">
-              <label for="tg-sort-select">Подреди:</label>
+              <label for="tg-sort-select">{{ 'tg.common.sort_label' | t }}</label>
               <select id="tg-sort-select" onchange="tgApplySort(this.value)">
-                <option value="relevance" {% if sort_by == 'relevance' %}selected{% endif %}>Най-подходящи</option>
-                <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>Цена: ниска → висока</option>
-                <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>Цена: висока → ниска</option>
+                <option value="relevance" {% if sort_by == 'relevance' %}selected{% endif %}>{{ 'tg.search.sort_relevance' | t }}</option>
+                <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}>{{ 'tg.common.sort_price_asc' | t }}</option>
+                <option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}>{{ 'tg.common.sort_price_desc' | t }}</option>
               </select>
             </div>
           </div>
@@ -243,10 +257,10 @@
                       {% if discount_pct > 0 %}
                         <span class="tg-coll-badge tg-coll-badge--sale">-{{ discount_pct }}%</span>
                       {% elsif product.tags contains 'new' or product.tags contains 'НОВО' %}
-                        <span class="tg-coll-badge tg-coll-badge--new">Ново</span>
+                        <span class="tg-coll-badge tg-coll-badge--new">{{ 'tg.common.badge_new' | t }}</span>
                       {% endif %}
                       {% unless product.available %}
-                        <span class="tg-coll-badge tg-coll-badge--sold-out">Изчерпан</span>
+                        <span class="tg-coll-badge tg-coll-badge--sold-out">{{ 'tg.common.badge_sold_out' | t }}</span>
                       {% endunless %}
                     </div>
                     <div class="tg-coll-badges-right">
@@ -281,9 +295,9 @@
                   >
                     {% if product.available %}
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                      Добави в количката
+                      {{ 'tg.common.add_to_cart' | t }}
                     {% else %}
-                      Изчерпан
+                      {{ 'tg.common.badge_sold_out' | t }}
                     {% endif %}
                   </button>
                 {%- endform -%}
@@ -295,18 +309,18 @@
         <!-- Articles & pages that matched -->
         {% if articles.size > 0 or pages.size > 0 %}
           <div class="tg-srch-other">
-            <div class="tg-srch-other-title">Статии и страници</div>
+            <div class="tg-srch-other-title">{{ 'tg.search.other_title' | t }}</div>
             <div class="tg-srch-other-list">
               {% for article in articles %}
                 <a href="{{ article.url }}" class="tg-srch-other-item">
-                  <span class="tg-srch-other-kind">Статия</span>
+                  <span class="tg-srch-other-kind">{{ 'tg.search.kind_article' | t }}</span>
                   <span class="tg-srch-other-name">{{ article.title }}</span>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </a>
               {% endfor %}
               {% for page in pages %}
                 <a href="{{ page.url }}" class="tg-srch-other-item">
-                  <span class="tg-srch-other-kind">Страница</span>
+                  <span class="tg-srch-other-kind">{{ 'tg.search.kind_page' | t }}</span>
                   <span class="tg-srch-other-name">{{ page.title }}</span>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </a>
@@ -319,12 +333,15 @@
         {% if paginate.pages > 1 %}
           <div class="tg-coll-pagination tg-srch-pagination">
             <div class="tg-coll-showing">
-              Показани <strong>{{ paginate.current_offset | plus: 1 }}–{{ paginate.current_offset | plus: paginate.page_size | at_most: search.results_count }}</strong> от <strong>{{ search.results_count }}</strong> {{ search.results_count | pluralize: 'резултат', 'резултата' }}
+              {%- assign pg_from = paginate.current_offset | plus: 1 -%}
+              {%- assign pg_to = paginate.current_offset | plus: paginate.page_size | at_most: search.results_count -%}
+              {%- assign pg_unit = 'tg.common.results_word' | t: count: search.results_count -%}
+              {{ 'tg.search.showing_html' | t: from: pg_from, to: pg_to, total: search.results_count, unit: pg_unit }}
             </div>
 
             <div class="tg-coll-pages">
               {% if paginate.previous %}
-                <a href="{{ paginate.previous.url }}" aria-label="Предишна страница">&larr;</a>
+                <a href="{{ paginate.previous.url }}" aria-label="{{ 'tg.common.prev_page' | t }}">&larr;</a>
               {% endif %}
               {% for part in paginate.parts %}
                 {% if part.is_link %}
@@ -334,7 +351,7 @@
                 {% endif %}
               {% endfor %}
               {% if paginate.next %}
-                <a href="{{ paginate.next.url }}" aria-label="Следваща страница">&rarr;</a>
+                <a href="{{ paginate.next.url }}" aria-label="{{ 'tg.common.next_page' | t }}">&rarr;</a>
               {% endif %}
             </div>
           </div>
@@ -346,12 +363,12 @@
           <div class="tg-srch-empty-mark" aria-hidden="true">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
           </div>
-          <h2 class="tg-srch-empty-title">Нищо не намерихме<span>.</span></h2>
+          <h2 class="tg-srch-empty-title">{{ 'tg.search.empty_title' | t }}<span>.</span></h2>
           <p class="tg-srch-empty-desc">
-            Няма резултати за <em>„{{ search.terms | escape }}“</em>. Провери изписването или опитай с по-кратка дума.
+            {{ 'tg.search.empty_desc_html' | t: terms: search_terms_esc }}
           </p>
           <div class="tg-srch-empty-actions">
-            <a href="{{ routes.all_products_collection_url }}" class="tg-btn-primary">Разгледай всички продукти</a>
+            <a href="{{ routes.all_products_collection_url }}" class="tg-btn-primary">{{ 'tg.search.browse_all_products' | t }}</a>
           </div>
 
           {%- liquid
@@ -359,7 +376,7 @@
             assign shown = 0
           -%}
           <div class="tg-srch-empty-cats">
-            <span class="tg-srch-empty-cats-label">Популярни категории</span>
+            <span class="tg-srch-empty-cats-label">{{ 'tg.search.popular_categories' | t }}</span>
             <div class="tg-coll-cats-track tg-srch-cats-track">
               {% for c in collections %}
                 {%- if shown >= chip_limit %}{% break %}{% endif -%}
@@ -377,12 +394,12 @@
       {% else %}
         <!-- ═══ NO SEARCH YET — browse hub ═══ -->
         <div class="tg-srch-idle">
-          <p class="tg-srch-empty-desc">{{ section.settings.idle_text | default: 'Започни да пишеш и ще ти покажем предложения на момента — или разгледай директно:' }}</p>
+          <p class="tg-srch-empty-desc">{{ section.settings.idle_text | default: d_idle_text }}</p>
 
           {%- assign chips = section.settings.popular_searches | split: ',' -%}
           {%- if chips.size > 0 and section.settings.popular_searches != blank -%}
             <div class="tg-srch-chips">
-              <span class="tg-srch-chips-label">{{ section.settings.popular_label | default: 'Често търсени' }}</span>
+              <span class="tg-srch-chips-label">{{ section.settings.popular_label | default: d_popular_label }}</span>
               <div class="tg-srch-chips-row">
                 {%- for chip in chips -%}
                   {%- assign chip_t = chip | strip -%}
@@ -405,10 +422,10 @@
           <div class="tg-srch-block">
             <div class="tg-srch-block-head">
               <div>
-                <span class="tg-label">{{ section.settings.cats_eyebrow | default: 'Е-магазин' }}</span>
-                <h2 class="tg-srch-block-title">{{ section.settings.cats_title | default: 'КАТЕГОРИИ' }}</h2>
+                <span class="tg-label">{{ section.settings.cats_eyebrow | default: d_cats_eyebrow }}</span>
+                <h2 class="tg-srch-block-title">{{ section.settings.cats_title | default: d_cats_title }}</h2>
               </div>
-              <a class="tg-srch-block-link" href="{{ routes.collections_url }}">Всички категории &rarr;</a>
+              <a class="tg-srch-block-link" href="{{ routes.collections_url }}">{{ 'tg.common.all_categories' | t }} &rarr;</a>
             </div>
             <div class="tg-srch-tiles">
               {% for c in collections %}
@@ -426,7 +443,7 @@
                     </span>
                     <span class="tg-srch-tile-body">
                       <span class="tg-srch-tile-name">{{ c.title }}</span>
-                      <span class="tg-srch-tile-count">{{ c.products_count }} {{ c.products_count | pluralize: 'продукт', 'продукта' }}</span>
+                      <span class="tg-srch-tile-count">{{ 'tg.common.products_count' | t: count: c.products_count }}</span>
                     </span>
                   </a>
                   {%- assign shown = shown | plus: 1 -%}
@@ -449,9 +466,9 @@
               <div class="tg-srch-block-head">
                 <div>
                   <span class="tg-label">Club 2together</span>
-                  <h2 class="tg-srch-block-title">{{ section.settings.blog_title | default: 'ОТ БЛОГА' }}</h2>
+                  <h2 class="tg-srch-block-title">{{ section.settings.blog_title | default: d_blog_title }}</h2>
                 </div>
-                <a class="tg-srch-block-link" href="{{ srch_blog.url }}">Всички публикации &rarr;</a>
+                <a class="tg-srch-block-link" href="{{ srch_blog.url }}">{{ 'tg.common.all_posts' | t }} &rarr;</a>
               </div>
               <div class="tg-blog-grid">
                 {% for article in srch_blog.articles limit: 3 %}
@@ -542,7 +559,7 @@
       e.preventDefault();
       var btn = form.querySelector('.tg-coll-card-add');
       var origText = btn.innerHTML;
-      btn.innerHTML = 'Добавяне...';
+      btn.innerHTML = {{ 'tg.common.adding' | t | json }};
       btn.disabled = true;
 
       fetch('/cart/add.js', {
@@ -563,6 +580,16 @@
       });
     });
   });
+</script>
+<script>
+  window.tgI18n = window.tgI18n || {};
+  window.tgI18n.search = {
+    suggestEmpty: {{ 'tg.search.suggest_empty' | t: query: '{q}' | json }},
+    products: {{ 'tg.search.suggest_products' | t | json }},
+    collections: {{ 'tg.common.categories' | t | json }},
+    viewAll: {{ 'tg.search.suggest_all' | t | json }},
+    searchUrl: {{ routes.search_url | json }}
+  };
 </script>
 <script src="{{ '2gether-search.js' | asset_url }}" defer></script>
 

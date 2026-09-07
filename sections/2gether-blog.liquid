@@ -4,6 +4,12 @@
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&f[]=boska@400,500,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
 
+{%- liquid
+  assign d_tags_aria = 'tg.common.categories' | t
+  assign d_all_tag_text = 'tg.common.all' | t
+  assign d_empty_text = 'tg.blog.empty_text' | t
+-%}
+
 <section class="tg-blog tg-section">
   <div class="tg-blog-inner">
     <header class="tg-blog-head">
@@ -20,8 +26,8 @@
       {%- endif -%}
 
       {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
-        <nav class="tg-blog-tags" aria-label="{{ section.settings.tags_aria | default: 'Категории' }}">
-          <a class="tg-blog-tag{% unless current_tags %} active{% endunless %}" href="{{ blog.url }}">{{ section.settings.all_tag_text | default: 'Всички' }}</a>
+        <nav class="tg-blog-tags" aria-label="{{ section.settings.tags_aria | default: d_tags_aria }}">
+          <a class="tg-blog-tag{% unless current_tags %} active{% endunless %}" href="{{ blog.url }}">{{ section.settings.all_tag_text | default: d_all_tag_text }}</a>
           {%- for tag in blog.all_tags -%}
             <a
               class="tg-blog-tag{% if current_tags contains tag %} active{% endif %}"
@@ -35,7 +41,7 @@
     {%- paginate blog.articles by section.settings.per_page -%}
       {%- if blog.articles.size == 0 -%}
         <div class="tg-blog-empty">
-          <p>{{ section.settings.empty_text | default: 'Очаквайте скоро първите истории от клуба.' }}</p>
+          <p>{{ section.settings.empty_text | default: d_empty_text }}</p>
         </div>
       {%- else -%}
         {%- liquid

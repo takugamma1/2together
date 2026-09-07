@@ -6,6 +6,12 @@
 
 <script>document.body.classList.add('tg-product-active');</script>
 
+{%- liquid
+  assign d_add_to_cart = 'tg.common.add_to_cart' | t
+  assign d_sold_out = 'tg.product.sold_out' | t
+  assign d_buy_now = 'tg.product.buy_now' | t
+-%}
+
 <div class="tg-product-page" data-product-id="{{ product.id }}">
   <!-- ═══ LEFT COLUMN: Editorial Content ═══ -->
   <div class="tg-product-left">
@@ -21,22 +27,22 @@
     <div class="tg-product-gallery{% if gallery_media.size > 1 %} has-thumbs{% endif %}" data-tg-gallery>
       {% if gallery_media.size > 1 %}
         <div class="tg-product-thumbs-col">
-          <button type="button" class="tg-thumbs-nav tg-thumbs-up" data-tg-prev aria-label="Предишна снимка">
+          <button type="button" class="tg-thumbs-nav tg-thumbs-up" data-tg-prev aria-label="{{ 'tg.product.prev_photo' | t }}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 15 12 9 18 15"/></svg>
           </button>
-          <div class="tg-product-thumbs" data-tg-thumbs role="tablist" aria-label="Снимки на продукта">
+          <div class="tg-product-thumbs" data-tg-thumbs role="tablist" aria-label="{{ 'tg.product.gallery_label' | t }}">
             {% for media in gallery_media %}
               {%- assign preview = media.preview_image | default: media -%}
               <button type="button" class="tg-thumb{% if forloop.first %} is-active{% endif %}" data-tg-thumb data-index="{{ forloop.index0 }}"
                 data-img-src="{{ preview | image_url: width: 1600 }}"
                 data-img-srcset="{{ preview | image_url: width: 800 }} 800w, {{ preview | image_url: width: 1200 }} 1200w, {{ preview | image_url: width: 1600 }} 1600w, {{ preview | image_url: width: 2000 }} 2000w"
                 data-img-alt="{{ media.alt | default: product.title | escape }}"
-                role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="Снимка {{ forloop.index }} от {{ gallery_media.size }}">
+                role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="{{ 'tg.product.photo_n_of' | t: n: forloop.index, total: gallery_media.size }}">
                 <img src="{{ preview | image_url: width: 240 }}" alt="" loading="lazy" width="120" height="120">
               </button>
             {% endfor %}
           </div>
-          <button type="button" class="tg-thumbs-nav tg-thumbs-down" data-tg-next aria-label="Следваща снимка">
+          <button type="button" class="tg-thumbs-nav tg-thumbs-down" data-tg-next aria-label="{{ 'tg.product.next_photo' | t }}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
         </div>
@@ -203,9 +209,9 @@
     {% if related_count > 1 %}
       <div class="tg-product-related">
         <div class="tg-product-related-header">
-          <div class="tg-product-related-title">Подобни продукти</div>
+          <div class="tg-product-related-title">{{ 'tg.product.related_title' | t }}</div>
           {% if product.collections.first %}
-            <a href="{{ product.collections.first.url }}" class="tg-product-related-link">Виж всички &rarr;</a>
+            <a href="{{ product.collections.first.url }}" class="tg-product-related-link">{{ 'tg.common.view_all' | t }} &rarr;</a>
           {% endif %}
         </div>
         <div class="tg-product-related-grid">
@@ -256,7 +262,7 @@
       <!-- Back link -->
       <a href="{{ product.collections.first.url | default: '/collections' }}" class="tg-product-back">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        {% if product.collections.first %}Назад към {{ product.collections.first.title }}{% else %}Всички категории{% endif %}
+        {% if product.collections.first %}{{ 'tg.product.back_to' | t: title: product.collections.first.title }}{% else %}{{ 'tg.common.all_categories' | t }}{% endif %}
       </a>
 
       <!-- Product Header -->
@@ -355,9 +361,9 @@
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             {% if current_variant.available %}
-              {{ section.settings.add_to_cart_text | default: 'Добави в количката' }}
+              {{ section.settings.add_to_cart_text | default: d_add_to_cart }}
             {% else %}
-              {{ section.settings.sold_out_text | default: 'Изчерпано' }}
+              {{ section.settings.sold_out_text | default: d_sold_out }}
             {% endif %}
           </button>
 
@@ -365,7 +371,7 @@
             {{ form | payment_button }}
           {% elsif current_variant.available %}
             <button type="button" class="tg-btn-buy-now" data-tg-buy-now>
-              {{ section.settings.buy_now_text | default: 'Купи сега' }}
+              {{ section.settings.buy_now_text | default: d_buy_now }}
             </button>
           {% endif %}
         </div>
@@ -708,7 +714,7 @@
     <span class="tg-product-stickybar-price" data-tg-stickybar-price>{{ product.selected_or_first_available_variant.price | money }}</span>
   </div>
   <button type="submit" form="tg-product-form" name="add" class="tg-btn-add-cart tg-product-stickybar-btn" data-tg-stickybar-btn {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-    {% if product.selected_or_first_available_variant.available %}{{ section.settings.add_to_cart_text | default: 'Добави в количката' }}{% else %}{{ section.settings.sold_out_text | default: 'Изчерпано' }}{% endif %}
+    {% if product.selected_or_first_available_variant.available %}{{ section.settings.add_to_cart_text | default: d_add_to_cart }}{% else %}{{ section.settings.sold_out_text | default: d_sold_out }}{% endif %}
   </button>
 </div>
 <script>

@@ -15,11 +15,14 @@ const ROUTES = {
   vote: '/apps/club/vote',
 };
 
+/** Locale strings emitted by the section that loads this script (window.tgI18n.club). */
+const I18N = (typeof window !== 'undefined' && window.tgI18n && window.tgI18n.club) || {};
+
 const DEFAULT_MESSAGES = {
-  full: 'Местата са запълнени',
-  error: 'Възникна грешка, опитайте отново',
-  login: 'Влезте, за да се запишете',
-  members: 'Само за членове',
+  full: I18N.full || 'Местата са запълнени',
+  error: I18N.error || 'Възникна грешка, опитайте отново',
+  login: I18N.login || 'Влезте, за да се запишете',
+  members: I18N.members || 'Само за членове',
 };
 
 /** Elements with a request currently in flight (double-click guard). */
@@ -58,7 +61,7 @@ const sameId = (a, b) => a != null && b != null && idTail(a) === idTail(b);
 
 /**
  * Resolves user-facing messages from the [data-club-section] root, falling
- * back to the Bulgarian defaults when the attribute (or section) is missing.
+ * back to the locale defaults (window.tgI18n.club, then Bulgarian) when the attribute (or section) is missing.
  * @param {Element} el
  * @returns {typeof DEFAULT_MESSAGES}
  */

@@ -49,7 +49,7 @@
               <div class="tg-product-info">
                 <span class="tg-product-tag">{{ product.type }}</span>
                 <span class="tg-product-name">{{ product.title }}</span>
-                <span class="tg-product-more">Повече</span>
+                <span class="tg-product-more">{{ 'tg.products.more' | t }}</span>
               </div>
             </a>
           {%- endif -%}
@@ -68,7 +68,7 @@
         <div class="tg-product-info">
           <span class="tg-product-tag">{{ hero_product.type }}</span>
           <span class="tg-product-name">{{ hero_product.title }}</span>
-          <span class="tg-product-more">Повече</span>
+          <span class="tg-product-more">{{ 'tg.products.more' | t }}</span>
         </div>
       </a>
 
@@ -85,7 +85,7 @@
               <div class="tg-product-info">
                 <span class="tg-product-tag">{{ product.type }}</span>
                 <span class="tg-product-name">{{ product.title }}</span>
-                <span class="tg-product-more">Повече</span>
+                <span class="tg-product-more">{{ 'tg.products.more' | t }}</span>
               </div>
             </a>
           {%- endfor -%}
@@ -98,14 +98,14 @@
         {{ 'product-1' | placeholder_svg_tag: 'tg-product-img' }}
         <div class="tg-pcard-badges">
           <div class="tg-pcard-badges-left">
-            <span class="tg-product-badge">Ново</span>
+            <span class="tg-product-badge">{{ 'tg.common.badge_new' | t }}</span>
           </div>
           <div class="tg-pcard-badges-right"></div>
         </div>
         <div class="tg-product-info">
           <span class="tg-product-tag">Lorem ipsum / dolor sit</span>
           <span class="tg-product-name">Lorem Ipsum Dolor<br>Sit Amet</span>
-          <span class="tg-product-more">Повече</span>
+          <span class="tg-product-more">{{ 'tg.products.more' | t }}</span>
         </div>
       </div>
       <div class="tg-products-row">
@@ -115,7 +115,7 @@
             <div class="tg-product-info">
               <span class="tg-product-tag">Lorem / dolor</span>
               <span class="tg-product-name">Dolor Sit Amet</span>
-              <span class="tg-product-more">Повече</span>
+              <span class="tg-product-more">{{ 'tg.products.more' | t }}</span>
             </div>
           </div>
         {% endfor %}

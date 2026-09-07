@@ -6,8 +6,8 @@
 {%- endcomment -%}
 <div class="tg-cd" data-tg-cd data-endpoint="{{ endpoint | default: '/apps/club' }}" data-checkout-url="{{ checkout_url | default: '/checkout' }}" hidden>
   <div class="tg-cd-head">
-    <span class="tg-cd-eyebrow">Доставка</span>
-    <span class="tg-cd-brand" aria-label="Еконт Експрес">ЕКОНТ</span>
+    <span class="tg-cd-eyebrow">{{ 'tg.cart_delivery.delivery' | t }}</span>
+    <span class="tg-cd-brand" aria-label="{{ 'tg.cart_delivery.brand_aria' | t }}">{{ 'tg.cart_delivery.brand' | t }}</span>
   </div>
 
   {%- comment -%} Compact one-line summary once the choice is complete {%- endcomment -%}
@@ -16,50 +16,50 @@
       <span class="tg-cd-summary-main" data-cd-summary-main></span>
       <span class="tg-cd-summary-sub" data-cd-summary-sub></span>
     </span>
-    <span class="tg-cd-summary-edit">Промени</span>
+    <span class="tg-cd-summary-edit">{{ 'tg.cart_delivery.edit' | t }}</span>
   </button>
 
   <div class="tg-cd-form" data-cd-form>
-    <div class="tg-cd-modes" role="group" aria-label="Начин на доставка">
+    <div class="tg-cd-modes" role="group" aria-label="{{ 'tg.cart_delivery.mode_label' | t }}">
       <button type="button" class="tg-cd-mode" data-cd-mode="office" aria-pressed="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
-        До офис
+        {{ 'tg.cart_delivery.to_office' | t }}
       </button>
       <button type="button" class="tg-cd-mode" data-cd-mode="address" aria-pressed="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
-        До адрес
+        {{ 'tg.cart_delivery.to_address' | t }}
       </button>
     </div>
 
     <div class="tg-cd-field tg-cd-combo">
-      <label for="tg-cd-city">Град / населено място</label>
-      <input id="tg-cd-city" type="text" data-cd-city autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="Започни да пишеш…" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="tg-cd-city-list">
+      <label for="tg-cd-city">{{ 'tg.cart_delivery.city_label' | t }}</label>
+      <input id="tg-cd-city" type="text" data-cd-city autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="{{ 'tg.cart_delivery.city_placeholder' | t }}" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="tg-cd-city-list">
       <ul id="tg-cd-city-list" class="tg-cd-list" data-cd-city-list role="listbox" hidden></ul>
     </div>
 
     <div class="tg-cd-field" data-cd-office-wrap>
-      <label for="tg-cd-office">Офис на Еконт</label>
+      <label for="tg-cd-office">{{ 'tg.cart_delivery.office_label' | t }}</label>
       <div class="tg-cd-select">
         <select id="tg-cd-office" data-cd-office disabled>
-          <option value="">Първо избери град</option>
+          <option value="">{{ 'tg.cart_delivery.pick_city_first' | t }}</option>
         </select>
       </div>
       <small class="tg-cd-hint" data-cd-office-addr></small>
     </div>
 
     <div class="tg-cd-field" data-cd-address-wrap hidden>
-      <label for="tg-cd-street">Адрес</label>
-      <input id="tg-cd-street" type="text" data-cd-street autocomplete="address-line1" placeholder="ул. / бул. и номер">
-      <input type="text" data-cd-other autocomplete="address-line2" placeholder="вход, етаж, апартамент (по избор)" aria-label="Допълнение към адреса">
+      <label for="tg-cd-street">{{ 'tg.cart_delivery.address_label' | t }}</label>
+      <input id="tg-cd-street" type="text" data-cd-street autocomplete="address-line1" placeholder="{{ 'tg.cart_delivery.street_placeholder' | t }}">
+      <input type="text" data-cd-other autocomplete="address-line2" placeholder="{{ 'tg.cart_delivery.other_placeholder' | t }}" aria-label="{{ 'tg.cart_delivery.other_aria' | t }}">
     </div>
 
     <div class="tg-cd-row">
       <div class="tg-cd-field">
-        <label for="tg-cd-name">Име и фамилия</label>
-        <input id="tg-cd-name" type="text" data-cd-name autocomplete="name" autocapitalize="words" placeholder="Иван Иванов">
+        <label for="tg-cd-name">{{ 'tg.cart_delivery.name_label' | t }}</label>
+        <input id="tg-cd-name" type="text" data-cd-name autocomplete="name" autocapitalize="words" placeholder="{{ 'tg.cart_delivery.name_placeholder' | t }}">
       </div>
       <div class="tg-cd-field">
-        <label for="tg-cd-phone">Телефон <b aria-hidden="true">*</b></label>
+        <label for="tg-cd-phone">{{ 'tg.cart_delivery.phone_label' | t }} <b aria-hidden="true">*</b></label>
         <input id="tg-cd-phone" type="tel" data-cd-phone autocomplete="tel" inputmode="tel" placeholder="+359 88 123 4567" required aria-required="true">
       </div>
     </div>
@@ -69,11 +69,11 @@
 
   <div class="tg-cd-totals">
     <div class="tg-cd-line">
-      <span>Доставка</span>
+      <span>{{ 'tg.cart_delivery.delivery' | t }}</span>
       <strong data-cd-price data-state="idle">—</strong>
     </div>
     <div class="tg-cd-line tg-cd-line--total">
-      <span>Общо</span>
+      <span>{{ 'tg.cart_delivery.total' | t }}</span>
       <strong data-cd-total>—</strong>
     </div>
   </div>

@@ -4,6 +4,14 @@
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
 {% # theme-check-enable RemoteAsset %}
 
+{%- liquid
+  assign d_title = 'tg.yt_carousel.title' | t
+  assign d_cta_label = 'tg.yt_carousel.cta_label' | t
+  assign d_track_label = 'tg.yt_carousel.track_label' | t
+  assign d_views_text = 'tg.yt_carousel.views' | t
+  assign d_likes_text = 'tg.yt_carousel.likes' | t
+-%}
+
 <section
   class="tg-ytc tg-section"
   data-tg-ytc="{{ section.id }}"
@@ -18,23 +26,23 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:6px;"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.9 31.9 0 0 0 0 12a31.9 31.9 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8Z"/><path d="m9.6 15.6 6.3-3.6-6.3-3.6v7.2Z" fill="#0B1220"/></svg>
           {{- section.settings.eyebrow | default: 'YouTube' -}}
         </span>
-        <h2 class="tg-ytc-title">{{ section.settings.title | default: 'ПОСЛЕДНИ КЛИПОВЕ' }}</h2>
+        <h2 class="tg-ytc-title">{{ section.settings.title | default: d_title }}</h2>
       </div>
       <div class="tg-ytc-head-right">
         <a class="tg-ytc-channel" data-tg-ytc-channel href="{{ section.settings.channel_url | default: '#' }}" target="_blank" rel="noopener"{% if section.settings.channel_url == blank %} hidden{% endif %}>
-          {{- section.settings.cta_label | default: 'Всички клипове' }} &rarr;</a>
+          {{- section.settings.cta_label | default: d_cta_label }} &rarr;</a>
         <div class="tg-ytc-arrows">
-          <button type="button" class="tg-ytc-arrow" data-tg-ytc-prev aria-label="Назад" disabled>
+          <button type="button" class="tg-ytc-arrow" data-tg-ytc-prev aria-label="{{ 'tg.yt_carousel.prev' | t }}" disabled>
             <svg width="16" height="12" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 5H2M6 1 2 5l4 4"/></svg>
           </button>
-          <button type="button" class="tg-ytc-arrow" data-tg-ytc-next aria-label="Напред" disabled>
+          <button type="button" class="tg-ytc-arrow" data-tg-ytc-next aria-label="{{ 'tg.yt_carousel.next' | t }}" disabled>
             <svg width="16" height="12" viewBox="0 0 22 10" fill="none" stroke="currentColor" stroke-width="2"><path d="M0 5h20M16 1l4 4-4 4"/></svg>
           </button>
         </div>
       </div>
     </header>
 
-    <div class="tg-ytc-track" data-tg-ytc-track tabindex="0" aria-label="{{ section.settings.title | default: 'Последни клипове' | escape }}">
+    <div class="tg-ytc-track" data-tg-ytc-track tabindex="0" aria-label="{{ section.settings.title | default: d_track_label | escape }}">
       {% for i in (1..4) %}
         <div class="tg-ytc-card tg-ytc-skeleton" aria-hidden="true">
           <div class="tg-ytc-thumb"></div>
@@ -62,7 +70,7 @@
 
   var nf;
   try {
-    nf = new Intl.NumberFormat('bg-BG', { notation: 'compact', maximumFractionDigits: 1 });
+    nf = new Intl.NumberFormat({{ request.locale.iso_code | json }}, { notation: 'compact', maximumFractionDigits: 1 });
   } catch (e) {
     nf = { format: function (n) { return String(n); } };
   }
@@ -76,7 +84,7 @@
   function fmtDate(iso) {
     var d = new Date(iso);
     if (isNaN(d)) return '';
-    try { return d.toLocaleDateString('bg-BG', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
+    try { return d.toLocaleDateString({{ request.locale.iso_code | json }}, { day: '2-digit', month: '2-digit', year: 'numeric' }); }
     catch (e) { return ''; }
   }
 
@@ -101,10 +109,10 @@
       track.innerHTML = videos.map(function (v) {
         var stats = '';
         if (v.views) {
-          stats += '<span class="tg-ytc-stat" title="{{ section.settings.views_text | default: 'гледания' | escape }}">' + EYE + nf.format(v.views) + '</span>';
+          stats += '<span class="tg-ytc-stat" title="{{ section.settings.views_text | default: d_views_text | escape }}">' + EYE + nf.format(v.views) + '</span>';
         }
         if (v.likes) {
-          stats += '<span class="tg-ytc-stat" title="{{ section.settings.likes_text | default: 'харесвания' | escape }}">' + THUMB + nf.format(v.likes) + '</span>';
+          stats += '<span class="tg-ytc-stat" title="{{ section.settings.likes_text | default: d_likes_text | escape }}">' + THUMB + nf.format(v.likes) + '</span>';
         }
         var date = fmtDate(v.published);
         if (date) stats += '<span class="tg-ytc-stat tg-ytc-date">' + date + '</span>';

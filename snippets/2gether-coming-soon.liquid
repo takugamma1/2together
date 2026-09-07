@@ -4,10 +4,16 @@
   opens a popup instead of navigating. Rendered once from layout/theme.liquid.
 {%- endcomment -%}
 {%- assign soon_paths = settings.soon_paths | default: '/pages/sunday-club' -%}
+{%- liquid
+  assign d_soon_badge = 'tg.coming_soon.badge' | t
+  assign d_soon_title = 'tg.coming_soon.title' | t
+  assign d_soon_text = 'tg.coming_soon.text' | t
+  assign d_soon_close = 'tg.coming_soon.close' | t
+-%}
 {%- if soon_paths != blank -%}
 <style>
   .tg-soon-link { position: relative; filter: grayscale(1) brightness(0.8); opacity: 0.8; cursor: pointer; }
-  .tg-soon-link::after { content: '{{ settings.soon_badge | default: 'Скоро' | escape }}'; position: absolute; top: 10px; right: 10px; z-index: 3; padding: 4px 10px 4px 8px; font-family: var(--tg-font-body, 'General Sans', sans-serif); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #0B1220; background: #E8601C; clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); filter: none; }
+  .tg-soon-link::after { content: '{{ settings.soon_badge | default: d_soon_badge | escape }}'; position: absolute; top: 10px; right: 10px; z-index: 3; padding: 4px 10px 4px 8px; font-family: var(--tg-font-body, 'General Sans', sans-serif); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #0B1220; background: #E8601C; clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%); filter: none; }
   .tg-soon-link.tg-soon-link--inline::after { position: static; display: inline-block; margin-left: 8px; vertical-align: middle; }
   .tg-soon-global { position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(11, 18, 32, 0.8); backdrop-filter: blur(6px); }
   .tg-soon-global[hidden] { display: none; }
@@ -18,9 +24,9 @@
 </style>
 <div class="tg-soon-global" data-tg-soon-global hidden role="dialog" aria-modal="true">
   <div class="tg-soon-global-card">
-    <h3>{{ settings.soon_title | default: 'Скоро!' }}</h3>
-    <p>{{ settings.soon_text | default: 'Работим по програмата. Ще обявим старта в блога и в Instagram.' }}</p>
-    <button type="button" data-tg-soon-global-close>{{ settings.soon_close | default: 'Добре' }}</button>
+    <h3>{{ settings.soon_title | default: d_soon_title }}</h3>
+    <p>{{ settings.soon_text | default: d_soon_text }}</p>
+    <button type="button" data-tg-soon-global-close>{{ settings.soon_close | default: d_soon_close }}</button>
   </div>
 </div>
 <script>

@@ -27,14 +27,14 @@
         <label class="tg-search-bar tg-hub-search-bar" for="tg-hub-q">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
           <input type="search" id="tg-hub-q" name="q" placeholder="{{ st.search_placeholder }}" autocomplete="off" data-tg-hub-q data-tg-cl-search>
-          <kbd aria-hidden="true">Enter ↵ = продукти</kbd>
+          <kbd aria-hidden="true">{{ 'tg.collection_list.enter_hint' | t }}</kbd>
         </label>
         <p class="tg-hub-search-hint" data-tg-hub-hint aria-live="polite"></p>
       </form>
     </header>
 
     <!-- ═══ DEPARTMENT CHIPS ═══ -->
-    <nav class="tg-hub-chips" aria-label="Отдели" data-tg-hub-chips>
+    <nav class="tg-hub-chips" aria-label="{{ 'tg.collection_list.departments' | t }}" data-tg-hub-chips>
       {% for b in departments %}
         <a href="#dept-{{ b.id }}" class="tg-hub-chip" data-tg-hub-chip="dept-{{ b.id }}" style="--model: {{ b.settings.color }}">{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.title }}</span></a>
       {% endfor %}
@@ -82,12 +82,12 @@
               <span class="tg-hub-card-body">
                 <span class="tg-hub-card-title">{{ label }}</span>
                 {% if label != c.title %}<span class="tg-hub-card-sub">{{ c.title }}</span>{% endif %}
-                <span class="tg-hub-card-count">{{ c.products_count }} {{ c.products_count | pluralize: 'продукт', 'продукта' }}</span>
+                <span class="tg-hub-card-count">{{ 'tg.common.products_count' | t: count: c.products_count }}</span>
               </span>
             </a>
           {% endfor %}
         </div>
-        <p class="tg-hub-empty" data-tg-hub-empty hidden>Няма категории за това търсене в този отдел.</p>
+        <p class="tg-hub-empty" data-tg-hub-empty hidden>{{ 'tg.collection_list.empty_department' | t }}</p>
       </section>
     {% endfor %}
 
@@ -105,14 +105,24 @@
             {% endif %}
           {% endfor %}
         </div>
-        <p class="tg-hub-empty" data-tg-hub-empty hidden>Няма марки за това търсене.</p>
+        <p class="tg-hub-empty" data-tg-hub-empty hidden>{{ 'tg.collection_list.empty_brands' | t }}</p>
       </section>
     {% endif %}
 
-    <p class="tg-hub-none" data-tg-hub-none hidden>Нищо не съвпада в категориите. <button type="submit" form="tg-hub-form-proxy" class="tg-hub-none-btn" data-tg-hub-submit>Търси в продуктите →</button></p>
+    <p class="tg-hub-none" data-tg-hub-none hidden>{{ 'tg.collection_list.none_match' | t }} <button type="submit" form="tg-hub-form-proxy" class="tg-hub-none-btn" data-tg-hub-submit>{{ 'tg.collection_list.search_products' | t }} →</button></p>
   </div>
 </div>
 
+<script>
+  window.tgI18n = window.tgI18n || {};
+  window.tgI18n.search = {
+    suggestEmpty: {{ 'tg.search.suggest_empty' | t: query: '{q}' | json }},
+    products: {{ 'tg.search.suggest_products' | t | json }},
+    collections: {{ 'tg.common.categories' | t | json }},
+    viewAll: {{ 'tg.search.suggest_all' | t | json }},
+    searchUrl: {{ routes.search_url | json }}
+  };
+</script>
 <script src="{{ '2gether-search.js' | asset_url }}" defer></script>
 <script>
 (() => {
@@ -123,6 +133,8 @@
   const chips = [...hub.querySelectorAll('[data-tg-hub-chip]')];
   const none = hub.querySelector('[data-tg-hub-none]');
   const norm = (s) => (s || '').toLowerCase().replace(/ё/g, 'е').trim();
+  const catWord = (n) => n === 1 ? {{ 'tg.collection_list.category_word' | t: count: 1 | json }} : {{ 'tg.collection_list.category_word' | t: count: 2 | json }};
+  const enterHint = {{ 'tg.collection_list.enter_for_products' | t | json }};
   const lat2cyr = { a:'а', b:'б', v:'в', g:'г', d:'д', e:'е', z:'з', i:'и', k:'к', l:'л', m:'м', n:'н', o:'о', p:'п', r:'р', s:'с', t:'т', u:'у', f:'ф', h:'х', c:'ц' };
   const filter = () => {
     const val = norm(q.value); const terms = val.split(/\s+/).filter(Boolean);
@@ -131,7 +143,7 @@
     depts.forEach(d => { const vis = [...d.querySelectorAll('[data-tg-hub-card]')].some(c => !c.hidden); d.classList.toggle('is-empty', !vis); const e = d.querySelector('[data-tg-hub-empty]'); if (e) e.hidden = true; d.hidden = terms.length > 0 && !vis; });
     chips.forEach(ch => { const d = document.getElementById(ch.dataset.tgHubChip); ch.classList.toggle('is-dim', !!(d && d.hidden)); });
     if (none) none.hidden = !(terms.length && shown === 0);
-    if (hint) hint.textContent = terms.length ? (shown ? `${shown} ${shown === 1 ? 'категория' : 'категории'} · Enter за продукти` : '') : '';
+    if (hint) hint.textContent = terms.length ? (shown ? `${shown} ${catWord(shown)} ${enterHint}` : '') : '';
     hub.classList.toggle('is-searching', terms.length > 0);
   };
   q.addEventListener('input', filter);

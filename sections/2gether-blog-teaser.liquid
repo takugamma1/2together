@@ -5,6 +5,8 @@
 {% # theme-check-enable RemoteAsset %}
 
 {%- liquid
+  assign d_title = 'tg.blog_teaser.title' | t
+  assign d_cta_label = 'tg.common.all_posts' | t
   assign tg_blog = section.settings.blog
   if tg_blog == blank
     comment
@@ -25,9 +27,9 @@
       <header class="tg-blog-teaser-head">
         <div class="tg-blog-teaser-head-left">
           <span class="tg-label">{{ section.settings.eyebrow | default: 'Club 2together' }}</span>
-          <h2 class="tg-blog-teaser-title">{{ section.settings.title | default: 'ИСТОРИИ ОТ КЛУБА' }}</h2>
+          <h2 class="tg-blog-teaser-title">{{ section.settings.title | default: d_title }}</h2>
         </div>
-        <a class="tg-blog-teaser-link" href="{{ tg_blog.url }}">{{ section.settings.cta_label | default: 'Всички публикации' }} &rarr;</a>
+        <a class="tg-blog-teaser-link" href="{{ tg_blog.url }}">{{ section.settings.cta_label | default: d_cta_label }} &rarr;</a>
       </header>
       <div class="tg-blog-grid tg-blog-teaser-grid">
         {%- for article in tg_blog.articles limit: section.settings.max_posts -%}
@@ -39,7 +41,7 @@
 {%- elsif request.design_mode -%}
   <section class="tg-blog-teaser tg-section">
     <div class="tg-blog-teaser-inner">
-      <p style="color:#8A9BB5;font-family:sans-serif;font-size:14px;">Изберете блог от настройките на секцията (или създайте блог с публикации), за да се покажат публикациите тук.</p>
+      <p style="color:#8A9BB5;font-family:sans-serif;font-size:14px;">{{ 'tg.blog_teaser.pick_blog_hint' | t }}</p>
     </div>
   </section>
 {%- endif -%}
