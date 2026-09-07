@@ -1,0 +1,186 @@
+{
+  "bg": {
+    "tg": {
+      "common": {
+        "bgn": "лв.",
+        "prev_month": "Предишен месец",
+        "next_month": "Следващ месец",
+        "weekdays_short": "Пн,Вт,Ср,Чт,Пт,Сб,Нд",
+        "day": "ден",
+        "days": "дни",
+        "hours_short": "ч",
+        "position": "позиция"
+      },
+      "bike_service": {
+        "timeslot": "Час",
+        "problem_areas": "Brakes / Спирачки\nDrivetrain — gears, chain / Трансмисия\nWheels & tires / Капли и гуми\nSuspension — fork or shock / Окачване\nFrame & bearings / Рамка и лагери\nElectric system (e-bike) / Електрика\nFull service package / Пакетно обслужване\nOther / I am not sure / Друго"
+      },
+      "service_booking": {
+        "categories": "Пакетно обслужване,Капли и гуми,Трансмисия,Спирачна система,Окачване,Други",
+        "months": "януари,февруари,март,април,май,юни,юли,август,септември,октомври,ноември,декември",
+        "steps": "стъпки",
+        "book": "Запиши",
+        "ask": "Попитай"
+      },
+      "rental_booking": {
+        "by_email": "по имейл.",
+        "months": "Януари,Февруари,Март,Април,Май,Юни,Юли,Август,Септември,Октомври,Ноември,Декември"
+      },
+      "bike_rental": {
+        "pickup_time": "Час на взимане",
+        "days_label": "За колко дни?",
+        "days_hint": "При наем за повече от един ден дневната тарифа важи за всеки ден.",
+        "fewer_days": "По-малко дни",
+        "more_days": "Повече дни"
+      },
+      "rental_bikes": {
+        "eyebrow": "Наем на велосипеди",
+        "title": "НАЛИЧНИ ВЕЛОСИПЕДИ",
+        "busy": "ЗАЕТО",
+        "free": "СВОБОДНО",
+        "price_suffix": " / ден",
+        "cta": "Запази"
+      },
+      "ramps": {
+        "model": "Модел",
+        "weight": "Тегло",
+        "range": "Диапазон",
+        "length": "Дължина",
+        "price_vat": "Цена с ДДС",
+        "position": "Позиция",
+        "watch_youtube": "Гледай в YouTube",
+        "watch_vlog": "Гледай влога"
+      },
+      "ramps_compare": {
+        "col_label": "Характеристика"
+      },
+      "ramps_tabs": {
+        "aria": "Навигация в страницата"
+      },
+      "sunday_club": {
+        "soon_title": "Скоро!",
+        "soon_back": "Към началото",
+        "months_short": "ЯНУ,ФЕВ,МАР,АПР,МАЙ,ЮНИ,ЮЛИ,АВГ,СЕП,ОКТ,НОЕ,ДЕК",
+        "weekdays_short": "НЕД,ПОН,ВТО,СРЯ,ЧЕТ,ПЕТ,СЪБ"
+      },
+      "contact": {
+        "success_text": "Ще отговорим до 24 часа.",
+        "email": "Имейл",
+        "info_title": "Магазинът",
+        "address_label": "Адрес",
+        "address": "ул. „Генерал Цимерман“ 18<br>9002 Варна",
+        "phone_label": "Телефон",
+        "hours_label": "Работно време",
+        "hours": "Понеделник – Петък: 10:30 – 19:00"
+      },
+      "community": {
+        "soon_badge": "Скоро",
+        "soon_title": "СКОРО!",
+        "soon_text": "Работим по програмата. Следете ни — ще обявим старта в блога и в Instagram.",
+        "soon_close": "Добре"
+      },
+      "reviews": {
+        "eyebrow": "Отзиви",
+        "title": "КАКВО КАЗВАТ ХОРАТА",
+        "prev": "Назад",
+        "next": "Напред"
+      },
+      "timeline": {
+        "prev_year": "Предишна година",
+        "next_year": "Следваща година"
+      }
+    }
+  },
+  "en": {
+    "tg": {
+      "common": {
+        "bgn": "BGN",
+        "prev_month": "Previous month",
+        "next_month": "Next month",
+        "weekdays_short": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
+        "day": "day",
+        "days": "days",
+        "hours_short": "h",
+        "position": "position"
+      },
+      "bike_service": {
+        "timeslot": "Time",
+        "problem_areas": "Brakes\nDrivetrain — gears, chain\nWheels & tires\nSuspension — fork or shock\nFrame & bearings\nElectric system (e-bike)\nFull service package\nOther / I am not sure"
+      },
+      "service_booking": {
+        "categories": "Service packages,Wheels & tires,Drivetrain,Brakes,Suspension,Other",
+        "months": "January,February,March,April,May,June,July,August,September,October,November,December",
+        "steps": "steps",
+        "book": "Book",
+        "ask": "Ask us"
+      },
+      "rental_booking": {
+        "by_email": "by email.",
+        "months": "January,February,March,April,May,June,July,August,September,October,November,December"
+      },
+      "bike_rental": {
+        "pickup_time": "Pickup time",
+        "days_label": "How many days?",
+        "days_hint": "For rentals longer than one day, the daily rate applies to every day.",
+        "fewer_days": "Fewer days",
+        "more_days": "More days"
+      },
+      "rental_bikes": {
+        "eyebrow": "Bike rental",
+        "title": "AVAILABLE BIKES",
+        "busy": "BOOKED",
+        "free": "AVAILABLE",
+        "price_suffix": " / day",
+        "cta": "Reserve"
+      },
+      "ramps": {
+        "model": "Model",
+        "weight": "Weight",
+        "range": "Range",
+        "length": "Length",
+        "price_vat": "Price incl. VAT",
+        "position": "Position",
+        "watch_youtube": "Watch on YouTube",
+        "watch_vlog": "Watch the vlog"
+      },
+      "ramps_compare": {
+        "col_label": "Feature"
+      },
+      "ramps_tabs": {
+        "aria": "Page navigation"
+      },
+      "sunday_club": {
+        "soon_title": "Coming soon!",
+        "soon_back": "Back to home",
+        "months_short": "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",
+        "weekdays_short": "SUN,MON,TUE,WED,THU,FRI,SAT"
+      },
+      "contact": {
+        "success_text": "We'll reply within 24 hours.",
+        "email": "Email",
+        "info_title": "The shop",
+        "address_label": "Address",
+        "address": "18 General Tsimerman St.<br>9002 Varna",
+        "phone_label": "Phone",
+        "hours_label": "Opening hours",
+        "hours": "Monday – Friday: 10:30 – 19:00"
+      },
+      "community": {
+        "soon_badge": "Coming soon",
+        "soon_title": "COMING SOON!",
+        "soon_text": "We're working on the programme. Follow us — we'll announce the launch on the blog and on Instagram.",
+        "soon_close": "OK"
+      },
+      "reviews": {
+        "eyebrow": "Reviews",
+        "title": "WHAT PEOPLE SAY",
+        "prev": "Previous",
+        "next": "Next"
+      },
+      "timeline": {
+        "prev_year": "Previous year",
+        "next_year": "Next year"
+      }
+    }
+  }
+}

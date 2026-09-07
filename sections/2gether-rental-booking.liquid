@@ -5,6 +5,8 @@
   assign st = section.settings
   assign bikes = shop.metaobjects.rental_bike.values
   assign tiers_default = st.long_tiers | newline_to_br | split: '<br />'
+  assign d_day = 'tg.common.day' | t
+  assign d_days = 'tg.common.days' | t
 -%}
 
 <section class="tg-rb tg-section" id="tg-rental-booking" data-tg-rb
@@ -82,7 +84,7 @@
       <aside class="tg-rb-summary" data-rb-summary>
         <div class="tg-rb-step"><span>03</span>{{ st.step_confirm }}</div>
         <dl class="tg-rb-lines" data-rb-lines><dd class="tg-rb-lines-empty">{{ st.summary_empty }}</dd></dl>
-        <label class="tg-rb-rescue" data-rb-rescue-wrap hidden><input type="checkbox" data-rb-rescue><span><strong>{{ st.rescue_label }}</strong> <em>+€{{ st.rescue_price | default: 5 }}/{{ st.unit_day | default: 'ден' }}</em><small>{{ st.rescue_text }}</small></span></label>
+        <label class="tg-rb-rescue" data-rb-rescue-wrap hidden><input type="checkbox" data-rb-rescue><span><strong>{{ st.rescue_label }}</strong> <em>+€{{ st.rescue_price | default: 5 }}/{{ st.unit_day | default: d_day }}</em><small>{{ st.rescue_text }}</small></span></label>
         <div class="tg-rb-total"><span>{{ st.total_label }}</span><strong data-rb-total>—</strong></div>
         <p class="tg-rb-note" data-rb-deposit-normal>{{ st.deposit }}</p>
         <p class="tg-rb-note tg-rb-note--warn" data-rb-deposit-ebike hidden>{{ st.deposit_ebike }}</p>
@@ -101,7 +103,7 @@
           <input type="hidden" name="contact[phone]" data-fb-phone>
           <input type="hidden" name="contact[email]" data-fb-email>
           <input type="hidden" name="contact[body]" data-fb-body>
-          {% if form.posted_successfully? %}<p class="tg-rb-status is-ok">{{ st.msg_success | remove: 'Резервация' | remove: '.' | strip }} — по имейл.</p>{% endif %}
+          {% if form.posted_successfully? %}<p class="tg-rb-status is-ok">{{ st.msg_success | remove: 'Резервация' | remove: '.' | strip }} — {{ 'tg.rental_booking.by_email' | t }}</p>{% endif %}
           {% if form.errors %}<p class="tg-rb-status">{{ form.errors | default_errors }}</p>{% endif %}
         {%- endform -%}
       </aside>
@@ -118,19 +120,19 @@
         <h3>{{ st.prices_normal_title }}</h3><p>{{ st.prices_normal_sub }}</p>
         <dl>
           <div><dt>{{ st.prices_24h_label }}</dt><dd>€{{ st.h24_rate | default: 20 }}</dd></div>
-          {% for row in pt_n %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 and r[0] != '1' %}<div><dt>{% if forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_n[nxt] | strip | split: '|' %}{% assign upto = nr[0] | plus: 0 | minus: 1 %}{% assign from_n = r[0] | plus: 0 %}{% if upto > from_n %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
+          {% for row in pt_n %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 and r[0] != '1' %}<div><dt>{% if forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: d_days }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_n[nxt] | strip | split: '|' %}{% assign upto = nr[0] | plus: 0 | minus: 1 %}{% assign from_n = r[0] | plus: 0 %}{% if upto > from_n %}–{{ upto }}{% endif %} {{ st.unit_days | default: d_days }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: d_day }}</small></dd></div>{% endif %}{% endfor %}
         </dl>
         <p class="tg-rb-note">{{ st.deposit }}</p>
       </div>
       <div class="tg-rb-price-card tg-rb-price-card--e">
         <h3>{{ st.prices_ebike_title }}</h3><p>{{ st.prices_ebike_sub }}</p>
         <dl>
-          {% for row in pt_e %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 %}<div><dt>{% if r[0] == '1' %}{{ st.prices_1d_label }}{% elsif forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: 'дни' }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_e[nxt] | strip | split: '|' %}{% assign upto = nr[0] | plus: 0 | minus: 1 %}{% assign from_n = r[0] | plus: 0 %}{% if upto > from_n %}–{{ upto }}{% endif %} {{ st.unit_days | default: 'дни' }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: 'ден' }}</small></dd></div>{% endif %}{% endfor %}
+          {% for row in pt_e %}{%- assign r = row | strip | split: '|' -%}{% if r.size == 2 %}<div><dt>{% if r[0] == '1' %}{{ st.prices_1d_label }}{% elsif forloop.last %}{{ r[0] }}+ {{ st.unit_days | default: d_days }}{% else %}{{ r[0] }}{% assign nxt = forloop.index0 | plus: 1 %}{% assign nr = pt_e[nxt] | strip | split: '|' %}{% assign upto = nr[0] | plus: 0 | minus: 1 %}{% assign from_n = r[0] | plus: 0 %}{% if upto > from_n %}–{{ upto }}{% endif %} {{ st.unit_days | default: d_days }}{% endif %}</dt><dd>€{{ r[1] }}<small>/{{ st.unit_day | default: d_day }}</small></dd></div>{% endif %}{% endfor %}
         </dl>
         <p class="tg-rb-note tg-rb-note--warn">{{ st.deposit_ebike }}</p>
       </div>
       <div class="tg-rb-price-card tg-rb-price-card--extra">
-        <h3>{{ st.rescue_label }} <em>+€{{ st.rescue_price | default: 5 }}/{{ st.unit_day | default: 'ден' }}</em></h3><p>{{ st.rescue_text }}</p>
+        <h3>{{ st.rescue_label }} <em>+€{{ st.rescue_price | default: 5 }}/{{ st.unit_day | default: d_day }}</em></h3><p>{{ st.rescue_text }}</p>
         <p class="tg-rb-note">{{ st.prices_hourly_note | replace: '[h]', st.hourly_rate | replace: '[day]', st.day_rate }}</p>
       </div>
     </div>
@@ -139,7 +141,8 @@
 </section>
 
 <script src="{{ '2gether-rental-booking.js' | asset_url }}" defer></script>
-<script>window.tgRbI18n = {{ st | json }};</script>
+<script>window.tgRbI18n = {{ st | json }};
+window.tgI18n = window.tgI18n || {}; window.tgI18n.rentalBooking = { weekdays: {{ 'tg.common.weekdays_short' | t | split: ',' | json }}, months: {{ 'tg.rental_booking.months' | t | split: ',' | json }}, unit_hours: {{ 'tg.common.hours_short' | t | json }}, unit_day: {{ d_day | json }}, unit_days: {{ d_days | json }} };</script>
 
 {% schema %}
 {

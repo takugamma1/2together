@@ -1,3 +1,11 @@
+{%- liquid
+  assign d_eyebrow = 'tg.rental_bikes.eyebrow' | t
+  assign d_title = 'tg.rental_bikes.title' | t
+  assign d_busy = 'tg.rental_bikes.busy' | t
+  assign d_free = 'tg.rental_bikes.free' | t
+  assign d_price_suffix = 'tg.rental_bikes.price_suffix' | t
+  assign d_cta = 'tg.rental_bikes.cta' | t
+-%}
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
 <link href="https://api.fontshare.com/v2/css?f[]=technor@400,500,600,700&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
@@ -6,8 +14,8 @@
 <section class="tg-rentbikes tg-section">
   <div class="tg-rentbikes-inner">
     <header class="tg-rentbikes-head">
-      <span class="tg-label">{{ section.settings.eyebrow | default: 'Наем на велосипеди' }}</span>
-      <h2 class="tg-rentbikes-title">{{ section.settings.title | default: 'НАЛИЧНИ ВЕЛОСИПЕДИ' }}</h2>
+      <span class="tg-label">{{ section.settings.eyebrow | default: d_eyebrow }}</span>
+      <h2 class="tg-rentbikes-title">{{ section.settings.title | default: d_title }}</h2>
       {%- if section.settings.intro != blank -%}
         <p class="tg-rentbikes-intro">{{ section.settings.intro }}</p>
       {%- endif -%}
@@ -28,9 +36,9 @@
                   {{ 'product-1' | placeholder_svg_tag }}
                 {%- endif -%}
                 {%- if busy -%}
-                  <span class="tg-rentbike-stamp">{{ section.settings.busy_label | default: 'ЗАЕТО' }}</span>
+                  <span class="tg-rentbike-stamp">{{ section.settings.busy_label | default: d_busy }}</span>
                 {%- else -%}
-                  <span class="tg-rentbike-free">{{ section.settings.free_label | default: 'СВОБОДНО' }}</span>
+                  <span class="tg-rentbike-free">{{ section.settings.free_label | default: d_free }}</span>
                 {%- endif -%}
               </div>
               <div class="tg-rentbike-body">
@@ -40,7 +48,7 @@
                     {%- if block.settings.price_note != blank -%}
                       {{ block.settings.price_note }}
                     {%- else -%}
-                      {{ bike.price | money }}{{ section.settings.price_suffix | default: ' / ден' }}
+                      {{ bike.price | money }}{{ section.settings.price_suffix | default: d_price_suffix }}
                     {%- endif -%}
                   </span>
                   {%- if block.settings.note != blank -%}
@@ -48,7 +56,7 @@
                   {%- endif -%}
                 </div>
                 {%- unless busy -%}
-                  <span class="tg-rentbike-cta">{{ section.settings.cta_label | default: 'Запази' }} &rarr;</span>
+                  <span class="tg-rentbike-cta">{{ section.settings.cta_label | default: d_cta }} &rarr;</span>
                 {%- endunless -%}
               </div>
             </article>

@@ -1,7 +1,7 @@
 /* 2GETHER — rental booking (short-term hours / long-term date range) */
 (() => {
   const root = document.querySelector('[data-tg-rb]'); if (!root) return;
-  const I = window.tgRbI18n || {};
+  const I = window.tgRbI18n || {}; const L = (window.tgI18n && window.tgI18n.rentalBooking) || {};
   const EP = root.dataset.endpoint || '/apps/club';
   const D = { hourly: +root.dataset.hourly || 3, day: +root.dataset.day || 12, h24: +root.dataset.h24 || 20, maxHours: +root.dataset.maxHours || 24, hStart: +root.dataset.hourStart || 9, hEnd: +root.dataset.hourEnd || 19, minDays: +root.dataset.minDays || 2 };
   const parseTiers = (s) => (s || '').split(';').map(x => x.split('|').map(v => parseFloat(v))).filter(a => a.length === 2 && !isNaN(a[0]) && !isNaN(a[1])).sort((a, b) => a[0] - b[0]);
@@ -50,7 +50,7 @@
   const hoursBox = root.querySelector('[data-rb-hours]'), dursBox = root.querySelector('[data-rb-durations]');
   for (let h = D.hStart; h <= D.hEnd - 1; h++) { const c = document.createElement('button'); c.type = 'button'; c.className = 'tg-rb-chip'; c.textContent = pad(h) + ':00'; c.dataset.h = h; c.addEventListener('click', () => { shortHour = h; [...hoursBox.children].forEach(x => x.classList.toggle('is-on', x === c)); renderSummary(); }); hoursBox.appendChild(c); }
   const durs = [1, 2, 3, 4, 6, 8]; if (D.maxHours >= 24) durs.push(24);
-  durs.forEach(n => { const c = document.createElement('button'); c.type = 'button'; c.className = 'tg-rb-chip'; c.textContent = n === 24 ? '24 ' + (I.unit_hours || 'ч') : n + ' ' + (I.unit_hours || 'ч'); c.dataset.n = n; c.addEventListener('click', () => { shortDur = n; [...dursBox.children].forEach(x => x.classList.toggle('is-on', x === c)); renderSummary(); }); dursBox.appendChild(c); });
+  durs.forEach(n => { const c = document.createElement('button'); c.type = 'button'; c.className = 'tg-rb-chip'; c.textContent = n === 24 ? '24 ' + (I.unit_hours || L.unit_hours || 'ч') : n + ' ' + (I.unit_hours || L.unit_hours || 'ч'); c.dataset.n = n; c.addEventListener('click', () => { shortDur = n; [...dursBox.children].forEach(x => x.classList.toggle('is-on', x === c)); renderSummary(); }); dursBox.appendChild(c); });
   const shortPrice = (h, hours) => { const c = bikeCfg(h); if (hours >= 24) return D.h24 || c.day * 1.6; return Math.min(hours * c.hourly, c.day); };
 
   /* ── long term calendar ── */
@@ -62,7 +62,7 @@
   const dayFree = (day) => { const hs = selected(); if (!hs.length) return true; return hs.every(h => freeOn(h, day) >= sel[h]); };
   function renderCal() {
     if (!monthsBox) return; monthsBox.innerHTML = ''; const today = key(new Date());
-    const names = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд']; const mn = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
+    const names = L.weekdays || ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд']; const mn = L.months || ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
     for (let m = 0; m < 2; m++) {
       const first = new Date(calMonth.getFullYear(), calMonth.getMonth() + m, 1); const box = document.createElement('div'); box.className = 'tg-rb-month';
       box.innerHTML = `<div class="tg-rb-month-name">${mn[first.getMonth()]} ${first.getFullYear()}</div><div class="tg-rb-dow">${names.map(n => `<span>${n}</span>`).join('')}</div>`;
@@ -95,9 +95,9 @@
   const lines = root.querySelector('[data-rb-lines]'), totalEl = root.querySelector('[data-rb-total]'), status = root.querySelector('[data-rb-status]');
   const plan = () => {
     const hs = selected(); if (!hs.length) return null;
-    if (mode === 'short') { if (!shortDate || shortHour === null || !shortDur) return null; const start = new Date(`${shortDate}T${pad(shortHour)}:00:00`); const end = new Date(start.getTime() + shortDur * 3600000); return { mode, start, end, items: hs.map(h => ({ h, qty: sel[h], price: shortPrice(h, shortDur) * sel[h], label: `${shortDur} ${I.unit_hours || 'ч'}` })) }; }
+    if (mode === 'short') { if (!shortDate || shortHour === null || !shortDur) return null; const start = new Date(`${shortDate}T${pad(shortHour)}:00:00`); const end = new Date(start.getTime() + shortDur * 3600000); return { mode, start, end, items: hs.map(h => ({ h, qty: sel[h], price: shortPrice(h, shortDur) * sel[h], label: `${shortDur} ${I.unit_hours || L.unit_hours || 'ч'}` })) }; }
     if (!range.start || !range.end) return null; const n = daysIn(range.start, range.end).length; if (n < D.minDays) return null;
-    return { mode, start: new Date(range.start + 'T' + pad(D.hStart) + ':00:00'), end: new Date(range.end + 'T' + pad(D.hEnd) + ':00:00'), items: hs.map(h => ({ h, qty: sel[h], price: longPrice(h, n) * sel[h], label: `${n} ${n === 1 ? (I.unit_day || 'ден') : (I.unit_days || 'дни')}` })) };
+    return { mode, start: new Date(range.start + 'T' + pad(D.hStart) + ':00:00'), end: new Date(range.end + 'T' + pad(D.hEnd) + ':00:00'), items: hs.map(h => ({ h, qty: sel[h], price: longPrice(h, n) * sel[h], label: `${n} ${n === 1 ? (I.unit_day || L.unit_day || 'ден') : (I.unit_days || L.unit_days || 'дни')}` })) };
   };
   root.addEventListener('change', (e) => { if (e.target.matches('[data-rb-rescue]')) renderSummary(); });
   function renderSummary() {

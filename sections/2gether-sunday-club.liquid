@@ -1,12 +1,16 @@
+{%- liquid
+  assign d_soon_title = 'tg.sunday_club.soon_title' | t
+  assign d_soon_back = 'tg.sunday_club.soon_back' | t
+-%}
 {%- assign tg_soon_paths = settings.soon_paths | default: '' -%}
 {%- if tg_soon_paths contains 'sunday-club' -%}
   {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
   <section class="tg-section" style="min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px;">
     <div style="max-width:640px;display:flex;flex-direction:column;gap:18px;align-items:center;">
       <span class="tg-label">2GETHER SUPPORT PROGRAM</span>
-      <h1 class="tg-f-display" style="margin:0;font-size:clamp(40px,7vw,88px);line-height:0.95;">{{ settings.soon_title | default: 'Скоро!' }}</h1>
+      <h1 class="tg-f-display" style="margin:0;font-size:clamp(40px,7vw,88px);line-height:0.95;">{{ settings.soon_title | default: d_soon_title }}</h1>
       <p style="margin:0;color:var(--tg-text-secondary);line-height:1.6;">{{ settings.soon_text }}</p>
-      <a href="{{ routes.root_url }}" class="tg-btn-primary">{{ section.settings.soon_back | default: 'Към началото' }} &rarr;</a>
+      <a href="{{ routes.root_url }}" class="tg-btn-primary">{{ section.settings.soon_back | default: d_soon_back }} &rarr;</a>
     </div>
   </section>
 {%- else -%}
@@ -66,8 +70,8 @@
   endfor
   assign sorted_ride_keys = ride_keys | split: ',' | sort
 
-  assign tg_months = 'ЯНУ,ФЕВ,МАР,АПР,МАЙ,ЮНИ,ЮЛИ,АВГ,СЕП,ОКТ,НОЕ,ДЕК' | split: ','
-  assign tg_weekdays = 'НЕД,ПОН,ВТО,СРЯ,ЧЕТ,ПЕТ,СЪБ' | split: ','
+  assign tg_months = 'tg.sunday_club.months_short' | t | split: ','
+  assign tg_weekdays = 'tg.sunday_club.weekdays_short' | t | split: ','
 -%}
 
 <section

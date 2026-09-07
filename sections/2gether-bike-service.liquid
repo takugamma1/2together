@@ -1,3 +1,7 @@
+{%- liquid
+  assign d_timeslot = 'tg.bike_service.timeslot' | t
+  assign d_problem_areas = 'tg.bike_service.problem_areas' | t
+-%}
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {{ '2gether-bike-service.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
@@ -127,7 +131,7 @@
             </div>
 
             <fieldset class="tg-service-field tg-service-field--full">
-              <legend class="tg-service-field-label">{{ section.settings.timeslot_label | default: 'Час' }}</legend>
+              <legend class="tg-service-field-label">{{ section.settings.timeslot_label | default: d_timeslot }}</legend>
               {%- assign hour_start = section.settings.hour_start | default: 9 -%}
               {%- assign hour_end = section.settings.hour_end | default: 18 -%}
               <div class="tg-slot-grid tg-slot-grid--hours">
@@ -178,14 +182,7 @@
             <span class="tg-service-field-label">{{ section.settings.problem_area_label | default: 'Problem area' }}</span>
             <select name="contact[problem_area]" required data-tg-validate>
               <option value="" disabled selected>{{ section.settings.problem_area_placeholder | default: 'Pick the part of the bike' }}</option>
-              {%- assign area_opts = section.settings.problem_area_options | default: 'Brakes / Спирачки
-Drivetrain — gears, chain / Трансмисия
-Wheels & tires / Капли и гуми
-Suspension — fork or shock / Окачване
-Frame & bearings / Рамка и лагери
-Electric system (e-bike) / Електрика
-Full service package / Пакетно обслужване
-Other / I am not sure / Друго' | newline_to_br | split: '<br />' -%}
+              {%- assign area_opts = section.settings.problem_area_options | default: d_problem_areas | newline_to_br | split: '<br />' -%}
               {%- for opt in area_opts -%}
                 {%- assign opt_clean = opt | strip_newlines | strip -%}
                 {%- if opt_clean != blank -%}
@@ -363,9 +360,9 @@ Don’t remember' | newline_to_br | split: '<br />' -%}
                           {%- comment -%} EUR is the primary price now; лв. stays as the small reference. {%- endcomment -%}
                           {% if parts.size > 2 %}
                             <span class="tg-price-row-bgn">{{ parts[2] | strip }} &euro;</span>
-                            <span class="tg-price-row-eur">{{ parts[1] | strip }} лв.</span>
+                            <span class="tg-price-row-eur">{{ parts[1] | strip }} {{ 'tg.common.bgn' | t }}</span>
                           {% elsif parts.size > 1 %}
-                            <span class="tg-price-row-bgn">{{ parts[1] | strip }} лв.</span>
+                            <span class="tg-price-row-bgn">{{ parts[1] | strip }} {{ 'tg.common.bgn' | t }}</span>
                           {% endif %}
                         </span>
                         <span class="tg-price-svc-plus" aria-hidden="true"></span>
@@ -384,9 +381,9 @@ Don’t remember' | newline_to_br | split: '<br />' -%}
                           {%- comment -%} EUR is the primary price now; лв. stays as the small reference. {%- endcomment -%}
                           {% if parts.size > 2 %}
                             <span class="tg-price-row-bgn">{{ parts[2] | strip }} &euro;</span>
-                            <span class="tg-price-row-eur">{{ parts[1] | strip }} лв.</span>
+                            <span class="tg-price-row-eur">{{ parts[1] | strip }} {{ 'tg.common.bgn' | t }}</span>
                           {% elsif parts.size > 1 %}
-                            <span class="tg-price-row-bgn">{{ parts[1] | strip }} лв.</span>
+                            <span class="tg-price-row-bgn">{{ parts[1] | strip }} {{ 'tg.common.bgn' | t }}</span>
                           {% endif %}
                         </span>
                         <span class="tg-price-svc-plus" aria-hidden="true"></span>

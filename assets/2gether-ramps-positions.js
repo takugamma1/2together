@@ -12,7 +12,8 @@
     const posBtns = [...root.querySelectorAll('[data-rp-pos]')];
     if (!deck || !modelBtns.length) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const posWord = root.dataset.posWord || 'позиция';
+    const I = (window.tgI18n && window.tgI18n.rampsPositions) || {};
+    const posWord = root.dataset.posWord || I.pos_word || 'позиция';
     let model = modelBtns.find(b => b.classList.contains('is-active')) || modelBtns[0], pos = 0;
     let cur = { L: 0, h: 0 }, from = null, to = null, t0 = 0, raf = 0, safety = 0;
 

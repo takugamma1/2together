@@ -1,3 +1,10 @@
+{%- liquid
+  assign d_pickup_time = 'tg.bike_rental.pickup_time' | t
+  assign d_days_label = 'tg.bike_rental.days_label' | t
+  assign d_days_hint = 'tg.bike_rental.days_hint' | t
+  assign d_day = 'tg.common.day' | t
+  assign d_days = 'tg.common.days' | t
+-%}
 {{ '2gether-custom.css' | asset_url | stylesheet_tag }}
 {{ '2gether-bike-rental.css' | asset_url | stylesheet_tag }}
 {% # theme-check-disable RemoteAsset %}
@@ -189,7 +196,7 @@
             <input type="date" name="contact[pickup_date]" data-tg-r-start required data-tg-r-validate>
           </label>
           <fieldset class="tg-r-field">
-            <legend class="tg-r-field-label">{{ section.settings.pickup_time_label | default: 'Час на взимане' }}</legend>
+            <legend class="tg-r-field-label">{{ section.settings.pickup_time_label | default: d_pickup_time }}</legend>
             {%- assign hour_start = section.settings.hour_start | default: 9 -%}
             {%- assign hour_end = section.settings.hour_end | default: 18 -%}
             <div class="tg-r-slot-grid tg-r-slot-grid--hours">
@@ -204,19 +211,19 @@
         </div>
 
         <fieldset class="tg-r-field tg-r-field--full tg-r-days-field">
-          <legend class="tg-r-field-label">{{ section.settings.days_label | default: 'За колко дни?' }}</legend>
+          <legend class="tg-r-field-label">{{ section.settings.days_label | default: d_days_label }}</legend>
           <div class="tg-r-days" data-tg-r-days>
-            <button type="button" class="tg-r-days-btn" data-tg-r-days-dec aria-label="По-малко дни">
+            <button type="button" class="tg-r-days-btn" data-tg-r-days-dec aria-label="{{ 'tg.bike_rental.fewer_days' | t }}">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </button>
             <span class="tg-r-days-num" data-tg-r-days-num>1</span>
-            <span class="tg-r-days-unit" data-tg-r-days-unit>{{ section.settings.days_unit_singular | default: 'ден' }}</span>
-            <button type="button" class="tg-r-days-btn" data-tg-r-days-inc aria-label="Повече дни">
+            <span class="tg-r-days-unit" data-tg-r-days-unit>{{ section.settings.days_unit_singular | default: d_day }}</span>
+            <button type="button" class="tg-r-days-btn" data-tg-r-days-inc aria-label="{{ 'tg.bike_rental.more_days' | t }}">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </button>
           </div>
           <input type="hidden" name="contact[days]" data-tg-r-days-input value="1">
-          <p class="tg-r-days-hint">{{ section.settings.days_hint | default: 'При наем за повече от един ден дневната тарифа важи за всеки ден.' }}</p>
+          <p class="tg-r-days-hint">{{ section.settings.days_hint | default: d_days_hint }}</p>
         </fieldset>
 
         <fieldset class="tg-r-field tg-r-field--full">
@@ -479,8 +486,8 @@ Mixed levels' | newline_to_br | split: '<br />' -%}
     const daysUnitEl = root.querySelector('[data-tg-r-days-unit]');
     const daysInput = root.querySelector('[data-tg-r-days-input]');
     const DAYS_MAX = {{ section.settings.days_max | default: 30 }};
-    const DAYS_UNIT_SINGULAR = {{ section.settings.days_unit_singular | default: 'ден' | json }};
-    const DAYS_UNIT_PLURAL = {{ section.settings.days_unit_plural | default: 'дни' | json }};
+    const DAYS_UNIT_SINGULAR = {{ section.settings.days_unit_singular | default: d_day | json }};
+    const DAYS_UNIT_PLURAL = {{ section.settings.days_unit_plural | default: d_days | json }};
 
     function getDays() {
       return Math.max(1, parseInt((daysInput && daysInput.value) || '1', 10) || 1);

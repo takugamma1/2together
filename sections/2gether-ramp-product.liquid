@@ -8,6 +8,7 @@
 
 {%- liquid
   assign st = section.settings
+  assign d_pos_word = 'tg.common.position' | t
   assign features = section.blocks | where: 'type', 'feature'
   assign specs = section.blocks | where: 'type', 'spec'
   assign kit = section.blocks | where: 'type', 'kit'
@@ -183,13 +184,13 @@
 
   <!-- ═══ 03 POSITIONS ═══ -->
   <section class="tg-rp-section tg-rp-section--line">
-    <div class="tg-rp-wrap tg-rp-pos-grid" data-rp-positions data-pos-word="{{ st.pos_word | default: 'позиция' | escape }}">
+    <div class="tg-rp-wrap tg-rp-pos-grid" data-rp-positions data-pos-word="{{ st.pos_word | default: d_pos_word | escape }}">
       <div class="tg-rp-pos-copy">
         <span class="tg-eyebrow">{{ st.pos_eyebrow | replace: '[name]', name }}</span>
         <h2 class="tg-rp-h2">{{ st.pos_title }}</h2>
         <p class="tg-rp-text">{{ st.pos_text }}</p>
         <div class="tg-rp-pos-control">
-          <div class="tg-rp-seg tg-rp-seg--num" role="tablist" aria-label="{{ st.pos_word | default: 'позиция' | escape }}">
+          <div class="tg-rp-seg tg-rp-seg--num" role="tablist" aria-label="{{ st.pos_word | default: d_pos_word | escape }}">
             <button type="button" class="tg-rp-seg-btn is-active" hidden data-rp-model data-name="{{ name | escape }}" data-color="{{ model_color }}" data-length="{{ length | default: 130 }}" data-heights="{{ heights | escape }}">{{ name }}</button>
             {% for h in heights_arr %}
               <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-pos="{{ forloop.index0 }}">{{ forloop.index }}</button>
@@ -286,6 +287,7 @@
   </section>
 </div>
 
+<script>window.tgI18n = window.tgI18n || {}; window.tgI18n.rampsPositions = { pos_word: {{ d_pos_word | json }} };</script>
 <script src="{{ '2gether-ramps-positions.js' | asset_url }}" defer></script>
 <script>
 (() => {

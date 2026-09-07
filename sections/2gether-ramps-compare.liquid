@@ -8,6 +8,7 @@
 
 {%- liquid
   assign st = section.settings
+  assign d_col_label = 'tg.ramps_compare.col_label' | t
   assign options = section.blocks | where: 'type', 'option'
   assign rows = section.blocks | where: 'type', 'row'
 -%}
@@ -82,7 +83,7 @@
       <div class="tg-rp-table-wrap">
         <table class="tg-rp-table tg-rc-table">
           <thead><tr>
-            <th>{{ st.col_label | default: 'Характеристика' }}</th>
+            <th>{{ st.col_label | default: d_col_label }}</th>
             <th style="--model: {{ st.color_1 | default: '#C8434F' }}"><span class="tg-rc-col">{{ st.name_1 }}</span></th>
             <th style="--model: {{ st.color_2 | default: '#2F6FD6' }}"><span class="tg-rc-col">{{ st.name_2 }}</span></th>
           </tr></thead>

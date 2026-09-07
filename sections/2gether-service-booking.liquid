@@ -8,6 +8,7 @@
 {%- liquid
   assign st = section.settings
   assign cat_list = 'Пакетно обслужване,Капли и гуми,Трансмисия,Спирачна система,Окачване,Други' | split: ','
+  assign cat_labels = 'tg.service_booking.categories' | t | split: ','
   assign mechanics = shop.metaobjects.mechanic.values | sort: 'sort'
 -%}
 
@@ -83,8 +84,8 @@
         <header class="tg-rp-head"><span class="tg-eyebrow">{{ st.step3_eyebrow }}</span><h2 class="tg-rp-h2">{{ st.step3_title }}</h2><p class="tg-rp-text" data-sb-step3-text>{{ st.step3_text }}</p></header>
         <div class="tg-sb-datetime">
           <div class="tg-sb-cal" data-sb-cal>
-            <div class="tg-sb-cal-head"><button type="button" data-sb-cal-prev aria-label="Предишен месец">‹</button><strong data-sb-cal-title></strong><button type="button" data-sb-cal-next aria-label="Следващ месец">›</button></div>
-            {%- assign sb_weekdays = 'Пн,Вт,Ср,Чт,Пт,Сб,Нд' | split: ',' -%}<div class="tg-sb-cal-week">{% for d in sb_weekdays %}<span>{{ d }}</span>{% endfor %}</div>
+            <div class="tg-sb-cal-head"><button type="button" data-sb-cal-prev aria-label="{{ 'tg.common.prev_month' | t }}">‹</button><strong data-sb-cal-title></strong><button type="button" data-sb-cal-next aria-label="{{ 'tg.common.next_month' | t }}">›</button></div>
+            {%- assign sb_weekdays = 'tg.common.weekdays_short' | t | split: ',' -%}<div class="tg-sb-cal-week">{% for d in sb_weekdays %}<span>{{ d }}</span>{% endfor %}</div>
             <div class="tg-sb-cal-days" data-sb-cal-days></div>
             <p class="tg-sb-cal-note" data-sb-cal-note>{{ st.loading_text }}</p>
           </div>
@@ -151,7 +152,7 @@
       <div class="tg-sb-pricelist" data-sb-pricelist>
         {% for c in cat_list %}
           <details class="tg-sb-pl-cat" data-sb-pl-cat data-cat="{{ c }}"{% if forloop.first %} open{% endif %} hidden>
-            <summary><span class="tg-sb-pl-cat-name"><i>0{{ forloop.index }}</i>{{ c }}</span><span class="tg-sb-pl-cat-meta"><span data-sb-pl-count></span><b aria-hidden="true"></b></span></summary>
+            <summary><span class="tg-sb-pl-cat-name"><i>0{{ forloop.index }}</i>{{ cat_labels[forloop.index0] | default: c }}</span><span class="tg-sb-pl-cat-meta"><span data-sb-pl-count></span><b aria-hidden="true"></b></span></summary>
             <div class="tg-sb-pl-items" data-sb-pl-items></div>
           </details>
         {% endfor %}
@@ -165,10 +166,11 @@
 
 <script>
   window.TG_SB = {
-    months: {{ 'януари,февруари,март,април,май,юни,юли,август,септември,октомври,ноември,декември' | split: ',' | json }},
+    months: {{ 'tg.service_booking.months' | t | split: ',' | json }},
     t: { steps: {{ st.steps_word | json }}, stepsHint: {{ st.steps_hint | json }}, book: {{ st.book_label | json }}, ask: {{ st.ask_label | json }}, pickDay: {{ st.pick_day_text | json }}, noSlots: {{ st.no_slots_text | json }}, loading: {{ st.loading_text | json }}, free: {{ st.free_text | json }}, anyMech: {{ st.any_mechanic | json }}, errSlot: {{ st.err_slot | json }}, errGeneric: {{ st.err_generic | json }}, errFields: {{ st.err_fields | json }}, doneText: {{ st.done_text | json }}, doneFallback: {{ st.done_fallback | json }}, sending: {{ st.sending_label | json }} }
   };
 </script>
+<script>window.tgI18n = window.tgI18n || {}; window.tgI18n.serviceBooking = { steps: {{ 'tg.service_booking.steps' | t | json }}, book: {{ 'tg.service_booking.book' | t | json }}, ask: {{ 'tg.service_booking.ask' | t | json }} };</script>
 <script src="{{ '2gether-service-booking.js' | asset_url }}" defer></script>
 
 {% schema %}

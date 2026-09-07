@@ -8,6 +8,15 @@
 
 {%- liquid
   assign st = section.settings
+  assign d_model = 'tg.ramps.model' | t
+  assign d_weight = 'tg.ramps.weight' | t
+  assign d_range = 'tg.ramps.range' | t
+  assign d_length = 'tg.ramps.length' | t
+  assign d_price_vat = 'tg.ramps.price_vat' | t
+  assign d_position = 'tg.ramps.position' | t
+  assign d_pos_word = 'tg.common.position' | t
+  assign d_watch_youtube = 'tg.ramps.watch_youtube' | t
+  assign d_watch_vlog = 'tg.ramps.watch_vlog' | t
   assign kpis = section.blocks | where: 'type', 'kpi'
   assign models = section.blocks | where: 'type', 'model'
   assign steps = section.blocks | where: 'type', 'step'
@@ -155,7 +164,7 @@
         <div class="tg-rp-table-wrap">
           <table class="tg-rp-table">
             <thead><tr>
-              <th>{{ st.tbl_model | default: 'Модел' }}</th><th>{{ st.tbl_weight | default: 'Тегло' }}</th><th>{{ st.tbl_range | default: 'Диапазон' }}</th><th>{{ st.tbl_length | default: 'Дължина' }}</th><th>{{ st.tbl_price | default: 'Цена с ДДС' }}</th>
+              <th>{{ st.tbl_model | default: d_model }}</th><th>{{ st.tbl_weight | default: d_weight }}</th><th>{{ st.tbl_range | default: d_range }}</th><th>{{ st.tbl_length | default: d_length }}</th><th>{{ st.tbl_price | default: d_price_vat }}</th>
             </tr></thead>
             <tbody>
               {% for b in models %}
@@ -178,23 +187,23 @@
   <!-- ═══ 04 POSITIONS ═══ -->
   {% if models.size > 0 %}
   <section id="tg-ramps-positions" class="tg-rp-section tg-rp-section--line">
-    <div class="tg-rp-wrap tg-rp-pos-grid" data-rp-positions>
+    <div class="tg-rp-wrap tg-rp-pos-grid" data-rp-positions data-pos-word="{{ d_pos_word | escape }}">
       <div class="tg-rp-pos-copy">
         <span class="tg-eyebrow">{{ st.pos_eyebrow }}</span>
         <h2 class="tg-rp-h2">{{ st.pos_title }}</h2>
         <p class="tg-rp-text">{{ st.pos_text }}</p>
 
         <div class="tg-rp-pos-control">
-          <span class="tg-rp-pos-label">{{ st.pos_model_label | default: 'Модел' }}</span>
-          <div class="tg-rp-seg" role="tablist" aria-label="{{ st.pos_model_label | default: 'Модел' }}">
+          <span class="tg-rp-pos-label">{{ st.pos_model_label | default: d_model }}</span>
+          <div class="tg-rp-seg" role="tablist" aria-label="{{ st.pos_model_label | default: d_model }}">
             {% for b in models %}
               <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-model data-name="{{ b.settings.name | escape }}" data-color="{{ b.settings.color | default: '#E8601C' }}" style="--model: {{ b.settings.color | default: '#E8601C' }}" data-length="{{ b.settings.length_cm | default: 130 }}" data-heights="{{ b.settings.heights | default: '29,32,35,38' | escape }}">{{ b.settings.name }}</button>
             {% endfor %}
           </div>
         </div>
         <div class="tg-rp-pos-control">
-          <span class="tg-rp-pos-label">{{ st.pos_position_label | default: 'Позиция' }}</span>
-          <div class="tg-rp-seg tg-rp-seg--num" role="tablist" aria-label="{{ st.pos_position_label | default: 'Позиция' }}">
+          <span class="tg-rp-pos-label">{{ st.pos_position_label | default: d_position }}</span>
+          <div class="tg-rp-seg tg-rp-seg--num" role="tablist" aria-label="{{ st.pos_position_label | default: d_position }}">
             {% for i in (1..4) %}
               <button type="button" role="tab" class="tg-rp-seg-btn{% if forloop.first %} is-active{% endif %}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" data-rp-pos="{{ forloop.index0 }}">{{ i }}</button>
             {% endfor %}
@@ -255,7 +264,7 @@
           {% endif %}
         </span>
         <span class="tg-rp-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        <span class="tg-rp-video-cap"><strong>{{ st.rv_caption | default: 'Гледай в YouTube' }}</strong><em>youtube.com ↗</em></span>
+        <span class="tg-rp-video-cap"><strong>{{ st.rv_caption | default: d_watch_youtube }}</strong><em>youtube.com ↗</em></span>
       </a>
     </div>
   </section>
@@ -328,7 +337,7 @@
             {% else %}{{ 'lifestyle-1' | placeholder_svg_tag: 'tg-rp-cover' }}{% endif %}
           </span>
           <span class="tg-rp-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-          <span class="tg-rp-video-cap"><strong>{{ st.story_video_label | default: 'Гледай влога' }}</strong><em>youtube.com ↗</em></span>
+          <span class="tg-rp-video-cap"><strong>{{ st.story_video_label | default: d_watch_vlog }}</strong><em>youtube.com ↗</em></span>
         </a>
       {% else %}
       <figure class="tg-rp-media">
@@ -399,6 +408,7 @@
   {% render '2gether-ramps-tabs', settings: section.settings, href_1: href_1, href_2: compare_url, href_3: support_url, brand_href: '/', hero_selector: '.tg-rp-hero' %}
 </div>
 
+<script>window.tgI18n = window.tgI18n || {}; window.tgI18n.rampsPositions = { pos_word: {{ d_pos_word | json }} };</script>
 <script src="{{ '2gether-ramps-positions.js' | asset_url }}" defer></script>
 
 {% schema %}

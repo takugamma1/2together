@@ -1,3 +1,9 @@
+{%- liquid
+  assign d_soon_badge = 'tg.community.soon_badge' | t
+  assign d_soon_title = 'tg.community.soon_title' | t
+  assign d_soon_text = 'tg.community.soon_text' | t
+  assign d_soon_close = 'tg.community.soon_close' | t
+-%}
 <section
   class="tg-community tg-section{% if section.settings.content_side == 'left' %} tg-community--left{% endif %}{% if section.settings.coming_soon %} is-coming-soon{% endif %}"
   id="community"
@@ -23,7 +29,7 @@
         <h2 class="tg-f-display tg-community-title">{{ section.settings.title }}</h2>
         <p class="tg-community-text">{{ section.settings.description }}</p>
         {% if section.settings.coming_soon %}
-          <span class="tg-soon-badge">{{ section.settings.soon_badge | default: 'Скоро' }}</span>
+          <span class="tg-soon-badge">{{ section.settings.soon_badge | default: d_soon_badge }}</span>
           {% if section.settings.cta_text != blank %}
             <button type="button" class="tg-btn-primary tg-btn-soon" data-tg-soon style="align-self:flex-start;">{{ section.settings.cta_text }} &rarr;</button>
           {% endif %}
@@ -173,9 +179,9 @@
   <div class="tg-soon-modal" data-tg-soon-modal hidden role="dialog" aria-modal="true" aria-labelledby="tg-soon-title-{{ section.id }}">
     <div class="tg-soon-modal-card">
       <span class="tg-label">{{ section.settings.label_text }}</span>
-      <h3 id="tg-soon-title-{{ section.id }}" class="tg-f-display">{{ section.settings.soon_title | default: 'СКОРО!' }}</h3>
-      <p>{{ section.settings.soon_text | default: 'Работим по програмата. Следете ни — ще обявим старта в блога и в Instagram.' }}</p>
-      <button type="button" class="tg-btn-primary" data-tg-soon-close>{{ section.settings.soon_close | default: 'Добре' }}</button>
+      <h3 id="tg-soon-title-{{ section.id }}" class="tg-f-display">{{ section.settings.soon_title | default: d_soon_title }}</h3>
+      <p>{{ section.settings.soon_text | default: d_soon_text }}</p>
+      <button type="button" class="tg-btn-primary" data-tg-soon-close>{{ section.settings.soon_close | default: d_soon_close }}</button>
     </div>
   </div>
   <script>
