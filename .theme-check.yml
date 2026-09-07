@@ -1,0 +1,3 @@
+# Email notification templates live in docs/, they are not theme files.
+ignore:
+  - docs/**
