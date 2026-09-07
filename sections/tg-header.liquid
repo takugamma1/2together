@@ -28,6 +28,26 @@
     </a>
 
     <div class="tg-header-actions">
+      {%- if section.settings.show_lang -%}
+        {%- if localization.available_languages.size > 1 -%}
+          {%- form 'localization', id: 'tg-lang-form', class: 'tg-lang' -%}
+            <input type="hidden" name="return_to" value="{{ request.path }}">
+            <div class="tg-lang-switch" role="group" aria-label="Език / Language">
+              {%- for language in localization.available_languages -%}
+                {%- assign is_current = false -%}
+                {%- if language.iso_code == localization.language.iso_code -%}{%- assign is_current = true -%}{%- endif -%}
+                <button type="submit" name="language_code" value="{{ language.iso_code }}" lang="{{ language.iso_code }}" class="tg-lang-btn{% if is_current %} is-active{% endif %}"{% if is_current %} aria-current="true"{% endif %} title="{{ language.endonym_name }}">{{ language.iso_code | upcase }}</button>
+                {%- unless forloop.last -%}<span class="tg-lang-sep" aria-hidden="true">/</span>{%- endunless -%}
+              {%- endfor -%}
+            </div>
+          {%- endform -%}
+        {%- elsif request.design_mode -%}
+          {%- comment -%} Only one language is published — preview the widget in the editor and explain how to activate it. {%- endcomment -%}
+          <div class="tg-lang tg-lang--preview" title="Публикувайте английски в Settings → Languages, за да стане активен превключвателят">
+            <div class="tg-lang-switch"><span class="tg-lang-btn is-active">BG</span><span class="tg-lang-sep">/</span><span class="tg-lang-btn">EN</span></div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
       {% if section.settings.show_search %}
         <a href="{{ routes.search_url }}" class="tg-header-icon" aria-label="Търсене">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4-4"/></svg>
@@ -296,6 +316,13 @@
     {
       "type": "header",
       "content": "Header actions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_lang",
+      "label": "Превключвател на езика (BG / EN)",
+      "info": "Показва се, когато в Settings → Languages е публикуван повече от един език. В редактора се вижда като преглед.",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -573,6 +600,55 @@
     background: rgba(232, 96, 28, 0.12);
     color: #FFA468;
   }
+
+  /* Language switcher — BG / EN, slash motif */
+  .tg-lang {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 6px 0 0;
+  }
+
+  .tg-lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 4px;
+    height: 32px;
+    border: 1px solid rgba(138, 155, 181, 0.22);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  }
+
+  .tg-lang-btn {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0 7px;
+    height: 100%;
+    font-family: 'General Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    color: #8A9BB5;
+    cursor: pointer;
+    transition: color 150ms ease;
+  }
+
+  .tg-lang-btn:hover { color: #E8ECF2; }
+  .tg-lang-btn.is-active { color: #E8601C; cursor: default; }
+  .tg-lang-btn:focus-visible { outline: 2px solid #E8601C; outline-offset: 2px; }
+
+  .tg-lang-sep {
+    font-family: 'General Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: #E8601C;
+    transform: skewX(-12deg);
+    display: inline-block;
+  }
+
+  .tg-lang--preview { opacity: 0.75; }
 
   .tg-header-cart-count {
     position: absolute;
@@ -990,6 +1066,9 @@
     .tg-header-inner { padding: 10px 16px; min-height: 56px; }
     .tg-header-actions { gap: 0; }
     .tg-header-icon { width: 36px; height: 36px; }
+    .tg-lang { margin-right: 4px; }
+    .tg-lang-switch { height: 28px; }
+    .tg-lang-btn { padding: 0 5px; font-size: 10px; }
     .tg-takeover-inner { padding: 20px 16px 28px; }
     .tg-takeover-head { margin-bottom: 16px; }
     .tg-takeover-close span { display: none; }
