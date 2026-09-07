@@ -599,7 +599,8 @@
 <script>
   window.tgI18n = window.tgI18n || {};
   window.tgI18n.search = {
-    suggestEmpty: {{ 'tg.search.suggest_empty' | t: query: '{q}' | json }},
+    {%- capture tg_qph -%}{q}{%- endcapture -%}
+    suggestEmpty: {{ 'tg.search.suggest_empty' | t: query: tg_qph | json }},
     products: {{ 'tg.search.suggest_products' | t | json }},
     collections: {{ 'tg.common.categories' | t | json }},
     viewAll: {{ 'tg.search.suggest_all' | t | json }},
@@ -607,6 +608,7 @@
   };
 </script>
 <script src="{{ '2gether-search.js' | asset_url }}" defer></script>
+{%- capture tg_vph -%}{v}{%- endcapture -%}{%- capture tg_tph -%}{t}{%- endcapture -%}{%- assign tg_visible_of_total = 'tg.collection.visible_of_total' | t: visible: tg_vph, total: tg_tph -%}
 <script>
   // Live search over the product cards on this page (the global
   // product/collection bubble comes from 2gether-search.js).
@@ -650,7 +652,7 @@
       });
       if (pagination) pagination.style.display = 'none';
       empty.hidden = visible > 0;
-      if (countEl) countEl.textContent = {{ 'tg.collection.visible_of_total' | t: visible: '{v}', total: '{t}' | json }}.replace('{v}', visible).replace('{t}', baseCount);
+      if (countEl) countEl.textContent = {{ tg_visible_of_total | json }}.replace('{v}', visible).replace('{t}', baseCount);
     });
   })();
 </script>
