@@ -253,13 +253,13 @@
     "volume_pricing": "Ценообразуване според обем",
     "at_price_each": "при {{ price }}/бр.",
     "each": "{{ price }}/бр.",
-    "each_abbreviation": "бр.",
-    "price_at": "при",
+    "each_abbreviation": "ea",
+    "price_at": "at",
     "price_range": "Ценови диапазон",
     "item_count_cutoff": "Повече от {{ count }} артикула",
     "cancel": "Анулиране",
     "product_subtotal": "Междинна сума за продуктите",
-    "quantity_per_item": "/бр.",
+    "quantity_per_item": "/ea",
     "remove_all": "Премахване на всички",
     "remove_all_items_confirmation": "Премахване на всички {{ count }} артикула от количката?",
     "remove_one_item_confirmation": "Премахване на 1 артикул от количката?",
@@ -318,7 +318,7 @@
     }
   },
   "fields": {
-    "separator": "до"
+    "separator": "to"
   },
   "blogs": {
     "article": {
@@ -550,7 +550,7 @@
     "coming_soon": {
       "badge": "Скоро",
       "title": "Скоро!",
-      "text": "Работим по програмата. Ще обявим старта в блога и в Instagram.",
+      "text": "Работим по тази част от сайта. Ще обявим старта в Instagram.",
       "close": "Добре",
       "back": "Към началото"
     },
@@ -661,6 +661,10 @@
     "timeline": {
       "prev_year": "Предишна година",
       "next_year": "Следваща година"
+    },
+    "seo": {
+      "home_title": "2gether Bikes – велосипеден магазин и сервиз във Варна",
+      "home_description": "Велосипеди Orbea и Santa Cruz, части, екипировка и аксесоари. Сервиз със записване онлайн, наем на колела, портативни рампи и колоездачен клуб във Варна."
     }
   }
 }

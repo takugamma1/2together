@@ -27,7 +27,11 @@
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
   assign tg_desc = page_description
-  if request.page_type == 'index' and settings.home_meta_description != blank
+  assign d_home_desc = 'tg.seo.home_description' | t
+  assign d_home_title = 'tg.seo.home_title' | t
+  if request.page_type == 'index' and request.locale.primary == false
+    assign tg_desc = d_home_desc
+  elsif request.page_type == 'index' and settings.home_meta_description != blank
     assign tg_desc = settings.home_meta_description
   endif
   assign og_description = tg_desc | default: shop.description | default: shop.name
@@ -112,10 +116,10 @@
 >
 
 <title>
-  {%- if request.page_type == 'index' and settings.home_meta_title != blank -%}{{ settings.home_meta_title }}{%- else -%}{{ page_title }}{%- endif -%}
+  {%- if request.page_type == 'index' and request.locale.primary == false -%}{{ d_home_title }}{%- elsif request.page_type == 'index' and settings.home_meta_title != blank -%}{{ settings.home_meta_title }}{%- else -%}{{ page_title }}{%- endif -%}
   {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
   {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-  {%- unless page_title contains shop.name or request.page_type == 'index' and settings.home_meta_title != blank %} &ndash; {{ shop.name }}{% endunless -%}
+  {%- unless page_title contains shop.name or request.page_type == 'index' %} &ndash; {{ shop.name }}{% endunless -%}
 </title>
 
 <link
