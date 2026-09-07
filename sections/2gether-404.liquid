@@ -137,17 +137,57 @@
   "name": "2Gether 404",
   "tag": "section",
   "enabled_on": {
-    "templates": ["404"]
+    "templates": [
+      "404"
+    ]
   },
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Етикет", "default": "Грешка 404" },
-    { "type": "text", "id": "title", "label": "Заглавие", "default": "СТРАНИЦАТА НЕ Е НАМЕРЕНА" },
-    { "type": "text", "id": "tagline", "label": "Подзаглавие (курсив)", "default": "Изгубихме следата — тази пътека не води доникъде." },
-    { "type": "textarea", "id": "text", "label": "Текст", "default": "Връзката може да е грешна или страницата да е преместена. Върни се на познат маршрут:" },
-    { "type": "text", "id": "primary_label", "label": "Основен бутон", "default": "Начална страница" },
-    { "type": "url", "id": "primary_link", "label": "Линк на основния бутон" },
-    { "type": "text", "id": "secondary_label", "label": "Втори бутон", "default": "Към магазина" },
-    { "type": "url", "id": "secondary_link", "label": "Линк на втория бутон" }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Етикет",
+      "default": "t:tg.d.404.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Заглавие",
+      "default": "t:tg.d.404.title"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Подзаглавие (курсив)",
+      "default": "t:tg.d.404.tagline"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Текст",
+      "default": "t:tg.d.404.text"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Основен бутон",
+      "default": "t:tg.d.404.primary_label"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Линк на основния бутон"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Втори бутон",
+      "default": "t:tg.d.404.secondary_label"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Линк на втория бутон"
+    }
   ]
 }
 {% endschema %}

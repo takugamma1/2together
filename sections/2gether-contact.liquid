@@ -273,7 +273,7 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "type": "text",
       "id": "email_label",
       "label": "Email label",
-      "default": "Имейл"
+      "default": "t:tg.d.contact.email_label"
     },
     {
       "type": "text",
@@ -316,7 +316,7 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "type": "text",
       "id": "success_text",
       "label": "Success subtext",
-      "default": "Ще отговорим до 24 часа."
+      "default": "t:tg.d.contact.success_text"
     },
     {
       "type": "header",
@@ -326,31 +326,31 @@ Warranty' | newline_to_br | split: '<br />' -%}
       "type": "text",
       "id": "info_title",
       "label": "Info block heading",
-      "default": "Магазинът"
+      "default": "t:tg.d.contact.info_title"
     },
     {
       "type": "text",
       "id": "address_label",
       "label": "Address row label",
-      "default": "Адрес"
+      "default": "t:tg.d.contact.address_label"
     },
     {
       "type": "text",
       "id": "phone_label",
       "label": "Phone row label",
-      "default": "Телефон"
+      "default": "t:tg.d.contact.phone_label"
     },
     {
       "type": "text",
       "id": "email_label_text",
       "label": "Email row label",
-      "default": "Имейл"
+      "default": "t:tg.d.contact.email_label_text"
     },
     {
       "type": "text",
       "id": "hours_label",
       "label": "Hours row label",
-      "default": "Работно време"
+      "default": "t:tg.d.contact.hours_label"
     },
     {
       "type": "textarea",
@@ -418,6 +418,8 @@ Warranty' | newline_to_br | split: '<br />' -%}
       ]
     }
   ],
-  "templates": ["page"]
+  "templates": [
+    "page"
+  ]
 }
 {% endschema %}

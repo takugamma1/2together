@@ -594,92 +594,503 @@
   "name": "Sunday Club",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "soon_back", "label": "Coming-soon back button", "default": "Към началото" },
-    { "type": "header", "content": "Герой (hero)" },
-    { "type": "image_picker", "id": "hero_image", "label": "Снимка" },
-    { "type": "text", "id": "since", "label": "Етикет „от …“", "default": "От 2019" },
-    { "type": "text", "id": "hero_title", "label": "Заглавие", "default": "SUNDAY" },
-    { "type": "text", "id": "hero_title_em", "label": "Заглавие (курсивен ред)", "default": "club." },
-    { "type": "textarea", "id": "hero_sub", "label": "Подзаглавие", "default": "Свободна група колоездачи, които се събират пред магазина всяка неделя сутрин. Без такса, без формалности, без нужда от скъп велосипед. Просто елате." },
-    { "type": "text", "id": "hero_cta", "label": "Основен бутон", "default": "Включи се в клуба" },
-    { "type": "text", "id": "hero_secondary", "label": "Втори бутон", "default": "Виж следващото каране" },
-    { "type": "header", "content": "Статистики (3 броя)" },
-    { "type": "text", "id": "meta_1_value", "label": "Стойност 1", "default": "85+" },
-    { "type": "text", "id": "meta_1_label", "label": "Етикет 1", "default": "Недели навън" },
-    { "type": "text", "id": "meta_2_value", "label": "Стойност 2", "default": "120" },
-    { "type": "text", "id": "meta_2_label", "label": "Етикет 2", "default": "Активни членове" },
-    { "type": "text", "id": "meta_3_value", "label": "Стойност 3", "default": "12" },
-    { "type": "text", "id": "meta_3_label", "label": "Етикет 3", "default": "Маршрути в ротация" },
-    { "type": "header", "content": "Карания (от metaobjects)" },
-    { "type": "text", "id": "events_eyebrow", "label": "Надзаглавие", "default": "В календара" },
-    { "type": "text", "id": "events_title", "label": "Заглавие", "default": "СЛЕДВАЩИТЕ НЕДЕЛИ" },
-    { "type": "textarea", "id": "events_intro", "label": "Уводен текст", "default": "Натиснете „Идвам“, за да се запишете. Ден преди карането изпращаме имейл с маршрута и часа на тръгване." },
-    { "type": "textarea", "id": "events_empty", "label": "Текст при липса на карания", "default": "Скоро обявяваме следващите карания. Запишете се по-долу, за да получите известие." },
-    { "type": "text", "id": "start_label", "label": "Етикет за начален час", "default": "Старт" },
-    { "type": "text", "id": "past_label", "label": "Етикет за минало каране", "default": "Минало" },
-    { "type": "text", "id": "more_label", "label": "Бутон за повече информация", "default": "Повече инфо" },
-    { "type": "text", "id": "route_label", "label": "Етикет за маршрут", "default": "Маршрут" },
-    { "type": "text", "id": "diff_easy", "label": "Трудност: лесно", "default": "Лесно" },
-    { "type": "text", "id": "diff_medium", "label": "Трудност: средно", "default": "Средно" },
-    { "type": "text", "id": "diff_hard", "label": "Трудност: трудно", "default": "Трудно" },
-    { "type": "header", "content": "RSVP" },
-    { "type": "text", "id": "rsvp_going_label", "label": "Бутон „идвам“", "default": "Идвам" },
-    { "type": "text", "id": "rsvp_not_going_label", "label": "Бутон „няма да дойда“", "default": "Няма да дойда" },
-    { "type": "text", "id": "count_label", "label": "Дума след броя записани", "default": "записани" },
-    { "type": "text", "id": "capacity_label", "label": "Капацитет ([N] = брой места)", "default": "от [N] места" },
-    { "type": "text", "id": "login_cta_label", "label": "Линк за вход (в картата)", "default": "Влезте, за да се запишете" },
-    { "type": "text", "id": "msg_full", "label": "Съобщение: запълнени места", "default": "Местата са запълнени" },
-    { "type": "text", "id": "msg_error", "label": "Съобщение: грешка", "default": "Възникна грешка, опитайте отново" },
-    { "type": "text", "id": "msg_login", "label": "Съобщение: нужен е вход", "default": "Влезте, за да се запишете" },
-    { "type": "text", "id": "msg_members", "label": "Съобщение: само за членове", "default": "Само за членове" },
-    { "type": "header", "content": "Диалог „Повече инфо“" },
-    { "type": "text", "id": "dialog_location_label", "label": "Етикет: място", "default": "Място" },
-    { "type": "text", "id": "dialog_map_label", "label": "Линк към картата", "default": "Виж картата" },
-    { "type": "text", "id": "dialog_distance_label", "label": "Етикет: разстояние", "default": "Разстояние" },
-    { "type": "text", "id": "dialog_start_label", "label": "Етикет: начален час", "default": "Начален час" },
-    { "type": "text", "id": "dialog_count_label", "label": "Етикет: записани", "default": "Записани" },
-    { "type": "text", "id": "dialog_close_label", "label": "Бутон затваряне (aria)", "default": "Затвори" },
-    { "type": "header", "content": "Предимства" },
-    { "type": "text", "id": "benefits_eyebrow", "label": "Надзаглавие", "default": "Защо да се включите" },
-    { "type": "text", "id": "benefits_title", "label": "Заглавие", "default": "КАКВО ПОЛУЧАВАТЕ" },
-    { "type": "header", "content": "Снимки" },
-    { "type": "text", "id": "photos_eyebrow", "label": "Надзаглавие", "default": "Лентата" },
-    { "type": "text", "id": "photos_title", "label": "Заглавие", "default": "ЕДНА ГОДИНА НЕДЕЛИ" },
-    { "type": "header", "content": "Форма за членство" },
-    { "type": "text", "id": "join_eyebrow", "label": "Надзаглавие", "default": "Станете член" },
-    { "type": "text", "id": "join_title", "label": "Заглавие", "default": "ВЛЕЗ В ОТБОРА" },
-    { "type": "textarea", "id": "join_text", "label": "Текст", "default": "Попълнете формата по-долу. Одобряваме членовете ръчно — обикновено до няколко дни. Щом сте вътре, получавате членски цени в магазина и напомняне ден преди всяко каране." },
-    { "type": "text", "id": "bullet_1", "label": "Точка 1", "default": "Членски отстъпки за части и наеми" },
-    { "type": "text", "id": "bullet_2", "label": "Точка 2", "default": "Напомняне ден преди всяка неделя" },
-    { "type": "text", "id": "bullet_3", "label": "Точка 3", "default": "Гласуване за следващия маршрут" },
-    { "type": "text", "id": "bullet_4", "label": "Точка 4", "default": "Предимство за груповите пътувания" },
-    { "type": "text", "id": "member_title", "label": "Заглавие за членове", "default": "Вие сте член на Sunday Club ✓" },
-    { "type": "textarea", "id": "member_text", "label": "Текст за членове", "default": "Записвайте се за каранията направо от календара по-горе. Ще ви пишем ден преди всяко каране." },
-    { "type": "text", "id": "login_hint", "label": "Подсказка преди формата (за гости)", "default": "Първо влезте с имейла си, после изпратете заявката" },
-    { "type": "text", "id": "login_hint_link", "label": "Текст на линка за вход", "default": "Вход" },
-    { "type": "text", "id": "label_name", "label": "Поле: име", "default": "Име" },
-    { "type": "text", "id": "label_phone", "label": "Поле: телефон", "default": "Телефон" },
-    { "type": "text", "id": "label_email", "label": "Поле: имейл", "default": "Имейл" },
-    { "type": "text", "id": "label_level", "label": "Поле: ниво", "default": "Ниво на каране" },
-    { "type": "text", "id": "level_placeholder", "label": "Ниво: placeholder", "default": "Изберете" },
-    { "type": "text", "id": "level_1", "label": "Ниво 1", "default": "Първо каране / начинаещ" },
-    { "type": "text", "id": "level_2", "label": "Ниво 2", "default": "Карам за удоволствие" },
-    { "type": "text", "id": "level_3", "label": "Ниво 3", "default": "Опитен" },
-    { "type": "text", "id": "level_4", "label": "Ниво 4", "default": "Състезания / клуб" },
-    { "type": "text", "id": "label_bike", "label": "Поле: велосипед", "default": "Вашият велосипед" },
-    { "type": "text", "id": "bike_placeholder", "label": "Велосипед: placeholder", "default": "Марка / тип" },
-    { "type": "text", "id": "label_strava", "label": "Поле: Strava", "default": "Strava профил" },
-    { "type": "text", "id": "strava_placeholder", "label": "Strava: placeholder", "default": "Strava URL" },
-    { "type": "text", "id": "label_notes", "label": "Поле: бележки", "default": "Нещо друго?" },
-    { "type": "textarea", "id": "notes_placeholder", "label": "Бележки: placeholder", "default": "Как научихте за нас? Има ли нещо, което трябва да знаем?" },
-    { "type": "textarea", "id": "consent_label", "label": "Текст на съгласието", "default": "Разбирам, че неделните карания се провеждат при всякакво време и карам на собствена отговорност." },
-    { "type": "text", "id": "form_submit", "label": "Бутон за изпращане", "default": "Изпрати заявка" },
-    { "type": "textarea", "id": "form_note", "label": "Бележка под формата", "default": "Одобряваме членовете ръчно. Обикновено до 48 часа." },
-    { "type": "textarea", "id": "form_success", "label": "Съобщение при успех", "default": "Заявката е приета. Ще ви пишем на имейл, щом я одобрим — преди следващото неделно каране." },
-    { "type": "header", "content": "Завършващ цитат" },
-    { "type": "textarea", "id": "quote", "label": "Цитат", "default": "Колоезденето е най-близкото до летене, без да напускаш земята. Добави прах и изгрев — това правим всяка неделя." },
-    { "type": "text", "id": "quote_author", "label": "Автор", "default": "Sunday Club" },
-    { "type": "text", "id": "quote_role", "label": "Роля", "default": "Варна · от 2019" }
+    {
+      "type": "text",
+      "id": "soon_back",
+      "label": "Coming-soon back button",
+      "default": "t:tg.d.sunday_club.soon_back"
+    },
+    {
+      "type": "header",
+      "content": "Герой (hero)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Снимка"
+    },
+    {
+      "type": "text",
+      "id": "since",
+      "label": "Етикет „от …“",
+      "default": "t:tg.d.sunday_club.since"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Заглавие",
+      "default": "SUNDAY"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_em",
+      "label": "Заглавие (курсивен ред)",
+      "default": "club."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Подзаглавие",
+      "default": "t:tg.d.sunday_club.hero_sub"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "Основен бутон",
+      "default": "t:tg.d.sunday_club.hero_cta"
+    },
+    {
+      "type": "text",
+      "id": "hero_secondary",
+      "label": "Втори бутон",
+      "default": "t:tg.d.sunday_club.hero_secondary"
+    },
+    {
+      "type": "header",
+      "content": "Статистики (3 броя)"
+    },
+    {
+      "type": "text",
+      "id": "meta_1_value",
+      "label": "Стойност 1",
+      "default": "85+"
+    },
+    {
+      "type": "text",
+      "id": "meta_1_label",
+      "label": "Етикет 1",
+      "default": "t:tg.d.sunday_club.meta_1_label"
+    },
+    {
+      "type": "text",
+      "id": "meta_2_value",
+      "label": "Стойност 2",
+      "default": "120"
+    },
+    {
+      "type": "text",
+      "id": "meta_2_label",
+      "label": "Етикет 2",
+      "default": "t:tg.d.sunday_club.meta_2_label"
+    },
+    {
+      "type": "text",
+      "id": "meta_3_value",
+      "label": "Стойност 3",
+      "default": "12"
+    },
+    {
+      "type": "text",
+      "id": "meta_3_label",
+      "label": "Етикет 3",
+      "default": "t:tg.d.sunday_club.meta_3_label"
+    },
+    {
+      "type": "header",
+      "content": "Карания (от metaobjects)"
+    },
+    {
+      "type": "text",
+      "id": "events_eyebrow",
+      "label": "Надзаглавие",
+      "default": "t:tg.d.sunday_club.events_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "events_title",
+      "label": "Заглавие",
+      "default": "t:tg.d.sunday_club.events_title"
+    },
+    {
+      "type": "textarea",
+      "id": "events_intro",
+      "label": "Уводен текст",
+      "default": "t:tg.d.sunday_club.events_intro"
+    },
+    {
+      "type": "textarea",
+      "id": "events_empty",
+      "label": "Текст при липса на карания",
+      "default": "t:tg.d.sunday_club.events_empty"
+    },
+    {
+      "type": "text",
+      "id": "start_label",
+      "label": "Етикет за начален час",
+      "default": "t:tg.d.sunday_club.start_label"
+    },
+    {
+      "type": "text",
+      "id": "past_label",
+      "label": "Етикет за минало каране",
+      "default": "t:tg.d.sunday_club.past_label"
+    },
+    {
+      "type": "text",
+      "id": "more_label",
+      "label": "Бутон за повече информация",
+      "default": "t:tg.d.sunday_club.more_label"
+    },
+    {
+      "type": "text",
+      "id": "route_label",
+      "label": "Етикет за маршрут",
+      "default": "t:tg.d.sunday_club.route_label"
+    },
+    {
+      "type": "text",
+      "id": "diff_easy",
+      "label": "Трудност: лесно",
+      "default": "t:tg.d.sunday_club.diff_easy"
+    },
+    {
+      "type": "text",
+      "id": "diff_medium",
+      "label": "Трудност: средно",
+      "default": "t:tg.d.sunday_club.diff_medium"
+    },
+    {
+      "type": "text",
+      "id": "diff_hard",
+      "label": "Трудност: трудно",
+      "default": "t:tg.d.sunday_club.diff_hard"
+    },
+    {
+      "type": "header",
+      "content": "RSVP"
+    },
+    {
+      "type": "text",
+      "id": "rsvp_going_label",
+      "label": "Бутон „идвам“",
+      "default": "t:tg.d.sunday_club.rsvp_going_label"
+    },
+    {
+      "type": "text",
+      "id": "rsvp_not_going_label",
+      "label": "Бутон „няма да дойда“",
+      "default": "t:tg.d.sunday_club.rsvp_not_going_label"
+    },
+    {
+      "type": "text",
+      "id": "count_label",
+      "label": "Дума след броя записани",
+      "default": "t:tg.d.sunday_club.count_label"
+    },
+    {
+      "type": "text",
+      "id": "capacity_label",
+      "label": "Капацитет ([N] = брой места)",
+      "default": "t:tg.d.sunday_club.capacity_label"
+    },
+    {
+      "type": "text",
+      "id": "login_cta_label",
+      "label": "Линк за вход (в картата)",
+      "default": "t:tg.d.sunday_club.login_cta_label"
+    },
+    {
+      "type": "text",
+      "id": "msg_full",
+      "label": "Съобщение: запълнени места",
+      "default": "t:tg.d.sunday_club.msg_full"
+    },
+    {
+      "type": "text",
+      "id": "msg_error",
+      "label": "Съобщение: грешка",
+      "default": "t:tg.d.sunday_club.msg_error"
+    },
+    {
+      "type": "text",
+      "id": "msg_login",
+      "label": "Съобщение: нужен е вход",
+      "default": "t:tg.d.sunday_club.msg_login"
+    },
+    {
+      "type": "text",
+      "id": "msg_members",
+      "label": "Съобщение: само за членове",
+      "default": "t:tg.d.sunday_club.msg_members"
+    },
+    {
+      "type": "header",
+      "content": "Диалог „Повече инфо“"
+    },
+    {
+      "type": "text",
+      "id": "dialog_location_label",
+      "label": "Етикет: място",
+      "default": "t:tg.d.sunday_club.dialog_location_label"
+    },
+    {
+      "type": "text",
+      "id": "dialog_map_label",
+      "label": "Линк към картата",
+      "default": "t:tg.d.sunday_club.dialog_map_label"
+    },
+    {
+      "type": "text",
+      "id": "dialog_distance_label",
+      "label": "Етикет: разстояние",
+      "default": "t:tg.d.sunday_club.dialog_distance_label"
+    },
+    {
+      "type": "text",
+      "id": "dialog_start_label",
+      "label": "Етикет: начален час",
+      "default": "t:tg.d.sunday_club.dialog_start_label"
+    },
+    {
+      "type": "text",
+      "id": "dialog_count_label",
+      "label": "Етикет: записани",
+      "default": "t:tg.d.sunday_club.dialog_count_label"
+    },
+    {
+      "type": "text",
+      "id": "dialog_close_label",
+      "label": "Бутон затваряне (aria)",
+      "default": "t:tg.d.sunday_club.dialog_close_label"
+    },
+    {
+      "type": "header",
+      "content": "Предимства"
+    },
+    {
+      "type": "text",
+      "id": "benefits_eyebrow",
+      "label": "Надзаглавие",
+      "default": "t:tg.d.sunday_club.benefits_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "benefits_title",
+      "label": "Заглавие",
+      "default": "t:tg.d.sunday_club.benefits_title"
+    },
+    {
+      "type": "header",
+      "content": "Снимки"
+    },
+    {
+      "type": "text",
+      "id": "photos_eyebrow",
+      "label": "Надзаглавие",
+      "default": "t:tg.d.sunday_club.photos_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "photos_title",
+      "label": "Заглавие",
+      "default": "t:tg.d.sunday_club.photos_title"
+    },
+    {
+      "type": "header",
+      "content": "Форма за членство"
+    },
+    {
+      "type": "text",
+      "id": "join_eyebrow",
+      "label": "Надзаглавие",
+      "default": "t:tg.d.sunday_club.join_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "join_title",
+      "label": "Заглавие",
+      "default": "t:tg.d.sunday_club.join_title"
+    },
+    {
+      "type": "textarea",
+      "id": "join_text",
+      "label": "Текст",
+      "default": "t:tg.d.sunday_club.join_text"
+    },
+    {
+      "type": "text",
+      "id": "bullet_1",
+      "label": "Точка 1",
+      "default": "t:tg.d.sunday_club.bullet_1"
+    },
+    {
+      "type": "text",
+      "id": "bullet_2",
+      "label": "Точка 2",
+      "default": "t:tg.d.sunday_club.bullet_2"
+    },
+    {
+      "type": "text",
+      "id": "bullet_3",
+      "label": "Точка 3",
+      "default": "t:tg.d.sunday_club.bullet_3"
+    },
+    {
+      "type": "text",
+      "id": "bullet_4",
+      "label": "Точка 4",
+      "default": "t:tg.d.sunday_club.bullet_4"
+    },
+    {
+      "type": "text",
+      "id": "member_title",
+      "label": "Заглавие за членове",
+      "default": "t:tg.d.sunday_club.member_title"
+    },
+    {
+      "type": "textarea",
+      "id": "member_text",
+      "label": "Текст за членове",
+      "default": "t:tg.d.sunday_club.member_text"
+    },
+    {
+      "type": "text",
+      "id": "login_hint",
+      "label": "Подсказка преди формата (за гости)",
+      "default": "t:tg.d.sunday_club.login_hint"
+    },
+    {
+      "type": "text",
+      "id": "login_hint_link",
+      "label": "Текст на линка за вход",
+      "default": "t:tg.d.sunday_club.login_hint_link"
+    },
+    {
+      "type": "text",
+      "id": "label_name",
+      "label": "Поле: име",
+      "default": "t:tg.d.sunday_club.label_name"
+    },
+    {
+      "type": "text",
+      "id": "label_phone",
+      "label": "Поле: телефон",
+      "default": "t:tg.d.sunday_club.label_phone"
+    },
+    {
+      "type": "text",
+      "id": "label_email",
+      "label": "Поле: имейл",
+      "default": "t:tg.d.sunday_club.label_email"
+    },
+    {
+      "type": "text",
+      "id": "label_level",
+      "label": "Поле: ниво",
+      "default": "t:tg.d.sunday_club.label_level"
+    },
+    {
+      "type": "text",
+      "id": "level_placeholder",
+      "label": "Ниво: placeholder",
+      "default": "t:tg.d.sunday_club.level_placeholder"
+    },
+    {
+      "type": "text",
+      "id": "level_1",
+      "label": "Ниво 1",
+      "default": "t:tg.d.sunday_club.level_1"
+    },
+    {
+      "type": "text",
+      "id": "level_2",
+      "label": "Ниво 2",
+      "default": "t:tg.d.sunday_club.level_2"
+    },
+    {
+      "type": "text",
+      "id": "level_3",
+      "label": "Ниво 3",
+      "default": "t:tg.d.sunday_club.level_3"
+    },
+    {
+      "type": "text",
+      "id": "level_4",
+      "label": "Ниво 4",
+      "default": "t:tg.d.sunday_club.level_4"
+    },
+    {
+      "type": "text",
+      "id": "label_bike",
+      "label": "Поле: велосипед",
+      "default": "t:tg.d.sunday_club.label_bike"
+    },
+    {
+      "type": "text",
+      "id": "bike_placeholder",
+      "label": "Велосипед: placeholder",
+      "default": "t:tg.d.sunday_club.bike_placeholder"
+    },
+    {
+      "type": "text",
+      "id": "label_strava",
+      "label": "Поле: Strava",
+      "default": "t:tg.d.sunday_club.label_strava"
+    },
+    {
+      "type": "text",
+      "id": "strava_placeholder",
+      "label": "Strava: placeholder",
+      "default": "Strava URL"
+    },
+    {
+      "type": "text",
+      "id": "label_notes",
+      "label": "Поле: бележки",
+      "default": "t:tg.d.sunday_club.label_notes"
+    },
+    {
+      "type": "textarea",
+      "id": "notes_placeholder",
+      "label": "Бележки: placeholder",
+      "default": "t:tg.d.sunday_club.notes_placeholder"
+    },
+    {
+      "type": "textarea",
+      "id": "consent_label",
+      "label": "Текст на съгласието",
+      "default": "t:tg.d.sunday_club.consent_label"
+    },
+    {
+      "type": "text",
+      "id": "form_submit",
+      "label": "Бутон за изпращане",
+      "default": "t:tg.d.sunday_club.form_submit"
+    },
+    {
+      "type": "textarea",
+      "id": "form_note",
+      "label": "Бележка под формата",
+      "default": "t:tg.d.sunday_club.form_note"
+    },
+    {
+      "type": "textarea",
+      "id": "form_success",
+      "label": "Съобщение при успех",
+      "default": "t:tg.d.sunday_club.form_success"
+    },
+    {
+      "type": "header",
+      "content": "Завършващ цитат"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Цитат",
+      "default": "t:tg.d.sunday_club.quote"
+    },
+    {
+      "type": "text",
+      "id": "quote_author",
+      "label": "Автор",
+      "default": "Sunday Club"
+    },
+    {
+      "type": "text",
+      "id": "quote_role",
+      "label": "Роля",
+      "default": "t:tg.d.sunday_club.quote_role"
+    }
   ],
   "blocks": [
     {
@@ -687,8 +1098,18 @@
       "name": "Предимство",
       "limit": 6,
       "settings": [
-        { "type": "text", "id": "title", "label": "Заглавие", "default": "Членска отстъпка" },
-        { "type": "textarea", "id": "text", "label": "Текст", "default": "10% отстъпка за части и наеми целогодишно. Комбинира се с намаления." }
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Заглавие",
+          "default": "t:tg.d.sunday_club.b_benefit.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Текст",
+          "default": "t:tg.d.sunday_club.b_benefit.text"
+        }
       ]
     },
     {
@@ -696,8 +1117,16 @@
       "name": "Снимка",
       "limit": 12,
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Снимка" },
-        { "type": "text", "id": "caption", "label": "Надпис" }
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Снимка"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Надпис"
+        }
       ]
     }
   ],
@@ -706,15 +1135,41 @@
       "name": "Sunday Club",
       "category": "Custom",
       "blocks": [
-        { "type": "benefit", "settings": { "title": "Членска отстъпка", "text": "10% отстъпка за части и наеми целогодишно. Комбинира се с намаления." } },
-        { "type": "benefit", "settings": { "title": "Напомняне", "text": "Имейл ден преди всяко неделно каране с маршрута и часа на тръгване." } },
-        { "type": "benefit", "settings": { "title": "Гласуване за маршрут", "text": "Веднъж месечно членовете гласуват за следващата дестинация. Мнозинството решава." } },
-        { "type": "benefit", "settings": { "title": "Групови пътувания", "text": "Предимство при записване за груповите пътувания и уикендите извън града." } }
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Членска отстъпка",
+            "text": "10% отстъпка за части и наеми целогодишно. Комбинира се с намаления."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Напомняне",
+            "text": "Имейл ден преди всяко неделно каране с маршрута и часа на тръгване."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Гласуване за маршрут",
+            "text": "Веднъж месечно членовете гласуват за следващата дестинация. Мнозинството решава."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Групови пътувания",
+            "text": "Предимство при записване за груповите пътувания и уикендите извън града."
+          }
+        }
       ]
     }
   ],
   "enabled_on": {
-    "templates": ["page"]
+    "templates": [
+      "page"
+    ]
   }
 }
 {% endschema %}

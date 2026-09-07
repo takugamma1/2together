@@ -178,76 +178,416 @@
   "name": "Service booking",
   "tag": "section",
   "settings": [
-    { "type": "paragraph", "content": "Услугите и механиците се редактират в Content → Metaobjects (Service type / Mechanic). Работното време на всеки механик е в неговия запис." },
-    { "type": "header", "content": "Hero" },
-    { "type": "image_picker", "id": "hero_image", "label": "Background" },
-    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Сервиз · Варна" },
-    { "type": "text", "id": "hero_title", "label": "Title", "default": "ЗАПИШИ ЧАС ЗА" },
-    { "type": "text", "id": "hero_title_accent", "label": "Title accent", "default": "СЕРВИЗ" },
-    { "type": "textarea", "id": "hero_sub", "label": "Subtitle", "default": "Избираш услуга, механик и час. Без чакане, без телефонни обаждания — колелото ти е готово, когато ти е удобно." },
-    { "type": "text", "id": "hero_cta", "label": "CTA", "default": "Запази час" },
-    { "type": "header", "content": "Wizard" },
-    { "type": "text", "id": "endpoint", "label": "Worker endpoint", "default": "/apps/club" },
-    { "type": "number", "id": "lead_hours", "label": "Minimum hours ahead (display only; worker enforces)", "default": 2 },
-    { "type": "text", "id": "step1_tab", "label": "Step 1 tab", "default": "Услуга" },
-    { "type": "text", "id": "step2_tab", "label": "Step 2 tab", "default": "Механик" },
-    { "type": "text", "id": "step3_tab", "label": "Step 3 tab", "default": "Ден и час" },
-    { "type": "text", "id": "step4_tab", "label": "Step 4 tab", "default": "Данни" },
-    { "type": "text", "id": "next_label", "label": "Next", "default": "Напред" },
-    { "type": "textarea", "id": "service_handles_unused", "label": "(unused) legacy handle list", "default": "paket-prigotvyane-za-sahranenie\npaket-podgotvyane-za-sezona\npaket-tsyalostna-profilaktika\npaket-premium-tsyalostna-profilaktika\npaket-okachvane\npaket-folirane-na-velosiped\npaket-pochistvane\npaket-premium-pochistvane\npaket-skorostna-sistema\npaket-spirachna-sistema-v-brake\npaket-spirachna-sistema-mehanichni-diskovi-spirachki\npaket-spirachna-sistema-hidravlichni-diskovi-spirachki\npaket-lageri-na-ramka\nsmyana-na-guma\nlepene-na-guma\nmontazh-na-tubularna-guma\nmontazh-na-bezkamerna-guma\nsmyana-na-guma-na-el-trotinetka\nsmyana-na-guma-na-el-motor\nsmyana-na-zadna-kapla-na-velosiped-s-disk\nsmyana-na-predna-kapla-na-velosiped-s-disk\nprofilaktika-na-zadna-glavina-s-nekapsulovani-lageri\nprofilaktika-na-glavina-s-kapsulovani-lageri\nprofilaktika-na-predna-glavina-s-nekapsulovani-lageri\ntsentrovka-na-kapla\nnaplitane-na-kapla-i-tsentrovka\nrazplitane-na-predna-kapla\nrazplitane-na-zadna-kapla\nrazplitane-naplitane-i-tsentrovka\nsmyana-na-komanda\nsmyana-na-zadni-ventsi\nsmyana-na-lyav-kurbel\nsmyana-na-kurbeli\nsmyana-na-plocha\nsmyana-na-veriga\nmontazh-na-vodach-za-veriga\nsmazvane-na-veriga\nsmyana-na-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti-s-vatreshno-okabelyavan\nsmyana-na-sredno-dvizhenie\nprofilaktika-na-sredno-dvizhenie-pri-srednite-s-nekapsulovan\nremont-na-rezba-na-ramka-pri-srednoto-dvizhenie\nvazstanovyavane-na-rezba-na-kurbel\nregulirane-na-skorosti\nizpravyane-na-uho-za-skorosti-i-nastroyvane\nsmyana-na-uho-i-nastroyvane-na-skorosti\nsmyana-na-zaden-deraylor\nsmyana-na-preden-deraylor\nmontazh-na-pedali\nsmyana-na-pedali\nmontazh-i-nastroyvane-na-parcheta-i-shpaykove\nprofilaktika-na-pedali-s-kapsulovani-lageri\nsmyana-na-spirachno-lostche-mehanichno\nsmyana-na-spirachno-lostche-hidravlichno\nsmyana-na-v-brake-spirachka\nsmyana-na-diskova-mehanichna-spirachka\nsmyana-na-diskova-hidravlichna-spirachka\nsmyana-na-diskova-spirachka-s-vatreshno-okabelyavane\nsmyana-na-rotor\nsmyana-na-zhilo-na-spirachka-v-brake-u-brake-chelyustna-meha\nsmyana-na-bronya-i-zhilo-na-spirachka-v-brake-u-brake-chelyu\nsmyana-na-bronya-i-zhilo-na-spirachka-s-vatreshno-okabelyava\nsmyana-na-nakladki-na-diskova-spirachka\nsmyana-na-kalodki-na-v-brake-spirachka\nreglazh-na-spirachka-v-brake-u-brake-chelyustna-mehanichna-d\nizpravyane-na-rotor\nskasyavane-na-spirachen-hidravlichen-markuch\nsmyana-na-chashki-chelni-lageri\nmontazh-na-chashki-chelni-lageri\nobirane-na-luft-v-chashki-na-rezba\nobirane-na-luft-v-chashki\nprofilaktika-na-vilka-shok\ndemontazh-i-montazh-na-vilka\ndemontazh-i-montazh-na-shok\npodmyana-na-vsichki-lageri-na-ramka\nprofilaktika-na-chashki\nsmyana-na-kormilo\nsmyana-na-lapa\nsmyana-na-sedlo\nsmyana-na-gyudelin\nsmyana-na-gripove\nsmyana-na-sedlovo-kolche\nmontazh-na-bagazhnik\nmontazh-na-chip-za-elektricheski-velosiped\ndiagnostika-na-elektricheski-velosiped-s-elektrodvigatel-bos\nsglobyavane-na-nov-velosiped\nsglobyavane-na-velosiped\nhotel-za-velosipedi" },
-    { "type": "text", "id": "all_label", "label": "'All' chip", "default": "Всички" },
-    { "type": "text", "id": "steps_word", "label": "Package steps word", "default": "стъпки" },
-    { "type": "text", "id": "steps_hint", "label": "Package steps hint", "default": "пълно описание в ценоразписа" },
-    { "type": "text", "id": "search_ph", "label": "Search placeholder", "default": "Търси услуга… напр. верига, спирачки" },
-    { "type": "text", "id": "no_results", "label": "No results", "default": "Нищо не намерихме. Избери „Диагностика“ или ни се обади." },
-    { "type": "text", "id": "selected_label", "label": "Selected label", "default": "Избрано" },
-    { "type": "text", "id": "book_label", "label": "Price list book button", "default": "Запиши" },
-    { "type": "text", "id": "ask_label", "label": "Price list non-bookable label", "default": "Попитай" },
-    { "type": "text", "id": "back_label", "label": "Back", "default": "Назад" },
-    { "type": "text", "id": "step1_eyebrow", "label": "Step 1 eyebrow", "default": "01 · Какво ти трябва" },
-    { "type": "text", "id": "step1_title", "label": "Step 1 title", "default": "ИЗБЕРИ УСЛУГА" },
-    { "type": "textarea", "id": "step1_text", "label": "Step 1 text", "default": "Пакетите са най-изгодни за пълна грижа; за конкретен проблем избери отделна услуга. Не си сигурен? Запиши „Пакет почистване“ + бележка и ще те насочим." },
-    { "type": "text", "id": "step2_eyebrow", "label": "Step 2 eyebrow", "default": "02 · Кой да се заеме" },
-    { "type": "text", "id": "step2_title", "label": "Step 2 title", "default": "ИЗБЕРИ МЕХАНИК" },
-    { "type": "textarea", "id": "step2_text", "label": "Step 2 text", "default": "Всеки механик има собствено работно време — виждаш само неговите свободни часове." },
-    { "type": "text", "id": "any_mechanic", "label": "'Any mechanic' label", "default": "Който е свободен" },
-    { "type": "text", "id": "any_mechanic_text", "label": "'Any mechanic' text", "default": "Най-ранният свободен час при когото и да е." },
-    { "type": "text", "id": "step3_eyebrow", "label": "Step 3 eyebrow", "default": "03 · Кога" },
-    { "type": "text", "id": "step3_title", "label": "Step 3 title", "default": "ДЕН И ЧАС" },
-    { "type": "textarea", "id": "step3_text", "label": "Step 3 text", "default": "Показваме само реално свободните часове." },
-    { "type": "text", "id": "pick_day_text", "label": "Pick a day prompt", "default": "Избери ден от календара" },
-    { "type": "text", "id": "no_slots_text", "label": "No slots text", "default": "Няма свободни часове за този ден." },
-    { "type": "text", "id": "loading_text", "label": "Loading text", "default": "Зареждаме свободните часове…" },
-    { "type": "text", "id": "free_text", "label": "Free slots word", "default": "свободни часа" },
-    { "type": "text", "id": "step4_eyebrow", "label": "Step 4 eyebrow", "default": "04 · Твоите данни" },
-    { "type": "text", "id": "step4_title", "label": "Step 4 title", "default": "ПОЧТИ ГОТОВО" },
-    { "type": "text", "id": "f_name", "label": "Name label", "default": "Име" },
-    { "type": "text", "id": "f_phone", "label": "Phone label", "default": "Телефон" },
-    { "type": "text", "id": "f_email", "label": "E-mail label", "default": "Имейл (за потвърждение)" },
-    { "type": "text", "id": "f_bike", "label": "Bike label", "default": "Колело" },
-    { "type": "text", "id": "f_bike_ph", "label": "Bike placeholder", "default": "напр. Orbea Alma 2023" },
-    { "type": "text", "id": "f_note", "label": "Note label", "default": "Какъв е проблемът?" },
-    { "type": "text", "id": "f_note_ph", "label": "Note placeholder", "default": "Описание на проблема, шумове, кога се появява…" },
-    { "type": "text", "id": "submit_label", "label": "Submit", "default": "Запази часа" },
-    { "type": "text", "id": "sending_label", "label": "Sending", "default": "Изпращаме…" },
-    { "type": "textarea", "id": "form_note", "label": "Form note", "default": "Потвърждаваме по имейл и телефон. Ако закъснееш с повече от 15 минути, часът може да бъде преместен." },
-    { "type": "text", "id": "summary_title", "label": "Summary title", "default": "Резюме" },
-    { "type": "text", "id": "sum_duration", "label": "Duration label", "default": "Продължителност" },
-    { "type": "text", "id": "sum_price", "label": "Price label", "default": "Цена" },
-    { "type": "text", "id": "err_slot", "label": "Slot taken error", "default": "Този час току-що беше зает. Избери друг." },
-    { "type": "text", "id": "err_generic", "label": "Generic error", "default": "Нещо се обърка. Опитай пак или ни се обади." },
-    { "type": "text", "id": "err_fields", "label": "Fields error", "default": "Попълни име и телефон." },
-    { "type": "text", "id": "done_eyebrow", "label": "Done eyebrow", "default": "Готово" },
-    { "type": "text", "id": "done_title", "label": "Done title", "default": "ЧАСЪТ Е ЗАПАЗЕН" },
-    { "type": "textarea", "id": "done_text", "label": "Done text", "default": "[service] при [mechanic] — [when]. Изпратихме потвърждение на имейла ти." },
-    { "type": "textarea", "id": "done_fallback", "label": "Done text (e-mail fallback)", "default": "Заявката е изпратена по имейл — ще потвърдим часа до няколко часа." },
-    { "type": "text", "id": "done_cta", "label": "Done CTA", "default": "Към началото" },
-    { "type": "header", "content": "Prices" },
-    { "type": "checkbox", "id": "show_prices", "label": "Show price list", "default": true },
-    { "type": "text", "id": "prices_eyebrow", "label": "Eyebrow", "default": "Ценоразпис" },
-    { "type": "text", "id": "prices_title", "label": "Title", "default": "УСЛУГИ И ЦЕНИ" },
-    { "type": "textarea", "id": "prices_note", "label": "Note", "default": "Цените са за труд и не включват части." }
+    {
+      "type": "paragraph",
+      "content": "Услугите и механиците се редактират в Content → Metaobjects (Service type / Mechanic). Работното време на всеки механик е в неговия запис."
+    },
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Background"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.service_booking.hero_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title",
+      "default": "t:tg.d.service_booking.hero_title"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_accent",
+      "label": "Title accent",
+      "default": "t:tg.d.service_booking.hero_title_accent"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Subtitle",
+      "default": "t:tg.d.service_booking.hero_sub"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta",
+      "label": "CTA",
+      "default": "t:tg.d.service_booking.hero_cta"
+    },
+    {
+      "type": "header",
+      "content": "Wizard"
+    },
+    {
+      "type": "text",
+      "id": "endpoint",
+      "label": "Worker endpoint",
+      "default": "/apps/club"
+    },
+    {
+      "type": "number",
+      "id": "lead_hours",
+      "label": "Minimum hours ahead (display only; worker enforces)",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "step1_tab",
+      "label": "Step 1 tab",
+      "default": "t:tg.d.service_booking.step1_tab"
+    },
+    {
+      "type": "text",
+      "id": "step2_tab",
+      "label": "Step 2 tab",
+      "default": "t:tg.d.service_booking.step2_tab"
+    },
+    {
+      "type": "text",
+      "id": "step3_tab",
+      "label": "Step 3 tab",
+      "default": "t:tg.d.service_booking.step3_tab"
+    },
+    {
+      "type": "text",
+      "id": "step4_tab",
+      "label": "Step 4 tab",
+      "default": "t:tg.d.service_booking.step4_tab"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next",
+      "default": "t:tg.d.service_booking.next_label"
+    },
+    {
+      "type": "textarea",
+      "id": "service_handles_unused",
+      "label": "(unused) legacy handle list",
+      "default": "paket-prigotvyane-za-sahranenie\npaket-podgotvyane-za-sezona\npaket-tsyalostna-profilaktika\npaket-premium-tsyalostna-profilaktika\npaket-okachvane\npaket-folirane-na-velosiped\npaket-pochistvane\npaket-premium-pochistvane\npaket-skorostna-sistema\npaket-spirachna-sistema-v-brake\npaket-spirachna-sistema-mehanichni-diskovi-spirachki\npaket-spirachna-sistema-hidravlichni-diskovi-spirachki\npaket-lageri-na-ramka\nsmyana-na-guma\nlepene-na-guma\nmontazh-na-tubularna-guma\nmontazh-na-bezkamerna-guma\nsmyana-na-guma-na-el-trotinetka\nsmyana-na-guma-na-el-motor\nsmyana-na-zadna-kapla-na-velosiped-s-disk\nsmyana-na-predna-kapla-na-velosiped-s-disk\nprofilaktika-na-zadna-glavina-s-nekapsulovani-lageri\nprofilaktika-na-glavina-s-kapsulovani-lageri\nprofilaktika-na-predna-glavina-s-nekapsulovani-lageri\ntsentrovka-na-kapla\nnaplitane-na-kapla-i-tsentrovka\nrazplitane-na-predna-kapla\nrazplitane-na-zadna-kapla\nrazplitane-naplitane-i-tsentrovka\nsmyana-na-komanda\nsmyana-na-zadni-ventsi\nsmyana-na-lyav-kurbel\nsmyana-na-kurbeli\nsmyana-na-plocha\nsmyana-na-veriga\nmontazh-na-vodach-za-veriga\nsmazvane-na-veriga\nsmyana-na-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti\nsmyana-na-bronya-i-zhilo-za-skorosti-s-vatreshno-okabelyavan\nsmyana-na-sredno-dvizhenie\nprofilaktika-na-sredno-dvizhenie-pri-srednite-s-nekapsulovan\nremont-na-rezba-na-ramka-pri-srednoto-dvizhenie\nvazstanovyavane-na-rezba-na-kurbel\nregulirane-na-skorosti\nizpravyane-na-uho-za-skorosti-i-nastroyvane\nsmyana-na-uho-i-nastroyvane-na-skorosti\nsmyana-na-zaden-deraylor\nsmyana-na-preden-deraylor\nmontazh-na-pedali\nsmyana-na-pedali\nmontazh-i-nastroyvane-na-parcheta-i-shpaykove\nprofilaktika-na-pedali-s-kapsulovani-lageri\nsmyana-na-spirachno-lostche-mehanichno\nsmyana-na-spirachno-lostche-hidravlichno\nsmyana-na-v-brake-spirachka\nsmyana-na-diskova-mehanichna-spirachka\nsmyana-na-diskova-hidravlichna-spirachka\nsmyana-na-diskova-spirachka-s-vatreshno-okabelyavane\nsmyana-na-rotor\nsmyana-na-zhilo-na-spirachka-v-brake-u-brake-chelyustna-meha\nsmyana-na-bronya-i-zhilo-na-spirachka-v-brake-u-brake-chelyu\nsmyana-na-bronya-i-zhilo-na-spirachka-s-vatreshno-okabelyava\nsmyana-na-nakladki-na-diskova-spirachka\nsmyana-na-kalodki-na-v-brake-spirachka\nreglazh-na-spirachka-v-brake-u-brake-chelyustna-mehanichna-d\nizpravyane-na-rotor\nskasyavane-na-spirachen-hidravlichen-markuch\nsmyana-na-chashki-chelni-lageri\nmontazh-na-chashki-chelni-lageri\nobirane-na-luft-v-chashki-na-rezba\nobirane-na-luft-v-chashki\nprofilaktika-na-vilka-shok\ndemontazh-i-montazh-na-vilka\ndemontazh-i-montazh-na-shok\npodmyana-na-vsichki-lageri-na-ramka\nprofilaktika-na-chashki\nsmyana-na-kormilo\nsmyana-na-lapa\nsmyana-na-sedlo\nsmyana-na-gyudelin\nsmyana-na-gripove\nsmyana-na-sedlovo-kolche\nmontazh-na-bagazhnik\nmontazh-na-chip-za-elektricheski-velosiped\ndiagnostika-na-elektricheski-velosiped-s-elektrodvigatel-bos\nsglobyavane-na-nov-velosiped\nsglobyavane-na-velosiped\nhotel-za-velosipedi"
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "'All' chip",
+      "default": "t:tg.d.service_booking.all_label"
+    },
+    {
+      "type": "text",
+      "id": "steps_word",
+      "label": "Package steps word",
+      "default": "t:tg.d.service_booking.steps_word"
+    },
+    {
+      "type": "text",
+      "id": "steps_hint",
+      "label": "Package steps hint",
+      "default": "t:tg.d.service_booking.steps_hint"
+    },
+    {
+      "type": "text",
+      "id": "search_ph",
+      "label": "Search placeholder",
+      "default": "t:tg.d.service_booking.search_ph"
+    },
+    {
+      "type": "text",
+      "id": "no_results",
+      "label": "No results",
+      "default": "t:tg.d.service_booking.no_results"
+    },
+    {
+      "type": "text",
+      "id": "selected_label",
+      "label": "Selected label",
+      "default": "t:tg.d.service_booking.selected_label"
+    },
+    {
+      "type": "text",
+      "id": "book_label",
+      "label": "Price list book button",
+      "default": "t:tg.d.service_booking.book_label"
+    },
+    {
+      "type": "text",
+      "id": "ask_label",
+      "label": "Price list non-bookable label",
+      "default": "t:tg.d.service_booking.ask_label"
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back",
+      "default": "t:tg.d.service_booking.back_label"
+    },
+    {
+      "type": "text",
+      "id": "step1_eyebrow",
+      "label": "Step 1 eyebrow",
+      "default": "t:tg.d.service_booking.step1_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "step1_title",
+      "label": "Step 1 title",
+      "default": "t:tg.d.service_booking.step1_title"
+    },
+    {
+      "type": "textarea",
+      "id": "step1_text",
+      "label": "Step 1 text",
+      "default": "t:tg.d.service_booking.step1_text"
+    },
+    {
+      "type": "text",
+      "id": "step2_eyebrow",
+      "label": "Step 2 eyebrow",
+      "default": "t:tg.d.service_booking.step2_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "step2_title",
+      "label": "Step 2 title",
+      "default": "t:tg.d.service_booking.step2_title"
+    },
+    {
+      "type": "textarea",
+      "id": "step2_text",
+      "label": "Step 2 text",
+      "default": "t:tg.d.service_booking.step2_text"
+    },
+    {
+      "type": "text",
+      "id": "any_mechanic",
+      "label": "'Any mechanic' label",
+      "default": "t:tg.d.service_booking.any_mechanic"
+    },
+    {
+      "type": "text",
+      "id": "any_mechanic_text",
+      "label": "'Any mechanic' text",
+      "default": "t:tg.d.service_booking.any_mechanic_text"
+    },
+    {
+      "type": "text",
+      "id": "step3_eyebrow",
+      "label": "Step 3 eyebrow",
+      "default": "t:tg.d.service_booking.step3_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "step3_title",
+      "label": "Step 3 title",
+      "default": "t:tg.d.service_booking.step3_title"
+    },
+    {
+      "type": "textarea",
+      "id": "step3_text",
+      "label": "Step 3 text",
+      "default": "t:tg.d.service_booking.step3_text"
+    },
+    {
+      "type": "text",
+      "id": "pick_day_text",
+      "label": "Pick a day prompt",
+      "default": "t:tg.d.service_booking.pick_day_text"
+    },
+    {
+      "type": "text",
+      "id": "no_slots_text",
+      "label": "No slots text",
+      "default": "t:tg.d.service_booking.no_slots_text"
+    },
+    {
+      "type": "text",
+      "id": "loading_text",
+      "label": "Loading text",
+      "default": "t:tg.d.service_booking.loading_text"
+    },
+    {
+      "type": "text",
+      "id": "free_text",
+      "label": "Free slots word",
+      "default": "t:tg.d.service_booking.free_text"
+    },
+    {
+      "type": "text",
+      "id": "step4_eyebrow",
+      "label": "Step 4 eyebrow",
+      "default": "t:tg.d.service_booking.step4_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "step4_title",
+      "label": "Step 4 title",
+      "default": "t:tg.d.service_booking.step4_title"
+    },
+    {
+      "type": "text",
+      "id": "f_name",
+      "label": "Name label",
+      "default": "t:tg.d.service_booking.f_name"
+    },
+    {
+      "type": "text",
+      "id": "f_phone",
+      "label": "Phone label",
+      "default": "t:tg.d.service_booking.f_phone"
+    },
+    {
+      "type": "text",
+      "id": "f_email",
+      "label": "E-mail label",
+      "default": "t:tg.d.service_booking.f_email"
+    },
+    {
+      "type": "text",
+      "id": "f_bike",
+      "label": "Bike label",
+      "default": "t:tg.d.service_booking.f_bike"
+    },
+    {
+      "type": "text",
+      "id": "f_bike_ph",
+      "label": "Bike placeholder",
+      "default": "t:tg.d.service_booking.f_bike_ph"
+    },
+    {
+      "type": "text",
+      "id": "f_note",
+      "label": "Note label",
+      "default": "t:tg.d.service_booking.f_note"
+    },
+    {
+      "type": "text",
+      "id": "f_note_ph",
+      "label": "Note placeholder",
+      "default": "t:tg.d.service_booking.f_note_ph"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit",
+      "default": "t:tg.d.service_booking.submit_label"
+    },
+    {
+      "type": "text",
+      "id": "sending_label",
+      "label": "Sending",
+      "default": "t:tg.d.service_booking.sending_label"
+    },
+    {
+      "type": "textarea",
+      "id": "form_note",
+      "label": "Form note",
+      "default": "t:tg.d.service_booking.form_note"
+    },
+    {
+      "type": "text",
+      "id": "summary_title",
+      "label": "Summary title",
+      "default": "t:tg.d.service_booking.summary_title"
+    },
+    {
+      "type": "text",
+      "id": "sum_duration",
+      "label": "Duration label",
+      "default": "t:tg.d.service_booking.sum_duration"
+    },
+    {
+      "type": "text",
+      "id": "sum_price",
+      "label": "Price label",
+      "default": "t:tg.d.service_booking.sum_price"
+    },
+    {
+      "type": "text",
+      "id": "err_slot",
+      "label": "Slot taken error",
+      "default": "t:tg.d.service_booking.err_slot"
+    },
+    {
+      "type": "text",
+      "id": "err_generic",
+      "label": "Generic error",
+      "default": "t:tg.d.service_booking.err_generic"
+    },
+    {
+      "type": "text",
+      "id": "err_fields",
+      "label": "Fields error",
+      "default": "t:tg.d.service_booking.err_fields"
+    },
+    {
+      "type": "text",
+      "id": "done_eyebrow",
+      "label": "Done eyebrow",
+      "default": "t:tg.d.service_booking.done_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "done_title",
+      "label": "Done title",
+      "default": "t:tg.d.service_booking.done_title"
+    },
+    {
+      "type": "textarea",
+      "id": "done_text",
+      "label": "Done text",
+      "default": "t:tg.d.service_booking.done_text"
+    },
+    {
+      "type": "textarea",
+      "id": "done_fallback",
+      "label": "Done text (e-mail fallback)",
+      "default": "t:tg.d.service_booking.done_fallback"
+    },
+    {
+      "type": "text",
+      "id": "done_cta",
+      "label": "Done CTA",
+      "default": "t:tg.d.service_booking.done_cta"
+    },
+    {
+      "type": "header",
+      "content": "Prices"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_prices",
+      "label": "Show price list",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "prices_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.service_booking.prices_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "prices_title",
+      "label": "Title",
+      "default": "t:tg.d.service_booking.prices_title"
+    },
+    {
+      "type": "textarea",
+      "id": "prices_note",
+      "label": "Note",
+      "default": "t:tg.d.service_booking.prices_note"
+    }
   ],
-  "presets": [ { "name": "Service booking" } ]
+  "presets": [
+    {
+      "name": "Service booking"
+    }
+  ]
 }
 {% endschema %}

@@ -236,86 +236,434 @@
   "name": "Ramp set (2 products)",
   "tag": "section",
   "settings": [
-    { "type": "paragraph", "content": "Adds both products to the cart in one click. The set price is informational — create an automatic discount in Shopify (Discounts → Buy X get Y / amount off when both are in the cart) so the cart matches it." },
-    { "type": "header", "content": "Products" },
-    { "type": "product", "id": "product_1", "label": "Product 1 (take-off)" },
-    { "type": "text", "id": "handle_1", "label": "Product 1 handle fallback", "default": "breeze" },
-    { "type": "product", "id": "product_2", "label": "Product 2 (landing)" },
-    { "type": "text", "id": "handle_2", "label": "Product 2 handle fallback", "default": "storm" },
-    { "type": "text", "id": "name_1", "label": "Name 1 override" },
-    { "type": "text", "id": "name_2", "label": "Name 2 override" },
-    { "type": "image_picker", "id": "image_1", "label": "Image 1 override" },
-    { "type": "image_picker", "id": "image_2", "label": "Image 2 override" },
-    { "type": "text", "id": "sub_1", "label": "Caption 1", "default": "По-лека · кикър 29–38 cm" },
-    { "type": "text", "id": "sub_2", "label": "Caption 2", "default": "По-висока · кикър 53–62 cm" },
-    { "type": "checkbox", "id": "color_from_tags", "label": "Colours from product color: tags", "default": true },
-    { "type": "color", "id": "color_1", "label": "Colour 1 (fallback)", "default": "#C8434F" },
-    { "type": "color", "id": "color_2", "label": "Colour 2 (fallback)", "default": "#2F6FD6" },
-
-    { "type": "header", "content": "Head + buy bar" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Пълният спот" },
-    { "type": "text", "id": "title", "label": "Title", "default": "BREEZE + STORM · TAKE-OFF & LANDING SET" },
-    { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
-    { "type": "url", "id": "back_link", "label": "Back link override" },
-    { "type": "textarea", "id": "lead", "label": "Lead", "default": "Използвай едната за изстрелване, а другата за приземяване. Или изгради два различни скока." },
-    { "type": "number", "id": "set_price", "label": "Set price (€)", "default": 590 },
-    { "type": "number", "id": "set_discount", "label": "…or discount off the sum (€)", "info": "Used only when set price is 0" },
-    { "type": "text", "id": "save_label", "label": "Savings badge", "default": "Спестяваш [amount]" },
-    { "type": "text", "id": "vat_suffix", "label": "Price suffix", "default": "с ДДС" },
-    { "type": "text", "id": "note", "label": "Note", "default": "Доставката се изчислява отделно." },
-    { "type": "text", "id": "add_text", "label": "Add both button", "default": "Добави и двете в количката" },
-    { "type": "text", "id": "adding_text", "label": "Adding…", "default": "Добавяме…" },
-    { "type": "text", "id": "added_text", "label": "Added", "default": "Двете рампи са в количката." },
-    { "type": "text", "id": "failed_text", "label": "Failed", "default": "Нещо се обърка — отваряме количката." },
-    { "type": "text", "id": "missing_text", "label": "Button when products are missing", "default": "Виж рампите" },
-    { "type": "text", "id": "test_text", "label": "Test button", "default": "Запази тест във Варна" },
-    { "type": "url", "id": "test_link", "label": "Test link" },
-
-    { "type": "header", "content": "What you get" },
-    { "type": "text", "id": "kit_eyebrow", "label": "Eyebrow", "default": "В комплекта" },
-    { "type": "text", "id": "kit_title", "label": "Title", "default": "ДВЕ РАМПИ. ЕДИН ЦЯЛ СПОТ." },
-    { "type": "text", "id": "role_1", "label": "Role 1", "default": "TAKE-OFF" },
-    { "type": "textarea", "id": "role_text_1", "label": "Role text 1", "default": "По-ниският кикър те изстрелва контролирано — идеален за първата рампа от линията." },
-    { "type": "text", "id": "specs_1", "label": "Specs 1 (separate with |)", "default": "7.5 kg | 130 × 58 cm | 29–38 cm | 4 позиции" },
-    { "type": "text", "id": "role_2", "label": "Role 2", "default": "LANDING" },
-    { "type": "textarea", "id": "role_text_2", "label": "Role text 2", "default": "Обърната, по-високата рампа поема приземяването. Или я ползваш като втори, по-агресивен скок." },
-    { "type": "text", "id": "specs_2", "label": "Specs 2 (separate with |)", "default": "12.5 kg | 170 × 58 cm | 53–62 cm | 4 позиции" },
-    { "type": "text", "id": "view_text", "label": "View button", "default": "Виж [name]" },
-
-    { "type": "header", "content": "Why the set" },
-    { "type": "text", "id": "why_eyebrow", "label": "Eyebrow", "default": "Защо комплектът" },
-    { "type": "text", "id": "why_title", "label": "Title", "default": "ПОВЕЧЕ ОТ ДВЕ РАМПИ." },
-
-    { "type": "header", "content": "FAQ" },
-    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Преди да поръчаш" },
-    { "type": "text", "id": "faq_title", "label": "Title", "default": "ЧЕСТО ЗАДАВАНИ ВЪПРОСИ" },
-
-    { "type": "header", "content": "CTA" },
-    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Следващият спот е твой" },
-    { "type": "text", "id": "cta_title", "label": "Title", "default": "ВЗЕМИ ЦЕЛИЯ СПОТ СЪС СЕБЕ СИ." },
-    { "type": "text", "id": "cta1_text", "label": "Primary CTA (adds both)", "default": "Добави комплекта" },
-    { "type": "text", "id": "cta2_text", "label": "Secondary CTA → comparison page", "default": "Сравни моделите" },
-
-    { "type": "header", "content": "Pages + tab strip" },
-    { "type": "page", "id": "ramps_page", "label": "Ramps page" },
-    { "type": "page", "id": "compare_page", "label": "Comparison page" },
-    { "type": "page", "id": "set_page", "label": "Set page" },
-    { "type": "page", "id": "support_page", "label": "Support page" },
-    { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
-    { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
-    { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
+    {
+      "type": "paragraph",
+      "content": "Adds both products to the cart in one click. The set price is informational — create an automatic discount in Shopify (Discounts → Buy X get Y / amount off when both are in the cart) so the cart matches it."
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1 (take-off)"
+    },
+    {
+      "type": "text",
+      "id": "handle_1",
+      "label": "Product 1 handle fallback",
+      "default": "breeze"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2 (landing)"
+    },
+    {
+      "type": "text",
+      "id": "handle_2",
+      "label": "Product 2 handle fallback",
+      "default": "storm"
+    },
+    {
+      "type": "text",
+      "id": "name_1",
+      "label": "Name 1 override"
+    },
+    {
+      "type": "text",
+      "id": "name_2",
+      "label": "Name 2 override"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1 override"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2 override"
+    },
+    {
+      "type": "text",
+      "id": "sub_1",
+      "label": "Caption 1",
+      "default": "t:tg.d.ramps_set.sub_1"
+    },
+    {
+      "type": "text",
+      "id": "sub_2",
+      "label": "Caption 2",
+      "default": "t:tg.d.ramps_set.sub_2"
+    },
+    {
+      "type": "checkbox",
+      "id": "color_from_tags",
+      "label": "Colours from product color: tags",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "color_1",
+      "label": "Colour 1 (fallback)",
+      "default": "#C8434F"
+    },
+    {
+      "type": "color",
+      "id": "color_2",
+      "label": "Colour 2 (fallback)",
+      "default": "#2F6FD6"
+    },
+    {
+      "type": "header",
+      "content": "Head + buy bar"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_set.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "BREEZE + STORM · TAKE-OFF & LANDING SET"
+    },
+    {
+      "type": "text",
+      "id": "back_text",
+      "label": "Back button",
+      "default": "t:tg.d.ramps_set.back_text"
+    },
+    {
+      "type": "url",
+      "id": "back_link",
+      "label": "Back link override"
+    },
+    {
+      "type": "textarea",
+      "id": "lead",
+      "label": "Lead",
+      "default": "t:tg.d.ramps_set.lead"
+    },
+    {
+      "type": "number",
+      "id": "set_price",
+      "label": "Set price (€)",
+      "default": 590
+    },
+    {
+      "type": "number",
+      "id": "set_discount",
+      "label": "…or discount off the sum (€)",
+      "info": "Used only when set price is 0"
+    },
+    {
+      "type": "text",
+      "id": "save_label",
+      "label": "Savings badge",
+      "default": "t:tg.d.ramps_set.save_label"
+    },
+    {
+      "type": "text",
+      "id": "vat_suffix",
+      "label": "Price suffix",
+      "default": "t:tg.d.ramps_set.vat_suffix"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Note",
+      "default": "t:tg.d.ramps_set.note"
+    },
+    {
+      "type": "text",
+      "id": "add_text",
+      "label": "Add both button",
+      "default": "t:tg.d.ramps_set.add_text"
+    },
+    {
+      "type": "text",
+      "id": "adding_text",
+      "label": "Adding…",
+      "default": "t:tg.d.ramps_set.adding_text"
+    },
+    {
+      "type": "text",
+      "id": "added_text",
+      "label": "Added",
+      "default": "t:tg.d.ramps_set.added_text"
+    },
+    {
+      "type": "text",
+      "id": "failed_text",
+      "label": "Failed",
+      "default": "t:tg.d.ramps_set.failed_text"
+    },
+    {
+      "type": "text",
+      "id": "missing_text",
+      "label": "Button when products are missing",
+      "default": "t:tg.d.ramps_set.missing_text"
+    },
+    {
+      "type": "text",
+      "id": "test_text",
+      "label": "Test button",
+      "default": "t:tg.d.ramps_set.test_text"
+    },
+    {
+      "type": "url",
+      "id": "test_link",
+      "label": "Test link"
+    },
+    {
+      "type": "header",
+      "content": "What you get"
+    },
+    {
+      "type": "text",
+      "id": "kit_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_set.kit_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "kit_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_set.kit_title"
+    },
+    {
+      "type": "text",
+      "id": "role_1",
+      "label": "Role 1",
+      "default": "TAKE-OFF"
+    },
+    {
+      "type": "textarea",
+      "id": "role_text_1",
+      "label": "Role text 1",
+      "default": "t:tg.d.ramps_set.role_text_1"
+    },
+    {
+      "type": "text",
+      "id": "specs_1",
+      "label": "Specs 1 (separate with |)",
+      "default": "t:tg.d.ramps_set.specs_1"
+    },
+    {
+      "type": "text",
+      "id": "role_2",
+      "label": "Role 2",
+      "default": "LANDING"
+    },
+    {
+      "type": "textarea",
+      "id": "role_text_2",
+      "label": "Role text 2",
+      "default": "t:tg.d.ramps_set.role_text_2"
+    },
+    {
+      "type": "text",
+      "id": "specs_2",
+      "label": "Specs 2 (separate with |)",
+      "default": "t:tg.d.ramps_set.specs_2"
+    },
+    {
+      "type": "text",
+      "id": "view_text",
+      "label": "View button",
+      "default": "t:tg.d.ramps_set.view_text"
+    },
+    {
+      "type": "header",
+      "content": "Why the set"
+    },
+    {
+      "type": "text",
+      "id": "why_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_set.why_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "why_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_set.why_title"
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "faq_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_set.faq_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_set.faq_title"
+    },
+    {
+      "type": "header",
+      "content": "CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_set.cta_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_set.cta_title"
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "Primary CTA (adds both)",
+      "default": "t:tg.d.ramps_set.cta1_text"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "Secondary CTA → comparison page",
+      "default": "t:tg.d.ramps_set.cta2_text"
+    },
+    {
+      "type": "header",
+      "content": "Pages + tab strip"
+    },
+    {
+      "type": "page",
+      "id": "ramps_page",
+      "label": "Ramps page"
+    },
+    {
+      "type": "page",
+      "id": "compare_page",
+      "label": "Comparison page"
+    },
+    {
+      "type": "page",
+      "id": "set_page",
+      "label": "Set page"
+    },
+    {
+      "type": "page",
+      "id": "support_page",
+      "label": "Support page"
+    },
+    {
+      "type": "checkbox",
+      "id": "tabs_enabled",
+      "label": "Show bottom tab strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_1_label",
+      "label": "Tab 1 label",
+      "default": "t:tg.d.ramps_set.tab_1_label"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_label",
+      "label": "Tab 2 label",
+      "default": "t:tg.d.ramps_set.tab_2_label"
+    },
+    {
+      "type": "text",
+      "id": "tab_3_label",
+      "label": "Tab 3 label",
+      "default": "t:tg.d.ramps_set.tab_3_label"
+    },
+    {
+      "type": "text",
+      "id": "tabs_aria",
+      "label": "Strip aria-label",
+      "default": "t:tg.d.ramps_set.tabs_aria"
+    }
   ],
   "blocks": [
-    { "type": "reason", "name": "Reason", "limit": 4, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "jump", "options": [ { "value": "jump", "label": "Jump" }, { "value": "landing", "label": "Landing" }, { "value": "carry", "label": "Carry" }, { "value": "shield", "label": "Shield" }, { "value": "fold", "label": "Fold" } ] },
-      { "type": "text", "id": "title", "label": "Title", "default": "TAKE-OFF И LANDING" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Пълна линия с изстрелване и приземяване — навсякъде." } ] },
-    { "type": "faq", "name": "FAQ", "settings": [
-      { "type": "text", "id": "question", "label": "Question", "default": "Как се прилага отстъпката за комплекта?" },
-      { "type": "textarea", "id": "answer", "label": "Answer", "default": "Автоматично в количката, когато и двете рампи са в нея." } ] }
+    {
+      "type": "reason",
+      "name": "Reason",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "jump",
+          "options": [
+            {
+              "value": "jump",
+              "label": "Jump"
+            },
+            {
+              "value": "landing",
+              "label": "Landing"
+            },
+            {
+              "value": "carry",
+              "label": "Carry"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "fold",
+              "label": "Fold"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps_set.b_reason.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps_set.b_reason.text"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "t:tg.d.ramps_set.b_faq.question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "t:tg.d.ramps_set.b_faq.answer"
+        }
+      ]
+    }
   ],
-  "presets": [ { "name": "Ramp set (2 products)" } ]
+  "presets": [
+    {
+      "name": "Ramp set (2 products)"
+    }
+  ]
 }
 {% endschema %}

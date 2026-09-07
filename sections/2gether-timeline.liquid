@@ -137,31 +137,31 @@
       "type": "text",
       "id": "label",
       "label": "Section label",
-      "default": "Нашата история"
+      "default": "t:tg.d.timeline.label"
     },
     {
       "type": "text",
       "id": "title_line1",
       "label": "Title line 1",
-      "default": "ПЕТ ГОДИНИ"
+      "default": "t:tg.d.timeline.title_line1"
     },
     {
       "type": "text",
       "id": "title_line2",
       "label": "Title line 2 (accent color)",
-      "default": "НА ПЪТЯ"
+      "default": "t:tg.d.timeline.title_line2"
     },
     {
       "type": "text",
       "id": "prev_label",
       "label": "Previous button aria-label",
-      "default": "Предишна година"
+      "default": "t:tg.d.timeline.prev_label"
     },
     {
       "type": "text",
       "id": "next_label",
       "label": "Next button aria-label",
-      "default": "Следваща година"
+      "default": "t:tg.d.timeline.next_label"
     },
     {
       "type": "range",
@@ -190,14 +190,53 @@
       "name": "Milestone",
       "limit": 8,
       "settings": [
-        { "type": "text", "id": "year", "label": "Year", "default": "2021" },
-        { "type": "text", "id": "caption", "label": "Short caption (under the dot)", "default": "Началото" },
-        { "type": "image_picker", "id": "image", "label": "Photo" },
-        { "type": "text", "id": "kicker", "label": "Kicker (small label above heading)", "default": "2021 — Началото" },
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Две колела, един гараж, нула план." },
-        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Разкажете накратко какво се случи през тази година.</p>" },
-        { "type": "text", "id": "stat_value", "label": "Stat value", "default": "2" },
-        { "type": "text", "id": "stat_label", "label": "Stat label", "default": "основатели" }
+        {
+          "type": "text",
+          "id": "year",
+          "label": "Year",
+          "default": "2021"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Short caption (under the dot)",
+          "default": "t:tg.d.timeline.b_milestone.caption"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker (small label above heading)",
+          "default": "t:tg.d.timeline.b_milestone.kicker"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "t:tg.d.timeline.b_milestone.heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.timeline.b_milestone.text"
+        },
+        {
+          "type": "text",
+          "id": "stat_value",
+          "label": "Stat value",
+          "default": "2"
+        },
+        {
+          "type": "text",
+          "id": "stat_label",
+          "label": "Stat label",
+          "default": "t:tg.d.timeline.b_milestone.stat_label"
+        }
       ]
     }
   ],
@@ -205,11 +244,61 @@
     {
       "name": "2Gether Timeline",
       "blocks": [
-        { "type": "milestone", "settings": { "year": "2021", "caption": "Първият гараж", "kicker": "2021 — Началото", "heading": "Две колела, един гараж, нула план.", "stat_value": "2", "stat_label": "основатели" } },
-        { "type": "milestone", "settings": { "year": "2022", "caption": "Ражда се Sunday Club", "kicker": "2022 — Sunday Club", "heading": "Първото групово каране тръгва в 8:00.", "stat_value": "14", "stat_label": "колоездачи на първия ден" } },
-        { "type": "milestone", "settings": { "year": "2023", "caption": "Отваряме във Варна", "kicker": "2023 — Магазинът", "heading": "Истинска врата, истински сервиз.", "stat_value": "120м²", "stat_label": "площ" } },
-        { "type": "milestone", "settings": { "year": "2024", "caption": "Към планината", "kicker": "2024 — Off-road", "heading": "Заведохме клуба в планината.", "stat_value": "38", "stat_label": "картирани маршрута" } },
-        { "type": "milestone", "settings": { "year": "2025", "caption": "1000+ колоездачи", "kicker": "2025 — Днес", "heading": "Хиляда от нас — и продължаваме.", "stat_value": "1000+", "stat_label": "членове на общността" } }
+        {
+          "type": "milestone",
+          "settings": {
+            "year": "2021",
+            "caption": "Първият гараж",
+            "kicker": "2021 — Началото",
+            "heading": "Две колела, един гараж, нула план.",
+            "stat_value": "2",
+            "stat_label": "основатели"
+          }
+        },
+        {
+          "type": "milestone",
+          "settings": {
+            "year": "2022",
+            "caption": "Ражда се Sunday Club",
+            "kicker": "2022 — Sunday Club",
+            "heading": "Първото групово каране тръгва в 8:00.",
+            "stat_value": "14",
+            "stat_label": "колоездачи на първия ден"
+          }
+        },
+        {
+          "type": "milestone",
+          "settings": {
+            "year": "2023",
+            "caption": "Отваряме във Варна",
+            "kicker": "2023 — Магазинът",
+            "heading": "Истинска врата, истински сервиз.",
+            "stat_value": "120м²",
+            "stat_label": "площ"
+          }
+        },
+        {
+          "type": "milestone",
+          "settings": {
+            "year": "2024",
+            "caption": "Към планината",
+            "kicker": "2024 — Off-road",
+            "heading": "Заведохме клуба в планината.",
+            "stat_value": "38",
+            "stat_label": "картирани маршрута"
+          }
+        },
+        {
+          "type": "milestone",
+          "settings": {
+            "year": "2025",
+            "caption": "1000+ колоездачи",
+            "kicker": "2025 — Днес",
+            "heading": "Хиляда от нас — и продължаваме.",
+            "stat_value": "1000+",
+            "stat_label": "членове на общността"
+          }
+        }
       ]
     }
   ]

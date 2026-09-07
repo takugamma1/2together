@@ -322,88 +322,477 @@
   "name": "Ramp product",
   "tag": "section",
   "settings": [
-    { "type": "paragraph", "content": "Per-model values: first from 'Model defaults' below (by product handle), then overridden by product tags: color:#2F6FD6 · colorname:Син · length:170 · width:58 · weight:12.5 kg · heights:53/57/60/62 · other:breeze · blurb:… · video:https://… — text fields may use [name] [positions] [range] [length] [width] [weight]." },
-    { "type": "textarea", "id": "model_defaults", "label": "Model defaults (one per line)", "info": "handle=color|colour name|length|width|weight|heights 29/32/35/38|other handle", "default": "breeze=#C8434F|Червен|130|58|7.5 kg|29/32/35/38|storm\nstorm=#2F6FD6|Син|170|58|12.5 kg|53/57/60/62|breeze" },
-    { "type": "header", "content": "Info card" },
-    { "type": "color", "id": "default_color", "label": "Fallback model colour", "default": "#E8601C" },
-    { "type": "text", "id": "color_prefix", "label": "Colour tag prefix", "default": "Фиксиран цвят" },
-    { "type": "text", "id": "vat_suffix", "label": "Price suffix", "default": "с ДДС" },
-    { "type": "text", "id": "shipping_note", "label": "Shipping note", "default": "Доставката се изчислява отделно." },
-    { "type": "text", "id": "stock_title", "label": "Availability title", "default": "ОГРАНИЧЕНА НАЛИЧНОСТ" },
-    { "type": "textarea", "id": "stock_text", "label": "Availability text", "default": "След изчерпване приемаме поръчки и потвърждаваме лично срок от 5–10 работни дни." },
-    { "type": "text", "id": "add_text", "label": "Add to cart", "default": "Добави в количката" },
-    { "type": "text", "id": "sold_out_text", "label": "Sold out", "default": "Изчерпано" },
-    { "type": "checkbox", "id": "allow_sold_out", "label": "Keep add-to-cart active when sold out (pre-orders)", "default": true },
-    { "type": "text", "id": "test_text", "label": "Test button", "default": "Запази тест във Варна" },
-    { "type": "url", "id": "test_link", "label": "Test link" },
-    { "type": "text", "id": "compare_text", "label": "Compare link", "default": "Сравни с другия модел" },
-    { "type": "checkbox", "id": "compare_to_product", "label": "Compare link → other model's product page", "info": "Off: opens the comparison page", "default": true },
-
-    { "type": "header", "content": "Specs + kit" },
-    { "type": "text", "id": "spec_eyebrow", "label": "Eyebrow", "default": "Технически данни" },
-    { "type": "text", "id": "spec_title", "label": "Title", "default": "[name] В ДЕТАЙЛ." },
-    { "type": "text", "id": "kit_eyebrow", "label": "Kit eyebrow", "default": "В комплекта" },
-    { "type": "text", "id": "kit_title", "label": "Kit title", "default": "ГОТОВА ЗА ПЪРВИЯ СПОТ." },
-    { "type": "textarea", "id": "kit_note", "label": "Kit note", "default": "Подплатите за презрамките и транспортната чанта се предлагат отделно, когато бъдат налични." },
-
-    { "type": "header", "content": "Positions" },
-    { "type": "text", "id": "pos_eyebrow", "label": "Eyebrow", "default": "Настрой [name]" },
-    { "type": "text", "id": "pos_title", "label": "Title", "default": "4 ПОЗИЦИИ. 4 РАЗЛИЧНИ ЪГЪЛА." },
-    { "type": "textarea", "id": "pos_text", "label": "Text", "default": "Преместваш предните крака между четирите фиксирани отвора. С едно действие променяш височината и ъгъла на изстрелване." },
-    { "type": "textarea", "id": "pos_note", "label": "Note", "default": "Дистанцията на полета зависи от скоростта, велосипеда и техниката на ездача." },
-    { "type": "text", "id": "pos_word", "label": "Word for 'position'", "default": "позиция" },
-
-    { "type": "header", "content": "In action" },
-    { "type": "image_picker", "id": "action_image", "label": "Image", "info": "Defaults to the last product photo" },
-    { "type": "text", "id": "action_video_label", "label": "Play label", "default": "Виж скокове с този модел" },
-    { "type": "url", "id": "action_video_url", "label": "Video link (fallback)", "info": "A video: tag on the product wins" },
-    { "type": "text", "id": "action_eyebrow", "label": "Eyebrow", "default": "В реални условия" },
-    { "type": "text", "id": "action_title", "label": "Title", "default": "ВИЖ [name] В ДЕЙСТВИЕ." },
-    { "type": "textarea", "id": "action_text", "label": "Text (fallback)", "info": "A blurb: tag on the product wins", "default": "Четири настройки на кикъра от [range]." },
-
-    { "type": "header", "content": "Support" },
-    { "type": "text", "id": "sup_eyebrow", "label": "Eyebrow", "default": "Преди първия скок" },
-    { "type": "text", "id": "sup_title", "label": "Title", "default": "ВСИЧКО, КОЕТО ТРЯБВА ДА ЗНАЕШ." },
-    { "type": "text", "id": "sup_cta", "label": "Button → support page", "default": "Отвори цялата поддръжка" },
-
-    { "type": "header", "content": "FAQ" },
-    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Употреба и грижа" },
-    { "type": "text", "id": "faq_title", "label": "Title", "default": "ВАЖНАТА ИНФОРМАЦИЯ БЕЗ ДРЕБЕН ШРИФТ." },
-
-    { "type": "header", "content": "CTA" },
-    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Не си сигурен?" },
-    { "type": "text", "id": "cta_title", "label": "Title", "default": "ЕЛА И ТЕСТВАЙ И ДВАТА МОДЕЛА ВЪВ ВАРНА." },
-    { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Запази тест" },
-    { "type": "url", "id": "cta1_link", "label": "Primary CTA link" },
-    { "type": "text", "id": "cta2_text", "label": "Secondary CTA → comparison page", "default": "Сравни моделите" },
-
-    { "type": "header", "content": "Pages" },
-    { "type": "page", "id": "ramps_page", "label": "Ramps page" },
-    { "type": "page", "id": "compare_page", "label": "Comparison page" },
-    { "type": "page", "id": "support_page", "label": "Support page" },
-    { "type": "page", "id": "set_page", "label": "Set page" }
+    {
+      "type": "paragraph",
+      "content": "Per-model values: first from 'Model defaults' below (by product handle), then overridden by product tags: color:#2F6FD6 · colorname:Син · length:170 · width:58 · weight:12.5 kg · heights:53/57/60/62 · other:breeze · blurb:… · video:https://… — text fields may use [name] [positions] [range] [length] [width] [weight]."
+    },
+    {
+      "type": "textarea",
+      "id": "model_defaults",
+      "label": "Model defaults (one per line)",
+      "info": "handle=color|colour name|length|width|weight|heights 29/32/35/38|other handle",
+      "default": "t:tg.d.ramp_product.model_defaults"
+    },
+    {
+      "type": "header",
+      "content": "Info card"
+    },
+    {
+      "type": "color",
+      "id": "default_color",
+      "label": "Fallback model colour",
+      "default": "#E8601C"
+    },
+    {
+      "type": "text",
+      "id": "color_prefix",
+      "label": "Colour tag prefix",
+      "default": "t:tg.d.ramp_product.color_prefix"
+    },
+    {
+      "type": "text",
+      "id": "vat_suffix",
+      "label": "Price suffix",
+      "default": "t:tg.d.ramp_product.vat_suffix"
+    },
+    {
+      "type": "text",
+      "id": "shipping_note",
+      "label": "Shipping note",
+      "default": "t:tg.d.ramp_product.shipping_note"
+    },
+    {
+      "type": "text",
+      "id": "stock_title",
+      "label": "Availability title",
+      "default": "t:tg.d.ramp_product.stock_title"
+    },
+    {
+      "type": "textarea",
+      "id": "stock_text",
+      "label": "Availability text",
+      "default": "t:tg.d.ramp_product.stock_text"
+    },
+    {
+      "type": "text",
+      "id": "add_text",
+      "label": "Add to cart",
+      "default": "t:tg.d.ramp_product.add_text"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Sold out",
+      "default": "t:tg.d.ramp_product.sold_out_text"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_sold_out",
+      "label": "Keep add-to-cart active when sold out (pre-orders)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "test_text",
+      "label": "Test button",
+      "default": "t:tg.d.ramp_product.test_text"
+    },
+    {
+      "type": "url",
+      "id": "test_link",
+      "label": "Test link"
+    },
+    {
+      "type": "text",
+      "id": "compare_text",
+      "label": "Compare link",
+      "default": "t:tg.d.ramp_product.compare_text"
+    },
+    {
+      "type": "checkbox",
+      "id": "compare_to_product",
+      "label": "Compare link → other model's product page",
+      "info": "Off: opens the comparison page",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Specs + kit"
+    },
+    {
+      "type": "text",
+      "id": "spec_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramp_product.spec_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "spec_title",
+      "label": "Title",
+      "default": "t:tg.d.ramp_product.spec_title"
+    },
+    {
+      "type": "text",
+      "id": "kit_eyebrow",
+      "label": "Kit eyebrow",
+      "default": "t:tg.d.ramp_product.kit_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "kit_title",
+      "label": "Kit title",
+      "default": "t:tg.d.ramp_product.kit_title"
+    },
+    {
+      "type": "textarea",
+      "id": "kit_note",
+      "label": "Kit note",
+      "default": "t:tg.d.ramp_product.kit_note"
+    },
+    {
+      "type": "header",
+      "content": "Positions"
+    },
+    {
+      "type": "text",
+      "id": "pos_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramp_product.pos_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "pos_title",
+      "label": "Title",
+      "default": "t:tg.d.ramp_product.pos_title"
+    },
+    {
+      "type": "textarea",
+      "id": "pos_text",
+      "label": "Text",
+      "default": "t:tg.d.ramp_product.pos_text"
+    },
+    {
+      "type": "textarea",
+      "id": "pos_note",
+      "label": "Note",
+      "default": "t:tg.d.ramp_product.pos_note"
+    },
+    {
+      "type": "text",
+      "id": "pos_word",
+      "label": "Word for 'position'",
+      "default": "t:tg.d.ramp_product.pos_word"
+    },
+    {
+      "type": "header",
+      "content": "In action"
+    },
+    {
+      "type": "image_picker",
+      "id": "action_image",
+      "label": "Image",
+      "info": "Defaults to the last product photo"
+    },
+    {
+      "type": "text",
+      "id": "action_video_label",
+      "label": "Play label",
+      "default": "t:tg.d.ramp_product.action_video_label"
+    },
+    {
+      "type": "url",
+      "id": "action_video_url",
+      "label": "Video link (fallback)",
+      "info": "A video: tag on the product wins"
+    },
+    {
+      "type": "text",
+      "id": "action_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramp_product.action_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "action_title",
+      "label": "Title",
+      "default": "t:tg.d.ramp_product.action_title"
+    },
+    {
+      "type": "textarea",
+      "id": "action_text",
+      "label": "Text (fallback)",
+      "info": "A blurb: tag on the product wins",
+      "default": "t:tg.d.ramp_product.action_text"
+    },
+    {
+      "type": "header",
+      "content": "Support"
+    },
+    {
+      "type": "text",
+      "id": "sup_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramp_product.sup_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "sup_title",
+      "label": "Title",
+      "default": "t:tg.d.ramp_product.sup_title"
+    },
+    {
+      "type": "text",
+      "id": "sup_cta",
+      "label": "Button → support page",
+      "default": "t:tg.d.ramp_product.sup_cta"
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "faq_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramp_product.faq_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Title",
+      "default": "t:tg.d.ramp_product.faq_title"
+    },
+    {
+      "type": "header",
+      "content": "CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramp_product.cta_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Title",
+      "default": "t:tg.d.ramp_product.cta_title"
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "Primary CTA",
+      "default": "t:tg.d.ramp_product.cta1_text"
+    },
+    {
+      "type": "url",
+      "id": "cta1_link",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "Secondary CTA → comparison page",
+      "default": "t:tg.d.ramp_product.cta2_text"
+    },
+    {
+      "type": "header",
+      "content": "Pages"
+    },
+    {
+      "type": "page",
+      "id": "ramps_page",
+      "label": "Ramps page"
+    },
+    {
+      "type": "page",
+      "id": "compare_page",
+      "label": "Comparison page"
+    },
+    {
+      "type": "page",
+      "id": "support_page",
+      "label": "Support page"
+    },
+    {
+      "type": "page",
+      "id": "set_page",
+      "label": "Set page"
+    }
   ],
   "blocks": [
-    { "type": "feature", "name": "Info row", "limit": 8, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "fold", "options": [ { "value": "fold", "label": "Positions" }, { "value": "clock", "label": "Clock" }, { "value": "weight", "label": "Weight" }, { "value": "shield", "label": "Shield" }, { "value": "pin", "label": "Pin" } ] },
-      { "type": "text", "id": "text", "label": "Text", "default": "4 позиции · [positions]" } ] },
-    { "type": "spec", "name": "Spec row", "settings": [
-      { "type": "text", "id": "label", "label": "Label", "default": "Дължина" },
-      { "type": "text", "id": "value", "label": "Value", "default": "[length] cm" } ] },
-    { "type": "kit", "name": "Kit item", "limit": 8, "settings": [ { "type": "text", "id": "label", "label": "Item", "default": "Рампа" } ] },
-    { "type": "use", "name": "Bike type", "limit": 4, "settings": [
-      { "type": "text", "id": "title", "label": "Title", "default": "MTB И DIRT JUMP" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "DH, Enduro, XC и Dirt Jump велосипеди." } ] },
-    { "type": "support", "name": "Support card", "limit": 4, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "book", "options": [ { "value": "book", "label": "Book" }, { "value": "video", "label": "Video" }, { "value": "shield", "label": "Shield" }, { "value": "wrench", "label": "Wrench" }, { "value": "care", "label": "Care" } ] },
-      { "type": "text", "id": "title", "label": "Title", "default": "ИНСТРУКЦИИ" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Настройване, позициониране и безопасна употреба." },
-      { "type": "text", "id": "cta_text", "label": "Button", "default": "Отвори" },
-      { "type": "url", "id": "cta_link", "label": "Link (else support page)" },
-      { "type": "text", "id": "file", "label": "Or file name from Content → Files" } ] },
-    { "type": "faq", "name": "FAQ", "settings": [
-      { "type": "text", "id": "question", "label": "Question", "default": "Може ли рампата да се използва при мокра повърхност?" },
-      { "type": "textarea", "id": "answer", "label": "Answer", "default": "Да. Специалното покритие запазва сцеплението. След употреба рампата трябва да бъде подсушена и съхранявана на сухо." } ] }
+    {
+      "type": "feature",
+      "name": "Info row",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "fold",
+          "options": [
+            {
+              "value": "fold",
+              "label": "Positions"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "weight",
+              "label": "Weight"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "pin",
+              "label": "Pin"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramp_product.b_feature.text"
+        }
+      ]
+    },
+    {
+      "type": "spec",
+      "name": "Spec row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "t:tg.d.ramp_product.b_spec.label"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "[length] cm"
+        }
+      ]
+    },
+    {
+      "type": "kit",
+      "name": "Kit item",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Item",
+          "default": "t:tg.d.ramp_product.b_kit.label"
+        }
+      ]
+    },
+    {
+      "type": "use",
+      "name": "Bike type",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramp_product.b_use.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramp_product.b_use.text"
+        }
+      ]
+    },
+    {
+      "type": "support",
+      "name": "Support card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "book",
+          "options": [
+            {
+              "value": "book",
+              "label": "Book"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "wrench",
+              "label": "Wrench"
+            },
+            {
+              "value": "care",
+              "label": "Care"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramp_product.b_support.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramp_product.b_support.text"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button",
+          "default": "t:tg.d.ramp_product.b_support.cta_text"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Link (else support page)"
+        },
+        {
+          "type": "text",
+          "id": "file",
+          "label": "Or file name from Content → Files"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "t:tg.d.ramp_product.b_faq.question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "t:tg.d.ramp_product.b_faq.answer"
+        }
+      ]
+    }
   ]
 }
 {% endschema %}

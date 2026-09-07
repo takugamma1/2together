@@ -416,35 +416,116 @@
   "name": "Google Reviews",
   "tag": "section",
   "settings": [
-    { "type": "header", "content": "Content" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Отзиви" },
-    { "type": "text", "id": "title", "label": "Title", "default": "КАКВО КАЗВАТ ХОРАТА" },
-    { "type": "textarea", "id": "intro", "label": "Intro (optional)" },
-    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Виж всички отзиви в Google" },
-    { "type": "url", "id": "fallback_maps_url", "label": "Google listing URL (fallback)", "info": "Used for the button/summary link if Google doesn't return one." },
-    { "type": "header", "content": "Source & filtering" },
-    { "type": "text", "id": "endpoint", "label": "Reviews endpoint", "default": "/apps/club/reviews", "info": "Your Worker route behind the Shopify app proxy. Returns cached Google reviews." },
-    { "type": "range", "id": "min_rating", "label": "Minimum stars to show", "min": 1, "max": 5, "step": 1, "default": 4, "info": "Hide reviews below this rating. Set to 1 to show everything." },
-    { "type": "range", "id": "max_reviews", "label": "Max Google reviews", "min": 1, "max": 5, "step": 1, "default": 5, "info": "Google returns at most 5. Add more with 'Ръчен отзив' blocks — they show after the Google ones." }
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.reviews.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "t:tg.d.reviews.title"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro (optional)"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "t:tg.d.reviews.cta_label"
+    },
+    {
+      "type": "url",
+      "id": "fallback_maps_url",
+      "label": "Google listing URL (fallback)",
+      "info": "Used for the button/summary link if Google doesn't return one."
+    },
+    {
+      "type": "header",
+      "content": "Source & filtering"
+    },
+    {
+      "type": "text",
+      "id": "endpoint",
+      "label": "Reviews endpoint",
+      "default": "/apps/club/reviews",
+      "info": "Your Worker route behind the Shopify app proxy. Returns cached Google reviews."
+    },
+    {
+      "type": "range",
+      "id": "min_rating",
+      "label": "Minimum stars to show",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "info": "Hide reviews below this rating. Set to 1 to show everything."
+    },
+    {
+      "type": "range",
+      "id": "max_reviews",
+      "label": "Max Google reviews",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5,
+      "info": "Google returns at most 5. Add more with 'Ръчен отзив' blocks — they show after the Google ones."
+    }
   ],
   "blocks": [
     {
       "type": "review",
       "name": "Ръчен отзив",
       "settings": [
-        { "type": "text", "id": "author", "label": "Име", "default": "Име Фамилия" },
-        { "type": "range", "id": "rating", "label": "Оценка", "min": 1, "max": 5, "step": 1, "default": 5 },
-        { "type": "textarea", "id": "text", "label": "Текст на отзива" },
-        { "type": "text", "id": "time", "label": "Кога (напр. „преди 2 месеца”)" }
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Име",
+          "default": "t:tg.d.reviews.b_review.author"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Оценка",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Текст на отзива"
+        },
+        {
+          "type": "text",
+          "id": "time",
+          "label": "Кога (напр. „преди 2 месеца”)"
+        }
       ]
     }
   ],
   "max_blocks": 20,
   "presets": [
-    { "name": "Google Reviews", "category": "Custom" }
+    {
+      "name": "Google Reviews",
+      "category": "Custom"
+    }
   ],
   "enabled_on": {
-    "templates": ["index", "page"]
+    "templates": [
+      "index",
+      "page"
+    ]
   }
 }
 {% endschema %}

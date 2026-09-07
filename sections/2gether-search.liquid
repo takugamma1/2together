@@ -602,19 +602,19 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow label",
-      "default": "Магазин"
+      "default": "t:tg.d.search.eyebrow"
     },
     {
       "type": "text",
       "id": "hero_title",
       "label": "Title (before a search is made)",
-      "default": "ТЪРСЕНЕ"
+      "default": "t:tg.d.search.hero_title"
     },
     {
       "type": "text",
       "id": "search_placeholder",
       "label": "Search placeholder",
-      "default": "Какво търсиш?"
+      "default": "t:tg.d.search.search_placeholder"
     },
     {
       "type": "range",
@@ -634,25 +634,96 @@
       "step": 1,
       "default": 6
     },
-    { "type": "header", "content": "Начален изглед (преди търсене)" },
-    { "type": "textarea", "id": "idle_text", "label": "Уводен текст" },
-    { "type": "text", "id": "popular_label", "label": "Надпис „често търсени”", "default": "Често търсени" },
-    { "type": "text", "id": "popular_searches", "label": "Често търсени (със запетая)", "default": "Giant, Santa Cruz, каска, гуми, светлини" },
-    { "type": "text", "id": "cats_eyebrow", "label": "Етикет над категориите", "default": "Е-магазин" },
-    { "type": "text", "id": "cats_title", "label": "Заглавие на категориите", "default": "КАТЕГОРИИ" },
-    { "type": "header", "content": "Предложени продукти" },
-    { "type": "collection", "id": "suggest_collection", "label": "Колекция (празно = всички продукти)" },
-    { "type": "range", "id": "suggest_count", "label": "Брой продукти", "min": 4, "max": 12, "step": 4, "default": 8 },
-    { "type": "text", "id": "suggest_eyebrow", "label": "Етикет", "default": "Подбрани" },
-    { "type": "text", "id": "suggest_title", "label": "Заглавие", "default": "ПРЕДЛОЖЕНИ ПРОДУКТИ" },
-    { "type": "header", "content": "Блог" },
-    { "type": "checkbox", "id": "show_blog", "label": "Показвай публикации от блога", "default": true },
-    { "type": "blog", "id": "blog", "label": "Блог" },
-    { "type": "text", "id": "blog_title", "label": "Заглавие", "default": "ОТ БЛОГА" }
+    {
+      "type": "header",
+      "content": "Начален изглед (преди търсене)"
+    },
+    {
+      "type": "textarea",
+      "id": "idle_text",
+      "label": "Уводен текст"
+    },
+    {
+      "type": "text",
+      "id": "popular_label",
+      "label": "Надпис „често търсени”",
+      "default": "t:tg.d.search.popular_label"
+    },
+    {
+      "type": "text",
+      "id": "popular_searches",
+      "label": "Често търсени (със запетая)",
+      "default": "t:tg.d.search.popular_searches"
+    },
+    {
+      "type": "text",
+      "id": "cats_eyebrow",
+      "label": "Етикет над категориите",
+      "default": "t:tg.d.search.cats_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "cats_title",
+      "label": "Заглавие на категориите",
+      "default": "t:tg.d.search.cats_title"
+    },
+    {
+      "type": "header",
+      "content": "Предложени продукти"
+    },
+    {
+      "type": "collection",
+      "id": "suggest_collection",
+      "label": "Колекция (празно = всички продукти)"
+    },
+    {
+      "type": "range",
+      "id": "suggest_count",
+      "label": "Брой продукти",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "suggest_eyebrow",
+      "label": "Етикет",
+      "default": "t:tg.d.search.suggest_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "suggest_title",
+      "label": "Заглавие",
+      "default": "t:tg.d.search.suggest_title"
+    },
+    {
+      "type": "header",
+      "content": "Блог"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blog",
+      "label": "Показвай публикации от блога",
+      "default": true
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Блог"
+    },
+    {
+      "type": "text",
+      "id": "blog_title",
+      "label": "Заглавие",
+      "default": "t:tg.d.search.blog_title"
+    }
   ],
   "blocks": [],
   "enabled_on": {
-    "templates": ["search"]
+    "templates": [
+      "search"
+    ]
   }
 }
 {% endschema %}

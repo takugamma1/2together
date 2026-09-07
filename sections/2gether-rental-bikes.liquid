@@ -237,29 +237,83 @@
   "name": "2Gether Наем колела",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Етикет", "default": "Наем на велосипеди" },
-    { "type": "text", "id": "title", "label": "Заглавие", "default": "НАЛИЧНИ ВЕЛОСИПЕДИ" },
-    { "type": "textarea", "id": "intro", "label": "Кратък текст" },
-    { "type": "text", "id": "price_suffix", "label": "Текст след цената", "default": " / ден" },
-    { "type": "text", "id": "cta_label", "label": "CTA на свободен велосипед", "default": "Запази" },
-    { "type": "text", "id": "free_label", "label": "Бадж: свободен", "default": "СВОБОДНО" },
-    { "type": "text", "id": "busy_label", "label": "Бадж: зает", "default": "ЗАЕТО" }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Етикет",
+      "default": "t:tg.d.rental_bikes.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Заглавие",
+      "default": "t:tg.d.rental_bikes.title"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Кратък текст"
+    },
+    {
+      "type": "text",
+      "id": "price_suffix",
+      "label": "Текст след цената",
+      "default": "t:tg.d.rental_bikes.price_suffix"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA на свободен велосипед",
+      "default": "t:tg.d.rental_bikes.cta_label"
+    },
+    {
+      "type": "text",
+      "id": "free_label",
+      "label": "Бадж: свободен",
+      "default": "t:tg.d.rental_bikes.free_label"
+    },
+    {
+      "type": "text",
+      "id": "busy_label",
+      "label": "Бадж: зает",
+      "default": "t:tg.d.rental_bikes.busy_label"
+    }
   ],
   "blocks": [
     {
       "type": "bike",
       "name": "Велосипед",
       "settings": [
-        { "type": "product", "id": "product", "label": "Продукт (велосипед)" },
-        { "type": "checkbox", "id": "busy", "label": "ЗАЕТО — маркирай като нает", "default": false },
-        { "type": "text", "id": "price_note", "label": "Цена (ръчно, напр. „30 лв / ден”)", "info": "Празно = цената на продукта" },
-        { "type": "text", "id": "note", "label": "Бележка (напр. размер, кога се освобождава)" }
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Продукт (велосипед)"
+        },
+        {
+          "type": "checkbox",
+          "id": "busy",
+          "label": "ЗАЕТО — маркирай като нает",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "price_note",
+          "label": "Цена (ръчно, напр. „30 лв / ден”)",
+          "info": "Празно = цената на продукта"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Бележка (напр. размер, кога се освобождава)"
+        }
       ]
     }
   ],
   "max_blocks": 24,
   "presets": [
-    { "name": "2Gether Наем колела" }
+    {
+      "name": "2Gether Наем колела"
+    }
   ]
 }
 {% endschema %}

@@ -140,59 +140,271 @@
   "name": "Ramp Comparison",
   "tag": "section",
   "settings": [
-    { "type": "header", "content": "Head" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Избор без гадаене" },
-    { "type": "text", "id": "title", "label": "Title", "default": "BREEZE ИЛИ STORM?" },
-    { "type": "page", "id": "ramps_page", "label": "Ramps page", "info": "Used by the back button, the tabs and fallback links. If empty, the theme finds the page that uses the ramps template." },
-    { "type": "page", "id": "support_page", "label": "Support page (for the tab strip)" },
-    { "type": "page", "id": "set_page", "label": "Set page (for the BREEZE + STORM recommendation)" },
-    { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
-    { "type": "url", "id": "back_link", "label": "Back link override" },
-
-    { "type": "header", "content": "Chooser" },
-    { "type": "text", "id": "chooser_title", "label": "Question", "default": "КОЕ Е НАЙ-ВАЖНО ЗА ТЕБ?" },
-    { "type": "textarea", "id": "chooser_text", "label": "Text", "default": "Изборът не е „начинаещ или напреднал“. И двата модела могат да се карат на различни нива." },
-    { "type": "text", "id": "rec_label", "label": "Recommendation label", "default": "Нашето предложение" },
-
-    { "type": "header", "content": "Models (table columns + CTAs)" },
-    { "type": "text", "id": "col_label", "label": "First column header", "default": "Характеристика" },
-    { "type": "text", "id": "name_1", "label": "Model 1 name", "default": "BREEZE" },
-    { "type": "color", "id": "color_1", "label": "Model 1 colour", "default": "#C8434F" },
-    { "type": "product", "id": "product_1", "label": "Model 1 product (price + link)" },
-    { "type": "url", "id": "link_1", "label": "Model 1 link override" },
-    { "type": "text", "id": "cta_1", "label": "Model 1 CTA", "default": "Избери BREEZE" },
-    { "type": "text", "id": "name_2", "label": "Model 2 name", "default": "STORM" },
-    { "type": "color", "id": "color_2", "label": "Model 2 colour", "default": "#2F6FD6" },
-    { "type": "product", "id": "product_2", "label": "Model 2 product (price + link)" },
-    { "type": "url", "id": "link_2", "label": "Model 2 link override" },
-    { "type": "text", "id": "cta_2", "label": "Model 2 CTA", "default": "Избери STORM" },
-
-    { "type": "header", "content": "Table" },
-    { "type": "text", "id": "table_eyebrow", "label": "Eyebrow", "default": "Пълно сравнение" },
-    { "type": "text", "id": "table_title", "label": "Title", "default": "ВСИЧКО В ЕДИН ПОГЛЕД." },
-
-    { "type": "header", "content": "Bottom tab strip" },
-    { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
-    { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
-    { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
+    {
+      "type": "header",
+      "content": "Head"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_compare.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_compare.title"
+    },
+    {
+      "type": "page",
+      "id": "ramps_page",
+      "label": "Ramps page",
+      "info": "Used by the back button, the tabs and fallback links. If empty, the theme finds the page that uses the ramps template."
+    },
+    {
+      "type": "page",
+      "id": "support_page",
+      "label": "Support page (for the tab strip)"
+    },
+    {
+      "type": "page",
+      "id": "set_page",
+      "label": "Set page (for the BREEZE + STORM recommendation)"
+    },
+    {
+      "type": "text",
+      "id": "back_text",
+      "label": "Back button",
+      "default": "t:tg.d.ramps_compare.back_text"
+    },
+    {
+      "type": "url",
+      "id": "back_link",
+      "label": "Back link override"
+    },
+    {
+      "type": "header",
+      "content": "Chooser"
+    },
+    {
+      "type": "text",
+      "id": "chooser_title",
+      "label": "Question",
+      "default": "t:tg.d.ramps_compare.chooser_title"
+    },
+    {
+      "type": "textarea",
+      "id": "chooser_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps_compare.chooser_text"
+    },
+    {
+      "type": "text",
+      "id": "rec_label",
+      "label": "Recommendation label",
+      "default": "t:tg.d.ramps_compare.rec_label"
+    },
+    {
+      "type": "header",
+      "content": "Models (table columns + CTAs)"
+    },
+    {
+      "type": "text",
+      "id": "col_label",
+      "label": "First column header",
+      "default": "t:tg.d.ramps_compare.col_label"
+    },
+    {
+      "type": "text",
+      "id": "name_1",
+      "label": "Model 1 name",
+      "default": "BREEZE"
+    },
+    {
+      "type": "color",
+      "id": "color_1",
+      "label": "Model 1 colour",
+      "default": "#C8434F"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Model 1 product (price + link)"
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "Model 1 link override"
+    },
+    {
+      "type": "text",
+      "id": "cta_1",
+      "label": "Model 1 CTA",
+      "default": "t:tg.d.ramps_compare.cta_1"
+    },
+    {
+      "type": "text",
+      "id": "name_2",
+      "label": "Model 2 name",
+      "default": "STORM"
+    },
+    {
+      "type": "color",
+      "id": "color_2",
+      "label": "Model 2 colour",
+      "default": "#2F6FD6"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Model 2 product (price + link)"
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Model 2 link override"
+    },
+    {
+      "type": "text",
+      "id": "cta_2",
+      "label": "Model 2 CTA",
+      "default": "t:tg.d.ramps_compare.cta_2"
+    },
+    {
+      "type": "header",
+      "content": "Table"
+    },
+    {
+      "type": "text",
+      "id": "table_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_compare.table_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "table_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_compare.table_title"
+    },
+    {
+      "type": "header",
+      "content": "Bottom tab strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "tabs_enabled",
+      "label": "Show bottom tab strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_1_label",
+      "label": "Tab 1 label",
+      "default": "t:tg.d.ramps_compare.tab_1_label"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_label",
+      "label": "Tab 2 label",
+      "default": "t:tg.d.ramps_compare.tab_2_label"
+    },
+    {
+      "type": "text",
+      "id": "tab_3_label",
+      "label": "Tab 3 label",
+      "default": "t:tg.d.ramps_compare.tab_3_label"
+    },
+    {
+      "type": "text",
+      "id": "tabs_aria",
+      "label": "Strip aria-label",
+      "default": "t:tg.d.ramps_compare.tabs_aria"
+    }
   ],
   "blocks": [
-    { "type": "option", "name": "Priority option", "limit": 6, "settings": [
-      { "type": "text", "id": "chip", "label": "Chip label", "default": "По-леко носене" },
-      { "type": "color", "id": "color", "label": "Accent colour", "default": "#E8601C" },
-      { "type": "text", "id": "rec_title", "label": "Recommended model", "default": "BREEZE" },
-      { "type": "textarea", "id": "rec_text", "label": "Why", "default": "7.5 kg и по-нисък диапазон — най-лесният модел за носене между спотовете." },
-      { "type": "text", "id": "cta_text", "label": "CTA", "default": "Виж BREEZE" },
-      { "type": "product", "id": "product", "label": "CTA product" },
-      { "type": "url", "id": "cta_link", "label": "CTA link override" } ] },
-    { "type": "row", "name": "Table row", "settings": [
-      { "type": "text", "id": "label", "label": "Characteristic", "default": "Тегло" },
-      { "type": "text", "id": "value_1", "label": "Model 1 value", "default": "7.5 kg" },
-      { "type": "text", "id": "value_2", "label": "Model 2 value", "default": "12.5 kg" },
-      { "type": "checkbox", "id": "use_product_price", "label": "Use product prices for this row", "default": false } ] }
+    {
+      "type": "option",
+      "name": "Priority option",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "chip",
+          "label": "Chip label",
+          "default": "t:tg.d.ramps_compare.b_option.chip"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Accent colour",
+          "default": "#E8601C"
+        },
+        {
+          "type": "text",
+          "id": "rec_title",
+          "label": "Recommended model",
+          "default": "BREEZE"
+        },
+        {
+          "type": "textarea",
+          "id": "rec_text",
+          "label": "Why",
+          "default": "t:tg.d.ramps_compare.b_option.rec_text"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA",
+          "default": "t:tg.d.ramps_compare.b_option.cta_text"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "CTA product"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA link override"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Table row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Characteristic",
+          "default": "t:tg.d.ramps_compare.b_row.label"
+        },
+        {
+          "type": "text",
+          "id": "value_1",
+          "label": "Model 1 value",
+          "default": "7.5 kg"
+        },
+        {
+          "type": "text",
+          "id": "value_2",
+          "label": "Model 2 value",
+          "default": "12.5 kg"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_product_price",
+          "label": "Use product prices for this row",
+          "default": false
+        }
+      ]
+    }
   ],
-  "presets": [ { "name": "Ramp Comparison" } ]
+  "presets": [
+    {
+      "name": "Ramp Comparison"
+    }
+  ]
 }
 {% endschema %}

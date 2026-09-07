@@ -149,74 +149,404 @@ window.tgI18n = window.tgI18n || {}; window.tgI18n.rentalBooking = { weekdays: {
   "name": "2Gether Rental booking",
   "tag": "div",
   "settings": [
-    { "type": "paragraph", "content": "Bikes come from Content → Metaobjects → Rental bike (photo, count, active, optional price overrides). Availability + bookings are served by the club worker (/apps/club)." },
-    { "type": "text", "id": "endpoint", "label": "Worker proxy base", "default": "/apps/club" },
-    { "type": "header", "content": "Prices — short term" },
-    { "type": "number", "id": "hourly_rate", "label": "€ per hour", "default": 3 },
-    { "type": "number", "id": "day_rate", "label": "€ per day (cap for up to hour_end)", "default": 20 },
-    { "type": "number", "id": "h24_rate", "label": "€ for 24 hours", "default": 20 },
-    { "type": "number", "id": "max_hours", "label": "Max hours for short term", "default": 24 },
-    { "type": "number", "id": "hour_start", "label": "First pick-up hour", "default": 9 },
-    { "type": "number", "id": "hour_end", "label": "Last return hour (same day)", "default": 19 },
-    { "type": "header", "content": "Prices — long term" },
-    { "type": "textarea", "id": "long_tiers", "label": "Normal bikes: € per day for a rental of N+ days (N|€ per line)", "info": "The whole rental is charged at the rate of the matching tier × days.", "default": "1|20\n3|18\n4|16\n5|15\n7|12\n15|10" },
-    { "type": "textarea", "id": "long_tiers_ebike", "label": "E-bikes: € per day for a rental of N+ days (N|€ per line)", "default": "1|35\n3|32\n4|28\n5|25\n7|20\n15|15" },
-    { "type": "text", "id": "deposit_ebike", "label": "E-bike deposit / terms note", "default": "Електрически велосипеди: задължителен депозит €500 (с карта или в брой). При наем над 1 ден зарядното е включено в цената." },
-    { "type": "number", "id": "rescue_price", "label": "Bike Rescue € per day", "default": 5 },
-    { "type": "header", "content": "Price table" },
-    { "type": "checkbox", "id": "show_prices", "label": "Show price table", "default": true },
-    { "type": "text", "id": "prices_eyebrow", "label": "Eyebrow", "default": "Цени" },
-    { "type": "text", "id": "prices_title", "label": "Title", "default": "ЦЕНИ ЗА НАЕМ" },
-    { "type": "text", "id": "prices_normal_title", "label": "Normal bikes title", "default": "Нормално колело" },
-    { "type": "text", "id": "prices_normal_sub", "label": "Normal bikes sub", "default": "Всички велосипеди без електродвигател" },
-    { "type": "text", "id": "prices_ebike_title", "label": "E-bike title", "default": "Електрически" },
-    { "type": "text", "id": "prices_ebike_sub", "label": "E-bike sub", "default": "При наем над 1 ден зарядното е включено в цената" },
-    { "type": "text", "id": "prices_24h_label", "label": "24h row label", "default": "24 часа" },
-    { "type": "text", "id": "prices_1d_label", "label": "1 day row label", "default": "1 ден" },
-    { "type": "text", "id": "prices_hourly_note", "label": "Hourly note ([h], [day])", "default": "Краткосрочно: €[h]/час, максимум €[day] за 24 часа." },
-    { "type": "text", "id": "rescue_label", "label": "Bike Rescue label", "default": "Bike Rescue" },
-    { "type": "text", "id": "rescue_text", "label": "Bike Rescue text", "default": "Ремонт или замяна на велосипеда на място при технически проблем." },
-    { "type": "number", "id": "long_min_days", "label": "Minimum days for long term", "default": 2 },
-    { "type": "text", "id": "deposit", "label": "Deposit / terms note", "default": "Обикновени велосипеди: без депозит. Потвърждаваме по телефон до 24 ч." },
-    { "type": "header", "content": "Texts" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Наем на велосипеди" },
-    { "type": "text", "id": "title", "label": "Title", "default": "РЕЗЕРВИРАЙ КОЛЕЛО" },
-    { "type": "textarea", "id": "intro", "label": "Intro", "default": "За няколко часа или за цяла седмица — избираш колелото, часа или датите и ние потвърждаваме." },
-    { "type": "text", "id": "step_bikes", "label": "Step 1", "default": "Избери колелата" },
-    { "type": "text", "id": "step_time", "label": "Step 2", "default": "Кога" },
-    { "type": "text", "id": "step_confirm", "label": "Step 3", "default": "Потвърди" },
-    { "type": "text", "id": "short_title", "label": "Short-term title", "default": "Краткосрочно" },
-    { "type": "text", "id": "short_sub", "label": "Short-term sub", "default": "По часове · до 24 ч" },
-    { "type": "text", "id": "long_title", "label": "Long-term title", "default": "Дългосрочно" },
-    { "type": "text", "id": "long_sub", "label": "Long-term sub", "default": "По дни · цена на ден пада" },
-    { "type": "text", "id": "date_label", "label": "Date label", "default": "Дата" },
-    { "type": "text", "id": "hour_label", "label": "Pick-up hour label", "default": "Час на взимане" },
-    { "type": "text", "id": "duration_label", "label": "Duration label", "default": "За колко време" },
-    { "type": "text", "id": "short_hint", "label": "Short hint", "default": "Часова тарифа до цената за ден; 24 ч = връщане на следващия ден по същото време." },
-    { "type": "text", "id": "long_hint", "label": "Long hint", "default": "Избери първия и последния ден. Сивите дни са заети за избраните колела." },
-    { "type": "text", "id": "legend_free", "label": "Legend free", "default": "свободно" },
-    { "type": "text", "id": "legend_busy", "label": "Legend busy", "default": "заето" },
-    { "type": "text", "id": "legend_selected", "label": "Legend selected", "default": "избрано" },
-    { "type": "text", "id": "available_label", "label": "'available' word", "default": "налични" },
-    { "type": "text", "id": "sizes_label", "label": "Sizes label", "default": "Размери:" },
-    { "type": "text", "id": "from_label", "label": "'from' word", "default": "от" },
-    { "type": "text", "id": "hour_short", "label": "hour short", "default": "ч" },
-    { "type": "text", "id": "summary_empty", "label": "Summary empty", "default": "Избери колело и време, за да видиш цената." },
-    { "type": "text", "id": "total_label", "label": "Total label", "default": "Общо" },
-    { "type": "text", "id": "name_label", "label": "Name", "default": "Име" },
-    { "type": "text", "id": "phone_label", "label": "Phone", "default": "Телефон" },
-    { "type": "text", "id": "email_label", "label": "Email", "default": "Имейл (по желание)" },
-    { "type": "text", "id": "note_label", "label": "Note", "default": "Бележка" },
-    { "type": "text", "id": "submit_label", "label": "Submit", "default": "Резервирай" },
-    { "type": "text", "id": "msg_success", "label": "Success", "default": "Готово! Резервация {ref}. Ще потвърдим по телефон." },
-    { "type": "text", "id": "msg_unavailable", "label": "Unavailable", "default": "За избраните дати няма достатъчно колела. Промени датите или броя." },
-    { "type": "text", "id": "msg_error", "label": "Error", "default": "Нещо се обърка. Обади ни се на +359 888 310 500." },
-    { "type": "text", "id": "msg_incomplete", "label": "Incomplete", "default": "Избери колело, време и попълни име и телефон." },
-    { "type": "text", "id": "empty_text", "label": "No bikes", "default": "Скоро — колелата за наем се зареждат." },
-    { "type": "text", "id": "unit_hours", "label": "hours word", "default": "ч" },
-    { "type": "text", "id": "unit_days", "label": "days word", "default": "дни" },
-    { "type": "text", "id": "unit_day", "label": "day word", "default": "ден" }
+    {
+      "type": "paragraph",
+      "content": "Bikes come from Content → Metaobjects → Rental bike (photo, count, active, optional price overrides). Availability + bookings are served by the club worker (/apps/club)."
+    },
+    {
+      "type": "text",
+      "id": "endpoint",
+      "label": "Worker proxy base",
+      "default": "/apps/club"
+    },
+    {
+      "type": "header",
+      "content": "Prices — short term"
+    },
+    {
+      "type": "number",
+      "id": "hourly_rate",
+      "label": "€ per hour",
+      "default": 3
+    },
+    {
+      "type": "number",
+      "id": "day_rate",
+      "label": "€ per day (cap for up to hour_end)",
+      "default": 20
+    },
+    {
+      "type": "number",
+      "id": "h24_rate",
+      "label": "€ for 24 hours",
+      "default": 20
+    },
+    {
+      "type": "number",
+      "id": "max_hours",
+      "label": "Max hours for short term",
+      "default": 24
+    },
+    {
+      "type": "number",
+      "id": "hour_start",
+      "label": "First pick-up hour",
+      "default": 9
+    },
+    {
+      "type": "number",
+      "id": "hour_end",
+      "label": "Last return hour (same day)",
+      "default": 19
+    },
+    {
+      "type": "header",
+      "content": "Prices — long term"
+    },
+    {
+      "type": "textarea",
+      "id": "long_tiers",
+      "label": "Normal bikes: € per day for a rental of N+ days (N|€ per line)",
+      "info": "The whole rental is charged at the rate of the matching tier × days.",
+      "default": "1|20\n3|18\n4|16\n5|15\n7|12\n15|10"
+    },
+    {
+      "type": "textarea",
+      "id": "long_tiers_ebike",
+      "label": "E-bikes: € per day for a rental of N+ days (N|€ per line)",
+      "default": "1|35\n3|32\n4|28\n5|25\n7|20\n15|15"
+    },
+    {
+      "type": "text",
+      "id": "deposit_ebike",
+      "label": "E-bike deposit / terms note",
+      "default": "t:tg.d.rental_booking.deposit_ebike"
+    },
+    {
+      "type": "number",
+      "id": "rescue_price",
+      "label": "Bike Rescue € per day",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Price table"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_prices",
+      "label": "Show price table",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "prices_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.rental_booking.prices_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "prices_title",
+      "label": "Title",
+      "default": "t:tg.d.rental_booking.prices_title"
+    },
+    {
+      "type": "text",
+      "id": "prices_normal_title",
+      "label": "Normal bikes title",
+      "default": "t:tg.d.rental_booking.prices_normal_title"
+    },
+    {
+      "type": "text",
+      "id": "prices_normal_sub",
+      "label": "Normal bikes sub",
+      "default": "t:tg.d.rental_booking.prices_normal_sub"
+    },
+    {
+      "type": "text",
+      "id": "prices_ebike_title",
+      "label": "E-bike title",
+      "default": "t:tg.d.rental_booking.prices_ebike_title"
+    },
+    {
+      "type": "text",
+      "id": "prices_ebike_sub",
+      "label": "E-bike sub",
+      "default": "t:tg.d.rental_booking.prices_ebike_sub"
+    },
+    {
+      "type": "text",
+      "id": "prices_24h_label",
+      "label": "24h row label",
+      "default": "t:tg.d.rental_booking.prices_24h_label"
+    },
+    {
+      "type": "text",
+      "id": "prices_1d_label",
+      "label": "1 day row label",
+      "default": "t:tg.d.rental_booking.prices_1d_label"
+    },
+    {
+      "type": "text",
+      "id": "prices_hourly_note",
+      "label": "Hourly note ([h], [day])",
+      "default": "t:tg.d.rental_booking.prices_hourly_note"
+    },
+    {
+      "type": "text",
+      "id": "rescue_label",
+      "label": "Bike Rescue label",
+      "default": "Bike Rescue"
+    },
+    {
+      "type": "text",
+      "id": "rescue_text",
+      "label": "Bike Rescue text",
+      "default": "t:tg.d.rental_booking.rescue_text"
+    },
+    {
+      "type": "number",
+      "id": "long_min_days",
+      "label": "Minimum days for long term",
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "deposit",
+      "label": "Deposit / terms note",
+      "default": "t:tg.d.rental_booking.deposit"
+    },
+    {
+      "type": "header",
+      "content": "Texts"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.rental_booking.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "t:tg.d.rental_booking.title"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "t:tg.d.rental_booking.intro"
+    },
+    {
+      "type": "text",
+      "id": "step_bikes",
+      "label": "Step 1",
+      "default": "t:tg.d.rental_booking.step_bikes"
+    },
+    {
+      "type": "text",
+      "id": "step_time",
+      "label": "Step 2",
+      "default": "t:tg.d.rental_booking.step_time"
+    },
+    {
+      "type": "text",
+      "id": "step_confirm",
+      "label": "Step 3",
+      "default": "t:tg.d.rental_booking.step_confirm"
+    },
+    {
+      "type": "text",
+      "id": "short_title",
+      "label": "Short-term title",
+      "default": "t:tg.d.rental_booking.short_title"
+    },
+    {
+      "type": "text",
+      "id": "short_sub",
+      "label": "Short-term sub",
+      "default": "t:tg.d.rental_booking.short_sub"
+    },
+    {
+      "type": "text",
+      "id": "long_title",
+      "label": "Long-term title",
+      "default": "t:tg.d.rental_booking.long_title"
+    },
+    {
+      "type": "text",
+      "id": "long_sub",
+      "label": "Long-term sub",
+      "default": "t:tg.d.rental_booking.long_sub"
+    },
+    {
+      "type": "text",
+      "id": "date_label",
+      "label": "Date label",
+      "default": "t:tg.d.rental_booking.date_label"
+    },
+    {
+      "type": "text",
+      "id": "hour_label",
+      "label": "Pick-up hour label",
+      "default": "t:tg.d.rental_booking.hour_label"
+    },
+    {
+      "type": "text",
+      "id": "duration_label",
+      "label": "Duration label",
+      "default": "t:tg.d.rental_booking.duration_label"
+    },
+    {
+      "type": "text",
+      "id": "short_hint",
+      "label": "Short hint",
+      "default": "t:tg.d.rental_booking.short_hint"
+    },
+    {
+      "type": "text",
+      "id": "long_hint",
+      "label": "Long hint",
+      "default": "t:tg.d.rental_booking.long_hint"
+    },
+    {
+      "type": "text",
+      "id": "legend_free",
+      "label": "Legend free",
+      "default": "t:tg.d.rental_booking.legend_free"
+    },
+    {
+      "type": "text",
+      "id": "legend_busy",
+      "label": "Legend busy",
+      "default": "t:tg.d.rental_booking.legend_busy"
+    },
+    {
+      "type": "text",
+      "id": "legend_selected",
+      "label": "Legend selected",
+      "default": "t:tg.d.rental_booking.legend_selected"
+    },
+    {
+      "type": "text",
+      "id": "available_label",
+      "label": "'available' word",
+      "default": "t:tg.d.rental_booking.available_label"
+    },
+    {
+      "type": "text",
+      "id": "sizes_label",
+      "label": "Sizes label",
+      "default": "t:tg.d.rental_booking.sizes_label"
+    },
+    {
+      "type": "text",
+      "id": "from_label",
+      "label": "'from' word",
+      "default": "t:tg.d.rental_booking.from_label"
+    },
+    {
+      "type": "text",
+      "id": "hour_short",
+      "label": "hour short",
+      "default": "t:tg.d.rental_booking.hour_short"
+    },
+    {
+      "type": "text",
+      "id": "summary_empty",
+      "label": "Summary empty",
+      "default": "t:tg.d.rental_booking.summary_empty"
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total label",
+      "default": "t:tg.d.rental_booking.total_label"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name",
+      "default": "t:tg.d.rental_booking.name_label"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone",
+      "default": "t:tg.d.rental_booking.phone_label"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email",
+      "default": "t:tg.d.rental_booking.email_label"
+    },
+    {
+      "type": "text",
+      "id": "note_label",
+      "label": "Note",
+      "default": "t:tg.d.rental_booking.note_label"
+    },
+    {
+      "type": "text",
+      "id": "submit_label",
+      "label": "Submit",
+      "default": "t:tg.d.rental_booking.submit_label"
+    },
+    {
+      "type": "text",
+      "id": "msg_success",
+      "label": "Success",
+      "default": "t:tg.d.rental_booking.msg_success"
+    },
+    {
+      "type": "text",
+      "id": "msg_unavailable",
+      "label": "Unavailable",
+      "default": "t:tg.d.rental_booking.msg_unavailable"
+    },
+    {
+      "type": "text",
+      "id": "msg_error",
+      "label": "Error",
+      "default": "t:tg.d.rental_booking.msg_error"
+    },
+    {
+      "type": "text",
+      "id": "msg_incomplete",
+      "label": "Incomplete",
+      "default": "t:tg.d.rental_booking.msg_incomplete"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "No bikes",
+      "default": "t:tg.d.rental_booking.empty_text"
+    },
+    {
+      "type": "text",
+      "id": "unit_hours",
+      "label": "hours word",
+      "default": "t:tg.d.rental_booking.unit_hours"
+    },
+    {
+      "type": "text",
+      "id": "unit_days",
+      "label": "days word",
+      "default": "t:tg.d.rental_booking.unit_days"
+    },
+    {
+      "type": "text",
+      "id": "unit_day",
+      "label": "day word",
+      "default": "t:tg.d.rental_booking.unit_day"
+    }
   ],
-  "presets": [ { "name": "2Gether Rental booking" } ]
+  "presets": [
+    {
+      "name": "2Gether Rental booking"
+    }
+  ]
 }
 {% endschema %}

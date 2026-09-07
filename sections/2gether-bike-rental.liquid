@@ -757,94 +757,397 @@ Mixed levels' | newline_to_br | split: '<br />' -%}
       "type": "header",
       "content": "Wizard — step tabs & shared"
     },
-    { "type": "text", "id": "step1_tab", "label": "Step 1 tab", "default": "Roster" },
-    { "type": "text", "id": "step2_tab", "label": "Step 2 tab", "default": "Plan" },
-    { "type": "text", "id": "step3_tab", "label": "Step 3 tab", "default": "Contact" },
-    { "type": "text", "id": "back_label", "label": "Back button", "default": "Back" },
+    {
+      "type": "text",
+      "id": "step1_tab",
+      "label": "Step 1 tab",
+      "default": "Roster"
+    },
+    {
+      "type": "text",
+      "id": "step2_tab",
+      "label": "Step 2 tab",
+      "default": "Plan"
+    },
+    {
+      "type": "text",
+      "id": "step3_tab",
+      "label": "Step 3 tab",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back button",
+      "default": "Back"
+    },
     {
       "type": "header",
       "content": "Wizard — step 1 (bikes)"
     },
-    { "type": "text", "id": "step1_eyebrow", "label": "Eyebrow", "default": "01 · The crew" },
-    { "type": "text", "id": "step1_title", "label": "Title", "default": "Choose your character" },
-    { "type": "textarea", "id": "step1_sub", "label": "Subtitle", "default": "Tap to add a bike to the crew. Tap again to add another of the same." },
-    { "type": "text", "id": "bike_price_hint", "label": "Bike card price hint", "default": "From €3 / 1h" },
-    { "type": "text", "id": "riders_label_singular", "label": "Riders label (1)", "default": "rider in the crew" },
-    { "type": "text", "id": "riders_label_plural", "label": "Riders label (many)", "default": "riders in the crew" },
-    { "type": "text", "id": "tap_hint", "label": "Empty roster hint", "default": "Tap a card to add" },
-    { "type": "text", "id": "step1_next", "label": "Next button", "default": "Next: Pick dates" },
-    { "type": "textarea", "id": "empty_text", "label": "No-bikes message", "default": "No rental bikes configured yet. Pick a collection in the section settings." },
+    {
+      "type": "text",
+      "id": "step1_eyebrow",
+      "label": "Eyebrow",
+      "default": "01 · The crew"
+    },
+    {
+      "type": "text",
+      "id": "step1_title",
+      "label": "Title",
+      "default": "Choose your character"
+    },
+    {
+      "type": "textarea",
+      "id": "step1_sub",
+      "label": "Subtitle",
+      "default": "Tap to add a bike to the crew. Tap again to add another of the same."
+    },
+    {
+      "type": "text",
+      "id": "bike_price_hint",
+      "label": "Bike card price hint",
+      "default": "From €3 / 1h"
+    },
+    {
+      "type": "text",
+      "id": "riders_label_singular",
+      "label": "Riders label (1)",
+      "default": "rider in the crew"
+    },
+    {
+      "type": "text",
+      "id": "riders_label_plural",
+      "label": "Riders label (many)",
+      "default": "riders in the crew"
+    },
+    {
+      "type": "text",
+      "id": "tap_hint",
+      "label": "Empty roster hint",
+      "default": "Tap a card to add"
+    },
+    {
+      "type": "text",
+      "id": "step1_next",
+      "label": "Next button",
+      "default": "Next: Pick dates"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_text",
+      "label": "No-bikes message",
+      "default": "No rental bikes configured yet. Pick a collection in the section settings."
+    },
     {
       "type": "header",
       "content": "Wizard — step 2 (package)"
     },
-    { "type": "text", "id": "step2_eyebrow", "label": "Eyebrow", "default": "02 · The plan" },
-    { "type": "text", "id": "step2_title", "label": "Title", "default": "Pick your package" },
-    { "type": "textarea", "id": "step2_sub", "label": "Subtitle", "default": "Most rentals are by the hour or for the day. Pick the package, the day, and how you would like to get the bike." },
-    { "type": "text", "id": "package_label", "label": "Package field label", "default": "Rental package" },
-    { "type": "text", "id": "package_unit", "label": "Package price unit", "default": "/ bike" },
-    { "type": "textarea", "id": "packages", "label": "Packages", "info": "One per line. Format: Name | Price (number) | Description", "default": "1 hour|3|Quick spin around town\n1 day|12|9:00 — 19:00 same day\n24 hours|20|Full day, return next day" },
-    { "type": "text", "id": "pickup_date_label", "label": "Pickup date label", "default": "Pickup date" },
-    { "type": "text", "id": "pickup_time_label", "label": "Pickup time / hour label", "default": "Час на взимане" },
-    { "type": "number", "id": "hour_start", "label": "First pickup hour (24h)", "default": 9 },
-    { "type": "number", "id": "hour_end", "label": "Last pickup hour (24h)", "default": 18 },
-    { "type": "text", "id": "days_label", "label": "Rental length label", "default": "За колко дни?" },
-    { "type": "text", "id": "days_unit_singular", "label": "Day unit (singular)", "default": "ден" },
-    { "type": "text", "id": "days_unit_plural", "label": "Day unit (plural)", "default": "дни" },
-    { "type": "number", "id": "days_max", "label": "Max rental days", "default": 30 },
-    { "type": "textarea", "id": "days_hint", "label": "Rental length hint", "default": "При наем за повече от един ден дневната тарифа важи за всеки ден." },
-    { "type": "text", "id": "delivery_field_label", "label": "Delivery field label", "default": "Delivery (within Varna — hotels & addresses)" },
-    { "type": "textarea", "id": "delivery_options", "label": "Delivery options", "info": "One per line. Format: Name | Price (number) | Description. Use 0 for free.", "default": "Pickup at shop|0|Drop by at our location\nOne-way delivery|5|We bring it to you\nRound-trip delivery|10|Drop-off & pickup at your place" },
-    { "type": "text", "id": "free_label", "label": "Free price word", "default": "Free" },
-    { "type": "text", "id": "total_label", "label": "Total label", "default": "Estimated total" },
-    { "type": "text", "id": "total_empty", "label": "Total placeholder", "default": "Pick a package" },
-    { "type": "text", "id": "step2_next", "label": "Next button", "default": "Next: Your details" },
+    {
+      "type": "text",
+      "id": "step2_eyebrow",
+      "label": "Eyebrow",
+      "default": "02 · The plan"
+    },
+    {
+      "type": "text",
+      "id": "step2_title",
+      "label": "Title",
+      "default": "Pick your package"
+    },
+    {
+      "type": "textarea",
+      "id": "step2_sub",
+      "label": "Subtitle",
+      "default": "Most rentals are by the hour or for the day. Pick the package, the day, and how you would like to get the bike."
+    },
+    {
+      "type": "text",
+      "id": "package_label",
+      "label": "Package field label",
+      "default": "Rental package"
+    },
+    {
+      "type": "text",
+      "id": "package_unit",
+      "label": "Package price unit",
+      "default": "/ bike"
+    },
+    {
+      "type": "textarea",
+      "id": "packages",
+      "label": "Packages",
+      "info": "One per line. Format: Name | Price (number) | Description",
+      "default": "1 hour|3|Quick spin around town\n1 day|12|9:00 — 19:00 same day\n24 hours|20|Full day, return next day"
+    },
+    {
+      "type": "text",
+      "id": "pickup_date_label",
+      "label": "Pickup date label",
+      "default": "Pickup date"
+    },
+    {
+      "type": "text",
+      "id": "pickup_time_label",
+      "label": "Pickup time / hour label",
+      "default": "t:tg.d.bike_rental.pickup_time_label"
+    },
+    {
+      "type": "number",
+      "id": "hour_start",
+      "label": "First pickup hour (24h)",
+      "default": 9
+    },
+    {
+      "type": "number",
+      "id": "hour_end",
+      "label": "Last pickup hour (24h)",
+      "default": 18
+    },
+    {
+      "type": "text",
+      "id": "days_label",
+      "label": "Rental length label",
+      "default": "t:tg.d.bike_rental.days_label"
+    },
+    {
+      "type": "text",
+      "id": "days_unit_singular",
+      "label": "Day unit (singular)",
+      "default": "t:tg.d.bike_rental.days_unit_singular"
+    },
+    {
+      "type": "text",
+      "id": "days_unit_plural",
+      "label": "Day unit (plural)",
+      "default": "t:tg.d.bike_rental.days_unit_plural"
+    },
+    {
+      "type": "number",
+      "id": "days_max",
+      "label": "Max rental days",
+      "default": 30
+    },
+    {
+      "type": "textarea",
+      "id": "days_hint",
+      "label": "Rental length hint",
+      "default": "t:tg.d.bike_rental.days_hint"
+    },
+    {
+      "type": "text",
+      "id": "delivery_field_label",
+      "label": "Delivery field label",
+      "default": "Delivery (within Varna — hotels & addresses)"
+    },
+    {
+      "type": "textarea",
+      "id": "delivery_options",
+      "label": "Delivery options",
+      "info": "One per line. Format: Name | Price (number) | Description. Use 0 for free.",
+      "default": "Pickup at shop|0|Drop by at our location\nOne-way delivery|5|We bring it to you\nRound-trip delivery|10|Drop-off & pickup at your place"
+    },
+    {
+      "type": "text",
+      "id": "free_label",
+      "label": "Free price word",
+      "default": "Free"
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total label",
+      "default": "Estimated total"
+    },
+    {
+      "type": "text",
+      "id": "total_empty",
+      "label": "Total placeholder",
+      "default": "Pick a package"
+    },
+    {
+      "type": "text",
+      "id": "step2_next",
+      "label": "Next button",
+      "default": "Next: Your details"
+    },
     {
       "type": "header",
       "content": "Wizard — step 3 (contact)"
     },
-    { "type": "text", "id": "step3_eyebrow", "label": "Eyebrow", "default": "03 · The leader" },
-    { "type": "text", "id": "step3_title", "label": "Title", "default": "Who is leading the crew?" },
-    { "type": "textarea", "id": "step3_sub", "label": "Subtitle", "default": "One contact for the whole reservation — the lead rider. We will message you about pickup details." },
-    { "type": "text", "id": "name_label", "label": "Name label", "default": "Lead rider name" },
-    { "type": "text", "id": "phone_label", "label": "Phone label", "default": "Phone" },
-    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
-    { "type": "text", "id": "experience_label", "label": "Experience label", "default": "Group experience" },
-    { "type": "textarea", "id": "experience_options", "label": "Experience options", "info": "One per line.", "default": "— optional —\nFirst time on a real bike\nCasual riders\nExperienced — we ride often\nMixed levels" },
-    { "type": "text", "id": "heights_label", "label": "Heights label", "default": "Heights (cm)" },
-    { "type": "text", "id": "heights_placeholder", "label": "Heights placeholder", "default": "e.g. 178, 165, 182" },
-    { "type": "text", "id": "notes_label", "label": "Notes label", "default": "Anything else?" },
-    { "type": "text", "id": "notes_placeholder", "label": "Notes placeholder", "default": "Routes you're considering, child seats, helmets, anything else." },
-    { "type": "text", "id": "review_label", "label": "Review heading", "default": "Review" },
-    { "type": "text", "id": "review_empty", "label": "Review placeholder", "default": "Fill the form to see your reservation summary." },
+    {
+      "type": "text",
+      "id": "step3_eyebrow",
+      "label": "Eyebrow",
+      "default": "03 · The leader"
+    },
+    {
+      "type": "text",
+      "id": "step3_title",
+      "label": "Title",
+      "default": "Who is leading the crew?"
+    },
+    {
+      "type": "textarea",
+      "id": "step3_sub",
+      "label": "Subtitle",
+      "default": "One contact for the whole reservation — the lead rider. We will message you about pickup details."
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name label",
+      "default": "Lead rider name"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "experience_label",
+      "label": "Experience label",
+      "default": "Group experience"
+    },
+    {
+      "type": "textarea",
+      "id": "experience_options",
+      "label": "Experience options",
+      "info": "One per line.",
+      "default": "— optional —\nFirst time on a real bike\nCasual riders\nExperienced — we ride often\nMixed levels"
+    },
+    {
+      "type": "text",
+      "id": "heights_label",
+      "label": "Heights label",
+      "default": "Heights (cm)"
+    },
+    {
+      "type": "text",
+      "id": "heights_placeholder",
+      "label": "Heights placeholder",
+      "default": "e.g. 178, 165, 182"
+    },
+    {
+      "type": "text",
+      "id": "notes_label",
+      "label": "Notes label",
+      "default": "Anything else?"
+    },
+    {
+      "type": "text",
+      "id": "notes_placeholder",
+      "label": "Notes placeholder",
+      "default": "Routes you're considering, child seats, helmets, anything else."
+    },
+    {
+      "type": "text",
+      "id": "review_label",
+      "label": "Review heading",
+      "default": "Review"
+    },
+    {
+      "type": "text",
+      "id": "review_empty",
+      "label": "Review placeholder",
+      "default": "Fill the form to see your reservation summary."
+    },
     {
       "type": "header",
       "content": "Info strip — 1 hour"
     },
-    { "type": "text", "id": "hourly_eyebrow", "label": "Eyebrow", "default": "1 hour" },
-    { "type": "text", "id": "hourly_label", "label": "Headline", "default": "€3 / hour" },
-    { "type": "textarea", "id": "hourly_text", "label": "Text", "default": "Quick spin around town. Most popular package." },
+    {
+      "type": "text",
+      "id": "hourly_eyebrow",
+      "label": "Eyebrow",
+      "default": "1 hour"
+    },
+    {
+      "type": "text",
+      "id": "hourly_label",
+      "label": "Headline",
+      "default": "€3 / hour"
+    },
+    {
+      "type": "textarea",
+      "id": "hourly_text",
+      "label": "Text",
+      "default": "Quick spin around town. Most popular package."
+    },
     {
       "type": "header",
       "content": "Info strip — 1 day"
     },
-    { "type": "text", "id": "daily_eyebrow", "label": "Eyebrow", "default": "1 day" },
-    { "type": "text", "id": "daily_label", "label": "Headline", "default": "€12 / day" },
-    { "type": "textarea", "id": "daily_text", "label": "Text", "default": "Pickup 9:00, drop off by 19:00 same day." },
+    {
+      "type": "text",
+      "id": "daily_eyebrow",
+      "label": "Eyebrow",
+      "default": "1 day"
+    },
+    {
+      "type": "text",
+      "id": "daily_label",
+      "label": "Headline",
+      "default": "€12 / day"
+    },
+    {
+      "type": "textarea",
+      "id": "daily_text",
+      "label": "Text",
+      "default": "Pickup 9:00, drop off by 19:00 same day."
+    },
     {
       "type": "header",
       "content": "Info strip — 24 hours"
     },
-    { "type": "text", "id": "full_eyebrow", "label": "Eyebrow", "default": "24 hours" },
-    { "type": "text", "id": "full_label", "label": "Headline", "default": "€20 / 24h" },
-    { "type": "textarea", "id": "full_text", "label": "Text", "default": "Full 24-hour rental. Return next day." },
+    {
+      "type": "text",
+      "id": "full_eyebrow",
+      "label": "Eyebrow",
+      "default": "24 hours"
+    },
+    {
+      "type": "text",
+      "id": "full_label",
+      "label": "Headline",
+      "default": "€20 / 24h"
+    },
+    {
+      "type": "textarea",
+      "id": "full_text",
+      "label": "Text",
+      "default": "Full 24-hour rental. Return next day."
+    },
     {
       "type": "header",
       "content": "Info strip — Delivery"
     },
-    { "type": "text", "id": "delivery_eyebrow", "label": "Eyebrow", "default": "Delivery" },
-    { "type": "text", "id": "delivery_label", "label": "Headline", "default": "One-way €5 · Round-trip €10" },
-    { "type": "textarea", "id": "delivery_text", "label": "Text", "default": "In Varna — we deliver to hotels and addresses." }
+    {
+      "type": "text",
+      "id": "delivery_eyebrow",
+      "label": "Eyebrow",
+      "default": "Delivery"
+    },
+    {
+      "type": "text",
+      "id": "delivery_label",
+      "label": "Headline",
+      "default": "One-way €5 · Round-trip €10"
+    },
+    {
+      "type": "textarea",
+      "id": "delivery_text",
+      "label": "Text",
+      "default": "In Varna — we deliver to hotels and addresses."
+    }
   ],
   "presets": [
     {
@@ -853,7 +1156,9 @@ Mixed levels' | newline_to_br | split: '<br />' -%}
     }
   ],
   "enabled_on": {
-    "templates": ["page"]
+    "templates": [
+      "page"
+    ]
   }
 }
 {% endschema %}

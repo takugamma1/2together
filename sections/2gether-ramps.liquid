@@ -416,163 +416,902 @@
   "name": "Portable Ramps",
   "tag": "section",
   "settings": [
-    { "type": "header", "content": "01 · Hero" },
-    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "2getherbikes Portable Ramps · Made in Bulgaria" },
-    { "type": "textarea", "id": "hero_title", "label": "Title (line breaks allowed)", "default": "СЪЗДАЙ СПОТ.\nНАВСЯКЪДЕ." },
-    { "type": "textarea", "id": "hero_sub", "label": "Subtitle", "default": "BREEZE и STORM се регулират в 4 позиции, сгъват се за 30 секунди и се носят на гръб." },
-    { "type": "text", "id": "hero_cta1_text", "label": "Primary CTA", "default": "Сравни моделите" },
-    { "type": "text", "id": "hero_cta1_link", "label": "Primary CTA link", "info": "Empty = comparison page" },
-    { "type": "text", "id": "hero_cta2_text", "label": "Secondary CTA", "default": "Виж ги в действие" },
-    { "type": "text", "id": "hero_cta2_link", "label": "Secondary CTA link", "default": "#tg-ramps-transform" },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
-    { "type": "text", "id": "hero_badge", "label": "Image badge", "default": "Произведени в България" },
-
-    { "type": "header", "content": "02 · Lineup" },
-    { "type": "text", "id": "lineup_eyebrow", "label": "Eyebrow", "default": "Избери своята" },
-    { "type": "text", "id": "lineup_title", "label": "Title", "default": "ДВА МОДЕЛА. РАЗЛИЧЕН ХАРАКТЕР." },
-    { "type": "text", "id": "lineup_cta_text", "label": "Compare button", "default": "Пълно сравнение" },
-
-    { "type": "header", "content": "03 · Set + comparison table" },
-    { "type": "text", "id": "bundle_eyebrow", "label": "Eyebrow", "default": "Пълният спот" },
-    { "type": "text", "id": "bundle_title", "label": "Title", "default": "BREEZE + STORM · TAKE-OFF & LANDING SET" },
-    { "type": "textarea", "id": "bundle_text", "label": "Text", "default": "Използвай едната за изстрелване, а другата за приземяване. Или изгради два различни скока." },
-    { "type": "page", "id": "set_page", "label": "Set page (Виж комплекта)", "info": "If empty, the theme finds the page using the ramps-set template" },
-    { "type": "product", "id": "bundle_product", "label": "Set product (overrides the page)" },
-    { "type": "text", "id": "bundle_price", "label": "Price (fallback if no product)", "default": "€590" },
-    { "type": "text", "id": "bundle_compare_price", "label": "Compare-at price (fallback)", "default": "€645" },
-    { "type": "text", "id": "bundle_save", "label": "Savings badge", "default": "Спестяваш €55" },
-    { "type": "text", "id": "bundle_cta", "label": "CTA", "default": "Виж комплекта" },
-    { "type": "url", "id": "bundle_link", "label": "CTA link (fallback)" },
-    { "type": "text", "id": "tbl_model", "label": "Table: model column", "default": "Модел" },
-    { "type": "text", "id": "tbl_weight", "label": "Table: weight column", "default": "Тегло" },
-    { "type": "text", "id": "tbl_range", "label": "Table: range column", "default": "Диапазон" },
-    { "type": "text", "id": "tbl_length", "label": "Table: length column", "default": "Дължина" },
-    { "type": "text", "id": "tbl_price", "label": "Table: price column", "default": "Цена с ДДС" },
-
-    { "type": "header", "content": "04 · Positions" },
-    { "type": "text", "id": "pos_eyebrow", "label": "Eyebrow", "default": "4 фиксирани позиции" },
-    { "type": "text", "id": "pos_title", "label": "Title", "default": "ТИ РЕШАВАШ КАК ДА ИЗЛЕТИШ." },
-    { "type": "textarea", "id": "pos_text", "label": "Text", "default": "Преместваш предните крака и променяш едновременно височината и ъгъла на изстрелване." },
-    { "type": "text", "id": "pos_model_label", "label": "Model selector label", "default": "Модел" },
-    { "type": "text", "id": "pos_position_label", "label": "Position selector label", "default": "Позиция" },
-
-    { "type": "header", "content": "05 · Transformation" },
-    { "type": "image_picker", "id": "tf_image", "label": "Image" },
-    { "type": "text", "id": "tf_video_label", "label": "Play button label", "default": "30-секундната трансформация" },
-    { "type": "url", "id": "tf_video_url", "label": "Video link" },
-    { "type": "text", "id": "tf_eyebrow", "label": "Eyebrow", "default": "От готова за скок до готова за път" },
-    { "type": "text", "id": "tf_title", "label": "Title", "default": "СКАЧАШ. СГЪВАШ. ТРЪГВАШ." },
-    { "type": "textarea", "id": "tf_text", "label": "Text", "default": "Всичко остава свързано в един заключен пакет. Слагаш презрамките, качваш се на колелото и местиш спота с теб." },
-
-    { "type": "header", "content": "05b · YouTube clip" },
-    { "type": "text", "id": "rv_url", "label": "YouTube link (watch / youtu.be / shorts)", "info": "Thumbnail is pulled from YouTube automatically; click opens YouTube in a new tab." },
-    { "type": "image_picker", "id": "rv_image", "label": "Custom cover (optional)" },
-    { "type": "text", "id": "rv_eyebrow", "label": "Eyebrow", "default": "Видео" },
-    { "type": "text", "id": "rv_title", "label": "Title", "default": "ВИЖ РАМПИТЕ В ДЕЙСТВИЕ" },
-    { "type": "textarea", "id": "rv_text", "label": "Text", "default": "Сглобяване, позиции и първите скокове — всичко в един клип." },
-    { "type": "text", "id": "rv_caption", "label": "Caption on the card", "default": "Гледай в YouTube" },
-    { "type": "header", "content": "06 · Terrains" },
-    { "type": "text", "id": "ter_eyebrow", "label": "Eyebrow", "default": "Спотът е там, където го създадеш" },
-    { "type": "text", "id": "ter_title", "label": "Title", "default": "ЕДНА РАМПА. МНОГО ТЕРЕНИ." },
-
-    { "type": "header", "content": "07 · Product details" },
-    { "type": "image_picker", "id": "det_image", "label": "Image" },
-    { "type": "text", "id": "det_stamp_kicker", "label": "Stamp kicker", "default": "Hand-built" },
-    { "type": "text", "id": "det_stamp_title", "label": "Stamp title", "default": "Botevgrad" },
-    { "type": "text", "id": "det_stamp_sub", "label": "Stamp sub", "default": "Bulgaria · EST. 2024" },
-    { "type": "text", "id": "det_eyebrow", "label": "Eyebrow", "default": "Продуктовите детайли" },
-    { "type": "text", "id": "det_title", "label": "Title", "default": "СЪЗДАДЕНА ДА СКАЧА. НАПРАВЕНА ДА ПЪТУВА." },
-    { "type": "textarea", "id": "det_text", "label": "Text", "default": "Всеки елемент има конкретна функция — стабилност при скок, по-малко вибрации, сигурно носене и лесна поддръжка." },
-
-    { "type": "header", "content": "08 · Story" },
-    { "type": "image_picker", "id": "story_image", "label": "Image" },
-    { "type": "text", "id": "story_video_label", "label": "Play button label", "default": "Гледай влога" },
-    { "type": "text", "id": "story_video_url", "label": "YouTube link (fills the story media box; thumbnail auto from YouTube)" },
-    { "type": "text", "id": "story_eyebrow", "label": "Eyebrow", "default": "Цялата история" },
-    { "type": "text", "id": "story_title", "label": "Title", "default": "КАК СЪЗДАДОХМЕ РАМПИТЕ." },
-    { "type": "textarea", "id": "story_text", "label": "Text", "default": "Производството в цеха, тридневният лагер с отбора и първото градско каране с рампите в Ботевград — събрани в един влог." },
-
-    { "type": "header", "content": "09 · Support" },
-    { "type": "text", "id": "sup_eyebrow", "label": "Eyebrow", "default": "Преди и след покупката" },
-    { "type": "text", "id": "sup_title", "label": "Title", "default": "ГАРАНЦИЯ. ЧАСТИ. РЕАЛНА ПОДДРЪЖКА." },
-
-    { "type": "header", "content": "10 · FAQ" },
-    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Преди да тръгнеш" },
-    { "type": "text", "id": "faq_title", "label": "Title", "default": "ЧЕСТО ЗАДАВАНИ ВЪПРОСИ" },
-
-    { "type": "header", "content": "11 · Final CTA" },
-    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Следващият спот е твой" },
-    { "type": "text", "id": "cta_title", "label": "Title", "default": "ИЗБЕРИ РАМПАТА, КОЯТО ЩЕ ТРЪГНЕ С ТЕБ." },
-    { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Сравни моделите" },
-    { "type": "text", "id": "cta1_link", "label": "Primary CTA link", "info": "Empty = comparison page" },
-    { "type": "text", "id": "cta2_text", "label": "Secondary CTA", "default": "Тествай във Варна" },
-    { "type": "text", "id": "cta2_link", "label": "Secondary CTA link", "default": "/pages/contact" },
-
-    { "type": "header", "content": "Bottom tab strip" },
-    { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
-    { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
-    { "type": "text", "id": "tab_1_anchor", "label": "Tab 1 anchor on this page", "default": "tg-ramps-lineup" },
-    { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "page", "id": "compare_page", "label": "Tab 2 → Comparison page", "info": "Pick the page that uses the ramps-compare template. If empty, the theme looks it up automatically." },
-    { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "page", "id": "support_page", "label": "Tab 3 → Support page", "info": "Pick the page that uses the ramps-support template. If empty, the theme looks for common handles automatically." },
-    { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
+    {
+      "type": "header",
+      "content": "01 · Hero"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Eyebrow",
+      "default": "2getherbikes Portable Ramps · Made in Bulgaria"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_title",
+      "label": "Title (line breaks allowed)",
+      "default": "t:tg.d.ramps.hero_title"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_sub",
+      "label": "Subtitle",
+      "default": "t:tg.d.ramps.hero_sub"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta1_text",
+      "label": "Primary CTA",
+      "default": "t:tg.d.ramps.hero_cta1_text"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta1_link",
+      "label": "Primary CTA link",
+      "info": "Empty = comparison page"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta2_text",
+      "label": "Secondary CTA",
+      "default": "t:tg.d.ramps.hero_cta2_text"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta2_link",
+      "label": "Secondary CTA link",
+      "default": "#tg-ramps-transform"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_badge",
+      "label": "Image badge",
+      "default": "t:tg.d.ramps.hero_badge"
+    },
+    {
+      "type": "header",
+      "content": "02 · Lineup"
+    },
+    {
+      "type": "text",
+      "id": "lineup_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.lineup_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "lineup_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.lineup_title"
+    },
+    {
+      "type": "text",
+      "id": "lineup_cta_text",
+      "label": "Compare button",
+      "default": "t:tg.d.ramps.lineup_cta_text"
+    },
+    {
+      "type": "header",
+      "content": "03 · Set + comparison table"
+    },
+    {
+      "type": "text",
+      "id": "bundle_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.bundle_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "bundle_title",
+      "label": "Title",
+      "default": "BREEZE + STORM · TAKE-OFF & LANDING SET"
+    },
+    {
+      "type": "textarea",
+      "id": "bundle_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps.bundle_text"
+    },
+    {
+      "type": "page",
+      "id": "set_page",
+      "label": "Set page (Виж комплекта)",
+      "info": "If empty, the theme finds the page using the ramps-set template"
+    },
+    {
+      "type": "product",
+      "id": "bundle_product",
+      "label": "Set product (overrides the page)"
+    },
+    {
+      "type": "text",
+      "id": "bundle_price",
+      "label": "Price (fallback if no product)",
+      "default": "€590"
+    },
+    {
+      "type": "text",
+      "id": "bundle_compare_price",
+      "label": "Compare-at price (fallback)",
+      "default": "€645"
+    },
+    {
+      "type": "text",
+      "id": "bundle_save",
+      "label": "Savings badge",
+      "default": "t:tg.d.ramps.bundle_save"
+    },
+    {
+      "type": "text",
+      "id": "bundle_cta",
+      "label": "CTA",
+      "default": "t:tg.d.ramps.bundle_cta"
+    },
+    {
+      "type": "url",
+      "id": "bundle_link",
+      "label": "CTA link (fallback)"
+    },
+    {
+      "type": "text",
+      "id": "tbl_model",
+      "label": "Table: model column",
+      "default": "t:tg.d.ramps.tbl_model"
+    },
+    {
+      "type": "text",
+      "id": "tbl_weight",
+      "label": "Table: weight column",
+      "default": "t:tg.d.ramps.tbl_weight"
+    },
+    {
+      "type": "text",
+      "id": "tbl_range",
+      "label": "Table: range column",
+      "default": "t:tg.d.ramps.tbl_range"
+    },
+    {
+      "type": "text",
+      "id": "tbl_length",
+      "label": "Table: length column",
+      "default": "t:tg.d.ramps.tbl_length"
+    },
+    {
+      "type": "text",
+      "id": "tbl_price",
+      "label": "Table: price column",
+      "default": "t:tg.d.ramps.tbl_price"
+    },
+    {
+      "type": "header",
+      "content": "04 · Positions"
+    },
+    {
+      "type": "text",
+      "id": "pos_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.pos_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "pos_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.pos_title"
+    },
+    {
+      "type": "textarea",
+      "id": "pos_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps.pos_text"
+    },
+    {
+      "type": "text",
+      "id": "pos_model_label",
+      "label": "Model selector label",
+      "default": "t:tg.d.ramps.pos_model_label"
+    },
+    {
+      "type": "text",
+      "id": "pos_position_label",
+      "label": "Position selector label",
+      "default": "t:tg.d.ramps.pos_position_label"
+    },
+    {
+      "type": "header",
+      "content": "05 · Transformation"
+    },
+    {
+      "type": "image_picker",
+      "id": "tf_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "tf_video_label",
+      "label": "Play button label",
+      "default": "t:tg.d.ramps.tf_video_label"
+    },
+    {
+      "type": "url",
+      "id": "tf_video_url",
+      "label": "Video link"
+    },
+    {
+      "type": "text",
+      "id": "tf_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.tf_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "tf_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.tf_title"
+    },
+    {
+      "type": "textarea",
+      "id": "tf_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps.tf_text"
+    },
+    {
+      "type": "header",
+      "content": "05b · YouTube clip"
+    },
+    {
+      "type": "text",
+      "id": "rv_url",
+      "label": "YouTube link (watch / youtu.be / shorts)",
+      "info": "Thumbnail is pulled from YouTube automatically; click opens YouTube in a new tab."
+    },
+    {
+      "type": "image_picker",
+      "id": "rv_image",
+      "label": "Custom cover (optional)"
+    },
+    {
+      "type": "text",
+      "id": "rv_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.rv_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "rv_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.rv_title"
+    },
+    {
+      "type": "textarea",
+      "id": "rv_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps.rv_text"
+    },
+    {
+      "type": "text",
+      "id": "rv_caption",
+      "label": "Caption on the card",
+      "default": "t:tg.d.ramps.rv_caption"
+    },
+    {
+      "type": "header",
+      "content": "06 · Terrains"
+    },
+    {
+      "type": "text",
+      "id": "ter_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.ter_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "ter_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.ter_title"
+    },
+    {
+      "type": "header",
+      "content": "07 · Product details"
+    },
+    {
+      "type": "image_picker",
+      "id": "det_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "det_stamp_kicker",
+      "label": "Stamp kicker",
+      "default": "Hand-built"
+    },
+    {
+      "type": "text",
+      "id": "det_stamp_title",
+      "label": "Stamp title",
+      "default": "Botevgrad"
+    },
+    {
+      "type": "text",
+      "id": "det_stamp_sub",
+      "label": "Stamp sub",
+      "default": "Bulgaria · EST. 2024"
+    },
+    {
+      "type": "text",
+      "id": "det_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.det_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "det_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.det_title"
+    },
+    {
+      "type": "textarea",
+      "id": "det_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps.det_text"
+    },
+    {
+      "type": "header",
+      "content": "08 · Story"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "story_video_label",
+      "label": "Play button label",
+      "default": "t:tg.d.ramps.story_video_label"
+    },
+    {
+      "type": "text",
+      "id": "story_video_url",
+      "label": "YouTube link (fills the story media box; thumbnail auto from YouTube)"
+    },
+    {
+      "type": "text",
+      "id": "story_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.story_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "story_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.story_title"
+    },
+    {
+      "type": "textarea",
+      "id": "story_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps.story_text"
+    },
+    {
+      "type": "header",
+      "content": "09 · Support"
+    },
+    {
+      "type": "text",
+      "id": "sup_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.sup_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "sup_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.sup_title"
+    },
+    {
+      "type": "header",
+      "content": "10 · FAQ"
+    },
+    {
+      "type": "text",
+      "id": "faq_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.faq_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.faq_title"
+    },
+    {
+      "type": "header",
+      "content": "11 · Final CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps.cta_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps.cta_title"
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "Primary CTA",
+      "default": "t:tg.d.ramps.cta1_text"
+    },
+    {
+      "type": "text",
+      "id": "cta1_link",
+      "label": "Primary CTA link",
+      "info": "Empty = comparison page"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "Secondary CTA",
+      "default": "t:tg.d.ramps.cta2_text"
+    },
+    {
+      "type": "text",
+      "id": "cta2_link",
+      "label": "Secondary CTA link",
+      "default": "/pages/contact"
+    },
+    {
+      "type": "header",
+      "content": "Bottom tab strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "tabs_enabled",
+      "label": "Show bottom tab strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_1_label",
+      "label": "Tab 1 label",
+      "default": "t:tg.d.ramps.tab_1_label"
+    },
+    {
+      "type": "text",
+      "id": "tab_1_anchor",
+      "label": "Tab 1 anchor on this page",
+      "default": "tg-ramps-lineup"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_label",
+      "label": "Tab 2 label",
+      "default": "t:tg.d.ramps.tab_2_label"
+    },
+    {
+      "type": "page",
+      "id": "compare_page",
+      "label": "Tab 2 → Comparison page",
+      "info": "Pick the page that uses the ramps-compare template. If empty, the theme looks it up automatically."
+    },
+    {
+      "type": "text",
+      "id": "tab_3_label",
+      "label": "Tab 3 label",
+      "default": "t:tg.d.ramps.tab_3_label"
+    },
+    {
+      "type": "page",
+      "id": "support_page",
+      "label": "Tab 3 → Support page",
+      "info": "Pick the page that uses the ramps-support template. If empty, the theme looks for common handles automatically."
+    },
+    {
+      "type": "text",
+      "id": "tabs_aria",
+      "label": "Strip aria-label",
+      "default": "t:tg.d.ramps.tabs_aria"
+    }
   ],
   "blocks": [
-    { "type": "kpi", "name": "Hero KPI", "limit": 6, "settings": [
-      { "type": "text", "id": "value", "label": "Value", "default": "30 сек." },
-      { "type": "text", "id": "label", "label": "Label", "default": "трансформация" } ] },
-    { "type": "model", "name": "Ramp model", "limit": 3, "settings": [
-      { "type": "text", "id": "name", "label": "Name", "default": "BREEZE" },
-      { "type": "color", "id": "color", "label": "Model colour (deck, tag, toggle)", "default": "#E8601C" },
-      { "type": "product", "id": "product", "label": "Product (price, image, link)" },
-      { "type": "image_picker", "id": "image", "label": "Image override" },
-      { "type": "text", "id": "price", "label": "Price (fallback)", "default": "€260" },
-      { "type": "url", "id": "link", "label": "Link override" },
-      { "type": "text", "id": "tagline", "label": "Tagline", "default": "ЛЕКА. БЪРЗА. НАВСЯКЪДЕ С ТЕБ." },
-      { "type": "textarea", "id": "description", "label": "Description", "default": "По-лека за носене. По-нисък диапазон на кикъра." },
-      { "type": "text", "id": "weight", "label": "Weight", "default": "7.5 kg" },
-      { "type": "text", "id": "dims", "label": "Dimensions", "default": "130 × 58 cm" },
-      { "type": "text", "id": "range", "label": "Height range", "default": "29–38 cm" },
-      { "type": "text", "id": "positions_label", "label": "Positions label", "default": "4 позиции" },
-      { "type": "number", "id": "length_cm", "label": "Length in cm (illustration + table)", "default": 130 },
-      { "type": "text", "id": "heights", "label": "Heights per position, cm (comma-separated)", "default": "29,32,35,38" },
-      { "type": "text", "id": "choose_title", "label": "Choose-if title", "default": "ИЗБЕРИ BREEZE, АКО:" },
-      { "type": "textarea", "id": "choose_text", "label": "Choose-if text", "default": "искаш ниското тегло и лесното местене между спотовете да са приоритет." },
-      { "type": "text", "id": "cta_text", "label": "CTA", "default": "Виж BREEZE" } ] },
-    { "type": "step", "name": "Transformation step", "limit": 8, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "fold", "options": [
-        { "value": "fold", "label": "Fold" }, { "value": "lock", "label": "Lock" }, { "value": "carry", "label": "Carry" }, { "value": "ride", "label": "Ride" }, { "value": "unfold", "label": "Unfold" }, { "value": "jump", "label": "Jump" } ] },
-      { "type": "text", "id": "label", "label": "Label", "default": "СГЪВАШ" } ] },
-    { "type": "terrain", "name": "Terrain card", "limit": 4, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "city", "options": [
-        { "value": "city", "label": "City" }, { "value": "forest", "label": "Forest" }, { "value": "landing", "label": "Landing" }, { "value": "jump", "label": "Jump" } ] },
-      { "type": "text", "id": "title", "label": "Title", "default": "ГРАДЪТ" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Равен терен, стълби и градски препятствия." } ] },
-    { "type": "detail", "name": "Product detail", "limit": 6, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "grip", "options": [
-        { "value": "grip", "label": "Grip" }, { "value": "spring", "label": "Spring" }, { "value": "foot", "label": "Rubber foot" }, { "value": "lock", "label": "Lock" } ] },
-      { "type": "text", "id": "title", "label": "Title", "default": "ПОВЪРХНОСТ С ДОПЪЛНИТЕЛНО СЦЕПЛЕНИЕ" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Специалното покритие запазва сцеплението и при мокра повърхност." } ] },
-    { "type": "gallery", "name": "Detail photo", "limit": 6, "settings": [
-      { "type": "image_picker", "id": "image", "label": "Image" },
-      { "type": "text", "id": "title", "label": "Title", "default": "ГУМЕНИТЕ КРАЧЕТА" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Кадър отблизо показва контакта с терена и лесната подмяна при износване." } ] },
-    { "type": "story_col", "name": "Story column", "limit": 4, "settings": [
-      { "type": "text", "id": "title", "label": "Title", "default": "ПРОИЗВОДСТВО" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "От отделните елементи до готовата рампа." } ] },
-    { "type": "support", "name": "Support card", "limit": 4, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "shield", "options": [
-        { "value": "shield", "label": "Shield" }, { "value": "wrench", "label": "Wrench" }, { "value": "pin", "label": "Pin" } ] },
-      { "type": "text", "id": "title", "label": "Title", "default": "2 ГОДИНИ ГАРАНЦИЯ" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Ясно описани производствени и конструктивни дефекти." },
-      { "type": "text", "id": "cta_text", "label": "CTA", "default": "Условия" },
-      { "type": "url", "id": "cta_link", "label": "CTA link", "info": "Empty = support page" },
-      { "type": "select", "id": "cta_style", "label": "CTA style", "default": "ghost", "options": [ { "value": "ghost", "label": "Ghost" }, { "value": "primary", "label": "Primary" } ] } ] },
-    { "type": "faq", "name": "FAQ", "settings": [
-      { "type": "text", "id": "question", "label": "Question", "default": "Кой модел да избера?" },
-      { "type": "textarea", "id": "answer", "label": "Answer", "default": "BREEZE, ако ниското тегло и по-ниският кикър са приоритет. STORM, ако търсиш по-висок диапазон и по-агресивен ъгъл." } ] }
+    {
+      "type": "kpi",
+      "name": "Hero KPI",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "t:tg.d.ramps.b_kpi.value"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "t:tg.d.ramps.b_kpi.label"
+        }
+      ]
+    },
+    {
+      "type": "model",
+      "name": "Ramp model",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "BREEZE"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Model colour (deck, tag, toggle)",
+          "default": "#E8601C"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product (price, image, link)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image override"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price (fallback)",
+          "default": "€260"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link override"
+        },
+        {
+          "type": "text",
+          "id": "tagline",
+          "label": "Tagline",
+          "default": "t:tg.d.ramps.b_model.tagline"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "t:tg.d.ramps.b_model.description"
+        },
+        {
+          "type": "text",
+          "id": "weight",
+          "label": "Weight",
+          "default": "7.5 kg"
+        },
+        {
+          "type": "text",
+          "id": "dims",
+          "label": "Dimensions",
+          "default": "130 × 58 cm"
+        },
+        {
+          "type": "text",
+          "id": "range",
+          "label": "Height range",
+          "default": "29–38 cm"
+        },
+        {
+          "type": "text",
+          "id": "positions_label",
+          "label": "Positions label",
+          "default": "t:tg.d.ramps.b_model.positions_label"
+        },
+        {
+          "type": "number",
+          "id": "length_cm",
+          "label": "Length in cm (illustration + table)",
+          "default": 130
+        },
+        {
+          "type": "text",
+          "id": "heights",
+          "label": "Heights per position, cm (comma-separated)",
+          "default": "29,32,35,38"
+        },
+        {
+          "type": "text",
+          "id": "choose_title",
+          "label": "Choose-if title",
+          "default": "t:tg.d.ramps.b_model.choose_title"
+        },
+        {
+          "type": "textarea",
+          "id": "choose_text",
+          "label": "Choose-if text",
+          "default": "t:tg.d.ramps.b_model.choose_text"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA",
+          "default": "t:tg.d.ramps.b_model.cta_text"
+        }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Transformation step",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "fold",
+          "options": [
+            {
+              "value": "fold",
+              "label": "Fold"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "carry",
+              "label": "Carry"
+            },
+            {
+              "value": "ride",
+              "label": "Ride"
+            },
+            {
+              "value": "unfold",
+              "label": "Unfold"
+            },
+            {
+              "value": "jump",
+              "label": "Jump"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "t:tg.d.ramps.b_step.label"
+        }
+      ]
+    },
+    {
+      "type": "terrain",
+      "name": "Terrain card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "city",
+          "options": [
+            {
+              "value": "city",
+              "label": "City"
+            },
+            {
+              "value": "forest",
+              "label": "Forest"
+            },
+            {
+              "value": "landing",
+              "label": "Landing"
+            },
+            {
+              "value": "jump",
+              "label": "Jump"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps.b_terrain.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps.b_terrain.text"
+        }
+      ]
+    },
+    {
+      "type": "detail",
+      "name": "Product detail",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "grip",
+          "options": [
+            {
+              "value": "grip",
+              "label": "Grip"
+            },
+            {
+              "value": "spring",
+              "label": "Spring"
+            },
+            {
+              "value": "foot",
+              "label": "Rubber foot"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps.b_detail.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps.b_detail.text"
+        }
+      ]
+    },
+    {
+      "type": "gallery",
+      "name": "Detail photo",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps.b_gallery.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps.b_gallery.text"
+        }
+      ]
+    },
+    {
+      "type": "story_col",
+      "name": "Story column",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps.b_story_col.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps.b_story_col.text"
+        }
+      ]
+    },
+    {
+      "type": "support",
+      "name": "Support card",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "shield",
+          "options": [
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "wrench",
+              "label": "Wrench"
+            },
+            {
+              "value": "pin",
+              "label": "Pin"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps.b_support.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps.b_support.text"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA",
+          "default": "t:tg.d.ramps.b_support.cta_text"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA link",
+          "info": "Empty = support page"
+        },
+        {
+          "type": "select",
+          "id": "cta_style",
+          "label": "CTA style",
+          "default": "ghost",
+          "options": [
+            {
+              "value": "ghost",
+              "label": "Ghost"
+            },
+            {
+              "value": "primary",
+              "label": "Primary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "t:tg.d.ramps.b_faq.question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "t:tg.d.ramps.b_faq.answer"
+        }
+      ]
+    }
   ],
-  "presets": [ { "name": "Portable Ramps" } ]
+  "presets": [
+    {
+      "name": "Portable Ramps"
+    }
+  ]
 }
 {% endschema %}

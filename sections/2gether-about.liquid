@@ -214,43 +214,51 @@
       "type": "text",
       "id": "label",
       "label": "Timeline label",
-      "default": "Нашата история"
+      "default": "t:tg.d.about.label"
     },
     {
       "type": "text",
       "id": "title_line1",
       "label": "Timeline title line 1",
-      "default": "ПЕТ ГОДИНИ"
+      "default": "t:tg.d.about.title_line1"
     },
     {
       "type": "text",
       "id": "title_line2",
       "label": "Timeline title line 2 (accent color)",
-      "default": "НА ПЪТЯ"
+      "default": "t:tg.d.about.title_line2"
     },
     {
       "type": "text",
       "id": "prev_label",
       "label": "Previous button aria-label",
-      "default": "Предишна година"
+      "default": "t:tg.d.about.prev_label"
     },
     {
       "type": "text",
       "id": "next_label",
       "label": "Next button aria-label",
-      "default": "Следваща година"
+      "default": "t:tg.d.about.next_label"
     },
     {
       "type": "range",
       "id": "padding_top",
       "label": "Timeline padding top",
-      "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "label": "Timeline padding bottom",
-      "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "default": 96
     },
     {
       "type": "header",
@@ -319,17 +327,58 @@
       "name": "Timeline Milestone",
       "limit": 8,
       "settings": [
-        { "type": "text", "id": "year", "label": "Year", "default": "2021" },
-        { "type": "text", "id": "caption", "label": "Short caption (under the dot)", "default": "Началото" },
-        { "type": "image_picker", "id": "image", "label": "Photo" },
-        { "type": "text", "id": "kicker", "label": "Kicker (small label above heading)", "default": "2021 — Началото" },
-        { "type": "text", "id": "heading", "label": "Heading", "default": "Две колела, един гараж, нула план." },
-        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Разкажете накратко какво се случи през тази година.</p>" },
-        { "type": "text", "id": "stat_value", "label": "Stat value", "default": "2" },
-        { "type": "text", "id": "stat_label", "label": "Stat label", "default": "основатели" }
+        {
+          "type": "text",
+          "id": "year",
+          "label": "Year",
+          "default": "2021"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Short caption (under the dot)",
+          "default": "t:tg.d.about.b_milestone.caption"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker (small label above heading)",
+          "default": "t:tg.d.about.b_milestone.kicker"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "t:tg.d.about.b_milestone.heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.about.b_milestone.text"
+        },
+        {
+          "type": "text",
+          "id": "stat_value",
+          "label": "Stat value",
+          "default": "2"
+        },
+        {
+          "type": "text",
+          "id": "stat_label",
+          "label": "Stat label",
+          "default": "t:tg.d.about.b_milestone.stat_label"
+        }
       ]
     }
   ],
-  "templates": ["page"]
+  "templates": [
+    "page"
+  ]
 }
 {% endschema %}

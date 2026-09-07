@@ -106,58 +106,307 @@
   "name": "Ramp Support",
   "tag": "section",
   "settings": [
-    { "type": "header", "content": "Head" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "2getherbikes Ramp Support" },
-    { "type": "text", "id": "title", "label": "Title", "default": "ПОДДРЪЖКА ЗА РАМПИТЕ." },
-    { "type": "page", "id": "ramps_page", "label": "Ramps page", "info": "Used by the back button, the tabs and the CTA. If empty, the theme finds the page that uses the ramps template." },
-    { "type": "page", "id": "compare_page", "label": "Comparison page (for the tab strip)" },
-    { "type": "page", "id": "set_page", "label": "Set page" },
-    { "type": "text", "id": "back_text", "label": "Back button", "default": "Назад към рампите" },
-    { "type": "url", "id": "back_link", "label": "Back link override" },
-
-    { "type": "header", "content": "Resources" },
-    { "type": "text", "id": "res_eyebrow", "label": "Eyebrow", "default": "Всичко на едно място" },
-    { "type": "text", "id": "res_title", "label": "Title", "default": "ИНСТРУКЦИИ, ГАРАНЦИЯ И ЧАСТИ." },
-
-    { "type": "header", "content": "Spare parts" },
-    { "type": "text", "id": "parts_eyebrow", "label": "Eyebrow", "default": "Сменяеми консумативи" },
-    { "type": "text", "id": "parts_title", "label": "Title", "default": "РЕЗЕРВНИ ЧАСТИ." },
-    { "type": "textarea", "id": "parts_text", "label": "Text", "default": "Поръчваш необходимото или изпращаш снимка, ако не си сигурен какво трябва да се подмени." },
-
-    { "type": "header", "content": "CTA" },
-    { "type": "text", "id": "cta_eyebrow", "label": "Eyebrow", "default": "Искаш да видиш всичко на живо?" },
-    { "type": "text", "id": "cta_title", "label": "Title", "default": "ТЕСТВАЙ BREEZE И STORM ПРЕД МАГАЗИНА ВЪВ ВАРНА." },
-    { "type": "text", "id": "cta1_text", "label": "Primary CTA", "default": "Запази тест" },
-    { "type": "text", "id": "cta1_link", "label": "Primary CTA link", "default": "/pages/contact" },
-    { "type": "text", "id": "cta2_text", "label": "Secondary CTA", "default": "Сравни моделите" },
-    { "type": "text", "id": "cta2_link", "label": "Secondary CTA link override" },
-
-    { "type": "header", "content": "Bottom tab strip" },
-    { "type": "checkbox", "id": "tabs_enabled", "label": "Show bottom tab strip", "default": true },
-    { "type": "text", "id": "tab_1_label", "label": "Tab 1 label", "default": "Рампи" },
-    { "type": "text", "id": "tab_2_label", "label": "Tab 2 label", "default": "Сравнение" },
-    { "type": "text", "id": "tab_3_label", "label": "Tab 3 label", "default": "Поддръжка" },
-    { "type": "text", "id": "tabs_aria", "label": "Strip aria-label", "default": "Навигация в страницата" }
+    {
+      "type": "header",
+      "content": "Head"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "2getherbikes Ramp Support"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_support.title"
+    },
+    {
+      "type": "page",
+      "id": "ramps_page",
+      "label": "Ramps page",
+      "info": "Used by the back button, the tabs and the CTA. If empty, the theme finds the page that uses the ramps template."
+    },
+    {
+      "type": "page",
+      "id": "compare_page",
+      "label": "Comparison page (for the tab strip)"
+    },
+    {
+      "type": "page",
+      "id": "set_page",
+      "label": "Set page"
+    },
+    {
+      "type": "text",
+      "id": "back_text",
+      "label": "Back button",
+      "default": "t:tg.d.ramps_support.back_text"
+    },
+    {
+      "type": "url",
+      "id": "back_link",
+      "label": "Back link override"
+    },
+    {
+      "type": "header",
+      "content": "Resources"
+    },
+    {
+      "type": "text",
+      "id": "res_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_support.res_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "res_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_support.res_title"
+    },
+    {
+      "type": "header",
+      "content": "Spare parts"
+    },
+    {
+      "type": "text",
+      "id": "parts_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_support.parts_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "parts_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_support.parts_title"
+    },
+    {
+      "type": "textarea",
+      "id": "parts_text",
+      "label": "Text",
+      "default": "t:tg.d.ramps_support.parts_text"
+    },
+    {
+      "type": "header",
+      "content": "CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.ramps_support.cta_eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Title",
+      "default": "t:tg.d.ramps_support.cta_title"
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "Primary CTA",
+      "default": "t:tg.d.ramps_support.cta1_text"
+    },
+    {
+      "type": "text",
+      "id": "cta1_link",
+      "label": "Primary CTA link",
+      "default": "/pages/contact"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "Secondary CTA",
+      "default": "t:tg.d.ramps_support.cta2_text"
+    },
+    {
+      "type": "text",
+      "id": "cta2_link",
+      "label": "Secondary CTA link override"
+    },
+    {
+      "type": "header",
+      "content": "Bottom tab strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "tabs_enabled",
+      "label": "Show bottom tab strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_1_label",
+      "label": "Tab 1 label",
+      "default": "t:tg.d.ramps_support.tab_1_label"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_label",
+      "label": "Tab 2 label",
+      "default": "t:tg.d.ramps_support.tab_2_label"
+    },
+    {
+      "type": "text",
+      "id": "tab_3_label",
+      "label": "Tab 3 label",
+      "default": "t:tg.d.ramps_support.tab_3_label"
+    },
+    {
+      "type": "text",
+      "id": "tabs_aria",
+      "label": "Strip aria-label",
+      "default": "t:tg.d.ramps_support.tabs_aria"
+    }
   ],
   "blocks": [
-    { "type": "resource", "name": "Resource card", "limit": 6, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "book", "options": [
-        { "value": "book", "label": "Book" }, { "value": "video", "label": "Video" }, { "value": "shield", "label": "Shield" }, { "value": "care", "label": "Care" }, { "value": "wrench", "label": "Wrench" } ] },
-      { "type": "text", "id": "title", "label": "Title", "default": "ИНСТРУКЦИИ ЗА УПОТРЕБА" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Настройване на четирите позиции, избор на терен, take-off и landing употреба." },
-      { "type": "text", "id": "cta_text", "label": "Button", "default": "Тук се отваря документът" },
-      { "type": "url", "id": "link", "label": "Link (page, video…)", "info": "Empty and no file = contact page" },
-      { "type": "text", "id": "file", "label": "Or file name from Content → Files (e.g. manual.pdf)" },
-      { "type": "checkbox", "id": "new_tab", "label": "Open in new tab", "default": true } ] },
-    { "type": "part", "name": "Spare part card", "limit": 6, "settings": [
-      { "type": "select", "id": "icon", "label": "Icon", "default": "foot", "options": [
-        { "value": "foot", "label": "Rubber foot" }, { "value": "spring", "label": "Spring" }, { "value": "chat", "label": "Chat" }, { "value": "wrench", "label": "Wrench" } ] },
-      { "type": "text", "id": "title", "label": "Title", "default": "ГУМЕНИ КРАЧЕТА" },
-      { "type": "textarea", "id": "text", "label": "Text", "default": "Сменяем комплект при износване." },
-      { "type": "text", "id": "cta_text", "label": "Button", "default": "Изпрати запитване" },
-      { "type": "url", "id": "cta_link", "label": "Button link" },
-      { "type": "select", "id": "cta_style", "label": "Button style", "default": "ghost", "options": [ { "value": "ghost", "label": "Ghost" }, { "value": "primary", "label": "Primary" } ] } ] }
+    {
+      "type": "resource",
+      "name": "Resource card",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "book",
+          "options": [
+            {
+              "value": "book",
+              "label": "Book"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "care",
+              "label": "Care"
+            },
+            {
+              "value": "wrench",
+              "label": "Wrench"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps_support.b_resource.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps_support.b_resource.text"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button",
+          "default": "t:tg.d.ramps_support.b_resource.cta_text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link (page, video…)",
+          "info": "Empty and no file = contact page"
+        },
+        {
+          "type": "text",
+          "id": "file",
+          "label": "Or file name from Content → Files (e.g. manual.pdf)"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open in new tab",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "part",
+      "name": "Spare part card",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "foot",
+          "options": [
+            {
+              "value": "foot",
+              "label": "Rubber foot"
+            },
+            {
+              "value": "spring",
+              "label": "Spring"
+            },
+            {
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "value": "wrench",
+              "label": "Wrench"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.ramps_support.b_part.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "t:tg.d.ramps_support.b_part.text"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button",
+          "default": "t:tg.d.ramps_support.b_part.cta_text"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "cta_style",
+          "label": "Button style",
+          "default": "ghost",
+          "options": [
+            {
+              "value": "ghost",
+              "label": "Ghost"
+            },
+            {
+              "value": "primary",
+              "label": "Primary"
+            }
+          ]
+        }
+      ]
+    }
   ],
-  "presets": [ { "name": "Ramp Support" } ]
+  "presets": [
+    {
+      "name": "Ramp Support"
+    }
+  ]
 }
 {% endschema %}

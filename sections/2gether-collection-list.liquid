@@ -163,26 +163,158 @@
   "name": "2Gether Collection List",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Е-магазин" },
-    { "type": "text", "id": "title", "label": "Title", "default": "КАКВО ТЪРСИШ?" },
-    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Гуми 29, каска, спирачки, джърси…" },
-    { "type": "text", "id": "finders_title", "label": "Quick finders label", "default": "Бързо намиране" },
-    { "type": "checkbox", "id": "show_brands", "label": "Show brands A–Z (collections with handle brand-*)", "default": true },
-    { "type": "text", "id": "brands_title", "label": "Brands title", "default": "Марки" },
-    { "type": "text", "id": "brands_text", "label": "Brands text", "default": "Всички марки, които продаваме — по азбучен ред." }
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "t:tg.d.collection_list.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "t:tg.d.collection_list.title"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "t:tg.d.collection_list.search_placeholder"
+    },
+    {
+      "type": "text",
+      "id": "finders_title",
+      "label": "Quick finders label",
+      "default": "t:tg.d.collection_list.finders_title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_brands",
+      "label": "Show brands A–Z (collections with handle brand-*)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "brands_title",
+      "label": "Brands title",
+      "default": "t:tg.d.collection_list.brands_title"
+    },
+    {
+      "type": "text",
+      "id": "brands_text",
+      "label": "Brands text",
+      "default": "t:tg.d.collection_list.brands_text"
+    }
   ],
   "blocks": [
-    { "type": "department", "name": "Department", "limit": 12, "settings": [
-      { "type": "text", "id": "title", "label": "Title", "default": "Части" },
-      { "type": "textarea", "id": "text", "label": "Short text" },
-      { "type": "select", "id": "icon", "label": "Icon", "default": "fold", "options": [ { "value": "ride", "label": "Bike" }, { "value": "wheel", "label": "Wheel" }, { "value": "fold", "label": "Parts" }, { "value": "shield", "label": "Shield" }, { "value": "carry", "label": "Clothing" }, { "value": "pin", "label": "Pin" }, { "value": "jump", "label": "Jump" }, { "value": "landing", "label": "Landing" }, { "value": "grip", "label": "Grid" }, { "value": "book", "label": "Book" } ] },
-      { "type": "color", "id": "color", "label": "Accent", "default": "#E8601C" },
-      { "type": "textarea", "id": "items", "label": "Collections (one per line: handle | Bulgarian label | search keywords)", "info": "Collections with 0 products are skipped automatically." } ] },
-    { "type": "finder", "name": "Quick finder", "limit": 16, "settings": [
-      { "type": "text", "id": "label", "label": "Label", "default": "Гуми 29\"" },
-      { "type": "text", "id": "kicker", "label": "Kicker", "default": "Външни гуми" },
-      { "type": "text", "id": "url", "label": "URL (collection, optionally /tag-a+tag-b)", "default": "/collections/tires-tubes-od20/tyre-size-29" } ] }
+    {
+      "type": "department",
+      "name": "Department",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "t:tg.d.collection_list.b_department.title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Short text"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "fold",
+          "options": [
+            {
+              "value": "ride",
+              "label": "Bike"
+            },
+            {
+              "value": "wheel",
+              "label": "Wheel"
+            },
+            {
+              "value": "fold",
+              "label": "Parts"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "carry",
+              "label": "Clothing"
+            },
+            {
+              "value": "pin",
+              "label": "Pin"
+            },
+            {
+              "value": "jump",
+              "label": "Jump"
+            },
+            {
+              "value": "landing",
+              "label": "Landing"
+            },
+            {
+              "value": "grip",
+              "label": "Grid"
+            },
+            {
+              "value": "book",
+              "label": "Book"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Accent",
+          "default": "#E8601C"
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Collections (one per line: handle | Bulgarian label | search keywords)",
+          "info": "Collections with 0 products are skipped automatically."
+        }
+      ]
+    },
+    {
+      "type": "finder",
+      "name": "Quick finder",
+      "limit": 16,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "t:tg.d.collection_list.b_finder.label"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "t:tg.d.collection_list.b_finder.kicker"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "URL (collection, optionally /tag-a+tag-b)",
+          "default": "/collections/tires-tubes-od20/tyre-size-29"
+        }
+      ]
+    }
   ],
-  "presets": [ { "name": "2Gether Collection List" } ]
+  "presets": [
+    {
+      "name": "2Gether Collection List"
+    }
+  ]
 }
 {% endschema %}

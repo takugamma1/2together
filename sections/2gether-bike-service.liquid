@@ -739,57 +739,255 @@ Don’t remember' | newline_to_br | split: '<br />' -%}
       "type": "header",
       "content": "Form — step tabs"
     },
-    { "type": "text", "id": "step1_label", "label": "Step 1 tab", "default": "Date & time" },
-    { "type": "text", "id": "step2_label", "label": "Step 2 tab", "default": "The problem" },
-    { "type": "text", "id": "step3_label", "label": "Step 3 tab", "default": "Your details" },
-    { "type": "text", "id": "back_label", "label": "Back button", "default": "Back" },
+    {
+      "type": "text",
+      "id": "step1_label",
+      "label": "Step 1 tab",
+      "default": "Date & time"
+    },
+    {
+      "type": "text",
+      "id": "step2_label",
+      "label": "Step 2 tab",
+      "default": "The problem"
+    },
+    {
+      "type": "text",
+      "id": "step3_label",
+      "label": "Step 3 tab",
+      "default": "Your details"
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back button",
+      "default": "Back"
+    },
     {
       "type": "header",
       "content": "Form — step 1 (date & time)"
     },
-    { "type": "text", "id": "step1_eyebrow", "label": "Eyebrow", "default": "01 · Booking" },
-    { "type": "text", "id": "step1_title", "label": "Title", "default": "When can you bring it in?" },
-    { "type": "textarea", "id": "step1_sub", "label": "Subtitle", "default": "Pick a day and a time slot. We will confirm by email within 24h." },
-    { "type": "text", "id": "date_label", "label": "Date label", "default": "Date" },
-    { "type": "text", "id": "timeslot_label", "label": "Time / hour label", "default": "Час" },
-    { "type": "number", "id": "hour_start", "label": "First bookable hour (24h)", "default": 9 },
-    { "type": "number", "id": "hour_end", "label": "Last bookable hour (24h)", "default": 18 },
-    { "type": "text", "id": "flexibility_label", "label": "Flexibility question", "default": "How flexible are you?" },
-    { "type": "text", "id": "flex_yes", "label": "Flexible option", "default": "Soonest free slot is fine" },
-    { "type": "text", "id": "flex_no", "label": "Not flexible option", "default": "Only the slot above" },
-    { "type": "text", "id": "step1_next", "label": "Next button", "default": "Next: The problem" },
+    {
+      "type": "text",
+      "id": "step1_eyebrow",
+      "label": "Eyebrow",
+      "default": "01 · Booking"
+    },
+    {
+      "type": "text",
+      "id": "step1_title",
+      "label": "Title",
+      "default": "When can you bring it in?"
+    },
+    {
+      "type": "textarea",
+      "id": "step1_sub",
+      "label": "Subtitle",
+      "default": "Pick a day and a time slot. We will confirm by email within 24h."
+    },
+    {
+      "type": "text",
+      "id": "date_label",
+      "label": "Date label",
+      "default": "Date"
+    },
+    {
+      "type": "text",
+      "id": "timeslot_label",
+      "label": "Time / hour label",
+      "default": "t:tg.d.bike_service.timeslot_label"
+    },
+    {
+      "type": "number",
+      "id": "hour_start",
+      "label": "First bookable hour (24h)",
+      "default": 9
+    },
+    {
+      "type": "number",
+      "id": "hour_end",
+      "label": "Last bookable hour (24h)",
+      "default": 18
+    },
+    {
+      "type": "text",
+      "id": "flexibility_label",
+      "label": "Flexibility question",
+      "default": "How flexible are you?"
+    },
+    {
+      "type": "text",
+      "id": "flex_yes",
+      "label": "Flexible option",
+      "default": "Soonest free slot is fine"
+    },
+    {
+      "type": "text",
+      "id": "flex_no",
+      "label": "Not flexible option",
+      "default": "Only the slot above"
+    },
+    {
+      "type": "text",
+      "id": "step1_next",
+      "label": "Next button",
+      "default": "Next: The problem"
+    },
     {
       "type": "header",
       "content": "Form — step 2 (the problem)"
     },
-    { "type": "text", "id": "step2_eyebrow", "label": "Eyebrow", "default": "02 · Diagnostics" },
-    { "type": "text", "id": "step2_title", "label": "Title", "default": "What is wrong with the bike?" },
-    { "type": "textarea", "id": "step2_sub", "label": "Subtitle", "default": "The more we know up front, the faster we get you back on the road." },
-    { "type": "text", "id": "problem_area_label", "label": "Problem area label", "default": "Problem area" },
-    { "type": "text", "id": "problem_area_placeholder", "label": "Problem area placeholder", "default": "Pick the part of the bike" },
-    { "type": "textarea", "id": "problem_area_options", "label": "Problem area options", "info": "One per line.", "default": "Brakes / Спирачки\nDrivetrain — gears, chain / Трансмисия\nWheels & tires / Капли и гуми\nSuspension — fork or shock / Окачване\nFrame & bearings / Рамка и лагери\nElectric system (e-bike) / Електрика\nFull service package / Пакетно обслужване\nOther / I am not sure / Друго" },
-    { "type": "text", "id": "symptoms_label", "label": "Symptoms label", "default": "Symptoms (pick all that apply)" },
-    { "type": "textarea", "id": "symptoms_list", "label": "Symptoms", "info": "One per line.", "default": "Strange noise\nBrakes feel weak\nSkips gears or won't shift\nTire flat or slow leak\nWheel wobble / out of true\nLoose / play in a part\nCrash damage\nWon't turn on (e-bike)\nAnnual tune-up" },
-    { "type": "text", "id": "issue_started_label", "label": "Issue-started label", "default": "When did the issue start?" },
-    { "type": "text", "id": "issue_started_placeholder", "label": "Issue-started placeholder", "default": "Pick one" },
-    { "type": "textarea", "id": "issue_options", "label": "Issue-started options", "info": "One per line.", "default": "Today\nThis week\nThis month\nMonths ago — got worse over time\nDon't remember" },
-    { "type": "text", "id": "describe_label", "label": "Description label", "default": "Describe it in your own words" },
-    { "type": "text", "id": "describe_placeholder", "label": "Description placeholder", "default": "When did it start? Anything else that helps us prepare?" },
-    { "type": "text", "id": "step2_next", "label": "Next button", "default": "Next: Your details" },
+    {
+      "type": "text",
+      "id": "step2_eyebrow",
+      "label": "Eyebrow",
+      "default": "02 · Diagnostics"
+    },
+    {
+      "type": "text",
+      "id": "step2_title",
+      "label": "Title",
+      "default": "What is wrong with the bike?"
+    },
+    {
+      "type": "textarea",
+      "id": "step2_sub",
+      "label": "Subtitle",
+      "default": "The more we know up front, the faster we get you back on the road."
+    },
+    {
+      "type": "text",
+      "id": "problem_area_label",
+      "label": "Problem area label",
+      "default": "Problem area"
+    },
+    {
+      "type": "text",
+      "id": "problem_area_placeholder",
+      "label": "Problem area placeholder",
+      "default": "Pick the part of the bike"
+    },
+    {
+      "type": "textarea",
+      "id": "problem_area_options",
+      "label": "Problem area options",
+      "info": "One per line.",
+      "default": "t:tg.d.bike_service.problem_area_options"
+    },
+    {
+      "type": "text",
+      "id": "symptoms_label",
+      "label": "Symptoms label",
+      "default": "Symptoms (pick all that apply)"
+    },
+    {
+      "type": "textarea",
+      "id": "symptoms_list",
+      "label": "Symptoms",
+      "info": "One per line.",
+      "default": "Strange noise\nBrakes feel weak\nSkips gears or won't shift\nTire flat or slow leak\nWheel wobble / out of true\nLoose / play in a part\nCrash damage\nWon't turn on (e-bike)\nAnnual tune-up"
+    },
+    {
+      "type": "text",
+      "id": "issue_started_label",
+      "label": "Issue-started label",
+      "default": "When did the issue start?"
+    },
+    {
+      "type": "text",
+      "id": "issue_started_placeholder",
+      "label": "Issue-started placeholder",
+      "default": "Pick one"
+    },
+    {
+      "type": "textarea",
+      "id": "issue_options",
+      "label": "Issue-started options",
+      "info": "One per line.",
+      "default": "Today\nThis week\nThis month\nMonths ago — got worse over time\nDon't remember"
+    },
+    {
+      "type": "text",
+      "id": "describe_label",
+      "label": "Description label",
+      "default": "Describe it in your own words"
+    },
+    {
+      "type": "text",
+      "id": "describe_placeholder",
+      "label": "Description placeholder",
+      "default": "When did it start? Anything else that helps us prepare?"
+    },
+    {
+      "type": "text",
+      "id": "step2_next",
+      "label": "Next button",
+      "default": "Next: Your details"
+    },
     {
       "type": "header",
       "content": "Form — step 3 (your details)"
     },
-    { "type": "text", "id": "step3_eyebrow", "label": "Eyebrow", "default": "03 · Contact" },
-    { "type": "text", "id": "step3_title", "label": "Title", "default": "How do we reach you?" },
-    { "type": "textarea", "id": "step3_sub", "label": "Subtitle", "default": "We will email a confirmation and call only if we need extra info." },
-    { "type": "text", "id": "bike_label", "label": "Bike label", "default": "Bike (make / model)" },
-    { "type": "text", "id": "bike_placeholder", "label": "Bike placeholder", "default": "e.g. hardtail MTB, 2022" },
-    { "type": "text", "id": "name_label", "label": "Name label", "default": "Your name" },
-    { "type": "text", "id": "phone_label", "label": "Phone label", "default": "Phone" },
-    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
-    { "type": "text", "id": "notes_label", "label": "Notes label", "default": "Anything else?" },
-    { "type": "text", "id": "notes_placeholder", "label": "Notes placeholder", "default": "Optional — anything you would like us to know." },
+    {
+      "type": "text",
+      "id": "step3_eyebrow",
+      "label": "Eyebrow",
+      "default": "03 · Contact"
+    },
+    {
+      "type": "text",
+      "id": "step3_title",
+      "label": "Title",
+      "default": "How do we reach you?"
+    },
+    {
+      "type": "textarea",
+      "id": "step3_sub",
+      "label": "Subtitle",
+      "default": "We will email a confirmation and call only if we need extra info."
+    },
+    {
+      "type": "text",
+      "id": "bike_label",
+      "label": "Bike label",
+      "default": "Bike (make / model)"
+    },
+    {
+      "type": "text",
+      "id": "bike_placeholder",
+      "label": "Bike placeholder",
+      "default": "e.g. hardtail MTB, 2022"
+    },
+    {
+      "type": "text",
+      "id": "name_label",
+      "label": "Name label",
+      "default": "Your name"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone label",
+      "default": "Phone"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "notes_label",
+      "label": "Notes label",
+      "default": "Anything else?"
+    },
+    {
+      "type": "text",
+      "id": "notes_placeholder",
+      "label": "Notes placeholder",
+      "default": "Optional — anything you would like us to know."
+    },
     {
       "type": "header",
       "content": "Pricing accordion"
@@ -900,7 +1098,9 @@ Don’t remember' | newline_to_br | split: '<br />' -%}
     }
   ],
   "enabled_on": {
-    "templates": ["page"]
+    "templates": [
+      "page"
+    ]
   }
 }
 {% endschema %}

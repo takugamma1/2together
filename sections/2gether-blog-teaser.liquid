@@ -113,15 +113,49 @@
   "name": "2Gether Блог публикации",
   "tag": "section",
   "settings": [
-    { "type": "blog", "id": "blog", "label": "Блог" },
-    { "type": "text", "id": "eyebrow", "label": "Етикет", "default": "Club 2together" },
-    { "type": "text", "id": "title", "label": "Заглавие", "default": "ИСТОРИИ ОТ КЛУБА" },
-    { "type": "text", "id": "cta_label", "label": "Линк към блога", "default": "Всички публикации" },
-    { "type": "range", "id": "max_posts", "label": "Брой публикации", "min": 3, "max": 9, "step": 3, "default": 3 },
-    { "type": "text", "id": "video_label", "label": "Бадж за видео", "default": "Видео" }
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Блог"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Етикет",
+      "default": "Club 2together"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Заглавие",
+      "default": "t:tg.d.blog_teaser.title"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Линк към блога",
+      "default": "t:tg.d.blog_teaser.cta_label"
+    },
+    {
+      "type": "range",
+      "id": "max_posts",
+      "label": "Брой публикации",
+      "min": 3,
+      "max": 9,
+      "step": 3,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Бадж за видео",
+      "default": "t:tg.d.blog_teaser.video_label"
+    }
   ],
   "presets": [
-    { "name": "2Gether Блог публикации" }
+    {
+      "name": "2Gether Блог публикации"
+    }
   ]
 }
 {% endschema %}

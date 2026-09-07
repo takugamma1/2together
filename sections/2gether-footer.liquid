@@ -212,7 +212,9 @@
   "name": "2Gether Footer",
   "tag": "section",
   "enabled_on": {
-    "groups": ["footer"]
+    "groups": [
+      "footer"
+    ]
   },
   "settings": [
     {
@@ -234,13 +236,13 @@
       "type": "text",
       "id": "newsletter_title",
       "label": "Заглавие",
-      "default": "ЗАПИШИ СЕ ЗА НАШИЯ ИМЕЙЛ ЛИСТ"
+      "default": "t:tg.d.footer.newsletter_title"
     },
     {
       "type": "textarea",
       "id": "newsletter_text",
       "label": "Текст",
-      "default": "Бъди от първите, които разбират за нашите промоционални оферти, следващи събития и всичко останало, свързано с нас."
+      "default": "t:tg.d.footer.newsletter_text"
     },
     {
       "type": "text",
@@ -252,13 +254,13 @@
       "type": "text",
       "id": "newsletter_button",
       "label": "Текст на бутона",
-      "default": "ЗАПИШИ СЕ"
+      "default": "t:tg.d.footer.newsletter_button"
     },
     {
       "type": "text",
       "id": "newsletter_success",
       "label": "Съобщение при успех",
-      "default": "Благодарим! Вече си в списъка."
+      "default": "t:tg.d.footer.newsletter_success"
     },
     {
       "type": "header",
@@ -274,7 +276,7 @@
       "type": "textarea",
       "id": "tagline",
       "label": "Кратко описание (таглайн)",
-      "default": "Магазин, сервиз, наем и клуб за всички, които карат колело — във Варна."
+      "default": "t:tg.d.footer.tagline"
     },
     {
       "type": "header",
@@ -284,13 +286,13 @@
       "type": "text",
       "id": "contact_heading",
       "label": "Заглавие на колоната",
-      "default": "Контакти"
+      "default": "t:tg.d.footer.contact_heading"
     },
     {
       "type": "textarea",
       "id": "address",
       "label": "Адрес",
-      "default": "Варна, България"
+      "default": "t:tg.d.footer.address"
     },
     {
       "type": "text",
@@ -308,13 +310,13 @@
       "type": "text",
       "id": "hours_heading",
       "label": "Етикет за работно време",
-      "default": "Работно време"
+      "default": "t:tg.d.footer.hours_heading"
     },
     {
       "type": "textarea",
       "id": "hours",
       "label": "Работно време",
-      "default": "Пон – Пет: 09:00 – 18:00\nСъб: 10:00 – 15:00"
+      "default": "t:tg.d.footer.hours"
     },
     {
       "type": "text",
@@ -365,7 +367,7 @@
       "type": "text",
       "id": "copyright_note",
       "label": "Текст след годината",
-      "default": "Всички права запазени."
+      "default": "t:tg.d.footer.copyright_note"
     },
     {
       "type": "header",
@@ -381,7 +383,7 @@
       "type": "text",
       "id": "jumbo_subtitle",
       "label": "Подзаглавие",
-      "default": "Варна, България"
+      "default": "t:tg.d.footer.jumbo_subtitle"
     }
   ],
   "blocks": [
@@ -394,7 +396,7 @@
           "type": "text",
           "id": "heading",
           "label": "Заглавие на колоната",
-          "default": "Меню"
+          "default": "t:tg.d.footer.b_link_column.heading"
         },
         {
           "type": "link_list",
@@ -429,11 +431,17 @@
       "blocks": [
         {
           "type": "link_column",
-          "settings": { "heading": "Навигация", "menu": "footer" }
+          "settings": {
+            "heading": "Навигация",
+            "menu": "footer"
+          }
         },
         {
           "type": "link_column",
-          "settings": { "heading": "Е-магазин", "menu": "main-menu" }
+          "settings": {
+            "heading": "Е-магазин",
+            "menu": "main-menu"
+          }
         }
       ]
     }
