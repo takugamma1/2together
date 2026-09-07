@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <meta name="supported-color-schemes" content="dark">
-<title>Поръчка {{ order_name }} — {{ shop.name }}</title>
+<title>Поръчка {{ order_name }} е изпратена — {{ shop.name }}</title>
 <style>
   body { margin:0; padding:0; background:#0B1220; -webkit-text-size-adjust:100%; }
   table { border-collapse:collapse; }
@@ -21,7 +21,7 @@
 </style>
 </head>
 <body style="margin:0;padding:0;background:#0B1220;">
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Получихме поръчка {{ order_name }} и вече я подготвяме.</div>
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">Поръчка {{ order_name }} е предадена на Еконт и пътува към теб.</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0B1220;">
 <tr><td align="center" style="padding:32px 12px;">
 <table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#0D1526;border:1px solid #22304A;">
@@ -35,19 +35,19 @@
       <td style="vertical-align:middle;">{% if shop.email_logo_url %}<img src="{{ shop.email_logo_url }}" width="{{ shop.email_logo_width | default: 140 }}" alt="{{ shop.name }}" style="max-width:160px;height:auto;">{% else %}<span style="font-family:'Technor', 'Unbounded', Arial Black, Arial, Helvetica, sans-serif;font-size:20px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:#E8ECF2;">2GETHER<span style="color:#E8601C;">/</span>BIKES</span>{% endif %}</td>
       <td align="right" style="vertical-align:middle;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#8A9BB5;">
         Поръчка <span style="color:#E8ECF2;">{{ order_name }}</span><br>
-        <span style="font-weight:500;letter-spacing:0.08em;">{{ order.created_at | date: "%d.%m.%Y" }}</span>
+        <span style="font-weight:500;letter-spacing:0.08em;">{{ fulfillment.created_at | default: order.created_at | date: "%d.%m.%Y" }}</span>
       </td>
     </tr></table>
   </td></tr>
 
   <!-- hero -->
   <tr><td class="pad" style="padding:24px 32px 8px;">
-    <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Потвърдена поръчка</p>
-    <h1 class="title" style="margin:0 0 14px;font-family:'Technor', 'Unbounded', Arial Black, Arial, Helvetica, sans-serif;font-size:38px;line-height:1;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;color:#E8ECF2;">{% if customer.first_name != blank %}Благодарим, {{ customer.first_name }}!{% else %}Благодарим!{% endif %}</h1>
-    <p style="margin:0 0 22px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:15px;line-height:1.6;color:#8A9BB5;">Получихме поръчката ти и вече я подготвяме. Ще ти пишем отново, когато я предадем на Еконт.</p>
+    <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Изпратена поръчка</p>
+    <h1 class="title" style="margin:0 0 14px;font-family:'Technor', 'Unbounded', Arial Black, Arial, Helvetica, sans-serif;font-size:38px;line-height:1;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;color:#E8ECF2;">{% if customer.first_name != blank %}На път е, {{ customer.first_name }}!{% else %}На път е!{% endif %}</h1>
+    <p style="margin:0 0 22px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:15px;line-height:1.6;color:#8A9BB5;">{% if fulfillment.item_count == item_count %}Предадохме поръчката ти на Еконт. Обикновено доставката е на следващия работен ден.{% else %}Предадохме част от поръчката ти на Еконт ({{ fulfillment.item_count }} от {{ item_count }} артикула). Останалото ще пристигне отделно.{% endif %}</p>
     <table role="presentation" cellpadding="0" cellspacing="0"><tr>
       <td style="background:#E8601C;border-right:8px solid #0B1220;">
-        <a href="{{ order_status_url }}" style="display:inline-block;padding:15px 26px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#0B1220;text-decoration:none;">Виж поръчката &nbsp;&rarr;</a>
+        <a href="{%- if fulfillment.tracking_url != blank -%}{{ fulfillment.tracking_url }}{%- elsif fulfillment.tracking_number != blank -%}https://www.econt.com/services/track-shipment/{{ fulfillment.tracking_number }}{%- else -%}{{ order_status_url }}{%- endif -%}" style="display:inline-block;padding:15px 26px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#0B1220;text-decoration:none;">Проследи пратката &nbsp;&rarr;</a>
       </td>
     </tr></table>
   </td></tr>
@@ -55,35 +55,29 @@
   <tr><td class="pad" style="padding:24px 32px 0;"><div style="height:1px;background:#22304A;font-size:0;line-height:0;">&nbsp;</div></td></tr>
 
   <!-- items -->
-  <tr><td class="pad" style="padding:24px 32px 6px;">
-    <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Артикули</p>
+  <tr><td class="pad" style="padding:24px 32px 28px;">
+    <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// В тази пратка</p>
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      {% for line in subtotal_line_items %}<tr>
+      {% for fulfillment_line_item in fulfillment.fulfillment_line_items %}{% assign line = fulfillment_line_item.line_item %}<tr>
         <td width="64" style="padding:12px 0;border-bottom:1px solid #22304A;vertical-align:top;">{% if line.image %}<img src="{{ line | img_url: 'compact_cropped' }}" width="64" height="64" alt="" style="width:64px;height:64px;background:#121E34;">{% else %}<div style="width:64px;height:64px;background:#121E34;"></div>{% endif %}</td>
         <td style="padding:12px 14px;border-bottom:1px solid #22304A;vertical-align:top;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;">
           <p style="margin:0;font-size:14px;font-weight:600;line-height:1.4;color:#E8ECF2;">{{ line.title }}</p>
           {% if line.variant.title != blank and line.variant.title != 'Default Title' %}<p style="margin:2px 0 0;font-size:12px;color:#8A9BB5;">{{ line.variant.title }}</p>{% endif %}
-          <p style="margin:4px 0 0;font-size:12px;color:#8A9BB5;">{{ line.quantity }} × {{ line.original_price | money }}{% if line.original_price != line.final_price %} &nbsp;<span style="color:#E8601C;">отстъпка</span>{% endif %}</p>
+          <p style="margin:4px 0 0;font-size:12px;color:#8A9BB5;">Количество: {{ fulfillment_line_item.quantity }}</p>
         </td>
-        <td align="right" style="padding:12px 0;border-bottom:1px solid #22304A;vertical-align:top;white-space:nowrap;font-family:'Technor', 'Unbounded', Arial Black, Arial, Helvetica, sans-serif;font-size:15px;font-weight:700;color:#E8ECF2;">{{ line.final_line_price | money }}</td>
+        <td align="right" style="padding:12px 0;border-bottom:1px solid #22304A;vertical-align:top;white-space:nowrap;font-family:'Technor', 'Unbounded', Arial Black, Arial, Helvetica, sans-serif;font-size:15px;font-weight:700;color:#E8ECF2;"></td>
       </tr>{% endfor %}
     </table>
   </td></tr>
 
-  <!-- totals -->
-  <tr><td class="pad" style="padding:8px 32px 28px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #22304A;">
-      <tr><td style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A9BB5;">Междинна сума</td><td align="right" style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;font-weight:600;color:#E8ECF2;">{{ subtotal_price | money }}</td></tr>{% for discount_application in discount_applications %}<tr><td style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A9BB5;">Отстъпка{% if discount_application.title != blank %} · {{ discount_application.title }}{% endif %}</td><td align="right" style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;font-weight:600;color:#E8ECF2;">−{{ discount_application.total_allocated_amount | money }}</td></tr>{% endfor %}<tr><td style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A9BB5;">Доставка{% if shipping_method %} · {{ shipping_method.title }}{% endif %}</td><td align="right" style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;font-weight:600;color:#E8ECF2;">{% if shipping_price == 0 %}Безплатна{% else %}{{ shipping_price | money }}{% endif %}</td></tr>{% for tax_line in tax_lines %}<tr><td style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8A9BB5;">{{ tax_line.title }} {{ tax_line.rate | times: 100 | round }}%</td><td align="right" style="padding:10px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;font-weight:600;color:#E8ECF2;">{{ tax_line.price | money }}</td></tr>{% endfor %}<tr><td style="padding:14px 0 0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#E8ECF2;">Общо</td><td align="right" style="padding:14px 0 0;font-family:'Technor', 'Unbounded', Arial Black, Arial, Helvetica, sans-serif;font-size:24px;font-weight:800;letter-spacing:-0.01em;color:#E8601C;">{{ total_price | money }}</td></tr>
-    </table>
-  </td></tr>
-  
+  {%- if attributes['Доставка'] contains 'офис' -%}<tr><td class="pad" style="padding:0 32px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#121E34;"><tr><td style="padding:14px 18px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:13px;line-height:1.6;color:#8A9BB5;"><span style="color:#E8ECF2;font-weight:600;">Взимане от офис:</span> Еконт ще ти изпрати SMS, когато пратката пристигне в офиса. Носи документ за самоличност; пратката се пази 7 дни.</td></tr></table></td></tr>{%- endif -%}
 
   <!-- delivery + payment -->
   <tr><td class="pad" style="padding:0 32px 28px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
       <td class="stack" width="50%" style="vertical-align:top;padding-right:10px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#121E34;border-left:3px solid #E8601C;"><tr><td style="padding:16px 18px;">
-          <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Доставка</p>
+          <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Доставка до</p>
           <p style="margin:0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;line-height:1.6;color:#E8ECF2;">{%- assign d_mode = attributes['Доставка'] -%}
           {%- if d_mode != blank -%}<span style="color:#E8601C;font-weight:700;">{{ d_mode }}</span><br>{%- endif -%}
           {%- if attributes['Еконт офис'] != blank -%}{{ attributes['Еконт офис'] }}<br>{%- endif -%}
@@ -97,17 +91,23 @@
       </td>
       <td class="stack stack-gap" width="50%" style="vertical-align:top;padding-left:10px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#121E34;border-left:3px solid #E8601C;"><tr><td style="padding:16px 18px;">
-          <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Плащане</p>
-          <p style="margin:0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;line-height:1.6;color:#E8ECF2;">{%- for transaction in transactions -%}{%- if forloop.first -%}<span style="font-weight:700;">{{ transaction.gateway_display_name }}</span>{%- endif -%}{%- endfor -%}
-          {%- if payment_terms and payment_terms.type != 'receipt' -%}<br><span style="color:#8A9BB5;">Дължимо: {{ total_outstanding | money }}</span>{%- endif -%}
-          {%- assign gw = '' -%}{%- for transaction in transactions -%}{%- if forloop.first -%}{%- assign gw = transaction.gateway_display_name | downcase -%}{%- endif -%}{%- endfor -%}
-          {%- if gw contains 'налож' or gw contains 'cash on delivery' or gw contains 'cod' -%}<br><span style="color:#8A9BB5;">Плащаш на куриера при получаване.</span>{%- endif -%}</p>
+          <p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Проследяване</p>
+          <p style="margin:0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;line-height:1.6;color:#E8ECF2;">{%- assign tn = fulfillment.tracking_number -%}
+          {%- if tn != blank -%}
+            {%- assign turl = fulfillment.tracking_url -%}
+            {%- if turl == blank -%}{%- assign turl = 'https://www.econt.com/services/track-shipment/' | append: tn -%}{%- endif -%}
+            <span style="font-weight:700;">{{ fulfillment.tracking_company | default: 'Еконт' }}</span><br>
+            Товарителница: <a href="{{ turl }}" style="color:#E8601C;text-decoration:none;font-weight:700;">{{ tn }}</a><br>
+            <span style="color:#8A9BB5;">Проследяването се активира до няколко часа.</span>
+          {%- else -%}
+            <span style="font-weight:700;">Еконт Експрес</span><br><span style="color:#8A9BB5;">Ще получиш SMS от Еконт с номера на пратката.</span>
+          {%- endif -%}</p>
         </td></tr></table>
       </td>
     </tr></table>
   </td></tr>
 
-  {% if order.note != blank %}<tr><td class="pad" style="padding:0 32px 28px;"><p style="margin:0 0 10px;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E8601C;">// Бележка към поръчката</p><p style="margin:0;font-family:'General Sans', 'Inter', Arial, Helvetica, sans-serif;font-size:14px;line-height:1.6;color:#E8ECF2;">{{ order.note }}</p></td></tr>{% endif %}
+  
 
   <!-- help -->
   <tr><td class="pad" style="padding:0 32px 30px;">

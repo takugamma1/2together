@@ -15,6 +15,15 @@ def section(inner):
 
 def skeleton(s):
     """s: dict of slots (liquid or sample strings)."""
+    s = {'hero_label': 'Потвърдена поръчка', 'items_label': 'Артикули', 'panel1_label': 'Доставка',
+         'panel2_label': 'Плащане', 'cta_label': 'Виж поръчката', 'extra': '', **s}
+    totals_block = ('' if not s.get('totals') else f'''
+  <!-- totals -->
+  <tr><td class="pad" style="padding:8px 32px 28px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid {DIV};">
+      {s['totals']}
+    </table>
+  </td></tr>''')
     return f'''<!DOCTYPE html>
 <html lang="bg">
 <head>
@@ -59,12 +68,12 @@ def skeleton(s):
 
   <!-- hero -->
   <tr><td class="pad" style="padding:24px 32px 8px;">
-    {label('Потвърдена поръчка')}
+    {label(s['hero_label'])}
     <h1 class="title" style="margin:0 0 14px;font-family:{DISPLAY};font-size:38px;line-height:1;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;color:{TEXT};">{s['headline']}</h1>
     <p style="margin:0 0 22px;font-family:{FONT};font-size:15px;line-height:1.6;color:{MUTED};">{s['intro']}</p>
     <table role="presentation" cellpadding="0" cellspacing="0"><tr>
       <td style="background:{FLAME};border-right:8px solid {INK};">
-        <a href="{s['status_url']}" style="display:inline-block;padding:15px 26px;font-family:{FONT};font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:{INK};text-decoration:none;">Виж поръчката &nbsp;&rarr;</a>
+        <a href="{s['status_url']}" style="display:inline-block;padding:15px 26px;font-family:{FONT};font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:{INK};text-decoration:none;">{s['cta_label']} &nbsp;&rarr;</a>
       </td>
     </tr></table>
   </td></tr>
@@ -72,32 +81,27 @@ def skeleton(s):
   <tr><td class="pad" style="padding:24px 32px 0;"><div style="height:1px;background:{DIV};font-size:0;line-height:0;">&nbsp;</div></td></tr>
 
   <!-- items -->
-  <tr><td class="pad" style="padding:24px 32px 6px;">
-    {label('Артикули')}
+  <tr><td class="pad" style="padding:24px 32px {'6px' if s.get('totals') else '28px'};">
+    {label(s['items_label'])}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       {s['items']}
     </table>
   </td></tr>
-
-  <!-- totals -->
-  <tr><td class="pad" style="padding:8px 32px 28px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid {DIV};">
-      {s['totals']}
-    </table>
-  </td></tr>
+{totals_block}
+  {s['extra']}
 
   <!-- delivery + payment -->
   <tr><td class="pad" style="padding:0 32px 28px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
       <td class="stack" width="50%" style="vertical-align:top;padding-right:10px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{RAISED};border-left:3px solid {FLAME};"><tr><td style="padding:16px 18px;">
-          {label('Доставка')}
+          {label(s['panel1_label'])}
           <p style="margin:0;font-family:{FONT};font-size:14px;line-height:1.6;color:{TEXT};">{s['delivery']}</p>
         </td></tr></table>
       </td>
       <td class="stack stack-gap" width="50%" style="vertical-align:top;padding-left:10px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{RAISED};border-left:3px solid {FLAME};"><tr><td style="padding:16px 18px;">
-          {label('Плащане')}
+          {label(s['panel2_label'])}
           <p style="margin:0;font-family:{FONT};font-size:14px;line-height:1.6;color:{TEXT};">{s['payment']}</p>
         </td></tr></table>
       </td>
@@ -239,7 +243,73 @@ preview = skeleton({
     'shop_url': 'https://2getherbikes.bg',
 })
 
+# ------------------------------------------------------------------ Shipping confirmation
+ship_items_liquid = ('{% for fulfillment_line_item in fulfillment.fulfillment_line_items %}{% assign line = fulfillment_line_item.line_item %}' +
+    item_row(img_liquid, '{{ line.title }}', variant_liquid, 'Количество: {{ fulfillment_line_item.quantity }}', '') + '{% endfor %}')
+tracking_liquid = '''{%- assign tn = fulfillment.tracking_number -%}
+          {%- if tn != blank -%}
+            {%- assign turl = fulfillment.tracking_url -%}
+            {%- if turl == blank -%}{%- assign turl = 'https://www.econt.com/services/track-shipment/' | append: tn -%}{%- endif -%}
+            <span style="font-weight:700;">{{ fulfillment.tracking_company | default: 'Еконт' }}</span><br>
+            Товарителница: <a href="{{ turl }}" style="color:''' + FLAME + ''';text-decoration:none;font-weight:700;">{{ tn }}</a><br>
+            <span style="color:''' + MUTED + ''';">Проследяването се активира до няколко часа.</span>
+          {%- else -%}
+            <span style="font-weight:700;">Еконт Експрес</span><br><span style="color:''' + MUTED + ''';">Ще получиш SMS от Еконт с номера на пратката.</span>
+          {%- endif -%}'''
+ship_extra_liquid = ('{%- if attributes[\'Доставка\'] contains \'офис\' -%}' +
+    '<tr><td class="pad" style="padding:0 32px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + RAISED + ';"><tr><td style="padding:14px 18px;font-family:' + FONT + ';font-size:13px;line-height:1.6;color:' + MUTED + ';">'
+    '<span style="color:' + TEXT + ';font-weight:600;">Взимане от офис:</span> Еконт ще ти изпрати SMS, когато пратката пристигне в офиса. Носи документ за самоличност; пратката се пази 7 дни.'
+    '</td></tr></table></td></tr>{%- endif -%}')
+ship_liquid = skeleton({
+    'title': 'Поръчка {{ order_name }} е изпратена — {{ shop.name }}',
+    'preheader': 'Поръчка {{ order_name }} е предадена на Еконт и пътува към теб.',
+    'logo': ('{% if shop.email_logo_url %}<img src="{{ shop.email_logo_url }}" width="{{ shop.email_logo_width | default: 140 }}" alt="{{ shop.name }}" '
+             'style="max-width:160px;height:auto;">{% else %}<span style="font-family:' + DISPLAY + ';font-size:20px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:' + TEXT + ';">2GETHER<span style="color:' + FLAME + ';">/</span>BIKES</span>{% endif %}'),
+    'order_name': '{{ order_name }}',
+    'order_date': '{{ fulfillment.created_at | default: order.created_at | date: "%d.%m.%Y" }}',
+    'hero_label': 'Изпратена поръчка',
+    'headline': '{% if customer.first_name != blank %}На път е, {{ customer.first_name }}!{% else %}На път е!{% endif %}',
+    'intro': '{% if fulfillment.item_count == item_count %}Предадохме поръчката ти на Еконт. Обикновено доставката е на следващия работен ден.{% else %}Предадохме част от поръчката ти на Еконт ({{ fulfillment.item_count }} от {{ item_count }} артикула). Останалото ще пристигне отделно.{% endif %}',
+    'status_url': '{%- if fulfillment.tracking_url != blank -%}{{ fulfillment.tracking_url }}{%- elsif fulfillment.tracking_number != blank -%}https://www.econt.com/services/track-shipment/{{ fulfillment.tracking_number }}{%- else -%}{{ order_status_url }}{%- endif -%}',
+    'cta_label': 'Проследи пратката',
+    'items_label': 'В тази пратка',
+    'items': ship_items_liquid,
+    'totals': '',
+    'extra': ship_extra_liquid,
+    'panel1_label': 'Доставка до',
+    'delivery': delivery_liquid,
+    'panel2_label': 'Проследяване',
+    'payment': tracking_liquid,
+    'note': '',
+    'shop_url': '{{ shop.url }}',
+})
+ship_preview = skeleton({
+    'title': 'Поръчка #1042 е изпратена — 2getherbikes',
+    'preheader': 'Поръчка #1042 е предадена на Еконт и пътува към теб.',
+    'logo': f'<span style="font-family:{DISPLAY};font-size:20px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;color:{TEXT};">2GETHER<span style="color:{FLAME};">/</span>BIKES</span>',
+    'order_name': '#1042', 'order_date': '08.09.2026',
+    'hero_label': 'Изпратена поръчка',
+    'headline': 'На път е, Иван!',
+    'intro': 'Предадохме поръчката ти на Еконт. Обикновено доставката е на следващия работен ден.',
+    'status_url': '#', 'cta_label': 'Проследи пратката',
+    'items_label': 'В тази пратка',
+    'items': (item_row(ph(), 'Santa Cruz Hightower C R', f'<p style="margin:2px 0 0;font-size:12px;color:{MUTED};">Размер L · Gloss Black</p>', 'Количество: 1', '') +
+              item_row(ph(), 'Galfer Disc Shark Center-Lock Ø203', '', 'Количество: 2', '')),
+    'totals': '',
+    'extra': ('<tr><td class="pad" style="padding:0 32px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + RAISED + ';"><tr><td style="padding:14px 18px;font-family:' + FONT + ';font-size:13px;line-height:1.6;color:' + MUTED + ';">'
+              '<span style="color:' + TEXT + ';font-weight:600;">Взимане от офис:</span> Еконт ще ти изпрати SMS, когато пратката пристигне в офиса. Носи документ за самоличност; пратката се пази 7 дни.</td></tr></table></td></tr>'),
+    'panel1_label': 'Доставка до',
+    'delivery': f'<span style="color:{FLAME};font-weight:700;">Еконт — до офис</span><br>Варна [код 9035] — Варна бул. Република №59<br>Варна 9000<br><span style="color:{MUTED};">Иван Тестов · +359888123456</span>',
+    'panel2_label': 'Проследяване',
+    'payment': f'<span style="font-weight:700;">Еконт</span><br>Товарителница: <a href="#" style="color:{FLAME};text-decoration:none;font-weight:700;">1054823947201</a><br><span style="color:{MUTED};">Проследяването се активира до няколко часа.</span>',
+    'note': '',
+    'shop_url': 'https://2getherbikes.bg',
+})
+
 out_liquid, out_preview = sys.argv[1], sys.argv[2]
 pathlib.Path(out_liquid).write_text(liquid, encoding='utf-8')
 pathlib.Path(out_preview).write_text(preview, encoding='utf-8')
-print('liquid', len(liquid), 'preview', len(preview))
+if len(sys.argv) > 4:
+    pathlib.Path(sys.argv[3]).write_text(ship_liquid, encoding='utf-8')
+    pathlib.Path(sys.argv[4]).write_text(ship_preview, encoding='utf-8')
+print('liquid', len(liquid), 'preview', len(preview), 'ship', len(ship_liquid))
