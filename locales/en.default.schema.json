@@ -1162,8 +1162,8 @@
         "back_label": "All collections",
         "all_label": "All",
         "more_label": "All categories →",
-        "facet_map": "Марка|Brand=Марка\nTyre Size|Tire Size=Размер гума\nTyre Width|Tire Width=Ширина гума\nRim Size=Размер капла\nRim Width=Ширина капла\nClothes Size|Size=Размер\nHelmet Size=Размер каска\nShoe Size=Размер обувки\nFrame Size=Размер рамка\nWheel Size=Размер колело\nGender=Пол\nType=Тип\nDiameter=Диаметър\nWidth=Ширина\nLength=Дължина\nCrank Length=Дължина курбел\nClamp=Захват\nRise=Rise\nTravel=Ход\nMount=Монтаж\nCompatibility=Съвместимост\nCompound=Компаунд / материал\nStandard=Стандарт\nSpacing=Ос\nHoles=Брой спици\nSpoke Type=Тип спица\nSpoke Size=Дължина спици\nPosition=Позиция\nNumber Of Teeth=Брой зъби\nShape=Форма\nOffset=Офсет\nLumens=Лумени\nVolume=Обем\nDeck Width=Ширина дъска\nLens=Стъкло\nBearing Size=Размер лагер\nBearing Category=Категория лагер\nBicycle Type=Тип велосипед\nColor=Цвят\nEnduroGuard Size=Размер EnduroGuard",
-        "switcher_groups": "Марка=bikes-od62,bikes-orbea,bikes-santa-cruz,bikes-pivot,bikes-nukeproof,bikes-cervelo,bikes-ridley\nТип=bikes-od62,bikes-mtb,bikes-ebike,bikes-road,bikes-kids,bikes-urban"
+        "facet_map": "Марка|Brand=Brand\nTyre Size|Tire Size=Tyre size\nTyre Width|Tire Width=Tyre width\nRim Size=Rim size\nRim Width=Rim width\nClothes Size|Size=Size\nHelmet Size=Helmet size\nShoe Size=Shoe size\nFrame Size=Frame size\nWheel Size=Wheel size\nGender=Gender\nType=Type\nDiameter=Diameter\nWidth=Width\nLength=Length\nCrank Length=Crank length\nClamp=Clamp\nRise=Rise\nTravel=Travel\nMount=Mount\nCompatibility=Compatibility\nCompound=Compound / material\nStandard=Standard\nSpacing=Spacing\nHoles=Holes\nSpoke Type=Spoke type\nSpoke Size=Spoke length\nPosition=Position\nNumber Of Teeth=Number of teeth\nShape=Shape\nOffset=Offset\nLumens=Lumens\nVolume=Volume\nDeck Width=Deck width\nLens=Lens\nBearing Size=Bearing size\nBearing Category=Bearing category\nBicycle Type=Bicycle type\nColor=Colour\nEnduroGuard Size=EnduroGuard size",
+        "switcher_groups": "Brand=bikes-od62,bikes-orbea,bikes-santa-cruz,bikes-pivot,bikes-nukeproof,bikes-cervelo,bikes-ridley\nType=bikes-od62,bikes-mtb,bikes-ebike,bikes-road,bikes-kids,bikes-urban"
       },
       "community": {
         "soon_badge": "Coming soon",
@@ -1284,7 +1284,7 @@
         "b_feature": {
           "text": "4 positions · [positions]"
         },
-        "model_defaults": "breeze=#C8434F|Червен|130|58|7.5 kg|29/32/35/38|storm\nstorm=#2F6FD6|Син|170|58|12.5 kg|53/57/60/62|breeze"
+        "model_defaults": "breeze=#C8434F|Red|130|58|7.5 kg|29/32/35/38|storm\nstorm=#2F6FD6|Blue|170|58|12.5 kg|53/57/60/62|breeze"
       },
       "ramps_compare": {
         "cta_2": "Choose STORM",
@@ -1750,7 +1750,7 @@
       },
       "bike_service": {
         "timeslot_label": "Time",
-        "problem_area_options": "Brakes / Спирачки\nDrivetrain — gears, chain / Трансмисия\nWheels & tires / Капли и гуми\nSuspension — fork or shock / Окачване\nFrame & bearings / Рамка и лагери\nElectric system (e-bike) / Електрика\nFull service package / Пакетно обслужване\nOther / I am not sure / Друго"
+        "problem_area_options": "Brakes\nDrivetrain — gears, chain\nWheels & tires\nSuspension — fork or shock\nFrame & bearings\nElectric system (e-bike)\nFull service package\nOther / I am not sure"
       },
       "statement": {
         "pillars_label": "What drives us"
