@@ -379,6 +379,8 @@
     const phone = normalizePhone(state.phone);
     const attrs = {
       'Доставка': state.mode === 'office' ? 'Еконт — до офис' : 'Еконт — до адрес',
+      // Plain key for checkout apps that hide the other Econt rate (Shopify Functions).
+      delivery_mode: state.mode,
       'Име': state.name.trim(),
       'Телефон': phone,
       'Град': state.city ? state.city.name + (state.city.postCode ? ' ' + state.city.postCode : '') : '',
