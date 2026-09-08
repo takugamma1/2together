@@ -11,6 +11,7 @@
   assign st = section.settings
   assign departments = section.blocks | where: 'type', 'department'
   assign finders = section.blocks | where: 'type', 'finder'
+  assign highlights = section.blocks | where: 'type', 'highlight'
 -%}
 
 <div class="tg-hub" data-tg-hub>
@@ -39,7 +40,37 @@
         <a href="#dept-{{ b.id }}" class="tg-hub-chip" data-tg-hub-chip="dept-{{ b.id }}" style="--model: {{ b.settings.color }}">{% render '2gether-ramps-icon', name: b.settings.icon %}<span>{{ b.settings.title }}</span></a>
       {% endfor %}
       {% if st.show_brands %}<a href="#dept-brands" class="tg-hub-chip" data-tg-hub-chip="dept-brands" style="--model: #8A9BB5"><span>{{ st.brands_title }}</span></a>{% endif %}
+      {% for b in highlights %}{% if b.settings.collection != blank %}<a href="{{ b.settings.collection.url }}" class="tg-hub-chip tg-hub-chip--sale" style="--model: #E8601C"><span>{{ b.settings.title }}</span></a>{% endif %}{% endfor %}
     </nav>
+
+    <!-- ═══ HIGHLIGHT (sale) TILE ═══ -->
+    {% for b in highlights %}
+      {%- assign hc = b.settings.collection -%}
+      {%- if hc != blank -%}
+        {%- assign max_pct = 0 -%}
+        {%- for prod in hc.products limit: 50 -%}
+          {%- if prod.compare_at_price > prod.price and prod.compare_at_price > 0 -%}
+            {%- assign diff = prod.compare_at_price | minus: prod.price | times: 100 -%}
+            {%- assign pct = diff | divided_by: prod.compare_at_price -%}
+            {%- if pct > max_pct -%}{%- assign max_pct = pct -%}{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        <section class="tg-hub-sale" {{ b.shopify_attributes }}>
+          <div class="tg-hub-sale-body">
+            {% if b.settings.eyebrow != blank %}<span class="tg-hub-sale-eyebrow">{{ b.settings.eyebrow }}</span>{% endif %}
+            <h2 class="tg-hub-sale-title">{{ b.settings.title }}</h2>
+            {% if b.settings.text != blank %}<p class="tg-hub-sale-text">{{ b.settings.text }}</p>{% endif %}
+            <a href="{{ hc.url }}" class="tg-btn-primary tg-hub-sale-cta">{{ b.settings.cta_label }} &rarr;</a>
+          </div>
+          <a href="{{ hc.url }}" class="tg-hub-sale-stat" aria-label="{{ b.settings.title | escape }}">
+            {% if max_pct > 0 %}<span class="tg-hub-sale-pct"><small>{{ 'tg.collection_list.sale_upto' | t }}</small>-{{ max_pct }}%</span>{% endif %}
+            <span class="tg-hub-sale-count">{{ 'tg.common.products_count' | t: count: hc.products_count }}</span>
+          </a>
+        </section>
+      {%- elsif request.design_mode -%}
+        <p class="tg-hub-empty">{{ 'tg.collection_list.highlight_pick' | t }}</p>
+      {%- endif -%}
+    {% endfor %}
 
     <!-- ═══ QUICK FINDERS ═══ -->
     {% if finders.size > 0 %}
@@ -284,6 +315,18 @@
           "label": "Collections (one per line: handle | Bulgarian label | search keywords)",
           "info": "Collections with 0 products are skipped automatically."
         }
+      ]
+    },
+    {
+      "type": "highlight",
+      "name": "Sale tile",
+      "limit": 2,
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "t:tg.d.collection_list.b_highlight.eyebrow" },
+        { "type": "text", "id": "title", "label": "Title", "default": "t:tg.d.collection_list.b_highlight.title" },
+        { "type": "text", "id": "text", "label": "Text", "default": "t:tg.d.collection_list.b_highlight.text" },
+        { "type": "text", "id": "cta_label", "label": "Button", "default": "t:tg.d.collection_list.b_highlight.cta_label" }
       ]
     },
     {

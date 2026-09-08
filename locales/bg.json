@@ -518,7 +518,9 @@
         "one": "категория",
         "other": "категории"
       },
-      "enter_for_products": "· Enter за продукти"
+      "enter_for_products": "· Enter за продукти",
+      "sale_upto": "до",
+      "highlight_pick": "Изберете колекция за плочката с намаления."
     },
     "product": {
       "prev_photo": "Предишна снимка",

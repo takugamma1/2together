@@ -92,17 +92,19 @@
             "items": "portable-ramps|Преносими рампи|ramp рампа breeze storm"
           }
         },
-        "finder_sale": {
-          "type": "finder",
+        "highlight_sale": {
+          "type": "highlight",
           "settings": {
-            "label": "Намаления",
-            "kicker": "Отстъпки от склад",
-            "url": "/collections/sale"
+            "collection": "sale",
+            "eyebrow": "Ограничени количества",
+            "title": "НАМАЛЕНИЯ",
+            "text": "Части, екипировка и аксесоари с отстъпка — директно от склад. Докато има наличност.",
+            "cta_label": "Виж всички намаления"
           }
         }
       },
       "block_order": [
-        "finder_sale",
+        "highlight_sale",
         "dept_1",
         "dept_2",
         "dept_3",

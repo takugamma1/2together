@@ -78,3 +78,26 @@ body.tg-collections-active .content-for-layout { max-width: none; padding: 0; ma
   .tg-hub-card-media { width: 48px; height: 48px; }
   .tg-hub-chips { top: var(--header-min-block-size, 64px); }
 }
+
+/* sale highlight tile */
+.tg-hub-sale { position: relative; display: grid; grid-template-columns: 1fr auto; gap: var(--tg-s5); align-items: center; padding: var(--tg-s5) var(--tg-s6); margin: var(--tg-s2) 0 var(--tg-s6); background: linear-gradient(100deg, var(--tg-surface-elevated) 0%, var(--tg-surface-raised) 60%, rgba(232, 96, 28, 0.16) 100%); border: 1px solid var(--tg-divider); border-left: 3px solid var(--tg-flame); clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%); overflow: hidden; }
+.tg-hub-sale::before { content: ''; position: absolute; top: -40px; bottom: -40px; right: 26%; width: 18px; background: var(--tg-flame); opacity: 0.12; transform: skewX(-22deg); pointer-events: none; }
+.tg-hub-sale-body { display: flex; flex-direction: column; gap: var(--tg-s2); min-width: 0; position: relative; }
+.tg-hub-sale-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: var(--tg-font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tg-flame); }
+.tg-hub-sale-eyebrow::before { content: ''; width: 14px; height: 2px; background: var(--tg-flame); transform: skewX(-30deg); }
+.tg-hub-sale-title { font-family: var(--tg-font-display); font-weight: 700; text-transform: uppercase; font-size: clamp(1.6rem, 3.2vw, 2.6rem); letter-spacing: -0.01em; line-height: 1; margin: 0; }
+.tg-hub-sale-text { margin: 0; font-size: 14px; line-height: 1.6; color: var(--tg-text-secondary); max-width: 52ch; }
+.tg-hub-sale-cta { margin-top: var(--tg-s2); align-self: flex-start; }
+.tg-hub-sale-stat { position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-decoration: none; color: var(--tg-text-primary); padding-left: var(--tg-s5); }
+.tg-hub-sale-pct { display: flex; flex-direction: column; align-items: flex-end; font-family: var(--tg-font-display); font-weight: 700; font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 0.9; letter-spacing: -0.03em; color: var(--tg-flame); }
+.tg-hub-sale-pct small { font-family: var(--tg-font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tg-text-muted); margin-bottom: 6px; }
+.tg-hub-sale-count { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tg-text-secondary); }
+.tg-hub-sale-stat:hover .tg-hub-sale-count { color: var(--tg-flame); }
+.tg-hub-chip--sale { border-color: var(--tg-flame); color: var(--tg-flame); }
+@media (max-width: 720px) {
+  .tg-hub-sale { grid-template-columns: 1fr; padding: var(--tg-s4) var(--tg-s4); gap: var(--tg-s4); }
+  .tg-hub-sale::before { display: none; }
+  .tg-hub-sale-stat { flex-direction: row; align-items: baseline; justify-content: space-between; padding-left: 0; }
+  .tg-hub-sale-pct { flex-direction: row; align-items: baseline; gap: 10px; }
+  .tg-hub-sale-pct small { margin: 0; }
+}

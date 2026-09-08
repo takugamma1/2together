@@ -1155,7 +1155,13 @@
         },
         "search_placeholder": "29\" tyres, helmet, brakes, jersey…",
         "brands_title": "Brands",
-        "brands_text": "All the brands we sell — in alphabetical order."
+        "brands_text": "All the brands we sell — in alphabetical order.",
+        "b_highlight": {
+          "eyebrow": "Limited stock",
+          "title": "SALE",
+          "text": "Parts, gear and accessories at a discount — straight from stock. While supplies last.",
+          "cta_label": "See all deals"
+        }
       },
       "collection": {
         "search_placeholder": "Search the collection…",

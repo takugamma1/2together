@@ -518,7 +518,9 @@
         "one": "category",
         "other": "categories"
       },
-      "enter_for_products": "· Enter for products"
+      "enter_for_products": "· Enter for products",
+      "sale_upto": "up to",
+      "highlight_pick": "Pick a collection for the sale tile."
     },
     "product": {
       "prev_photo": "Previous photo",
