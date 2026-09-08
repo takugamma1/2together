@@ -79,6 +79,27 @@
       </button>
     </div>
 
+    {%- comment -%} Sale toggle — products carry the `on-sale` tag (set by the OneDist sync when compareAtPrice > price) {%- endcomment -%}
+    {%- if collection.all_tags contains 'on-sale' -%}
+      {%- assign sale_on = false -%}
+      {%- if current_tags contains 'on-sale' -%}{%- assign sale_on = true -%}{%- endif -%}
+      {%- assign sale_next = '' -%}
+      {%- for h in current_handles -%}{%- if h != blank and h != 'on-sale' -%}{%- assign sale_next = sale_next | append: h | append: '+' -%}{%- endif -%}{%- endfor -%}
+      {%- unless sale_on -%}{%- assign sale_next = sale_next | append: 'on-sale+' -%}{%- endunless -%}
+      {%- assign sale_next = sale_next | split: '+' | join: '+' -%}
+      {%- if sale_next == blank -%}{%- assign sale_href = collection.url | append: sort_query -%}{%- else -%}{%- assign sale_href = collection.url | append: '/' | append: sale_next | append: sort_query -%}{%- endif -%}
+      <details class="tg-facet tg-facet--sale" open>
+        <summary class="tg-facet-title">{{ 'tg.collection.sale_facet_title' | t }}<i aria-hidden="true"></i></summary>
+        <div class="tg-facet-body">
+          <a href="{{ sale_href }}" class="tg-filter-option tg-filter-option--link{% if sale_on %} is-on{% endif %}" rel="nofollow">
+            <span class="tg-filter-check"></span>
+            <span class="tg-filter-label">{{ 'tg.collection.sale_option' | t }}</span>
+            <span class="tg-filter-count">{{ 'tg.collection.sale_badge' | t }}</span>
+          </a>
+        </div>
+      </details>
+    {%- endif -%}
+
     {%- comment -%} Native Shopify filters (Search & Discovery): availability, price, vendor, type, options… {%- endcomment -%}
     {% for filter in collection.filters %}
       <details class="tg-facet" open>
@@ -299,7 +320,7 @@
           {%- for h in current_handles -%}{%- if h != blank and h != tag_handle -%}{%- assign next = next | append: h | append: '+' -%}{%- endif -%}{%- endfor -%}
           {%- assign next = next | split: '+' | join: '+' -%}
           {%- if next == blank -%}{%- assign href = collection.url | append: sort_query -%}{%- else -%}{%- assign href = collection.url | append: '/' | append: next | append: sort_query -%}{%- endif -%}
-          <a href="{{ href }}" class="tg-coll-chip" rel="nofollow"><span>{{ tag | split: ': ' | last }}</span><i aria-hidden="true">×</i></a>
+          <a href="{{ href }}" class="tg-coll-chip" rel="nofollow"><span>{% if tag == 'on-sale' %}{{ 'tg.collection.sale_option' | t }}{% else %}{{ tag | split: ': ' | last }}{% endif %}</span><i aria-hidden="true">×</i></a>
         {% endfor %}
         {% for filter in collection.filters %}
           {% for value in filter.active_values %}<a href="{{ value.url_to_remove }}" class="tg-coll-chip"><span>{%- assign _l = value.label -%}{%- for k in tr_keys -%}{%- if k == _l -%}{%- assign _l = tr_vals[forloop.index0] -%}{%- break -%}{%- endif -%}{%- endfor -%}{{ _l }}</span><i aria-hidden="true">×</i></a>{% endfor %}

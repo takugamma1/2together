@@ -434,7 +434,10 @@
       "showing_html": "Показани <strong>{{ from }}–{{ to }}</strong> от <strong>{{ total }}</strong> продукта",
       "load_more": "Зареди още",
       "search_empty_html": "Няма продукти за това търсене на страницата. <a href=\"#\" data-tg-search-all>Търси в целия магазин &rarr;</a>",
-      "visible_of_total": "{{ visible }} от {{ total }}"
+      "visible_of_total": "{{ visible }} от {{ total }}",
+      "sale_facet_title": "Намаления",
+      "sale_option": "Само намалени",
+      "sale_badge": "%"
     },
     "header": {
       "lang_switch": "Език / Language",

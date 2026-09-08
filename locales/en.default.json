@@ -434,7 +434,10 @@
       "showing_html": "Showing <strong>{{ from }}–{{ to }}</strong> of <strong>{{ total }}</strong> products",
       "load_more": "Load more",
       "search_empty_html": "No products match on this page. <a href=\"#\" data-tg-search-all>Search the whole shop &rarr;</a>",
-      "visible_of_total": "{{ visible }} of {{ total }}"
+      "visible_of_total": "{{ visible }} of {{ total }}",
+      "sale_facet_title": "Sale",
+      "sale_option": "On sale only",
+      "sale_badge": "%"
     },
     "header": {
       "lang_switch": "Language",

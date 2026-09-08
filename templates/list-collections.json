@@ -91,9 +91,18 @@
             "text": "Преносими рампи BREEZE и STORM — произведени в България.",
             "items": "portable-ramps|Преносими рампи|ramp рампа breeze storm"
           }
+        },
+        "finder_sale": {
+          "type": "finder",
+          "settings": {
+            "label": "Намаления",
+            "kicker": "Отстъпки от склад",
+            "url": "/collections/sale"
+          }
         }
       },
       "block_order": [
+        "finder_sale",
         "dept_1",
         "dept_2",
         "dept_3",
