@@ -12,6 +12,34 @@
   assign d_buy_now = 'tg.product.buy_now' | t
 -%}
 
+{%- liquid
+  assign ld_variant = product.selected_or_first_available_variant
+  assign ld_desc = product.description | strip_html | strip_newlines | truncate: 500
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": {{ request.origin | append: product.url | json }},
+  "image": [{% for image in product.images limit: 10 %}{{ image | image_url: width: 1200 | prepend: 'https:' | json }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+  "description": {{ ld_desc | json }},
+  "sku": {{ ld_variant.sku | default: ld_variant.id | json }},
+  "productID": {{ product.id | json }},
+  {%- if product.vendor != blank %}
+  "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+  {%- endif %}
+  "offers": {
+    "@type": "Offer",
+    "url": {{ request.origin | append: ld_variant.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ ld_variant.price | divided_by: 100.0 | json }},
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "{% if ld_variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "seller": { "@type": "Organization", "name": {{ shop.name | json }} }
+  }
+}
+</script>
 <div class="tg-product-page" data-product-id="{{ product.id }}">
   <!-- ═══ LEFT COLUMN: Editorial Content ═══ -->
   <div class="tg-product-left">

@@ -66,23 +66,43 @@
   content="{{ og_description | escape }}"
 >
 
-{%- if page_image -%}
+{%- liquid
+  comment
+    Tell crawlers which picture represents this page: the product/article/collection image first,
+    the theme's share image otherwise. Without it Google pairs random page images with the title.
+  endcomment
+  assign tg_og_image = page_image
+  if request.page_type == 'product' and product.featured_image
+    assign tg_og_image = product.featured_image
+  elsif request.page_type == 'article' and article.image
+    assign tg_og_image = article.image
+  elsif request.page_type == 'collection' and collection.image
+    assign tg_og_image = collection.image
+  endif
+-%}
+{%- if tg_og_image -%}
   <meta
     property="og:image"
-    content="http:{{ page_image | image_url }}"
+    content="{{ tg_og_image | image_url: width: 1200 }}"
   >
   <meta
     property="og:image:secure_url"
-    content="https:{{ page_image | image_url }}"
+    content="{{ tg_og_image | image_url: width: 1200 }}"
   >
   <meta
     property="og:image:width"
-    content="{{ page_image.width }}"
+    content="{{ tg_og_image.width | at_most: 1200 }}"
   >
   <meta
     property="og:image:height"
-    content="{{ page_image.height }}"
+    content="{{ tg_og_image.height | times: 1200 | divided_by: tg_og_image.width | at_most: tg_og_image.height }}"
   >
+  {%- if tg_og_image.alt != blank -%}
+  <meta
+    property="og:image:alt"
+    content="{{ tg_og_image.alt | escape }}"
+  >
+  {%- endif -%}
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}

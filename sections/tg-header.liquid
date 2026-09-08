@@ -189,7 +189,8 @@
             <a href="{{ link.url }}" class="tg-takeover-tile{% if is_active %} is-active{% endif %}" {% if matched_block %}{{ matched_block.shopify_attributes }}{% endif %} style="--tg-tile-i: {{ forloop.index0 }};">
               <div class="tg-takeover-tile-media">
                 {% if tile_image != blank %}
-                  {{ tile_image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: link.title, sizes: '(max-width: 768px) 100vw, 33vw' }}
+                  {%- comment -%} Background image, not <img>: menu artwork must not be indexed as the page's picture. {%- endcomment -%}
+                  <div class="tg-takeover-tile-bg" role="img" aria-label="{{ link.title | escape }}" style="background-image: url('{{ tile_image | image_url: width: 1200 }}');"></div>
                 {% else %}
                   <div class="tg-takeover-tile-placeholder" aria-hidden="true"></div>
                 {% endif %}
@@ -225,7 +226,7 @@
               <a href="{{ tile_link }}" class="tg-takeover-tile{% if is_active %} is-active{% endif %}" {{ block.shopify_attributes }} style="--tg-tile-i: {{ forloop.index0 }};">
                 <div class="tg-takeover-tile-media">
                   {% if block.settings.image != blank %}
-                    {{ block.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: block.settings.title, sizes: '(max-width: 768px) 100vw, 33vw' }}
+                    <div class="tg-takeover-tile-bg" role="img" aria-label="{{ block.settings.title | escape }}" style="background-image: url('{{ block.settings.image | image_url: width: 1200 }}');"></div>
                   {% else %}
                     <div class="tg-takeover-tile-placeholder" aria-hidden="true"></div>
                   {% endif %}
@@ -880,6 +881,16 @@
     overflow: hidden;
   }
 
+  .tg-takeover-tile-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                filter 320ms ease;
+    filter: brightness(0.7);
+  }
+
   .tg-takeover-tile-media img {
     display: block;
     width: 100%;
@@ -1005,7 +1016,8 @@
       filter: grayscale(0.55);
     }
 
-    .tg-takeover-tile:hover .tg-takeover-tile-media img {
+    .tg-takeover-tile:hover .tg-takeover-tile-media img,
+    .tg-takeover-tile:hover .tg-takeover-tile-bg {
       transform: scale(1.06);
       filter: brightness(0.85);
     }

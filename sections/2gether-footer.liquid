@@ -9,11 +9,7 @@
   {%- comment -%} Row 1: Newsletter {%- endcomment -%}
   {%- if section.settings.show_newsletter -%}
     <div class="tg-footer-newsletter">
-      <div class="tg-footer-newsletter-bg">
-        {% if section.settings.newsletter_bg_image != blank %}
-          {{ section.settings.newsletter_bg_image | image_url: width: 1920 | image_tag: loading: 'lazy', sizes: '100vw' }}
-        {% endif %}
-      </div>
+      <div class="tg-footer-newsletter-bg" aria-hidden="true"{% if section.settings.newsletter_bg_image != blank %} style="background-image: url('{{ section.settings.newsletter_bg_image | image_url: width: 1920 }}'); background-size: cover; background-position: center;"{% endif %}></div>
       <div class="tg-footer-newsletter-info">
         <span class="tg-footer-newsletter-title">{{ section.settings.newsletter_title }}</span>
         <p class="tg-footer-newsletter-text">{{ section.settings.newsletter_text }}</p>
