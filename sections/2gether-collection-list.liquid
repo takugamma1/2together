@@ -60,7 +60,7 @@
             {% if b.settings.eyebrow != blank %}<span class="tg-hub-sale-eyebrow">{{ b.settings.eyebrow }}</span>{% endif %}
             <h2 class="tg-hub-sale-title">{{ b.settings.title }}</h2>
             {% if b.settings.text != blank %}<p class="tg-hub-sale-text">{{ b.settings.text }}</p>{% endif %}
-            <a href="{{ hc.url }}" class="tg-btn-primary tg-hub-sale-cta">{{ b.settings.cta_label }} &rarr;</a>
+            <a href="{{ hc.url }}" class="tg-btn-primary tg-hub-sale-cta">{{ b.settings.cta_label }}&nbsp;&rarr;</a>
           </div>
           <a href="{{ hc.url }}" class="tg-hub-sale-stat" aria-label="{{ b.settings.title | escape }}">
             {% if max_pct > 0 %}<span class="tg-hub-sale-pct"><small>{{ 'tg.collection_list.sale_upto' | t }}</small>-{{ max_pct }}%</span>{% endif %}
