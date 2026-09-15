@@ -1760,6 +1760,18 @@
       },
       "statement": {
         "pillars_label": "What drives us"
+      },
+      "map_banner": {
+        "eyebrow": "In store",
+        "title": "BOOK IN STORE TOO",
+        "text": "Drop by the shop — pick a bike, we fill in the form and you ride out in 10 minutes. No reservation needed while bikes are available.",
+        "address_label": "Address",
+        "hours_label": "Opening hours",
+        "hours": "Tue – Fri: 09:30 – 19:30\nSat – Sun: 10:30 – 18:30\nMon – closed",
+        "phone_label": "Phone",
+        "map_tag": "2GETHER Bikes · Varna",
+        "directions_label": "Get directions",
+        "call_label": "Call us"
       }
     }
   }

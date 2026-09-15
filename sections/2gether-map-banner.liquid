@@ -1,0 +1,277 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-buttons.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  comment
+    Google only allows /maps/embed and output=embed URLs inside iframes. Convert whatever was
+    pasted (place link, address, plain name) the same way the footer does.
+  endcomment
+  assign map_src = st.map_embed | strip
+  assign is_embed = false
+  if map_src contains '/maps/embed' or map_src contains 'output=embed'
+    assign is_embed = true
+  endif
+  assign map_q = ''
+  unless is_embed
+    if map_src contains '/place/'
+      assign map_q = map_src | split: '/place/' | last | split: '/' | first
+    elsif map_src contains 'http' or map_src == blank
+      assign map_q = shop.name | url_encode
+    else
+      assign map_q = map_src | url_encode
+    endif
+    assign map_src = 'https://maps.google.com/maps?q=' | append: map_q | append: '&hl=' | append: request.locale.iso_code | append: '&z=16&output=embed'
+  endunless
+  if map_q == blank
+    assign map_q = st.address | default: shop.name | url_encode
+  endif
+  assign directions_url = 'https://www.google.com/maps/dir/?api=1&destination=' | append: map_q
+  assign tel_href = st.phone | replace: ' ', '' | replace: '(', '' | replace: ')', '' | replace: '-', ''
+  assign hours_lines = st.hours | newline_to_br | split: '<br />'
+-%}
+
+<section class="tg-mapb tg-section{% if st.dark_map %} tg-mapb--dark{% endif %}" style="--tg-mapb-pt: {{ st.padding_top }}px; --tg-mapb-pb: {{ st.padding_bottom }}px;">
+  <div class="tg-mapb-inner">
+
+    <div class="tg-mapb-panel">
+      {%- if st.eyebrow != blank -%}<span class="tg-label">{{ st.eyebrow }}</span>{%- endif -%}
+      <h2 class="tg-mapb-title">{{ st.title }}</h2>
+      {%- if st.text != blank -%}<p class="tg-mapb-text">{{ st.text }}</p>{%- endif -%}
+
+      <ul class="tg-mapb-info">
+        {%- if st.address != blank -%}
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <div><span class="tg-mapb-info-label">{{ st.address_label }}</span><a href="{{ directions_url }}" target="_blank" rel="noopener">{{ st.address }}</a></div>
+          </li>
+        {%- endif -%}
+        {%- if st.hours != blank -%}
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <div><span class="tg-mapb-info-label">{{ st.hours_label }}</span>{%- for line in hours_lines -%}<span class="tg-mapb-hours-line">{{ line | strip }}</span>{%- endfor -%}</div>
+          </li>
+        {%- endif -%}
+        {%- if st.phone != blank -%}
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+            <div><span class="tg-mapb-info-label">{{ st.phone_label }}</span><a href="tel:{{ tel_href }}">{{ st.phone }}</a></div>
+          </li>
+        {%- endif -%}
+      </ul>
+
+      <div class="tg-mapb-actions">
+        <a class="tg-btn-primary" href="{{ directions_url }}" target="_blank" rel="noopener">{{ st.directions_label }}&nbsp;&rarr;</a>
+        {%- if st.phone != blank -%}<a class="tg-mapb-call" href="tel:{{ tel_href }}">{{ st.call_label }}</a>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="tg-mapb-map">
+      <iframe
+        class="tg-mapb-frame"
+        src="{{ map_src | escape }}"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="{{ st.title | escape }}"
+        allowfullscreen
+      ></iframe>
+      <a class="tg-mapb-tag" href="{{ directions_url }}" target="_blank" rel="noopener">{{ st.map_tag }}</a>
+    </div>
+
+  </div>
+</section>
+
+{% stylesheet %}
+  .tg-mapb {
+    background: var(--tg-ink, #0B1220);
+    color: var(--tg-text-primary, #E8ECF2);
+    font-family: var(--tg-font-body);
+    padding: var(--tg-mapb-pt, 64px) var(--tg-s7, 48px) var(--tg-mapb-pb, 64px);
+  }
+
+  .tg-mapb-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--tg-s5, 24px);
+    align-items: stretch;
+  }
+
+  /* Left: booking-on-site panel */
+  .tg-mapb-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tg-s4, 16px);
+    padding: var(--tg-s6, 32px) var(--tg-s6, 32px) var(--tg-s6, 32px) calc(var(--tg-s6, 32px) - 2px);
+    background: var(--tg-surface-raised, #121E34);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.12));
+    border-left: 2px solid var(--tg-flame, #E8601C);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+  }
+
+  .tg-mapb-title {
+    font-family: var(--tg-font-display);
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .tg-mapb-text {
+    color: var(--tg-text-secondary, #8A9BB5);
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 46ch;
+  }
+
+  .tg-mapb-info {
+    list-style: none;
+    margin: var(--tg-s2, 8px) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--tg-s3, 12px);
+  }
+
+  .tg-mapb-info li {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: var(--tg-s3, 12px);
+    align-items: start;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .tg-mapb-info svg { width: 20px; height: 20px; color: var(--tg-flame, #E8601C); margin-top: 2px; }
+  .tg-mapb-info a { color: var(--tg-text-primary, #E8ECF2); text-decoration: none; }
+  .tg-mapb-info a:hover { color: var(--tg-flame, #E8601C); }
+
+  .tg-mapb-info-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--tg-text-muted, #566A85);
+    margin-bottom: 2px;
+  }
+
+  .tg-mapb-hours-line { display: block; color: var(--tg-text-secondary, #8A9BB5); }
+  .tg-mapb-hours-line:first-of-type { color: var(--tg-text-primary, #E8ECF2); }
+
+  .tg-mapb-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tg-s4, 16px);
+    margin-top: auto;
+    padding-top: var(--tg-s3, 12px);
+  }
+
+  .tg-mapb-call {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tg-text-secondary, #8A9BB5);
+    text-decoration: none;
+    border-bottom: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.3));
+    padding-bottom: 2px;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+
+  .tg-mapb-call:hover { color: var(--tg-flame, #E8601C); border-color: var(--tg-flame, #E8601C); }
+
+  /* Right: the map */
+  .tg-mapb-map {
+    position: relative;
+    min-height: 380px;
+    background: var(--tg-surface, #0D1526);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.12));
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%);
+    overflow: hidden;
+  }
+
+  .tg-mapb-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .tg-mapb--dark .tg-mapb-frame { filter: invert(0.92) hue-rotate(185deg) saturate(0.55) contrast(0.92) brightness(0.9); }
+
+  .tg-mapb-map::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(232, 96, 28, 0.25);
+  }
+
+  .tg-mapb-tag {
+    position: absolute;
+    left: var(--tg-s4, 16px);
+    top: var(--tg-s4, 16px);
+    z-index: 2;
+    padding: 8px 16px 8px 12px;
+    font-family: var(--tg-font-display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tg-ink, #0B1220);
+    background: var(--tg-flame, #E8601C);
+    text-decoration: none;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+
+  @media (max-width: 960px) {
+    .tg-mapb { padding-left: var(--tg-s6, 32px); padding-right: var(--tg-s6, 32px); }
+    .tg-mapb-inner { grid-template-columns: 1fr; }
+    .tg-mapb-map { min-height: 300px; }
+  }
+
+  @media (max-width: 640px) {
+    .tg-mapb { padding-left: var(--tg-s4, 16px); padding-right: var(--tg-s4, 16px); }
+    .tg-mapb-panel { padding: var(--tg-s5, 24px) var(--tg-s4, 16px); }
+    .tg-mapb-map { min-height: 260px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "2Gether Карта · На място",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Етикет", "default": "t:tg.d.map_banner.eyebrow" },
+    { "type": "text", "id": "title", "label": "Заглавие", "default": "t:tg.d.map_banner.title" },
+    { "type": "textarea", "id": "text", "label": "Текст", "default": "t:tg.d.map_banner.text" },
+    { "type": "header", "content": "Информация за магазина" },
+    { "type": "text", "id": "address_label", "label": "Етикет адрес", "default": "t:tg.d.map_banner.address_label" },
+    { "type": "text", "id": "address", "label": "Адрес", "default": "Бул. 8-ми Приморски Полк 125, гр. Варна" },
+    { "type": "text", "id": "hours_label", "label": "Етикет работно време", "default": "t:tg.d.map_banner.hours_label" },
+    { "type": "textarea", "id": "hours", "label": "Работно време (ред на ред)", "default": "t:tg.d.map_banner.hours" },
+    { "type": "text", "id": "phone_label", "label": "Етикет телефон", "default": "t:tg.d.map_banner.phone_label" },
+    { "type": "text", "id": "phone", "label": "Телефон", "default": "+359 888 310 500" },
+    { "type": "header", "content": "Карта" },
+    { "type": "text", "id": "map_embed", "label": "Google Maps линк или адрес", "info": "Работи с линк към мястото от Google Maps, embed URL или просто адрес.", "default": "https://www.google.com/maps/place/%D0%92%D0%95%D0%9B%D0%9E%D0%9C%D0%90%D0%93%D0%90%D0%97%D0%98%D0%9D+2GETHERBIKES/@43.2164592,27.92968,17z" },
+    { "type": "checkbox", "id": "dark_map", "label": "Тъмна карта (в цветовете на сайта)", "default": true },
+    { "type": "text", "id": "map_tag", "label": "Етикет върху картата", "default": "t:tg.d.map_banner.map_tag" },
+    { "type": "text", "id": "directions_label", "label": "Бутон: навигация", "default": "t:tg.d.map_banner.directions_label" },
+    { "type": "text", "id": "call_label", "label": "Линк: обади се", "default": "t:tg.d.map_banner.call_label" },
+    { "type": "header", "content": "Разстояния" },
+    { "type": "range", "id": "padding_top", "label": "Отгоре", "min": 0, "max": 120, "step": 8, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Отдолу", "min": 0, "max": 120, "step": 8, "unit": "px", "default": 64 }
+  ],
+  "presets": [
+    { "name": "2Gether Карта · На място" }
+  ]
+}
+{% endschema %}

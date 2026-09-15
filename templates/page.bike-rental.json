@@ -29,9 +29,31 @@
         "rescue_price": 5,
         "show_prices": true
       }
+    },
+    "map_banner": {
+      "type": "2gether-map-banner",
+      "settings": {
+        "eyebrow": "На място",
+        "title": "РЕЗЕРВИРАЙ И НА МЯСТО",
+        "text": "Мини през магазина — избираш колело, попълваме бланката и тръгваш за 10 минути. Без предварителна резервация, докато има свободни велосипеди.",
+        "address_label": "Адрес",
+        "hours_label": "Работно време",
+        "hours": "Вто – Пет: 09:30 – 19:30\nСъб – Нед: 10:30 – 18:30\nПон – почивен ден",
+        "phone_label": "Телефон",
+        "map_tag": "2GETHER Bikes · Варна",
+        "directions_label": "Навигирай до нас",
+        "call_label": "Обади се",
+        "address": "Бул. 8-ми Приморски Полк 125, гр. Варна",
+        "phone": "+359 888 310 500",
+        "map_embed": "https://www.google.com/maps/place/%D0%92%D0%95%D0%9B%D0%9E%D0%9C%D0%90%D0%93%D0%90%D0%97%D0%98%D0%9D+2GETHERBIKES/@43.2164592,27.92968,17z",
+        "dark_map": true,
+        "padding_top": 48,
+        "padding_bottom": 72
+      }
     }
   },
   "order": [
-    "booking"
+    "booking",
+    "map_banner"
   ]
 }
