@@ -430,6 +430,17 @@
 (function() {
   const wrap = document.querySelector('[data-tg-desc]'); if (!wrap) return;
   const body = wrap.querySelector('[data-tg-desc-body]'), btn = wrap.querySelector('[data-tg-desc-toggle]');
+  // Supplier descriptions sometimes embed images that no longer exist on the supplier's server.
+  // Drop any image that fails to load (and its empty wrapper) instead of showing a broken box.
+  body.querySelectorAll('img').forEach(function (img) {
+    const drop = function () {
+      const parent = img.parentElement; img.remove();
+      if (parent && parent !== body && !parent.textContent.trim() && !parent.querySelector('img,video,iframe')) parent.remove();
+    };
+    if (img.complete) { if (!img.naturalWidth) drop(); }
+    else img.addEventListener('error', drop, { once: true });
+    img.loading = 'lazy'; img.style.maxWidth = '100%'; img.style.height = 'auto';
+  });
   const check = function() { if (wrap.classList.contains('is-open')) return; btn.hidden = !(body.scrollHeight > body.clientHeight + 2); };
   btn.addEventListener('click', function() {
     const open = wrap.classList.toggle('is-open');
