@@ -47,7 +47,7 @@ def main() -> int:
     from onedist_sync.util import log
 
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["bootstrap", "catalog", "collections", "inventory", "discounts", "all", "report", "repair-media"])
+    ap.add_argument("command", choices=["bootstrap", "catalog", "collections", "inventory", "discounts", "newness", "all", "report", "repair-media"])
     ap.add_argument("--full", action="store_true", help="ignore watermarks/diffs and process everything")
     ap.add_argument("--ids", help="comma-separated PrestaShop product ids (catalog only)")
     ap.add_argument("--limit", type=int, help="process at most N products (catalog only)")
@@ -89,6 +89,10 @@ def main() -> int:
         from onedist_sync.discounts import run_discounts
         c = run_discounts(settings, shop, state, dry_run=args.dry_run or offline)
         rc |= 8 if c.get("errors") else 0
+    if args.command in {"newness", "all"}:
+        from onedist_sync.newness import run_newness
+        c = run_newness(settings, shop, state, dry_run=args.dry_run or offline)
+        rc |= 16 if c.get("errors") else 0
     if args.command in {"inventory", "all"}:
         while True:
             c = run_inventory(settings, ps, shop, state, full=args.full)
