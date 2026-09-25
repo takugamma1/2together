@@ -770,6 +770,22 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "tg_new_arrivals": {
+      "type": "2gether-new-arrivals",
+      "settings": {
+        "collection": "new-arrivals",
+        "limit": 10,
+        "fresh_days": 30,
+        "label": "Току-що пристигнали",
+        "title": "НОВИ ПОСТЪПЛЕНИЯ",
+        "intro": "Най-новото от склада — части, екипировка и аксесоари, подредени по дата на пристигане. Обновява се автоматично.",
+        "cta_label": "Виж всички нови продукти в е-магазина",
+        "ticker": "НОВО В МАГАЗИНА",
+        "show_ticker": true,
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
@@ -777,6 +793,7 @@
     "tg_statement",
     "tg_image_band",
     "section_iHJQMc",
+    "tg_new_arrivals",
     "tg_community",
     "2gether_yt_carousel_kXttfc",
     "2gether_community_dhFAMt",

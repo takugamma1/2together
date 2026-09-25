@@ -1772,6 +1772,13 @@
         "map_tag": "2GETHER Bikes · Varna",
         "directions_label": "Get directions",
         "call_label": "Call us"
+      },
+      "new_arrivals": {
+        "label": "Just landed",
+        "title": "NEW ARRIVALS",
+        "intro": "The latest from the warehouse — parts, gear and accessories, newest first. Updates automatically.",
+        "cta_label": "See all new products in the e-shop",
+        "ticker": "NEW IN STORE"
       }
     }
   }

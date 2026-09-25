@@ -670,6 +670,25 @@
     "seo": {
       "home_title": "2gether Bikes – bike shop and service in Varna",
       "home_description": "Orbea and Santa Cruz bikes, parts, gear and accessories. Bike service, bike rental and a cycling club in Varna."
+    },
+    "new_arrivals": {
+      "count_word": {
+        "one": "new product",
+        "other": "new products"
+      },
+      "prev": "Previous",
+      "next": "Next",
+      "today": "Today",
+      "days_ago": {
+        "one": "{{ count }} day ago",
+        "other": "{{ count }} days ago"
+      },
+      "view": "View",
+      "empty_editor": "The collection is empty — pick a collection with products.",
+      "d_title": "NEW ARRIVALS",
+      "d_label": "Just landed",
+      "d_cta_label": "See all new products in the e-shop",
+      "d_ticker": "NEW IN STORE"
     }
   }
 }

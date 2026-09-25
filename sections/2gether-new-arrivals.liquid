@@ -1,0 +1,418 @@
+{{ '2gether-custom.css' | asset_url | stylesheet_tag }}
+{{ '2gether-buttons.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign st = section.settings
+  assign coll = st.collection
+  if coll == blank
+    assign coll = collections['new-arrivals']
+  endif
+  assign limit = st.limit | default: 10
+  assign now_ts = 'now' | date: '%s' | plus: 0
+  assign d_title = 'tg.new_arrivals.d_title' | t
+  assign d_label = 'tg.new_arrivals.d_label' | t
+  assign d_cta = 'tg.new_arrivals.d_cta_label' | t
+  assign d_ticker = 'tg.new_arrivals.d_ticker' | t
+  assign ticker_text = st.ticker | default: d_ticker
+  assign total = 0
+  if coll != blank
+    assign total = coll.products_count
+  endif
+-%}
+
+<section class="tg-na tg-section" data-tg-na="{{ section.id }}" style="--tg-na-pt: {{ st.padding_top }}px; --tg-na-pb: {{ st.padding_bottom }}px;">
+  {%- if st.show_ticker and ticker_text != blank -%}
+    <div class="tg-na-ticker" aria-hidden="true">
+      <div class="tg-na-ticker-track">
+        {%- for i in (1..8) -%}<span>{{ ticker_text }}</span><i>//</i>{%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="tg-na-inner">
+    <header class="tg-na-head">
+      <div class="tg-na-head-text">
+        <span class="tg-label">{{ st.label | default: d_label }}</span>
+        <h2 class="tg-na-title">{{ st.title | default: d_title }}</h2>
+        {%- if st.intro != blank -%}<p class="tg-na-intro">{{ st.intro }}</p>{%- endif -%}
+      </div>
+      <div class="tg-na-head-tools">
+        {%- if total > 0 -%}
+          <span class="tg-na-count"><b>{{ total }}</b> {{ 'tg.new_arrivals.count_word' | t: count: total }}</span>
+        {%- endif -%}
+        <div class="tg-na-arrows">
+          <button type="button" class="tg-na-arrow" data-tg-na-prev aria-label="{{ 'tg.new_arrivals.prev' | t }}" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="tg-na-arrow" data-tg-na-next aria-label="{{ 'tg.new_arrivals.next' | t }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    {%- if coll != blank and coll.products.size > 0 -%}
+      <div class="tg-na-track" data-tg-na-track tabindex="0" aria-label="{{ st.title | default: d_title | escape }}">
+        {%- for product in coll.products limit: limit -%}
+          {%- liquid
+            assign created_ts = product.created_at | date: '%s' | plus: 0
+            assign age_days = now_ts | minus: created_ts | divided_by: 86400
+            assign idx = forloop.index | prepend: '0' | slice: -2, 2
+          -%}
+          <a href="{{ product.url }}" class="tg-na-card{% unless product.available %} is-soldout{% endunless %}" style="--tg-na-i: {{ forloop.index0 }};">
+            <div class="tg-na-media">
+              {%- if product.featured_image -%}
+                {{ product.featured_image | image_url: width: 720 | image_tag: loading: 'lazy', sizes: '(max-width: 640px) 78vw, 300px', alt: product.featured_image.alt | default: product.title }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'tg-na-placeholder' }}
+              {%- endif -%}
+              <span class="tg-na-index">{{ idx }}</span>
+              <span class="tg-na-stamp">
+                {%- if age_days < 1 -%}{{ 'tg.new_arrivals.today' | t }}
+                {%- elsif age_days <= st.fresh_days -%}{{ 'tg.new_arrivals.days_ago' | t: count: age_days }}
+                {%- else -%}{{ 'tg.common.badge_new' | t }}{%- endif -%}
+              </span>
+              {%- if product.compare_at_price > product.price -%}
+                {%- assign diff = product.compare_at_price | minus: product.price | times: 100.0 -%}
+                <span class="tg-na-sale">-{{ diff | divided_by: product.compare_at_price | round }}%</span>
+              {%- endif -%}
+            </div>
+            <div class="tg-na-body">
+              <span class="tg-na-vendor">{{ product.vendor }}</span>
+              <span class="tg-na-name">{{ product.title }}</span>
+              <span class="tg-na-price">
+                {{ product.price | money }}
+                {%- if product.compare_at_price > product.price -%}<s>{{ product.compare_at_price | money }}</s>{%- endif -%}
+              </span>
+              <span class="tg-na-more">{{ 'tg.new_arrivals.view' | t }} &rarr;</span>
+            </div>
+          </a>
+        {%- endfor -%}
+        <a href="{{ coll.url }}" class="tg-na-card tg-na-card--all">
+          <span class="tg-na-all-num">+{{ total | minus: limit | at_least: 0 }}</span>
+          <span class="tg-na-all-text">{{ st.cta_label | default: d_cta }}</span>
+          <span class="tg-btn-primary tg-na-all-btn">{{ 'tg.common.to_shop' | t }}&nbsp;&rarr;</span>
+        </a>
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="tg-na-empty">{{ 'tg.new_arrivals.empty_editor' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .tg-na {
+    background: var(--tg-ink, #0B1220);
+    color: var(--tg-text-primary, #E8ECF2);
+    font-family: var(--tg-font-body);
+    padding: var(--tg-na-pt, 64px) 0 var(--tg-na-pb, 64px);
+    overflow: hidden;
+  }
+
+  /* running ticker */
+  .tg-na-ticker {
+    border-top: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.12));
+    border-bottom: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.12));
+    margin-bottom: var(--tg-s7, 48px);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .tg-na-ticker-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 28px;
+    padding: 12px 0;
+    animation: tg-na-marquee 40s linear infinite;
+    font-family: var(--tg-font-display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--tg-text-muted, #566A85);
+  }
+
+  .tg-na-ticker-track i { color: var(--tg-flame, #E8601C); font-style: normal; }
+
+  @keyframes tg-na-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .tg-na-inner { max-width: 1280px; margin: 0 auto; padding: 0 var(--tg-s7, 48px); }
+
+  .tg-na-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--tg-s5, 24px);
+    margin-bottom: var(--tg-s6, 32px);
+  }
+
+  .tg-na-head-text { display: flex; flex-direction: column; gap: var(--tg-s3, 12px); max-width: 640px; }
+
+  .tg-na-title {
+    font-family: var(--tg-font-display);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .tg-na-intro { color: var(--tg-text-secondary, #8A9BB5); font-size: 15px; line-height: 1.6; margin: 0; }
+
+  .tg-na-head-tools { display: flex; align-items: center; gap: var(--tg-s4, 16px); flex-shrink: 0; }
+
+  .tg-na-count {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tg-text-muted, #566A85);
+  }
+
+  .tg-na-count b { font-family: var(--tg-font-display); font-size: 16px; color: var(--tg-flame, #E8601C); margin-right: 4px; }
+
+  .tg-na-arrows { display: flex; gap: 6px; }
+
+  .tg-na-arrow {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    background: var(--tg-surface-raised, #121E34);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.16));
+    color: var(--tg-text-primary, #E8ECF2);
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    transition: background 150ms ease, color 150ms ease, opacity 150ms ease;
+  }
+
+  .tg-na-arrow:hover:not(:disabled) { background: var(--tg-flame, #E8601C); color: var(--tg-ink, #0B1220); }
+  .tg-na-arrow:disabled { opacity: 0.3; cursor: default; }
+
+  /* track */
+  .tg-na-track {
+    display: flex;
+    gap: var(--tg-s4, 16px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 4px 0 var(--tg-s3, 12px);
+    margin: 0 calc(-1 * var(--tg-s7, 48px));
+    padding-left: var(--tg-s7, 48px);
+    padding-right: var(--tg-s7, 48px);
+    scroll-padding-left: var(--tg-s7, 48px);
+    cursor: grab;
+  }
+
+  .tg-na-track::-webkit-scrollbar { display: none; }
+  .tg-na-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+  .tg-na-track:focus-visible { outline: 2px solid var(--tg-flame, #E8601C); outline-offset: 4px; }
+
+  .tg-na-card {
+    flex: 0 0 300px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    background: var(--tg-surface-raised, #121E34);
+    border: 1px solid var(--tg-divider, rgba(138, 155, 181, 0.12));
+    border-top: 2px solid var(--tg-flame, #E8601C);
+    text-decoration: none;
+    color: inherit;
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+    transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 150ms ease;
+    animation: tg-na-in 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--tg-na-i, 0) * 60ms);
+  }
+
+  @keyframes tg-na-in { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+
+  .tg-na-card:hover { transform: translateY(-4px); }
+  .tg-na-card.is-soldout .tg-na-media img { filter: grayscale(1) brightness(0.6); }
+
+  .tg-na-media {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: #FFFFFF;
+    overflow: hidden;
+  }
+
+  .tg-na-media img, .tg-na-media svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 14px;
+    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tg-na-card:hover .tg-na-media img { transform: scale(1.05); }
+
+  .tg-na-index {
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    font-family: var(--tg-font-display);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--tg-text-muted, #566A85);
+  }
+
+  .tg-na-stamp {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    padding: 6px 12px 6px 14px;
+    background: var(--tg-flame, #E8601C);
+    color: var(--tg-ink, #0B1220);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .tg-na-sale {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    padding: 4px 8px;
+    background: var(--tg-ink, #0B1220);
+    color: var(--tg-flame, #E8601C);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .tg-na-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--tg-s4, 16px) var(--tg-s4, 16px) var(--tg-s5, 24px);
+    flex: 1;
+  }
+
+  .tg-na-vendor { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tg-text-muted, #566A85); }
+
+  .tg-na-name {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .tg-na-price { font-family: var(--tg-font-display); font-weight: 700; font-size: 16px; color: var(--tg-flame, #E8601C); margin-top: 4px; }
+  .tg-na-price s { margin-left: 8px; font-size: 12px; font-weight: 500; color: var(--tg-text-muted, #566A85); }
+
+  .tg-na-more {
+    margin-top: auto;
+    padding-top: var(--tg-s3, 12px);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tg-text-secondary, #8A9BB5);
+    transition: color 150ms ease;
+  }
+
+  .tg-na-card:hover .tg-na-more { color: var(--tg-flame, #E8601C); }
+
+  /* "see all" card */
+  .tg-na-card--all {
+    justify-content: center;
+    align-items: flex-start;
+    gap: var(--tg-s3, 12px);
+    padding: var(--tg-s6, 32px);
+    background: linear-gradient(160deg, var(--tg-surface-raised, #121E34), rgba(232, 96, 28, 0.18));
+    border-top-color: transparent;
+    border-left: 2px solid var(--tg-flame, #E8601C);
+  }
+
+  .tg-na-all-num { font-family: var(--tg-font-display); font-weight: 700; font-size: 3rem; line-height: 1; color: var(--tg-flame, #E8601C); letter-spacing: -0.03em; }
+  .tg-na-all-text { font-family: var(--tg-font-display); font-weight: 700; font-size: 1.1rem; line-height: 1.2; text-transform: uppercase; }
+  .tg-na-all-btn { margin-top: var(--tg-s3, 12px); }
+
+  .tg-na-empty { color: var(--tg-text-muted, #566A85); font-size: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tg-na-ticker-track { animation: none; }
+    .tg-na-card { animation: none; }
+  }
+
+  @media (max-width: 960px) {
+    .tg-na-inner { padding: 0 var(--tg-s6, 32px); }
+    .tg-na-track { margin: 0 calc(-1 * var(--tg-s6, 32px)); padding-left: var(--tg-s6, 32px); padding-right: var(--tg-s6, 32px); scroll-padding-left: var(--tg-s6, 32px); }
+    .tg-na-head { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 640px) {
+    .tg-na-inner { padding: 0 var(--tg-s4, 16px); }
+    .tg-na-ticker { margin-bottom: var(--tg-s6, 32px); }
+    .tg-na-track { margin: 0 calc(-1 * var(--tg-s4, 16px)); padding-left: var(--tg-s4, 16px); padding-right: var(--tg-s4, 16px); scroll-padding-left: var(--tg-s4, 16px); }
+    .tg-na-card { flex-basis: 78vw; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.querySelectorAll('[data-tg-na]').forEach(function (root) {
+    var track = root.querySelector('[data-tg-na-track]');
+    var prev = root.querySelector('[data-tg-na-prev]');
+    var next = root.querySelector('[data-tg-na-next]');
+    if (!track) { if (prev) prev.disabled = true; if (next) next.disabled = true; return; }
+
+    function update() {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max;
+    }
+    function step() {
+      var card = track.querySelector('.tg-na-card');
+      return card ? card.getBoundingClientRect().width + 16 : 320;
+    }
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step() * 2, behavior: 'smooth' }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step() * 2, behavior: 'smooth' }); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+
+    // drag to scroll (mouse)
+    var down = false, startX = 0, startLeft = 0, moved = false;
+    track.addEventListener('mousedown', function (e) { down = true; moved = false; startX = e.pageX; startLeft = track.scrollLeft; track.classList.add('is-dragging'); });
+    window.addEventListener('mousemove', function (e) { if (!down) return; var dx = e.pageX - startX; if (Math.abs(dx) > 4) moved = true; track.scrollLeft = startLeft - dx; });
+    window.addEventListener('mouseup', function () { if (!down) return; down = false; track.classList.remove('is-dragging'); });
+    track.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } }, true);
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); track.scrollBy({ left: step(), behavior: 'smooth' }); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); track.scrollBy({ left: -step(), behavior: 'smooth' }); }
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "2Gether Нови постъпления",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Колекция", "info": "Празно = автоматичната колекция „Нови постъпления“ (най-новите налични продукти)." },
+    { "type": "range", "id": "limit", "label": "Брой продукти", "min": 4, "max": 16, "step": 1, "default": 10 },
+    { "type": "range", "id": "fresh_days", "label": "Показвай „преди X дни“ до", "min": 3, "max": 60, "step": 1, "unit": "d", "default": 30 },
+    { "type": "text", "id": "label", "label": "Етикет", "default": "t:tg.d.new_arrivals.label" },
+    { "type": "text", "id": "title", "label": "Заглавие", "default": "t:tg.d.new_arrivals.title" },
+    { "type": "textarea", "id": "intro", "label": "Кратък текст", "default": "t:tg.d.new_arrivals.intro" },
+    { "type": "text", "id": "cta_label", "label": "Текст на последната карта", "default": "t:tg.d.new_arrivals.cta_label" },
+    { "type": "checkbox", "id": "show_ticker", "label": "Бягащ ред отгоре", "default": true },
+    { "type": "text", "id": "ticker", "label": "Текст на бягащия ред", "default": "t:tg.d.new_arrivals.ticker" },
+    { "type": "header", "content": "Разстояния" },
+    { "type": "range", "id": "padding_top", "label": "Отгоре", "min": 0, "max": 120, "step": 8, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Отдолу", "min": 0, "max": 120, "step": 8, "unit": "px", "default": 64 }
+  ],
+  "presets": [
+    { "name": "2Gether Нови постъпления" }
+  ]
+}
+{% endschema %}
